@@ -70,12 +70,12 @@ import Typography from "layouts/sections/elements/typography";
 
 const routes = [
   {
-    name: "pages",
+    name: "Dashboard(tBD)",
     icon: <Icon>dashboard</Icon>,
     columns: 1,
     rowsPerColumn: 2,
     collapse: [
-      {
+/*       {
         name: "landing pages",
         collapse: [
           {
@@ -94,9 +94,9 @@ const routes = [
             component: <Author />,
           },
         ],
-      },
+      }, */
       {
-        name: "account",
+        name: "Login & Register",
         collapse: [
           {
             name: "sign in",
@@ -108,7 +108,7 @@ const routes = [
     ],
   },
   {
-    name: "sections",
+/*     name: "sections",
     icon: <Icon>view_day</Icon>,
     collapse: [
       {
@@ -236,10 +236,10 @@ const routes = [
           },
         ],
       },
-    ],
+    ], */
   },
   {
-    name: "docs",
+/*     name: "docs",
     icon: <Icon>article</Icon>,
     collapse: [
       {
@@ -262,12 +262,12 @@ const routes = [
         description: "Check how you can integrate our plugins",
         href: "https://www.creative-tim.com/learning-lab/react/datepicker/material-kit/",
       },
-    ],
+    ], */
   },
   {
-    name: "github",
+    /* name: "github",
     icon: <GitHubIcon />,
-    href: "https://www.github.com/creativetimofficial/material-kit-react",
+    href: "https://www.github.com/creativetimofficial/material-kit-react", */
   },
 ];
 
