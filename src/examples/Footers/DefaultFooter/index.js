@@ -36,9 +36,7 @@ function DefaultFooter({ content }) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={3} sx={{ ml: "auto", mb: 3 }}>
             <MKBox>
-              <Link to={brand.route}>
-                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="2rem" mb={2} />
-              </Link>
+
               <MKTypography variant="h6">{brand.name}</MKTypography>
             </MKBox>
             <MKBox display="flex" alignItems="center" mt={3}>
