@@ -54,6 +54,7 @@ function SignUpBasic() {
     <>
       <DefaultNavbar
         routes={routes}
+
         transparent
         light
       />

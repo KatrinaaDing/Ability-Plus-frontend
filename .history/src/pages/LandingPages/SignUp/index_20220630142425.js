@@ -43,7 +43,7 @@ import SimpleFooter from "examples/Footers/SimpleFooter";
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/bg-sign-un-basic.jpeg";
 
 function SignUpBasic() {
   const [rememberMe, setRememberMe] = useState(false);

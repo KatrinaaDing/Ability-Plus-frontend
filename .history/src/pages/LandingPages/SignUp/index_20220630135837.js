@@ -54,6 +54,7 @@ function SignUpBasic() {
     <>
       <DefaultNavbar
         routes={routes}
+
         transparent
         light
       />
@@ -124,7 +125,7 @@ function SignUpBasic() {
                       Already have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/authentication/sign-in"
+                        to="/authentication/sign-up/cover"
                         variant="button"
                         color="info"
                         fontWeight="medium"
@@ -145,4 +146,4 @@ function SignUpBasic() {
   );
 }
 
-export default SignUpBasic;
+export default SignInBasic;

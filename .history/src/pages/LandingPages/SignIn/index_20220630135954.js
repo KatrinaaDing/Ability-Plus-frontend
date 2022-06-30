@@ -45,7 +45,7 @@ import routes from "routes";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
-function SignUpBasic() {
+function SignInBasic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -54,6 +54,7 @@ function SignUpBasic() {
     <>
       <DefaultNavbar
         routes={routes}
+
         transparent
         light
       />
@@ -91,7 +92,7 @@ function SignUpBasic() {
                 textAlign="center"
               >
                 <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  Sign up
+                  Sign in
                 </MKTypography>  
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
@@ -116,21 +117,21 @@ function SignUpBasic() {
                   </MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" fullWidth>
-                      sign up
+                      sign in
                     </MKButton>
                   </MKBox>
                   <MKBox mt={3} mb={1} textAlign="center">
                     <MKTypography variant="button" color="text">
-                      Already have an account?{" "}
+                      Don&apos;t have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/authentication/sign-in"
+                        to="/authentication/sign-up/"
                         variant="button"
                         color="info"
                         fontWeight="medium"
                         textGradient
                       >
-                        Sign in
+                        Sign up
                       </MKTypography>
                     </MKTypography>
                   </MKBox>
@@ -145,4 +146,4 @@ function SignUpBasic() {
   );
 }
 
-export default SignUpBasic;
+export default SignInBasic;
