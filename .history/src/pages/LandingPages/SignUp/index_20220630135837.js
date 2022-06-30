@@ -54,6 +54,7 @@ function SignUpBasic() {
     <>
       <DefaultNavbar
         routes={routes}
+
         transparent
         light
       />
@@ -100,9 +101,6 @@ function SignUpBasic() {
                     <MKInput type="email" label="Email" fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="Username" label="Username" fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
                     <MKInput type="password" label="Password" fullWidth />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
@@ -127,7 +125,7 @@ function SignUpBasic() {
                       Already have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/pages/authentication/sign-in"
+                        to="/authentication/sign-up/cover"
                         variant="button"
                         color="info"
                         fontWeight="medium"
@@ -148,4 +146,4 @@ function SignUpBasic() {
   );
 }
 
-export default SignUpBasic;
+export default SignInBasic;

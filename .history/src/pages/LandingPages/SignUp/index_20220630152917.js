@@ -127,7 +127,7 @@ function SignUpBasic() {
                       Already have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/pages/authentication/sign-in"
+                        to="/authentication/sign-in"
                         variant="button"
                         color="info"
                         fontWeight="medium"

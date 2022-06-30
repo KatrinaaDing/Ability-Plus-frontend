@@ -14,9 +14,7 @@ const date = new Date().getFullYear();
 
 export default {
   brand: {
-    name: "Team GLHF",
-    image: logoCT,
-    route: "/",
+
   },
 
   socials: [

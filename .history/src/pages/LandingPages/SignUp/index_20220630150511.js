@@ -43,7 +43,7 @@ import SimpleFooter from "examples/Footers/SimpleFooter";
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/bg-sign-up-basic.jpeg";
 
 function SignUpBasic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -100,9 +100,6 @@ function SignUpBasic() {
                     <MKInput type="email" label="Email" fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="Username" label="Username" fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
                     <MKInput type="password" label="Password" fullWidth />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
@@ -127,7 +124,7 @@ function SignUpBasic() {
                       Already have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/pages/authentication/sign-in"
+                        to="/authentication/sign-in"
                         variant="button"
                         color="info"
                         fontWeight="medium"
