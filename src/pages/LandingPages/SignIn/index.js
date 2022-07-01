@@ -64,7 +64,6 @@ function SignInBasic() {
     <>
       <DefaultNavbar
         routes={routes}
-
         transparent
         light
       />

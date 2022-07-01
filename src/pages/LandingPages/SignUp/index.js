@@ -125,6 +125,9 @@ function SignUpBasic() {
                   <MKBox mb={2}>
                     <MKInput type="password" label="Password" fullWidth />
                   </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput type="Confirm Password" label="Confirm Password" fullWidth />
+                  </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
                     <MKTypography
