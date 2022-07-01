@@ -45,10 +45,20 @@ import routes from "routes";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
+// Tabs
+import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+
 function SignInBasic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabType = (event, newValue) => setActiveTab(newValue);
 
   return (
     <>
@@ -95,6 +105,16 @@ function SignInBasic() {
                   Sign in
                 </MKTypography>  
               </MKBox>
+              <Container>
+                <Grid container item justifyContent="center" xs={40} lg={20} mx="auto">
+                  <AppBar position="static">
+                    <Tabs value={activeTab} onChange={handleTabType}>
+                      <Tab label="Student" />
+                      <Tab label="Company" />
+                    </Tabs>
+                  </AppBar>
+                </Grid>
+              </Container>              
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
                   <MKBox mb={2}>
