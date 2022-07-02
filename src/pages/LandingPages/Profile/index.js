@@ -25,8 +25,6 @@ const ProfileBasic = () => {
         <>
         <DefaultNavbar
           routes={routes}
-          transparent
-          light
         />
 
         <MKBox component="section" py={12}>
