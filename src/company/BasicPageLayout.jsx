@@ -24,7 +24,7 @@ const BasicPageLayout = ({ title, children }) => {
             <MKBox minHeight="75vh" >
                 <Container sx={{ mt: 6 }}>
                     <Grid container item xs={12} flexDirection="column" justifyContent="center" mx="auto">
-                        <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3}>
+                        <MKBox width={{ xs: "100%", md: "100%", lg: "100%" }} mb={3}>
                             <MKTypography variant="h3" mb={1}>
                                 {title}
                             </MKTypography>
