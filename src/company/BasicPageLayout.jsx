@@ -1,10 +1,14 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 02 Jul 2022
+ * Description: A basic page layout
+ */
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import routes from "routes";
-import CenteredFooter from "examples/Footers/CenteredFooter";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 

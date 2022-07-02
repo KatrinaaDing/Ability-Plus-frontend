@@ -68,6 +68,7 @@ import Dropdowns from "layouts/sections/elements/dropdowns";
 import ProgressBars from "layouts/sections/elements/progress-bars";
 import Toggles from "layouts/sections/elements/toggles";
 import Typography from "layouts/sections/elements/typography";
+import CreateProposal from "company/pages/CreateProposal";
 
 const routes = [
   {
@@ -109,6 +110,28 @@ const routes = [
             route: "/pages/authentication/sign-up",
             component: <SignUp />,
           }
+        ],
+      },
+      {
+        name: "input areas",
+        description: "See all input areas",
+        dropdown: true,
+        collapse: [
+          {
+            name: "inputs",
+            route: "/sections/input-areas/inputs",
+            component: <Inputs />,
+          },
+          {
+            name: "forms",
+            route: "/sections/input-areas/forms",
+            component: <Forms />,
+          },
+          {
+            name: "create proposal",
+            route: "/create-proposal",
+            component: <CreateProposal />,
+          },
         ],
       },
     ],
