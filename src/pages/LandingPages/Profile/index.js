@@ -18,7 +18,6 @@ import MKButton from "components/MKButton";
 
 
 import routes from "routes";
-import { Stack } from "react-bootstrap";
 
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
@@ -28,6 +27,8 @@ const ProfileBasic = () => {
 
     const [show, setShow] = useState(false);
     const toggleModal = () => setShow(!show);
+    const [confirm, setDelete] = useState(false)
+    const deleteModal = () => setDelete(!confirm);
 
     return (
         <>
@@ -104,7 +105,7 @@ const ProfileBasic = () => {
                 <br />
 
                 <Grid container justifyContent="space-around"> 
-                        <MKButton variant="outlined" color="error" size="small">
+                        <MKButton variant="outlined" color="error" size="small" onClick={deleteModal}>
                             Delete Account
                         </MKButton>
                         <MKButton variant="outlined" color="info" size="small" onClick={toggleModal}>
@@ -152,7 +153,38 @@ const ProfileBasic = () => {
                             </MKBox>                            
                         </MKBox>
                     </Slide>
-                </Modal>                     
+                </Modal>     
+                <Modal open={confirm} onClose={deleteModal} sx={{display:"grid", placeItems:"center"}}>
+                    <Slide direction="down" in={confirm} timeout={500}>
+                        <MKBox
+                            position="relative"
+                            width="20%"
+                            display="flex"
+                            flexDirection="column"
+                            borderRadius="xl"
+                            bgColor="white"
+                            shadow="xl"    
+                        >
+                            <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
+                                <MKTypography variant="h5">Delete Account</MKTypography>
+                                <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={deleteModal} />
+                            </MKBox>
+                            <Divider sx={{my: 0}} />
+                                <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center">
+                                    Are you sure about it?
+                                </MKTypography>                        
+                            <Divider sx={{my: 0}} />
+                            <MKBox display="flex" justifyContent="space-between" p={1.5}>
+                                <MKButton variant="gradient" color="dark">
+                                Yes
+                                </MKButton>
+                                <MKButton variant="gradient" color="info">
+                                No
+                                </MKButton>
+                            </MKBox>                            
+                        </MKBox>
+                    </Slide>
+                </Modal>                                  
             </Container>
         </MKBox>
 
