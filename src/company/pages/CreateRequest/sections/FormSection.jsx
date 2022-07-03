@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 03 Jul 2022
+ * Discription: A form section for rich text editing
+ */
 import Grid from '@mui/material/Grid';
 import RichTextEditor from 'company/components/RichTextEditor';
 import MKTypography from 'components/MKTypography';

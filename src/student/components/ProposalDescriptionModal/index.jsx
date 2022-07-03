@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 02 Jul 2022
+ * Discription: A modal for displaying proposal details
+ */
 import React from 'react';
 import MKBox from 'components/MKBox';
 import Divider from "@mui/material/Divider";
