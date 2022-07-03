@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 03 Jul 2022
+ * Discription: A styled Datepicker
+ */
 import Grid from '@mui/material/Grid';
 import MKDatePicker from 'components/MKDatePicker';
 import MKTypography from 'components/MKTypography';
@@ -7,7 +12,7 @@ const DatePicker = ({title, value, setValue}) => {
     return (
         <Grid item sx={12} md={4} display='flex' flexDirection='column'>
             <MKTypography variant='h5' sx={{ mb: 1, mt: 2 }}>
-                Proposal Deadline
+                {title}
             </MKTypography>
             <MKDatePicker 
                 options={{
