@@ -1,4 +1,7 @@
 Components of student
-- Student Rank card(in pull request)
+- Student Rank card(in pull request)(update: merged)
+- Student following page
+- Proposal Detail (description) Modal
 
--Student following page
+Pages of student
+- Proposal Create Page
