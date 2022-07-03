@@ -50,6 +50,8 @@ import SignIn from "layouts/pages/authentication/sign-in";
 import SignUp from "layouts/pages/authentication/sign-up";
 import Profile from "layouts/pages/landing-pages/profile";
 import Following from "layouts/pages/landing-pages/following";
+import CompanyInfo from "layouts/pages/landing-pages/company-info";
+import StudentInfo from "layouts/pages/landing-pages/student-info";
 
 
 // Sections
@@ -124,6 +126,16 @@ const routes = [
             name:"following",
             route: "/pages/landing-page/following",
             component: <Following />,
+          },
+          {
+            name: "Company Information",
+            route: "/pages/landing-page/company-info",
+            component: <CompanyInfo />,
+          },
+          {
+            name: "Student Information",
+            route: "/pages/landing-page/student-info",
+            component: <StudentInfo />
           },
         ],
       },
