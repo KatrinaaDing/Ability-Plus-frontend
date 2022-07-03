@@ -48,6 +48,8 @@ import ContactUs from "layouts/pages/landing-pages/contact-us";
 import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
 import SignUp from "layouts/pages/authentication/sign-up";
+import Profile from "layouts/pages/landing-pages/profile";
+
 
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -70,6 +72,7 @@ import Toggles from "layouts/sections/elements/toggles";
 import Typography from "layouts/sections/elements/typography";
 import CreateProposal from "student/pages/CreateProposal";
 import CreateRequest from "company/pages/CreateRequest";
+
 
 const routes = [
   {
@@ -110,7 +113,12 @@ const routes = [
             name: "sign up",
             route: "/pages/authentication/sign-up",
             component: <SignUp />,
-          }
+          },
+          {
+            name: "profile",
+            route: "/pages/landing-page/profile",
+            component: <Profile />,
+          },
         ],
       },
       {
