@@ -101,70 +101,70 @@ const CreateRequest = () => {
                     {error}
                 </MKAlert>
             </Collapse>
-                <Grid container spacing={2} justify='flex-start'>
-                    <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
-                        <div>
+            <Grid container spacing={2} justify='flex-start'>
+                <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
+                    <div>
+                        <MKTypography variant='h5' sx={titleSx}>
+                            Title
+                        </MKTypography>
+                        <MKInput fullWidth type='text' required value={title} onChange={(e) => setTitle(e.target.value)} label="Insert title here..." sx={{ mr: 5 }} />
+                    </div>
+                    <Grid container spacing={2} height='100%' display='column'>
+                        <Grid item sx={12} md={4} display='flex' flexDirection='column'>
                             <MKTypography variant='h5' sx={titleSx}>
-                                Title
+                                Category
                             </MKTypography>
-                            <MKInput fullWidth type='text' required value={title} onChange={(e) => setTitle(e.target.value)} label="Insert title here..." sx={{ mr: 5 }} />
-                        </div>
-                        <Grid container spacing={2} height='100%' display='column'>
-                            <Grid item sx={12} md={4} display='flex' flexDirection='column'>
-                                <MKTypography variant='h5' sx={titleSx}>
-                                    Category
-                                </MKTypography>
 
-                                <FormControl fullWidth >
-                                    <InputLabel id="category-select-label">Category</InputLabel>
-                                    <Select
-                                        labelId="category-select-label"
-                                        id="category-select"
-                                        value={category}
-                                        label="Category"
-                                        onChange={handleCategory}
-                                        style={{height: '45px'}}
-                                    >
-                                        {
-                                            categories.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item sx={12} md={4} display='flex' flexDirection='column'>
-                                <MKTypography variant='h5' sx={titleSx}>
-                                    Proposal Deadline
-                                </MKTypography>
-                            <MKDatePicker options={datePickerOption} input={{ placeholder: "Select a date" }} value={propDdl} onChange={(dates, dateStr) => setPropDdl(dateStr)} sx={dateTimePickerSx} />
-                            </Grid>
-                            <Grid item sx={12} md={4} display='flex' flexDirection='column'>
-                                <MKTypography variant='h5' sx={titleSx}>
-                                    Solution Deadline
-                                </MKTypography>
-                            <MKDatePicker options={datePickerOption} input={{ placeholder: "Select a date" }} value={soluDdl} onChange={(dates, dateStr) => setSoluDdl(dateStr)}  sx={dateTimePickerSx} />
-                            </Grid>
-                            
+                            <FormControl fullWidth >
+                                <InputLabel id="category-select-label">Category</InputLabel>
+                                <Select
+                                    labelId="category-select-label"
+                                    id="category-select"
+                                    value={category}
+                                    label="Category"
+                                    onChange={handleCategory}
+                                    style={{height: '45px'}}
+                                >
+                                    {
+                                        categories.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)
+                                    }
+                                </Select>
+                            </FormControl>
                         </Grid>
+                        <Grid item sx={12} md={4} display='flex' flexDirection='column'>
+                            <MKTypography variant='h5' sx={titleSx}>
+                                Proposal Deadline
+                            </MKTypography>
+                        <MKDatePicker options={datePickerOption} input={{ placeholder: "Select a date" }} value={propDdl} onChange={(dates, dateStr) => setPropDdl(dateStr)} sx={dateTimePickerSx} />
+                        </Grid>
+                        <Grid item sx={12} md={4} display='flex' flexDirection='column'>
+                            <MKTypography variant='h5' sx={titleSx}>
+                                Solution Deadline
+                            </MKTypography>
+                        <MKDatePicker options={datePickerOption} input={{ placeholder: "Select a date" }} value={soluDdl} onChange={(dates, dateStr) => setSoluDdl(dateStr)}  sx={dateTimePickerSx} />
+                        </Grid>
+                        
                     </Grid>
-                    <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
-                        <ActionButton label='Cancel' color='secondary' />
-                        <ActionButton label='Save To Draft' color='info' />
-                        <ActionButton label='Preview & Submit' onClick={handleSubmit} value='Submit' color='success' />
-                    </Grid>
-                    <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 4, md: 4 }} sx={{ minHeight: '600px' }}>
-                        <MKTypography variant='h5' sx={titleSx}>Description</MKTypography>
-                        <RichTextEditor height='400px' value={description} setValue={setDescription} placeholder="Insert your description here..." />
-                    </Grid>
-                    <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 5, md: 5 }} sx={{ minHeight: '600px' }}>
-                        <MKTypography variant='h5' sx={titleSx}>Requirements</MKTypography>
-                        <RichTextEditor height='500px' value={requirement} setValue={setRequirements} placeholder="Insert your functional or non-functional requirements here..." />
-                    </Grid>
-                    <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 6, md: 6 }} sx={{ minHeight: '600px' }}>
-                        <MKTypography variant='h5' sx={titleSx}>Rewards (if any)</MKTypography>
-                        <RichTextEditor height='500px' value={rewards} setValue={setRewards} placeholder="If you have reward, please insert it here..." />
-                    </Grid>
-
                 </Grid>
+                <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
+                    <ActionButton label='Cancel' color='secondary' />
+                    <ActionButton label='Save To Draft' color='info' />
+                    <ActionButton label='Preview & Submit' onClick={handleSubmit} value='Submit' color='success' />
+                </Grid>
+                <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 4, md: 4 }} sx={{ minHeight: '600px' }}>
+                    <MKTypography variant='h5' sx={titleSx}>Description</MKTypography>
+                    <RichTextEditor height='400px' value={description} setValue={setDescription} placeholder="Insert your description here..." />
+                </Grid>
+                <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 5, md: 5 }} sx={{ minHeight: '600px' }}>
+                    <MKTypography variant='h5' sx={titleSx}>Requirements</MKTypography>
+                    <RichTextEditor height='500px' value={requirement} setValue={setRequirements} placeholder="Insert your functional or non-functional requirements here..." />
+                </Grid>
+                <Grid item xs={12} md={12} display='flex' flexDirection='column' order={{ xs: 6, md: 6 }} sx={{ minHeight: '600px' }}>
+                    <MKTypography variant='h5' sx={titleSx}>Rewards (if any)</MKTypography>
+                    <RichTextEditor height='500px' value={rewards} setValue={setRewards} placeholder="If you have reward, please insert it here..." />
+                </Grid>
+
+            </Grid>
         </BasicPageLayout>
     )
 }
