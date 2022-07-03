@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 03 Jul 2022
+ * Discription: A component to display meta data of proposal detail
+ */
 import React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';

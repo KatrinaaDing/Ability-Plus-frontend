@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 03 Jul 2022
+ * Discription: A badge indicating request status
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MKBadge from 'components/MKBadge';
