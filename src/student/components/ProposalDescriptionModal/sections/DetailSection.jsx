@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 03 Jul 2022
+ * Discription: The read-only rich text component
+ */
 import MKTypography from 'components/MKTypography';
 import React from 'react';
 import Grid from '@mui/material/Grid';

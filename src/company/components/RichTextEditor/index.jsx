@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 02 Jul 2022
+ * Discription: A styled rich text editor
+ */
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
