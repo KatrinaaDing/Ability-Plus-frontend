@@ -49,6 +49,7 @@ import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
 import SignUp from "layouts/pages/authentication/sign-up";
 import Profile from "layouts/pages/landing-pages/profile";
+import Following from "layouts/pages/landing-pages/following";
 
 
 // Sections
@@ -116,6 +117,11 @@ const routes = [
             name: "profile",
             route: "/pages/landing-page/profile",
             component: <Profile />,
+          },
+          {
+            name:"following",
+            route: "/pages/landing-page/following",
+            component: <Following />,
           },
         ],
       },
