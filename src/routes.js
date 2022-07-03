@@ -71,6 +71,8 @@ import Dropdowns from "layouts/sections/elements/dropdowns";
 import ProgressBars from "layouts/sections/elements/progress-bars";
 import Toggles from "layouts/sections/elements/toggles";
 import Typography from "layouts/sections/elements/typography";
+import CreateProposal from "student/pages/CreateProposal";
+import CreateRequest from "company/pages/CreateRequest";
 
 
 const routes = [
@@ -122,6 +124,22 @@ const routes = [
             name:"following",
             route: "/pages/landing-page/following",
             component: <Following />,
+          },
+        ],
+      },
+      {
+        name: "implemented pages",
+        description: "See all implemented pages",
+        collapse: [
+          {
+            name: "create proposal",
+            route: "/create-proposal",
+            component: <CreateProposal />,
+          },
+          {
+            name: "create request",
+            route: "/create-request",
+            component: <CreateRequest />,
           },
         ],
       },
