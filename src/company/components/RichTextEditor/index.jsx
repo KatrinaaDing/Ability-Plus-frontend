@@ -2,8 +2,7 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const RichTextEditor = ({ placeholder, height }) => {
-    const [value, setValue] = React.useState('')
+const RichTextEditor = ({ placeholder, height, value, setValue }) => {
 
     const handleChange = (html) => {
         setValue(html);
