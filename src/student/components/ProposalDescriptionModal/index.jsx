@@ -16,6 +16,8 @@ import Dialog from '@mui/material/Dialog';
 import StatusBadge from '../../../company/components/StatusBadge';
 import MetaData from './sections/MetaData';
 import DetailSection from './sections/DetailSection';
+import CompanyRating from './sections/CompanyRating';
+import CompanyNote from './sections/CompanyNote';
 
 
 const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
@@ -70,7 +72,16 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                         title='Details'
                         content={value.detail}
                     />
-                    
+                    <DetailSection
+                        order={7}
+                        title='Rate'
+                        content={<CompanyRating />}
+                    />
+                    <DetailSection
+                        order={8}
+                        title='Note'
+                        content={<CompanyNote />}
+                    />
                 </Grid>
             </MKBox>
             <Divider sx={{ my: 0 }} />
