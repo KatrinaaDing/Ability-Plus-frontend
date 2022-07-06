@@ -18,6 +18,7 @@ import MetaData from './sections/MetaData';
 import DetailSection from './sections/DetailSection';
 import CompanyRating from './sections/CompanyRating';
 import CompanyNote from './sections/CompanyNote';
+import LikeButton from '../LikeButton';
 
 
 const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
@@ -89,9 +90,12 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                 <MKButton variant="gradient" color="dark" onClick={() => setPreview(false)}>
                     Close
                 </MKButton>
-                <MKButton variant="gradient" color="success">
-                    Submit
-                </MKButton>
+                <MKBox>
+                    <LikeButton originLike={false} originNumLike={23}/>
+                    <MKButton variant="gradient" color="success" sx={{ml: 3}}>
+                        Submit
+                    </MKButton>
+                </MKBox>
             </MKBox>
         </Dialog>
     );
