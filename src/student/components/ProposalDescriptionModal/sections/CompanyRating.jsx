@@ -8,21 +8,20 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import MKTypography from 'components/MKTypography';
-import DoneIcon from '@mui/icons-material/Done';
-import { ClipLoader, } from 'react-spinners';
-import { CSSTransition } from 'react-transition-group';
+import SavingLoader from 'student/components/SavingLoader';
+
 
 const labels = {
-    1: 'Useless',
-    2: 'Poor',
-    3: 'Acceptable',
-    4: 'Satisfied',
-    5: 'Not Bad',
-    6: 'Ok',
-    7: 'Good',
-    8: 'Pretty Good',
-    9: 'Excellent',
-    10: 'Incredible',
+    0.5: 'Useless',
+    1: 'Useless+',
+    1.5: 'Poor',
+    2: 'Poor+',
+    2.5: 'Ok',
+    3: 'Ok+',
+    3.5: 'Good',
+    4: 'Good+',
+    4.5: 'Excellent',
+    5: 'Excellent+',
 };
 
 
@@ -30,22 +29,6 @@ const CompanyRating = () => {
     const [value, setValue] = React.useState(2);
     const [hover, setHover] = React.useState(-1);
     const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success
-
-    const loaderCss = {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        marginLeft: '10px',
-        transition: 'opacity 100ms ease-in-out'
-    };
-
-    const successSx = {
-        opacity: loading < 1 ? 0 : 1,
-        visibility: loading < 1 ? 'hidden' : 'visible',
-        mt: 'auto',
-        mb: 'auto',
-        ml: '10px',
-        transition: 'opacity 300ms ease-in-out'
-    }
 
 
     function getLabelText(value) {
@@ -63,14 +46,14 @@ const CompanyRating = () => {
         <>
             <Box display='flex'>
                 <MKTypography variant='subtitle2'>Click again to cancel.</MKTypography>
-                    <ClipLoader loading={loading === 0} color='gray' size={20} cssOverride={loaderCss} />
-                    <CSSTransition
-                        in={loading === 1}
-                        timeout={200}
-                    >
-                        <DoneIcon color='success' sx={successSx} />
-                    </CSSTransition>
-
+                <SavingLoader 
+                    spinnerColor='silver' 
+                    size={20} 
+                    timeout={200} 
+                    loading={loading === 0} 
+                    success={loading === 1}
+                    hidden={loading === -1}
+                />
             </Box>
             <Box
                 sx={{
@@ -82,9 +65,9 @@ const CompanyRating = () => {
                 <Rating
                     name="customized-10"
                     defaultValue={0}
-                    max={10}
+                    max={5}
                     getLabelText={getLabelText}
-                    precision={1}
+                    precision={0.5}
                     emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                     size="large"
                     onChange={(event, newValue) => {
