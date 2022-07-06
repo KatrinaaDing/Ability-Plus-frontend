@@ -10,7 +10,7 @@ import MKInput from 'components/MKInput';
 import SavingLoader from 'student/components/SavingLoader';
 
 const CompanyNote = () => {
-    let [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success
+    let [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success, 2: fail
     let [note, setNote] = React.useState('');
 
 
@@ -21,7 +21,7 @@ const CompanyNote = () => {
     const handleSave = (e) => {
         setLoading(0)
         setTimeout(() => {
-            setLoading(1)
+            setLoading(2)
         }, 800);
     }
 
@@ -31,11 +31,12 @@ const CompanyNote = () => {
                 <MKButton color='info' variant='outlined' size='small' onClick={handleSave}>Save</MKButton>
                 <SavingLoader
                     spinnerColor='silver'
-                    size={20}
+                    spinnerSize={20}
                     timeout={200}
                     loading={loading === 0}
                     success={loading === 1}
                     hidden={loading === -1}
+                    fail={loading === 2}
                 />
             </MKBox>
             <MKInput 

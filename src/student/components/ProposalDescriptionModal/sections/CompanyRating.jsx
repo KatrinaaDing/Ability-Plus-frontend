@@ -28,7 +28,7 @@ const labels = {
 const CompanyRating = () => {
     const [value, setValue] = React.useState(2);
     const [hover, setHover] = React.useState(-1);
-    const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success
+    const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success， 2: fail
 
 
     function getLabelText(value) {
@@ -48,11 +48,12 @@ const CompanyRating = () => {
                 <MKTypography variant='subtitle2'>Click again to cancel.</MKTypography>
                 <SavingLoader 
                     spinnerColor='silver' 
-                    size={20} 
+                    spinnerSize={20} 
                     timeout={200} 
+                    hidden={loading === -1}
                     loading={loading === 0} 
                     success={loading === 1}
-                    hidden={loading === -1}
+                    fail={loading === 2}
                 />
             </Box>
             <Box
