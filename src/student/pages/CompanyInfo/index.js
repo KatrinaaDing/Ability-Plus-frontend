@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
+import Box from '@mui/material/Box';
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -22,6 +23,8 @@ import routes from "routes";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
+
+import RequestCard from "company/RequestCard";
 
 const CompanyInfoPage = () => {
 
@@ -104,8 +107,14 @@ const CompanyInfoPage = () => {
                 <br />
                 <Grid container item xs={12} lg={7} justifyContent="flex-start">
                 <MKTypography variant="h5" color="error" fontWeight="bold" textTransform="uppercase" mb={1}>
-                        Project Proposal
+                    Project Requests
                 </MKTypography>
+                </Grid>
+                <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
+                    <RequestCard userType={'student'} page={'Company Profile'} />
+                    <RequestCard userType={'student'} page={'Company Profile'} />
+                    <RequestCard userType={'student'} page={'Company Profile'} />
+                    <RequestCard userType={'student'} page={'Company Profile'} />
                 </Grid>
             </Container>
         </MKBox>        

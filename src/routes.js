@@ -52,8 +52,11 @@ import Profile from "layouts/pages/landing-pages/profile";
 import Following from "layouts/pages/landing-pages/following";
 import CompanyInfo from "layouts/pages/landing-pages/company-info";
 import StudentInfo from "layouts/pages/landing-pages/student-info";
-
-
+import PopularProposal from "student/pages/PopularPoposal";
+import MyProposals from "student/pages/MyProposals";
+import PersonalPage from "student/pages/PersonalPage";
+import AllProposals from "company/pages/AllProposals";
+import MyProjectRequests from "company/pages/MyProjectRequests";
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
 import Features from "layouts/sections/page-sections/featuers";
@@ -75,7 +78,6 @@ import Toggles from "layouts/sections/elements/toggles";
 import Typography from "layouts/sections/elements/typography";
 import CreateProposal from "student/pages/CreateProposal";
 import CreateRequest from "company/pages/CreateRequest";
-
 
 const routes = [
   {
@@ -123,6 +125,11 @@ const routes = [
             component: <Profile />,
           },
           {
+            name: "Popular Proposals",
+            route: "/pages/landing-page/popular-proposals",
+            component: <PopularProposal />,
+          },
+          {
             name:"following",
             route: "/pages/landing-page/following",
             component: <Following />,
@@ -136,6 +143,26 @@ const routes = [
             name: "Student Information",
             route: "/pages/landing-page/student-info",
             component: <StudentInfo />
+          },
+          {
+            name: "My Proposals",
+            route: "/pages/landing-page/my-proposals",
+            component: <MyProposals />,
+          },
+          {
+            name: "Personal Page",
+            route: "/pages/landing-page/personal-page",
+            component: <PersonalPage />,
+          },
+          {
+            name: "All Proposals",
+            route: "/pages/landing-page/all-proposals",
+            component: <AllProposals />,
+          },
+          {
+            name: "My Project Requests",
+            route: "/pages/landing-page/my-project-requests",
+            component: <MyProjectRequests />,
           },
         ],
       },

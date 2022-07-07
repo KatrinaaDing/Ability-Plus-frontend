@@ -481,6 +481,17 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             </MKTypography>
           </MKBox>
           <MKBox
+            component={Link}
+            to="/pages/landing-page/popular-proposals"
+            lineHeight={1}
+            py={transparent ? 1.5 : 0.75}
+            pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
+          >
+            <MKTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
+              {'Popular Proposals'}
+            </MKTypography>
+          </MKBox>
+          <MKBox
             color="inherit"
             display={{ xs: "none", lg: "flex" }}
             ml="auto"
