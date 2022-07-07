@@ -29,6 +29,7 @@ import PopularProposal from "student/pages/PopularPoposal";
 // Material Kit 2 React routes
 import routes from "routes";
 import BasicPageLayout from "company/BasicPageLayout";
+import ProposalRanks from "student/pages/ProposalRanks"
 
 export default function App() {
   const { pathname } = useLocation();
@@ -59,7 +60,8 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="presentation" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
-        <Route path="/pages/landing-page/popular-proposals" elemet={<PopularProposal/> } />
+        <Route path="/pages/landing-page/popular-proposals" elemet={<PopularProposal />} />
+        <Route path="/view-request-ranks/:id" element={<ProposalRanks/>}></Route>
       </Routes>
     </ThemeProvider>
   );

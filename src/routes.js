@@ -57,6 +57,7 @@ import MyProposals from "student/pages/MyProposals";
 import PersonalPage from "student/pages/PersonalPage";
 import AllProposals from "company/pages/AllProposals";
 import MyProjectRequests from "company/pages/MyProjectRequests";
+import ProposalRanks from "student/pages/ProposalRanks";
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
 import Features from "layouts/sections/page-sections/featuers";
@@ -179,6 +180,11 @@ const routes = [
             name: "create request",
             route: "/create-request",
             component: <CreateRequest />,
+          },
+          {
+            name: "view proposal rank",
+            route: "/view-request-ranks/1",
+            component: <ProposalRanks/>,
           },
         ],
       },
