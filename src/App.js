@@ -28,7 +28,6 @@ import Presentation from "layouts/pages/presentation";
 
 // Material Kit 2 React routes
 import routes from "routes";
-import BasicPageLayout from "company/BasicPageLayout";
 
 export default function App() {
   const { pathname } = useLocation();

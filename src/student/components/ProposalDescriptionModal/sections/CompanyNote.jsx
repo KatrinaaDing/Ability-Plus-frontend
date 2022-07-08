@@ -28,7 +28,15 @@ const CompanyNote = () => {
     return (
         <MKBox display='flex' flexDirection='column' >
             <MKBox display='flex' flexDirection='row' verticalAlign='middle' pb={1}>
-                <MKButton color='info' variant='outlined' size='small' onClick={handleSave}>Save</MKButton>
+                <MKButton 
+                    color='info' 
+                    variant='outlined' 
+                    size='small' 
+                    onClick={handleSave}
+                    disabled={loading === 0}
+                >
+                    Save
+                </MKButton>
                 <SavingLoader
                     spinnerColor='silver'
                     spinnerSize={20}
