@@ -15,8 +15,8 @@ import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import StatusBadge from '../StatusBadge';
 import MetaData from './sections/MetaData';
-import DetailSection from 'student/components/ProposalDescriptionModal/sections/DetailSection';
 import ShortInfo from './sections/ShortInfo';
+import DetailSection from 'glhfComponents/ProposalDescriptionModal/sections/DetailSection';
 
 
 const RequestDescriptionModal = ({ preview, setPreview, value }) => {

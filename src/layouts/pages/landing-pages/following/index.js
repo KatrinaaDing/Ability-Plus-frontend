@@ -1,5 +1,5 @@
-import Following from "student/Following";
+import MyFollowingPage from "pages/StudentFollowing";
 
 export default function FollowingPage() {
-  return <Following />;
+  return <MyFollowingPage />;
 }

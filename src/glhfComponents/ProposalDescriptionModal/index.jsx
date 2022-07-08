@@ -13,12 +13,12 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
-import StatusBadge from '../../../company/components/StatusBadge';
 import MetaData from './sections/MetaData';
 import DetailSection from './sections/DetailSection';
 import CompanyRating from './sections/CompanyRating';
 import CompanyNote from './sections/CompanyNote';
 import LikeButton from '../LikeButton';
+import StatusBadge from 'glhfComponents/StatusBadge';
 
 
 const ProposalDescriptionModal = ({ preview, setPreview, value }) => {

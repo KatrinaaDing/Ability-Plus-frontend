@@ -8,8 +8,7 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import MKTypography from 'components/MKTypography';
-import SavingLoader from 'student/components/SavingLoader';
-
+import SavingLoader from 'glhfComponents/SavingLoader';
 
 const labels = {
     0.5: 'Useless',
@@ -46,7 +45,7 @@ const CompanyRating = () => {
         <>
             <Box display='flex'>
                 <MKTypography variant='subtitle2'>Click again to cancel.</MKTypography>
-                <SavingLoader 
+                <SavingLoader
                     spinnerColor='silver' 
                     spinnerSize={20} 
                     timeout={200} 

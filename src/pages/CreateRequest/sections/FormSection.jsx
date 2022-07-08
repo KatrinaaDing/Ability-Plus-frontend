@@ -4,8 +4,8 @@
  * Discription: A form section for rich text editing
  */
 import Grid from '@mui/material/Grid';
-import RichTextEditor from 'company/components/RichTextEditor';
 import MKTypography from 'components/MKTypography';
+import RichTextEditor from 'glhfComponents/RichTextEditor';
 import React from 'react';
 
 const FormSection = ({order, minHeight, editorHeight, title, value, setValue, placeholder}) => {

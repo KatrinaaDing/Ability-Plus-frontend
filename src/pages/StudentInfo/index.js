@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
+import Box from '@mui/material/Box';
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -22,6 +23,8 @@ import routes from "routes";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
+import RequestCard from "glhfComponents/RequestCard";
+
 
 const StudentInfoPage = () => {
 
@@ -104,6 +107,14 @@ const StudentInfoPage = () => {
                         Past Proposals
                     </MKTypography>
                 </Grid>
+                <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
+                    <RequestCard userType={'company'} page={'Student Profile'} />
+                    <RequestCard userType={'company'} page={'Student Profile'} />
+                    <RequestCard userType={'company'} page={'Student Profile'} />
+                    <RequestCard userType={'company'} page={'Student Profile'} />
+                </Grid>
+            </Box>  
             </Container>
         </MKBox>        
 

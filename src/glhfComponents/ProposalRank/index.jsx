@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -17,37 +18,39 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function ProposalRank({ rank, title, description, author, like }) {
-
+const ProposalRank = ({ proposals }) => {
+  const [allranks, setAllRanks] = useState([]);
+  console.log(proposals)
   return (
-    <Stack spacing={1} sx={{width: '70vw', ml:'10%',mr:'10%'}}>
-      <Item>
+    <Stack spacing={2} sx={{ width: '70vw', ml: '10%', mr: '10%' }}>
+      {proposals.map(s => 
+        <Item>
         <Card>
           <CardActionArea>
             <CardContent sx={{ maxHeight: 75 }}>
               <Grid container item xs={12} justifyContent="space-between" mx="auto">
                 <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <MKTypography variant="h4" mb={1}>
-                    {rank}
+                    {s.rank}
                   </MKTypography>
                 </MKBox>
                 <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3}>
                   <MKTypography variant="h5" mb={1}>
-                    {title}
+                    {s.title}
                   </MKTypography>
                   <MKTypography variant="body2" mb={1}>
-                    {description}
+                    {s.description}
                   </MKTypography>
                 </MKBox>
                 <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <MKTypography variant="body2" mb={1}>
-                    Author: {author}
+                    Author: {s.author}
                   </MKTypography>
                 </MKBox>
                 <div>
                   <FcLike size={40} />
                   <MKTypography variant="body2" mb={1}>
-                    {like}
+                    {s.like}
                   </MKTypography>
                 </div>
               </Grid>
@@ -55,6 +58,9 @@ export default function ProposalRank({ rank, title, description, author, like })
           </CardActionArea>
         </Card>
       </Item>
+      )}
+      
     </Stack>
   );
 }
+export default ProposalRank;

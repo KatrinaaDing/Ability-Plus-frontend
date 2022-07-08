@@ -40,9 +40,7 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 
 // @mui icons
-import GitHubIcon from "@mui/icons-material/GitHub";
 import PersonIcon from '@mui/icons-material/Person';
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
@@ -81,17 +79,14 @@ import CreateProposal from "pages/CreateProposal";
 import CreateRequest from "pages/CreateRequest";
 import ProfilePage from "layouts/pages/landing-pages/profile";
 import PopularProposals from "pages/PopularProposals";
-import MyProposals from "pages/MyProposals";
 import PersonalPage from "pages/PersonalPage";
-
+import MyProposals from "pages/MyProposals";
+import AllProposals from "pages/AllProposals";
+import MyProjectRequests from "pages/MyProjectRequests";
+import ProposalRanks from "pages/ProposalRanks";
 
 const routes = [
-  {
-    name: "Popular Proposals",
-    route: "/popular-proposals",
-    icon: <TipsAndUpdatesIcon />,
-    component: <PopularProposals />
-  },
+
   {
     name: "Personal Page",
     route: "/personal-page",
@@ -129,6 +124,11 @@ const routes = [
             component: <Profile />,
           },
           {
+            name: "Popular Proposals",
+            route: "/pages/landing-page/popular-proposals",
+            component: <PopularProposals />,
+          },
+          {
             name:"following",
             route: "/pages/landing-page/following",
             component: <Following />,
@@ -142,6 +142,26 @@ const routes = [
             name: "Student Information",
             route: "/pages/landing-page/student-info",
             component: <StudentInfo />
+          },
+          {
+            name: "My Proposals",
+            route: "/pages/landing-page/my-proposals",
+            component: <MyProposals />,
+          },
+          {
+            name: "Personal Page",
+            route: "/pages/landing-page/personal-page",
+            component: <PersonalPage />,
+          },
+          {
+            name: "All Proposals",
+            route: "/pages/landing-page/all-proposals",
+            component: <AllProposals />,
+          },
+          {
+            name: "My Project Requests",
+            route: "/pages/landing-page/my-project-requests",
+            component: <MyProjectRequests />,
           },
         ],
       },
@@ -158,6 +178,11 @@ const routes = [
             name: "create request",
             route: "/create-request",
             component: <CreateRequest />,
+          },
+          {
+            name: "view proposal rank",
+            route: "/view-request-ranks/1",
+            component: <ProposalRanks/>,
           },
         ],
       },

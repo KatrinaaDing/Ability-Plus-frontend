@@ -7,14 +7,14 @@ import React from 'react';
 import Grid from "@mui/material/Grid";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-import BasicPageLayout from "company/BasicPageLayout";
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput";
 import MKTypography from "components/MKTypography";
 import MKAlert from 'components/MKAlert';
 import Collapse from '@mui/material/Collapse';
-import ProposalDescriptionModal from 'student/components/ProposalDescriptionModal';
 import FormSection from 'pages/CreateRequest/sections/FormSection';
+import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
+import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 
 
 const sampleContent = {

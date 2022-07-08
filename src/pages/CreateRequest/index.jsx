@@ -11,7 +11,6 @@ import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-import BasicPageLayout from "company/BasicPageLayout";
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput";
 import MKTypography from "components/MKTypography";
@@ -19,9 +18,8 @@ import MKAlert from 'components/MKAlert';
 import Collapse from '@mui/material/Collapse';
 import FormSection from './sections/FormSection';
 import DatePicker from './sections/DatePicker';
-import RequestDescriptionModal from 'company/components/RequestDescriptionModal';
-import RequestCard from 'company/RequestCard';
-import ProposalRank from 'student/ProposalRank';
+import BasicPageLayout from 'glhfComponents/BasicPageLayout';
+import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 
 
 const categories = [

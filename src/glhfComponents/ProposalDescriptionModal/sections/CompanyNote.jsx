@@ -7,7 +7,7 @@ import React from 'react';
 import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKInput from 'components/MKInput';
-import SavingLoader from 'student/components/SavingLoader';
+import SavingLoader from 'glhfComponents/SavingLoader';
 
 const CompanyNote = () => {
     let [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success, 2: fail

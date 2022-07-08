@@ -35,6 +35,7 @@ import MuiLink from "@mui/material/Link";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 
 // Material Kit 2 React example components
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
@@ -53,6 +54,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
   const [arrowRef, setArrowRef] = useState(null);
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
+  const [logoutDropdown, setLogoutDropdown] = useState(false);
 
   const openMobileNavbar = () => setMobileNavbar(!mobileNavbar);
 
@@ -279,6 +281,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
     return template;
   });
 
+
   // Routes dropdown menu
   const dropdownMenu = (
     <Popper
@@ -480,6 +483,13 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               {brand}
             </MKTypography>
           </MKBox>
+          <DefaultNavbarDropdown
+            name="Popular Proposals"
+            icon={<TipsAndUpdatesIcon /> }
+            route="/popular-proposals"
+            collapse={false}
+            light={false}
+          />
           <MKBox
             color="inherit"
             display={{ xs: "none", lg: "flex" }}

@@ -1,5 +1,5 @@
-import CompanyInfo from "student/pages/CompanyInfo";
+import CompanyInfoPage from "pages/CompanyInfo";
 
 export default function CompanyInfoBasic() {
-  return <CompanyInfo />;
+  return <CompanyInfoPage />;
 }
