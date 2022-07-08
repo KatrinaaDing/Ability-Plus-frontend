@@ -154,7 +154,7 @@ const otherRoutes = {
   company: [
     {
       name: "All Proposals",
-      route: "/landing-page/all-proposals",
+      route: "/all-proposals",
       component: <AllProposals />,
     },
     {

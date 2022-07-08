@@ -21,7 +21,7 @@ const Logout = () => {
 
     return (
         <BasicPageLayout title="You've been logged out">
-        <MKTypography variant='subtitle1'>Redirecting to homepage...</MKTypography>    
+            <MKTypography variant='subtitle1'>Redirecting to homepage...</MKTypography>    
         </BasicPageLayout>
     );
 };

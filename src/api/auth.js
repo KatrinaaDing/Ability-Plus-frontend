@@ -5,10 +5,11 @@
  */
 import axios from './axios';
 
-import api from './api_urls';
+
+const API_LOGIN = ''
 
 const login = (username, password) => 
-    axios.post(api.login,
+    axios.post(API_LOGIN,
         JSON.stringify({ username, password }),
         {
             headers: { 'Content-Type': 'application/json' },
