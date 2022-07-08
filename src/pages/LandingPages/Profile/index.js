@@ -22,27 +22,20 @@ import routes from "routes";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import useAuth from "auth/useAuth";
 
 const ProfileBasic = () => {
-
+    const { auth } = useAuth();
     const [show, setShow] = useState(false);
     const toggleModal = () => setShow(!show);
     const [confirm, setDelete] = useState(false)
     const deleteModal = () => setDelete(!confirm);
 
-    return (
-        <>
-        <DefaultNavbar
-          routes={routes}
-        />
+    const title = auth.isCompany ? 'Company' : 'Student'
 
-        <MKBox component="section" py={12}>
-            <Container>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography variant="h3" mb={1}>
-                        Profile
-                    </MKTypography>
-                </Grid>
+    return (
+        <BasicPageLayout title={title + ' Profile'}>
                 <Grid container item xs={12} lg={7} sx={{mx:"auto"}}>
                     <MKBox width="100%" component="form" method="post" autocomplete="off">
                         <Grid container alignItems="center" py={2}>
@@ -185,14 +178,8 @@ const ProfileBasic = () => {
                         </MKBox>
                     </Slide>
                 </Modal>                                  
-            </Container>
-        </MKBox>
-
-        <MKBox pt={6} px={1} mt={6}>
-            <DefaultFooter content={footerRoutes} />
-        </MKBox>
     
-        </>
+        </BasicPageLayout>
     );
 }
 

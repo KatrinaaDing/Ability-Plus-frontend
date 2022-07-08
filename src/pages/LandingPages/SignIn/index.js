@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -39,8 +39,7 @@ import MKButton from "components/MKButton";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import SimpleFooter from "examples/Footers/SimpleFooter";
 
-// Material Kit 2 React page layout routes
-import routes from "routes";
+import getNavbarRoutes from "utils/getNavbarRoutes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -50,8 +49,12 @@ import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import useAuth from "auth/useAuth";
 
 function SignInBasic() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -60,10 +63,19 @@ function SignInBasic() {
 
   const handleTabType = (event, newValue) => setActiveTab(newValue);
 
+  const handleSubmit = () => {
+    setAuth({
+      username: 'Jane Wong',
+      isCompany: Boolean(activeTab),
+      accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
+    })
+    navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
+  }
+
   return (
     <>
       <DefaultNavbar
-        routes={routes}
+        routes={getNavbarRoutes()}
         transparent
         light
       />
@@ -135,7 +147,7 @@ function SignInBasic() {
                     </MKTypography>
                   </MKBox>
                   <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" fullWidth>
+                    <MKButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
                       sign in
                     </MKButton>
                   </MKBox>
@@ -144,7 +156,7 @@ function SignInBasic() {
                       Don&apos;t have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/pages/authentication/sign-up/"
+                        to="/authentication/sign-up/"
                         variant="button"
                         color="info"
                         fontWeight="medium"

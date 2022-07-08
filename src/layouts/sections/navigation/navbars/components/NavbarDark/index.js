@@ -21,13 +21,13 @@ import MKBox from "components/MKBox";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 
 // Routes
-import routes from "routes";
+import getNavbarRoutes from "utils/getNavbarRoutes";
 
 function NavbarDark() {
   return (
     <MKBox variant="gradient" bgColor="dark" shadow="sm" py={0.25}>
       <DefaultNavbar
-        routes={routes}
+        routes={getNavbarRoutes}
         action={{
           type: "external",
           route: "https://www.creative-tim.com/product/material-kit-react",
