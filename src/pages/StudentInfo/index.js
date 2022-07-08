@@ -15,14 +15,12 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 
-
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 
 const sampleData = {
     name: 'Jane Wong'
 }
-
 
 const StudentInfoPage = () => {
 

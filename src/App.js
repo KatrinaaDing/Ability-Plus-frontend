@@ -24,10 +24,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 // Material Kit 2 React themes
 import theme from "assets/theme";
-import routes from "routes";
-import ProposalRanks from "pages/ProposalRanks"
 import PresentationPage from "layouts/pages/presentation";
 import PopularProposals from "pages/PopularProposals";
+import NotFound from "pages/NotFound";
+import Unauthorized from "pages/Unauthorized";
+import RequireAuth from "auth/RequireAuth";
+
+// routes
+import { companyRoutes, studentRoutes, guestRoutes, otherRoutes } from "routes";
+import Logout from "pages/Logout";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -41,7 +46,12 @@ export default function App() {
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
-        return getRoutes(route.collapse);
+        return (
+          <>
+            <Route exact path = { route.route } element = { route.component } key = { route.key } />
+            {getRoutes(route.collapse)}
+          </>
+        )
       }
 
       if (route.route) {
@@ -55,11 +65,35 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        {getRoutes(routes)}
-        <Route path="presentation" element={<PresentationPage />} />
-        <Route path="*" element={<Navigate to="/presentation" />} />
+        {/* public access */}
+        <Route path="" element={<PresentationPage />} />
         <Route path="/popular-proposals" element={<PopularProposals />} />
-        <Route path="/view-request-ranks/:id" element={<ProposalRanks/>}></Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/logout" element={<Logout />} />
+        {getRoutes(guestRoutes)}
+
+        {/* Company access only */}
+        <Route element={<RequireAuth roles={['c']}/>} >
+          {getRoutes(companyRoutes)}
+          {getRoutes(otherRoutes.company)}
+        </Route>
+
+        {/* Student access only */}
+        <Route element={<RequireAuth roles={['s']} />} >
+          {getRoutes(studentRoutes)}
+          {getRoutes(otherRoutes.student)}
+        </Route>
+
+        {/* Both student and comapny can access */}
+        <Route element={<RequireAuth roles={['c', 's']} />} >
+          {getRoutes(studentRoutes)}
+          {getRoutes(otherRoutes.common)}
+        </Route>
+
+
+        {/* Other goes to not found */}
+        <Route path='*' element={<NotFound />} />
+
       </Routes>
     </ThemeProvider>
   );

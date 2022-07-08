@@ -18,28 +18,24 @@ import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 
 
-import routes from "routes";
-
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import RequestCard from "glhfComponents/RequestCard";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
 
+const sampleData = {
+    name: 'Google'
+}
 
 const CompanyInfoPage = () => {
+    
 
     return (
-        <>
-        <DefaultNavbar
-          routes={routes}
-        />
+        <BasicPageLayout title={sampleData.name}>
 
-        <MKBox component="section" py={12}>
             <Container>
                 <Grid container item justifyContent="space-between" xs={10}>
-                    <MKTypography variant="h3" mb={1}>
-                        Company Name
-                    </MKTypography>
                     <MKButton variant="outlined" color="error" size="small">
                         Follow
                     </MKButton>
@@ -58,7 +54,7 @@ const CompanyInfoPage = () => {
 
                             <Grid item xs={12} sm={9}>
                                 <MKTypography variant="h6">
-                                    Company Username
+                                    {sampleData.name}
                                 </MKTypography>
                             </Grid>
                         </Grid>
@@ -117,13 +113,8 @@ const CompanyInfoPage = () => {
                     <RequestCard userType={'student'} page={'Company Profile'} />
                 </Grid>
             </Container>
-        </MKBox>        
-
-        <MKBox pt={6} px={1} mt={6}>
-            <DefaultFooter content={footerRoutes} />
-        </MKBox>
-
-        </>
+       
+        </BasicPageLayout>
     );
 }
 

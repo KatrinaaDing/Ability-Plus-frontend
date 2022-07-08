@@ -7,11 +7,13 @@ import MKBox from "components/MKBox";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
-import routes from "routes";
 import Box from '@mui/material/Box';
 import { useParams } from "react-router-dom";
 import ProposalRank from "glhfComponents/ProposalRank";
 import StatusBadge from "glhfComponents/StatusBadge";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
+
+const requestTitle = "Management Proposals"
 
 const ProposalRanks = () => {
     const params = useParams();
@@ -36,18 +38,8 @@ const ProposalRanks = () => {
     ]
     
     return (
-        <>
-            <DefaultNavbar
-            routes={routes}
-            />
-            <MKBox component="section" py={12}>
+        <BasicPageLayout title={title}>
             <Container>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography variant="h3" mb={1}>
-                        Project Request Title
-                    </MKTypography>
-                    <StatusBadge statusCode={ statusCode }  size='small'/>
-                </Grid>
                 <br />  
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
@@ -55,12 +47,8 @@ const ProposalRanks = () => {
                     </Grid>
                 </Box>              
             </Container>
-        </MKBox>
-        
-        <MKBox pt={6} px={1} mt={6}>
-            <DefaultFooter content={footerRoutes} />
-        </MKBox>
-        </>
+ 
+        </BasicPageLayout>
     );
 }
 export default ProposalRanks;

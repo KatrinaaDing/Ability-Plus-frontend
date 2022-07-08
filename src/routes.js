@@ -36,60 +36,70 @@ Coded by www.creative-tim.com
   10. The `rowsPerColumn` key is used to define that how many rows should be in a column.
 */
 
-// @mui material components
-import Icon from "@mui/material/Icon";
 
 // @mui icons
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
+import GradeIcon from '@mui/icons-material/Grade';
+import LoginIcon from '@mui/icons-material/Login';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';;
 
 // Pages
-import AboutUs from "layouts/pages/landing-pages/about-us";
-import ContactUs from "layouts/pages/landing-pages/contact-us";
-import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
 import SignUp from "layouts/pages/authentication/sign-up";
-import Profile from "layouts/pages/landing-pages/profile";
 import Following from "layouts/pages/landing-pages/following";
 import CompanyInfo from "layouts/pages/landing-pages/company-info";
 import StudentInfo from "layouts/pages/landing-pages/student-info";
 
 
 // Sections
-import PageHeaders from "layouts/sections/page-sections/page-headers";
-import Features from "layouts/sections/page-sections/featuers";
-import Navbars from "layouts/sections/navigation/navbars";
-import NavTabs from "layouts/sections/navigation/nav-tabs";
-import Pagination from "layouts/sections/navigation/pagination";
-import Inputs from "layouts/sections/input-areas/inputs";
-import Forms from "layouts/sections/input-areas/forms";
-import Alerts from "layouts/sections/attention-catchers/alerts";
-import Modals from "layouts/sections/attention-catchers/modals";
-import TooltipsPopovers from "layouts/sections/attention-catchers/tooltips-popovers";
-import Avatars from "layouts/sections/elements/avatars";
-import Badges from "layouts/sections/elements/badges";
-import BreadcrumbsEl from "layouts/sections/elements/breadcrumbs";
-import Buttons from "layouts/sections/elements/buttons";
-import Dropdowns from "layouts/sections/elements/dropdowns";
-import ProgressBars from "layouts/sections/elements/progress-bars";
-import Toggles from "layouts/sections/elements/toggles";
-import Typography from "layouts/sections/elements/typography";
 import CreateProposal from "pages/CreateProposal";
 import CreateRequest from "pages/CreateRequest";
 import ProfilePage from "layouts/pages/landing-pages/profile";
-import PopularProposals from "pages/PopularProposals";
 import PersonalPage from "pages/PersonalPage";
 import MyProposals from "pages/MyProposals";
 import AllProposals from "pages/AllProposals";
 import MyProjectRequests from "pages/MyProjectRequests";
 import ProposalRanks from "pages/ProposalRanks";
+import Logout from "pages/Logout";
 
-const routes = [
-
+// routes in navbar (company view)
+const companyRoutes = [
   {
     name: "Personal Page",
-    route: "/personal-page",
+    route: "/company/personal-page",
+    icon: <HomeIcon />,
+    component: <PersonalPage />
+  },
+  {
+    name: "My Project Requests",
+    route: "/my-project-requests",
+    icon: <DashboardIcon />,
+    component: <MyProjectRequests />,
+  },
+  {
+    name: "Username",
+    route: '/company/profile',
+    icon: <PersonIcon />,
+    component: <ProfilePage />,
+    collapse: [
+      {
+        name: "logout",
+        route: "/logout",
+        icon: <LogoutIcon />,
+        component: <Logout />,
+      },
+    ],
+  },
+]
+
+// routes in navbar (student view)
+const studentRoutes = [
+  {
+    name: "Personal Page",
+    route: "/student/personal-page",
     icon: <HomeIcon />,
     component: <PersonalPage />
   },
@@ -99,101 +109,89 @@ const routes = [
     icon: <DashboardIcon />,
     component: <MyProposals />
   },
+
   {
-    name: "Other",
-    icon: <Icon>dashboard</Icon>,
-    columns: 1,
-    rowsPerColumn: 2,
-    collapse: [
-      {
-        name: "Login & Register",
-        collapse: [
-          {
-            name: "sign in",
-            route: "/pages/authentication/sign-in",
-            component: <SignIn />,
-          },
-          {
-            name: "sign up",
-            route: "/pages/authentication/sign-up",
-            component: <SignUp />,
-          },
-          {
-            name: "profile",
-            route: "/pages/landing-page/profile",
-            component: <Profile />,
-          },
-          {
-            name: "Popular Proposals",
-            route: "/pages/landing-page/popular-proposals",
-            component: <PopularProposals />,
-          },
-          {
-            name:"following",
-            route: "/pages/landing-page/following",
-            component: <Following />,
-          },
-          {
-            name: "Company Information",
-            route: "/pages/landing-page/company-info",
-            component: <CompanyInfo />,
-          },
-          {
-            name: "Student Information",
-            route: "/pages/landing-page/student-info",
-            component: <StudentInfo />
-          },
-          {
-            name: "My Proposals",
-            route: "/pages/landing-page/my-proposals",
-            component: <MyProposals />,
-          },
-          {
-            name: "Personal Page",
-            route: "/pages/landing-page/personal-page",
-            component: <PersonalPage />,
-          },
-          {
-            name: "All Proposals",
-            route: "/pages/landing-page/all-proposals",
-            component: <AllProposals />,
-          },
-          {
-            name: "My Project Requests",
-            route: "/pages/landing-page/my-project-requests",
-            component: <MyProjectRequests />,
-          },
-        ],
-      },
-      {
-        name: "implemented pages",
-        description: "See all implemented pages",
-        collapse: [
-          {
-            name: "create proposal",
-            route: "/create-proposal",
-            component: <CreateProposal />,
-          },
-          {
-            name: "create request",
-            route: "/create-request",
-            component: <CreateRequest />,
-          },
-          {
-            name: "view proposal rank",
-            route: "/view-request-ranks/1",
-            component: <ProposalRanks/>,
-          },
-        ],
-      },
-    ],
+    name: "Followings",
+    route: "/following",
+    icon: <GradeIcon />,
+    component: <Following />,
   },
   {
     name: "Username",
-    route: "/profile",
+    route: '/student/profile',
     icon: <PersonIcon />,
-    component: <ProfilePage />
+    component: <ProfilePage />,
+    collapse: [
+      {
+        name: "logout",
+        route: "/logout",
+        icon: <LogoutIcon />,
+        component: <Logout />,
+      },
+    ],
   },
-];
+]
 
-export default routes;
+// routes in navbar (guest view)
+const guestRoutes = [
+  {
+    name: "sign in",
+    route: "/authentication/sign-in",
+    icon: <LoginIcon />,
+    component: <SignIn />,
+  },
+  {
+    name: "sign up",
+    route: "/authentication/sign-up",
+    icon: <AppRegistrationIcon />,
+    component: <SignUp />,
+  },
+ 
+]
+
+// routes that not listed in navbar
+const otherRoutes = {
+  company: [
+    {
+      name: "All Proposals",
+      route: "/landing-page/all-proposals",
+      component: <AllProposals />,
+    },
+    {
+      name: "create request",
+      route: "/create-request",
+      component: <CreateRequest />,
+    },
+  ],
+  student: [
+    {
+      name: "create proposal",
+      route: "/create-proposal",
+      component: <CreateProposal />,
+    },
+  ],
+  common: [
+    {
+      name: "Company Information",
+      route: "/company-info",
+      component: <CompanyInfo />,
+    },
+    {
+      name: "Student Information",
+      route: "/student-info",
+      component: <StudentInfo />
+    },
+    {
+      name: "view proposal rank",
+      route: "/view-request-ranks/:id",
+      component: <ProposalRanks />,
+    },
+  ]
+}
+
+export {
+  companyRoutes,
+  studentRoutes,
+  guestRoutes,
+  otherRoutes,
+};

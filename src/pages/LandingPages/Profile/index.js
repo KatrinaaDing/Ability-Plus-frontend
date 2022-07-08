@@ -23,16 +23,19 @@ import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import useAuth from "auth/useAuth";
 
 const ProfileBasic = () => {
-
+    const { auth } = useAuth();
     const [show, setShow] = useState(false);
     const toggleModal = () => setShow(!show);
     const [confirm, setDelete] = useState(false)
     const deleteModal = () => setDelete(!confirm);
 
+    const title = auth.isCompany ? 'Company' : 'Student'
+
     return (
-        <BasicPageLayout title="Profile">
+        <BasicPageLayout title={title + ' Profile'}>
                 <Grid container item xs={12} lg={7} sx={{mx:"auto"}}>
                     <MKBox width="100%" component="form" method="post" autocomplete="off">
                         <Grid container alignItems="center" py={2}>

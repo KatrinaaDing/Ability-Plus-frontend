@@ -16,8 +16,6 @@ import BasicPageLayout from "glhfComponents/BasicPageLayout";
 const MyProjectRequests = () => {
     return (
         <BasicPageLayout title="My Project Reqeusts">
-            
-             
                 <Grid container justifyContent="flex-end"> 
                     <MKButton variant="gradient" color="info" size="large">Create Project</MKButton>
                 </Grid> 

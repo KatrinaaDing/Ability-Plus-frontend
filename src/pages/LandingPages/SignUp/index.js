@@ -39,8 +39,7 @@ import MKButton from "components/MKButton";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import SimpleFooter from "examples/Footers/SimpleFooter";
 
-// Material Kit 2 React page layout routes
-import routes from "routes";
+import getNavbarRoutes from "utils/getNavbarRoutes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -63,7 +62,7 @@ function SignUpBasic() {
   return (
     <>
       <DefaultNavbar
-        routes={routes}
+        routes={getNavbarRoutes()}
         transparent
         light
       />
@@ -150,7 +149,7 @@ function SignUpBasic() {
                       Already have an account?{" "}
                       <MKTypography
                         component={Link}
-                        to="/pages/authentication/sign-in"
+                        to="/authentication/sign-in"
                         variant="button"
                         color="info"
                         fontWeight="medium"

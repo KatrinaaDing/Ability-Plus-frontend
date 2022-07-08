@@ -9,13 +9,12 @@ import RequestCard from 'glhfComponents/RequestCard';
 const PersonalPage = () => {
     return (
         <BasicPageLayout title="Personal Page">
-               
-        <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <RequestCard userType={'student'} page={'Personal Page'} />
-            <RequestCard userType={'student'} page={'Personal Page'} />
-            <RequestCard userType={'student'} page={'Personal Page'} />
-            <RequestCard userType={'student'} page={'Personal Page'} />
-        </Grid>
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <RequestCard userType={'student'} page={'Personal Page'} />
+                <RequestCard userType={'student'} page={'Personal Page'} />
+                <RequestCard userType={'student'} page={'Personal Page'} />
+                <RequestCard userType={'student'} page={'Personal Page'} />
+            </Grid>
         </BasicPageLayout>
     );
 };

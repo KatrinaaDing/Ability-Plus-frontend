@@ -8,16 +8,17 @@ import Container from "@mui/material/Container";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import routes from "routes";
+import { companyRoutes, studentRoutes, guestRoutes } from "routes";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
+import getNavbarRoutes from 'utils/getNavbarRoutes'
 
 const BasicPageLayout = ({ title, children }) => {
     return (
         <>
             <MKBox sx={{ mt: 2 }}>
                 <DefaultNavbar
-                    routes={routes}
+                    routes={getNavbarRoutes()}
                     relative
                 />
             </MKBox>
@@ -29,7 +30,6 @@ const BasicPageLayout = ({ title, children }) => {
                                 {title}
                             </MKTypography>
                         </MKBox>
-
                         { children }
                     </Grid>
                 </Container>

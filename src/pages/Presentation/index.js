@@ -33,19 +33,19 @@ import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
 
 
 // Routes
-import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
 // import bgImage from "assets/images/bg-presentation.jpg";
 import bgImage from "assets/images/bg-project.jpeg";
+import getNavbarRoutes from "utils/getNavbarRoutes";
 
 function Presentation() {
   return (
 
     <>
       <DefaultNavbar
-        routes={routes}
+        routes={getNavbarRoutes()}
         sticky
       />
       

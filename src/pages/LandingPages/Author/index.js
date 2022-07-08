@@ -29,7 +29,7 @@ import Contact from "pages/LandingPages/Author/sections/Contact";
 import Footer from "pages/LandingPages/Author/sections/Footer";
 
 // Routes
-import routes from "routes";
+import getNavbarRoutes from "utils/getNavbarRoutes";
 
 // Images
 import bgImage from "assets/images/city-profile.jpg";
@@ -38,7 +38,7 @@ function Author() {
   return (
     <>
       <DefaultNavbar
-        routes={routes}
+        routes={getNavbarRoutes()}
         transparent
         light
       />
