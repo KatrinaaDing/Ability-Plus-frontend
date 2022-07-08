@@ -46,7 +46,7 @@ const ProposalRanks = () => {
                     <MKTypography variant="h3" mb={1}>
                         Project Request Title
                     </MKTypography>
-                    <StatusBadge statusCode={ statusCode }  />
+                    <StatusBadge statusCode={ statusCode }  size='small'/>
                 </Grid>
                 <br />  
                 <Box sx={{ flexGrow: 1 }}>

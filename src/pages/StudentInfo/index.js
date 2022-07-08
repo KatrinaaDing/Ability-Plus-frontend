@@ -10,38 +10,24 @@ import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
 import Box from '@mui/material/Box';
 
-import CloseIcon from "@mui/icons-material/Close";
 
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKInput from "components/MKInput";
-import MKButton from "components/MKButton";
 
 
-import routes from "routes";
 
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultFooter from "examples/Footers/DefaultFooter";
-import footerRoutes from "footer.routes";
 import RequestCard from "glhfComponents/RequestCard";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
+
+const sampleData = {
+    name: 'Jane Wong'
+}
 
 
 const StudentInfoPage = () => {
 
     return (
-        <>
-        <DefaultNavbar
-          routes={routes}
-        />
-
-        <MKBox component="section" py={12}>
-            <Container>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography variant="h3" mb={1}>
-                        Jane Wong
-                    </MKTypography>
-                </Grid>
-                <br />
+        <BasicPageLayout title={sampleData.name}>
                 <Grid container item xs={12} lg={7}>
                     <MKBox width="100%" component="form" method="post" autocomplete="off">
                         <Grid container alignText="center" py={2}>
@@ -55,7 +41,7 @@ const StudentInfoPage = () => {
 
                             <Grid item xs={12} sm={9}>
                                 <MKTypography variant="h6">
-                                    Jane Wong
+                                    {sampleData.name}
                                 </MKTypography>
                             </Grid>
                         </Grid>
@@ -115,14 +101,7 @@ const StudentInfoPage = () => {
                     <RequestCard userType={'company'} page={'Student Profile'} />
                 </Grid>
             </Box>  
-            </Container>
-        </MKBox>        
-
-        <MKBox pt={6} px={1} mt={6}>
-            <DefaultFooter content={footerRoutes} />
-        </MKBox>
-
-        </>
+        </BasicPageLayout>
     );
 }
 

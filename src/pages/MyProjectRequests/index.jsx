@@ -11,20 +11,13 @@ import MKButton from "components/MKButton";
 import routes from "routes";
 import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
+
 const MyProjectRequests = () => {
     return (
-        <>
-            <DefaultNavbar
-            routes={routes}
-            />
-            <MKBox component="section" py={12}>
-            <Container>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography variant="h3" mb={1}>
-                        All Project Requests
-                    </MKTypography>
-                </Grid>
-                <br />  
+        <BasicPageLayout title="My Project Reqeusts">
+            
+             
                 <Grid container justifyContent="flex-end"> 
                     <MKButton variant="gradient" color="info" size="large">Create Project</MKButton>
                 </Grid> 
@@ -37,23 +30,8 @@ const MyProjectRequests = () => {
                         <RequestCard userType={'company'} page={'My Project Requests'} />
                     </Grid>
                 </Box>              
-            </Container>
-        </MKBox>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <MKBox pt={6} px={1} mt={6}>
-            <DefaultFooter content={footerRoutes} />
-        </MKBox>
-        </>
+       
+        </BasicPageLayout >
     );
 }
 export default MyProjectRequests;
