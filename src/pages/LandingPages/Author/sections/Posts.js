@@ -20,6 +20,7 @@ import Grid from "@mui/material/Grid";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import RequestCard from "glhfComponents/RequestCard";
 
 // Material Kit 2 React components
 import TransparentBlogCard from "examples/Cards/BlogCards/TransparentBlogCard";
@@ -35,7 +36,17 @@ function Places() {
   return (
     <MKBox component="section" py={2}>
       <Container>
-        
+        <Grid container item xs={12} lg={6}>
+          <MKTypography variant="h3" mb={6}>
+            Latest Proposals
+          </MKTypography>
+        </Grid>
+        <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          <RequestCard userType={'student'} page={'My Proposals'} />
+          <RequestCard userType={'student'} page={'My Proposals'} />
+          <RequestCard userType={'student'} page={'My Proposals'} />
+          <RequestCard userType={'student'} page={'My Proposals'} />
+        </Grid>
       </Container>
     </MKBox>
   );

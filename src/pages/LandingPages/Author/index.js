@@ -29,19 +29,19 @@ import Contact from "pages/LandingPages/Author/sections/Contact";
 import Footer from "pages/LandingPages/Author/sections/Footer";
 
 // Routes
-import getNavbarRoutes from "utils/getNavbarRoutes";
+import routes from "routes";
 
 // Images
 import bgImage from "assets/images/city-profile.jpg";
+import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import useAuth from "auth/useAuth";
 
 function Author() {
+  const { auth } = useAuth();
+  const title = auth.isCompany ? 'Company' : 'Student'
+
   return (
-    <>
-      <DefaultNavbar
-        routes={getNavbarRoutes()}
-        transparent
-        light
-      />
+    <BasicPageLayout title={title + ' Profile'}>
       <MKBox bgColor="white">
         <MKBox
           minHeight="25rem"
@@ -58,11 +58,22 @@ function Author() {
             placeItems: "center",
           }}
         />
-
-        <Contact />
-        <Footer />
+        <Card
+          sx={{
+            p: 2,
+            mx: { xs: 2, lg: 3 },
+            mt: -8,
+            mb: 4,
+            backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
+            backdropFilter: "saturate(200%) blur(30px)",
+            boxShadow: ({ boxShadows: { xxl } }) => xxl,
+          }}
+        >
+          <Profile />
+          <Posts />
+        </Card>
       </MKBox>
-    </>
+    </BasicPageLayout>
   );
 }
 

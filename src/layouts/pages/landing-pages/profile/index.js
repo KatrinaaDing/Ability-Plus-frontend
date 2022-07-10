@@ -1,5 +1,5 @@
-import Profile from "pages/LandingPages/Profile";
+import Author from "pages/LandingPages/Author";
 
 export default function ProfilePage() {
-  return <Profile />;
+  return <Author />;
 }
