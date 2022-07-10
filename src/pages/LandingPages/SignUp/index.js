@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, React } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -34,6 +34,8 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
+import Collapse from "@mui/material/Collapse";
+import MKAlert from "components/MKAlert";
 
 // Material Kit 2 React example components
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -50,7 +52,13 @@ import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
+import useAuth from "auth/useAuth";
+
 function SignUpBasic() {
+
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -59,6 +67,58 @@ function SignUpBasic() {
 
   const handleTabType = (event, newValue) => setActiveTab(newValue);
 
+  const [alertStr, setAlertStr] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userPwd, setUserPwd] = useState("");
+  const [userConfirmPwd, setConfirmPwd] = useState("");
+
+  const handleRegister = (event) => {
+
+    if (Object.keys(userEmail).length === 0) {
+      setAlertStr("Please enter email!");
+    } else if (Object.keys(userName).length === 0) {
+      setAlertStr("Username should not be empty!");
+    } else if (Object.keys(userPwd).length === 0) {
+      setAlertStr("Please enter password!");
+    } else if (!Object.keys(JSON.stringify(userPwd) === JSON.stringify(userConfirmPwd))) {
+      setAlertStr("The confirm password is not same as the password!")
+    } else if (Object.is(event.target.name, "signUp")) {
+
+      setAuth({
+        username: 'Jane Wong',
+        isCompany: Boolean(activeTab),
+        accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
+      })
+      navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
+    
+    }
+    setTimeout(() => {
+      setAlertStr("");
+    }, 3000);
+  }
+
+// onChange
+  const updateEmail = e => {
+    const userEmail = e.target.value;
+    setEmail({ userEmail });
+  }
+
+  const updateUserName = e => {
+    const userName = e.target.value;
+    setUserName({ userName });
+  }
+
+  const updatePwd = e => {
+    const userPwd = e.target.value;
+    setUserPwd({ userPwd });
+  }
+
+  const updateConfirmPwd = e => {
+    const userConfirmPwd = e.target.value;
+    setConfirmPwd({ userConfirmPwd });
+  }
+
   return (
     <>
       <DefaultNavbar
@@ -66,6 +126,11 @@ function SignUpBasic() {
         transparent
         light
       />
+
+      <Collapse in={alertStr != ""}>
+          <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
+      </Collapse>
+
       <MKBox
         position="absolute"
         top={0}
@@ -116,16 +181,16 @@ function SignUpBasic() {
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" fullWidth />
+                    <MKInput type="email" label="Email" onChange={updateEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="Username" label="Username" fullWidth />
+                    <MKInput type="username" label="Username" onChange={updateUserName} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" fullWidth />
+                    <MKInput type="password" label="Password" onChange={updatePwd} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="Confirm Password" label="Confirm Password" fullWidth />
+                    <MKInput type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -140,7 +205,7 @@ function SignUpBasic() {
                     </MKTypography>
                   </MKBox>
                   <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" fullWidth>
+                    <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
                       sign up
                     </MKButton>
                   </MKBox>

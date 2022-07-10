@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, React } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -34,6 +34,8 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
+import Collapse from '@mui/material/Collapse';
+import MKAlert from "components/MKAlert";
 
 // Material Kit 2 React example components
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -59,17 +61,44 @@ function SignInBasic() {
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
+  const [alertStr, setAlertStr] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [userPwd, setUserPwd] = useState("");
+
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabType = (event, newValue) => setActiveTab(newValue);
 
-  const handleSubmit = () => {
-    setAuth({
-      username: 'Jane Wong',
-      isCompany: Boolean(activeTab),
-      accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
-    })
-    navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
+  const handleSubmit = (event) => {
+    console.log(userEmail.userEmail);
+    if (Object.keys(userEmail).length === 0) {
+      setAlertStr("Please enter email");
+    } else if (Object.keys(userPwd).length === 0) {
+      setAlertStr("Please enter password");
+    } else if (Object.is(event.target.name, "signIn")) {
+      setAuth({
+        username: 'Jane Wong',
+        isCompany: Boolean(activeTab),
+        accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
+      })
+      navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
+    }
+    
+    
+    setTimeout(function () {
+      setAlertStr("");
+    }, 3000);   
+  }
+
+  //onChange email
+  const updateUserEmail = e => {
+    const userEmail = e.target.value
+    setEmail({ userEmail })
+  }
+  //onChange pwd
+  const updateUserPwd = e => {
+    const userPwd = e.target.value
+    setUserPwd({ userPwd })
   }
 
   return (
@@ -79,6 +108,9 @@ function SignInBasic() {
         transparent
         light
       />
+      <Collapse in={alertStr != ""}>
+        <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
+      </Collapse>
       <MKBox
         position="absolute"
         top={0}
@@ -129,10 +161,10 @@ function SignInBasic() {
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" fullWidth />
+                    <MKInput type="email" label="Email" onChange={updateUserEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" fullWidth />
+                    <MKInput type="password" label="Password" onChange={updateUserPwd} fullWidth />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -147,7 +179,7 @@ function SignInBasic() {
                     </MKTypography>
                   </MKBox>
                   <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
+                    <MKButton variant="gradient" color="info" name="signIn" fullWidth onClick={handleSubmit}>
                       sign in
                     </MKButton>
                   </MKBox>
