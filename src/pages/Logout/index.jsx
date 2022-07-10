@@ -16,7 +16,7 @@ const Logout = () => {
 
     React.useEffect(() => {
         logout();
-        setTimeout(() => navigate('/'), 1500);
+        setTimeout(() => navigate('/'), 1000);
     }, [])
 
     return (
