@@ -5,8 +5,8 @@
  */
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
-import useAuth from "./useAuth";
 import { useNavigate } from "react-router-dom";
+import useAuth from "auth/useAuth";
 
 const useAxiosPrivate = () => {
     const { auth } = useAuth();             // get auth detail

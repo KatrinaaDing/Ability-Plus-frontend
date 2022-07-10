@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 11 Jul 2022
+ * Discription: A simple alert modal
+ */
 import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';

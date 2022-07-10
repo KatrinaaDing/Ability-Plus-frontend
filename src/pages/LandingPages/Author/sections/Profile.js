@@ -117,8 +117,8 @@ function Profile() {
                             </MKBox>
                             <Divider sx={{my: 0}} />
                             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                                <MKButton variant="gradient" color="dark" onClick={toggleModal}>
-                                Close
+                                <MKButton variant="gradient" color="light" onClick={toggleModal}>
+                                Cancel
                                 </MKButton>
                                 <MKButton variant="gradient" color="info">
                                 Save

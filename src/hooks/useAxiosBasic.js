@@ -34,10 +34,6 @@ const useAxiosBasic = () => {
             },                                                           // if the response is good, just return it
             async (error) => {                                           // if there's error in the response (e.g. token expired)
                 console.error(error)
-                if (error?.response?.status === 401) {                // status 401 (forbidden - token expired) 
-                    alert("Login info expired, please login again.")
-                    navigate('/authentication/sign-in')
-                }
                 return Promise.reject(error);
             }
         );
