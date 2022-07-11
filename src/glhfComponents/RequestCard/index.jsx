@@ -66,7 +66,7 @@ const RequestCard = ({ userType, page }) => {
              <StatusBadge statusCode={ statusCode } size='sm' />
             }
           </Grid>
-          <MKTypography variant="body2" color="text.secondary">
+          <MKTypography variant="body2" color="secondary">
             {/* 2 */}
             {sample.description}
           </MKTypography>

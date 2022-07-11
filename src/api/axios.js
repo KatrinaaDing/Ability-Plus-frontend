@@ -14,9 +14,6 @@ const axiosBasic = axios.create({
 // this axios instance will send all request with authentication header
 export const axiosPrivate = axios.create({      
     baseURL: BASE_URL,
-    // headers: { 
-    //     'Content-Type': 'application/json',
-    // },
 });
 
 export default axiosBasic;

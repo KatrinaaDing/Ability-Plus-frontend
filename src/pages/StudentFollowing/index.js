@@ -22,10 +22,12 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import axios from "axios";
+import useAuth from "auth/useAuth";
+import axiosBasic from "api/axios";
 
 const MyFollowingPage = () => {
     const axiosPrivate = useAxiosPrivate();
-
     const [followList, setFollowList] = useState([]);
     const [follow, setFollow] = useState(false);
 
@@ -41,6 +43,7 @@ const MyFollowingPage = () => {
             console.error(e)
             console.log(e)
         })
+        
     
     }, [])
     

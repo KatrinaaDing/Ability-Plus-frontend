@@ -16,8 +16,8 @@ const useAxiosPrivate = () => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(                     // interceptor are execute before .then and .catch
             config => {
-                if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
-                    config.headers['token'] = auth?.accessToken;        // setting auth header for request
+                if (!config.headers['Authentication']) {                                     // check the header, if there's no access token inside,
+                    config.headers['Authentication'] = auth?.accessToken;        // setting auth header for request
                 }
                 return config;
             }, (error) => Promise.reject(error)
@@ -28,13 +28,16 @@ const useAxiosPrivate = () => {
                 response.status = response.data.status
                 response.statusText = response.data.message
                 console.log(response)
-                if (response.status >= 400) return Promise.reject(response)
+                if (response.status >= 400) 
+                    return Promise.reject(response)
                 return response
             },                                                           // if the response is good, just return it
             async (error) => {                                           // if there's error in the response (e.g. token expired)
                 console.log(error)
+                console.log(error.response.status)
                 if (error?.response?.status === 401) {                // status 401 (forbidden - token expired) 
                     alert("Login info expired, please login again.")
+                    console.log('jwt not verified')
                     navigate('/authentication/sign-in')
                 }
                 return Promise.reject(error);
