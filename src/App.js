@@ -74,19 +74,20 @@ export default function App() {
 
         {/* Company access only */}
         <Route element={<RequireAuth roles={['c']}/>} >
-          {getRoutes(companyRoutes)}
+          {getRoutes(companyRoutes(""))}
           {getRoutes(otherRoutes.company)}
         </Route>
 
         {/* Student access only */}
         <Route element={<RequireAuth roles={['s']} />} >
-          {getRoutes(studentRoutes)}
+          {getRoutes(studentRoutes(""))}
           {getRoutes(otherRoutes.student)}
         </Route>
 
         {/* Both student and comapny can access */}
         <Route element={<RequireAuth roles={['c', 's']} />} >
-          {getRoutes(studentRoutes)}
+          {getRoutes(studentRoutes(""))}
+          {getRoutes(companyRoutes(""))}
           {getRoutes(otherRoutes.common)}
         </Route>
 

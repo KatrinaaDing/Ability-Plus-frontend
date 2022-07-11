@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Card from "@mui/material/Card";
@@ -17,30 +17,53 @@ import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 
 
-import routes from "routes";
-
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import axios from "axios";
+import useAuth from "auth/useAuth";
+import axiosBasic from "api/axios";
 
 const MyFollowingPage = () => {
-
+    const axiosPrivate = useAxiosPrivate();
+    const [followList, setFollowList] = useState([]);
     const [follow, setFollow] = useState(false);
+
     const isFollowModal = () => setFollow(!follow);
+
+
+    useEffect(async () =>  {
+      await axiosPrivate.get('/student_following/all')
+        .then(res => {
+            setFollowList(res.data)
+        })
+        .catch(e=>{
+            console.error(e)
+        })
     
+    }, [])
+    
+
+
     return (
         <BasicPageLayout title="My Followings">
-       
             <Grid container item justifyContent="space-around" xs={10}>
-                <MKTypography variant="h5"color="text" fontWeight="bold" textTransform="uppercase">
-                    Company Name
-                </MKTypography>
-                <MKButton variant="outlined" color="info" size="small" onClick={isFollowModal}>
-                    Unfollow
-                </MKButton>
+                {
+                    followList.map(f => (
+                        <MKBox key={f.name}>
+                            <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
+                                {f.companyName}
+                            </MKTypography>
+                            <MKButton variant="outlined" color="info" size="small" onClick={isFollowModal}>
+                                Unfollow
+                            </MKButton>
+                        </MKBox>
+                    ))
+                }
             </Grid>
-            <Modal open={follow} onClose={isFollowModal} sx={{display:"grid", placeItems:"center"}}>
+            <Modal open={follow} onClose={isFollowModal} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={follow} timeout={500}>
                     <MKBox
                         position="relative"
@@ -49,29 +72,30 @@ const MyFollowingPage = () => {
                         flexDirection="column"
                         borderRadius="xl"
                         bgColor="white"
-                        shadow="xl"    
+                        shadow="xl"
                     >
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                             <MKTypography variant="h6">Unfollow Confirm</MKTypography>
-                            <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={isFollowModal} />
+                            <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={isFollowModal} />
                         </MKBox>
-                        <Divider sx={{my: 0}} />
-                            <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center">
-                                Surely Unfollowing?
-                            </MKTypography>                        
-                        <Divider sx={{my: 0}} />
+
+                        <Divider sx={{ my: 0 }} />
+                        <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center">
+                            Surely Unfollowing?
+                        </MKTypography>
+                        <Divider sx={{ my: 0 }} />
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                            <MKButton variant="gradient" color="error">
-                            Yes
+                            <MKButton variant="gradient" color="light">
+                                No
                             </MKButton>
                             <MKButton variant="gradient" color="info">
-                            No
+                                Yes
                             </MKButton>
-                        </MKBox>                            
+                        </MKBox>
                     </MKBox>
                 </Slide>
-            </Modal>                 
-        
+            </Modal>
+
 
         </BasicPageLayout>
     );

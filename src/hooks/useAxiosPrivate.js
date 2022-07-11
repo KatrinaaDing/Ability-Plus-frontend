@@ -5,33 +5,44 @@
  */
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
-import useAuth from "./useAuth";
+import { useNavigate } from "react-router-dom";
+import useAuth from "auth/useAuth";
+import useLogout from "./useLogout";
 
 const useAxiosPrivate = () => {
     const { auth } = useAuth();             // get auth detail
+    const navigate = useNavigate();
+    const logout = useLogout();
 
     useEffect(() => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(                     // interceptor are execute before .then and .catch
             config => {
-                if (!config.headers['Authorization']) {                                     // check the header, if there's no access token inside,
-                    config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;        // setting auth header for request
+                if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
+                    config.headers['token'] = auth?.accessToken;        // setting auth header for request
                 }
+                // console.log(config) // uncomment this to debug
                 return config;
             }, (error) => Promise.reject(error)
         );
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => {
-                console.log(response)
+                response.status = response.data.status
+                response.statusText = response.data.message
+                const resData = response.data.data;
+                response.data = resData;
+                // console.log(response)           // uncomment it to debug
+                if (response.status >= 400)
+                    return Promise.reject(response)
                 return response
             },                                                           // if the response is good, just return it
-            async (error) => {                                                              // if there's error in the response (e.g. token expired)
-                const prevRequest = error?.config;                                          
-                if (error?.response?.status === 403 && !prevRequest?.sent) {                // status 403 (forbidden - token expired) occured and .sent is not exist or not true
-                    prevRequest.sent = true;                                                // set .sent = true so that this block of code only run once
-                    prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;     
-                    return axiosPrivate(prevRequest);                                       // making request again: return the request (the one sent just sent) with a new access token
+            async (error) => {                                           // if there's error in the response (e.g. token expired)
+                if (error?.response?.status === 401) {                // status 401 (forbidden - token expired) 
+                    alert("Login info expired, please login again.")
+                    console.log('jwt not verified')
+                    logout();
+                    navigate('/authentication/sign-in')
                 }
                 return Promise.reject(error);
             }
@@ -41,7 +52,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);                  // removing the interceptors and the end 
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
-    }, [auth, refresh])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
+    }, [auth])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
 
     return axiosPrivate;
 }

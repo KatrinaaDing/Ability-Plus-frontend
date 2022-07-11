@@ -11,14 +11,18 @@ import ListItemText from '@mui/material/ListItemText';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
 import DescriptionIcon from '@mui/icons-material/Description';
+import useAuth from 'auth/useAuth';
 
-const sampleInfo = {
-    lastModified: `${new Date().toDateString()}`,
-    author: "Jane Wone",
-    requestTitle: 'Proposal Management'
-}
+
 
 const MetaData = () => {
+    const { auth } = useAuth();
+
+    const sampleInfo = {
+        lastModified: `${new Date().toDateString()}`,
+        author: "Jane Wone",
+        requestTitle: 'Proposal Management'
+    }
 
     const listItemSx = { p: 0.5 }
 
@@ -39,7 +43,7 @@ const MetaData = () => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Author: " + sampleInfo.author}
+                    secondary={"Author: " + auth.username}
                 />
             </ListItem>
             <ListItem sx={listItemSx}>

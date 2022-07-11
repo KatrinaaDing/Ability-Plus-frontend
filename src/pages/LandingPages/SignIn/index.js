@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, React } from "react";
+import { useState, React, useEffect } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -52,54 +52,102 @@ import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import useAuth from "auth/useAuth";
+import useAxiosBasic from "hooks/useAxiosBasic";
+import AlertModal from "glhfComponents/AlertModal";
+import md5 from "md5";
 
 function SignInBasic() {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const axiosBasic = useAxiosBasic();
   const navigate = useNavigate();
 
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+  // const [rememberMe, setRememberMe] = useState(false);
   const [alertStr, setAlertStr] = useState("");
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [userEmail, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState(false);
   const [userPwd, setUserPwd] = useState("");
+  const [pwdErr, setPwdErr] = useState(false);
 
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabType = (event, newValue) => setActiveTab(newValue);
-
-  const handleSubmit = (event) => {
-    console.log(userEmail.userEmail);
-    if (Object.keys(userEmail).length === 0) {
-      setAlertStr("Please enter email");
-    } else if (Object.keys(userPwd).length === 0) {
-      setAlertStr("Please enter password");
-    } else if (Object.is(event.target.name, "signIn")) {
-      setAuth({
-        username: 'Jane Wong',
-        isCompany: Boolean(activeTab),
-        accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
-      })
-      navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
+  useEffect(() => {
+    // if user has logged in, redirect to personal page
+    if (auth) {
+      setAlertModalOpen(true)
     }
+
+  }, [])
+
+  // const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const handleSubmit = async (event) => {
+    // validate form
+    if (!validateInput(userEmail, userPwd)) 
+      return
     
-    
-    setTimeout(function () {
-      setAlertStr("");
-    }, 3000);   
+    // sign in user - use search params
+    const hashedPwd = userPwd//md5(userPwd) // TOFIX
+    const loginData = new URLSearchParams({
+      email: userEmail,
+      password: hashedPwd // md5 hashing
+    })
+
+    // call api
+    try {
+      await axiosBasic.post('/user/login', loginData)
+      // on success
+      .then(res => {
+        setAuth({
+          username: res.data.userName,
+          isCompany: res.data.isCompany,
+          accessToken: res.data.accessToken
+        })
+        navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`)
+      })
+      // on failed
+      .catch(e => {
+        setAlertStr(e.statusText)
+      })
+
+    } catch (err) {
+      console.error(err)
+      setAlertStr("Login failed. Please try again later.")
+    }
+     
+  }
+
+  const validateInput = (email, pwd) => {
+    let valid = true;
+    let error = '';
+    if (!email) {
+      error += "Please enter email. ";
+      setEmailErr(true)
+      valid = false;
+    }
+    if (!pwd) {
+      error += 'Please enter password. '
+      setPwdErr(true)
+      valid = false;
+    }
+
+    if (!valid) setAlertStr(error)
+    return valid;
   }
 
   //onChange email
   const updateUserEmail = e => {
     const userEmail = e.target.value
-    setEmail({ userEmail })
+    setEmail(userEmail)
+    setEmailErr(false)
+    setAlertStr("");
   }
   //onChange pwd
   const updateUserPwd = e => {
     const userPwd = e.target.value
-    setUserPwd({ userPwd })
+    setUserPwd(userPwd)
+    setPwdErr(false)
+    setAlertStr("");
   }
+  
 
   return (
     <>
@@ -107,6 +155,13 @@ function SignInBasic() {
         routes={getNavbarRoutes()}
         transparent
         light
+      />
+      <AlertModal
+        open={alertModalOpen}
+        handleClose={() => setAlertModalOpen(false)}
+        handleClick={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
+        title="You have logged in."
+        content="You'll be redirected to your personal page."
       />
       <Collapse in={alertStr != ""}>
         <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
@@ -148,25 +203,15 @@ function SignInBasic() {
                   Sign in
                 </MKTypography>  
               </MKBox>
-              <Container>
-                <Grid container item justifyContent="center" xs={40} lg={20} mx="auto">
-                  <AppBar position="static">
-                    <Tabs value={activeTab} onChange={handleTabType}>
-                      <Tab label="Student" />
-                      <Tab label="Company" />
-                    </Tabs>
-                  </AppBar>
-                </Grid>
-              </Container>              
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" onChange={updateUserEmail} fullWidth />
+                    <MKInput type="email" error={emailErr} label="Email" onChange={updateUserEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" onChange={updateUserPwd} fullWidth />
+                    <MKInput type="password" error={pwdErr} label="Password" onChange={updateUserPwd} fullWidth />
                   </MKBox>
-                  <MKBox display="flex" alignItems="center" ml={-1}>
+                  {/* <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
                     <MKTypography
                       variant="button"
@@ -177,7 +222,7 @@ function SignInBasic() {
                     >
                       &nbsp;&nbsp;Remember me
                     </MKTypography>
-                  </MKBox>
+                  </MKBox> */}
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" name="signIn" fullWidth onClick={handleSubmit}>
                       sign in

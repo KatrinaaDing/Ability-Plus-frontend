@@ -8,9 +8,9 @@ const getNavbarRoutes = () => {
 
     if (auth) {
         if (auth.isCompany) 
-            return companyRoutes
+            return companyRoutes(auth.username)
         if (!auth.isCompany)
-            return studentRoutes
+            return studentRoutes(auth.username)
     } else {
         return guestRoutes
     }

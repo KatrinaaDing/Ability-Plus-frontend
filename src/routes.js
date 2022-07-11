@@ -65,8 +65,9 @@ import MyProjectRequests from "pages/MyProjectRequests";
 import ProposalRanks from "pages/ProposalRanks";
 import Logout from "pages/Logout";
 
+
 // routes in navbar (company view)
-const companyRoutes = [
+const companyRoutes = (username) => [
   {
     name: "Personal Page",
     route: "/company/personal-page",
@@ -80,7 +81,7 @@ const companyRoutes = [
     component: <MyProjectRequests />,
   },
   {
-    name: "Username",
+    name: username,
     route: '/company/profile',
     icon: <PersonIcon />,
     component: <ProfilePage />,
@@ -96,7 +97,7 @@ const companyRoutes = [
 ]
 
 // routes in navbar (student view)
-const studentRoutes = [
+const studentRoutes = (username) => [
   {
     name: "Personal Page",
     route: "/student/personal-page",
@@ -117,7 +118,7 @@ const studentRoutes = [
     component: <Following />,
   },
   {
-    name: "Username",
+    name: username,
     route: '/student/profile',
     icon: <PersonIcon />,
     component: <ProfilePage />,

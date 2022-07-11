@@ -23,7 +23,7 @@ const Unauthorized = () => {
 
                 }}
             >
-                <MKTypography variant='h1' color='error'>YOU SHALL NOT PASS</MKTypography>
+                <MKTypography variant='h1' color='warning'>YOU SHALL NOT PASS</MKTypography>
                 <MKTypography variant='body'>Sorry, you don't have permission to access this area :(</MKTypography>
 
             </MKBox>

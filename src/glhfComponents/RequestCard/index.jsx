@@ -24,7 +24,7 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 // Student's personal page: 1 2 5 8 (userType: 'student', page: 'Personal Page')
 // Student see company's profile: 1 2 3 8 9 (userType: 'student', page: 'Company Profile')
 
-const RequestCard = ({ userType, page }) => {
+const RequestCard = ({ userType, page, data }) => {
   const [statusCode, setStatusCode] = useState(0);
   const sample = {
     title: 'title',
@@ -52,6 +52,7 @@ const RequestCard = ({ userType, page }) => {
     setStatusCode(5);
   }
   }, [])
+
   return (
     <Card sx={{ minWidth: 345, margin: '10px'}}>
       <CardActionArea>
@@ -66,7 +67,7 @@ const RequestCard = ({ userType, page }) => {
              <StatusBadge statusCode={ statusCode } size='sm' />
             }
           </Grid>
-          <MKTypography variant="body2" color="text.secondary">
+          <MKTypography variant="body2" color="secondary">
             {/* 2 */}
             {sample.description}
           </MKTypography>

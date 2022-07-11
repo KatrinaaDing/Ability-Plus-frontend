@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, React } from "react";
+import { useState, React, useEffect } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -53,70 +53,157 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 import useAuth from "auth/useAuth";
+import AlertModal from "glhfComponents/AlertModal";
+import useAxiosBasic from "hooks/useAxiosBasic";
+import md5 from "md5";
 
 function SignUpBasic() {
-
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const axiosBasic = useAxiosBasic();
   const navigate = useNavigate();
 
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
   const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabType = (event, newValue) => setActiveTab(newValue);
-
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [alertStr, setAlertStr] = useState("");
   const [userEmail, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const [userConfirmPwd, setConfirmPwd] = useState("");
-
-  const handleRegister = (event) => {
-
-    if (Object.keys(userEmail).length === 0) {
-      setAlertStr("Please enter email!");
-    } else if (Object.keys(userName).length === 0) {
-      setAlertStr("Username should not be empty!");
-    } else if (Object.keys(userPwd).length === 0) {
-      setAlertStr("Please enter password!");
-    } else if (!Object.keys(JSON.stringify(userPwd) === JSON.stringify(userConfirmPwd))) {
-      setAlertStr("The confirm password is not same as the password!")
-    } else if (Object.is(event.target.name, "signUp")) {
-
-      setAuth({
-        username: 'Jane Wong',
-        isCompany: Boolean(activeTab),
-        accessToken: 'xxxwmowejfjfixdsfsdfxsdfsfsxxx'
-      })
-      navigate(`/${Boolean(activeTab) ? 'company' : 'student' }/personal-page`)
-    
+  const [emailErr, setEmailErr] = useState(false);
+  const [nameErr, setNameErr] = useState(false);
+  const [pwdErr, setPwdErr] = useState(false);
+  const [confirmPwdErr, setConfirmPwdErr] = useState(false);
+  
+  useEffect(() => {
+    // if user has logged in, redirect to personal page
+    if (auth) {
+      setAlertModalOpen(true)
     }
-    setTimeout(() => {
-      setAlertStr("");
-    }, 3000);
+    
+  }, [])
+  
+  const handleTabType = (event, newValue) => setActiveTab(newValue);
+
+  const handleRegister = async (event) => {
+    // input validation
+    if (!validateInput())
+      return
+    
+    // wrap params
+    const hashedPwd = userPwd //md5(userPwd); // TOFIX
+    const registerData = new URLSearchParams({
+      email: userEmail,
+      password: hashedPwd,
+      fullName: userName,
+      isCompany: Boolean(activeTab)
+    })
+    const loginData = new URLSearchParams({
+      email: userEmail,
+      password: hashedPwd
+    })
+
+    // call api
+    try {
+      await axiosBasic.post('/user/register', registerData)
+        // auto login on success
+        .then(res => {
+          axiosBasic.post('/user/login', loginData)
+            .then(res => {
+              console.log('successful login')
+              setAuth({
+                username: res.data.userName,
+                isCompany: res.data.isCompany,
+                accessToken: res.data.accessToken
+              })
+            })
+            .then(res => navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`))
+        })
+        // on register failed
+        .catch(e => {
+          setAlertStr(e.statusText)
+        })
+
+    } catch (err) {
+      console.error(err)
+      setAlertStr("Register failed. Please try again later.")
+    }
+    
+  }
+
+  const validateInput = () => {
+    let valid = true
+    let confirm = true;
+    let format = true
+    const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const emptyInput = [];
+    if (!userEmail){
+      emptyInput.push('email')
+      setEmailErr(true);
+      valid = false;
+    } 
+    if (userEmail.length && !userEmail.match(emailReg)) {
+      setEmailErr(true);
+      valid = false;
+      format = false;
+    }
+    if (!userName) {
+      emptyInput.push('username')
+      setNameErr(true);
+      valid = false;
+    } 
+    if (!userPwd) {
+      emptyInput.push('password')
+      setPwdErr(true);
+      valid = false;
+    } 
+    if (userPwd !== userConfirmPwd) {
+      setConfirmPwdErr(true);
+      valid = false;
+      confirm = false;
+    } 
+    if (!valid) {
+      let errStr = '';
+      if (emptyInput.length > 0)
+        errStr += "Please enter " + emptyInput.join(', ') + "! ";
+
+      if (!emptyInput.includes('password') && !confirm)
+        errStr += " The confirm password doesn't match the password! "
+
+      if (!format)
+        errStr += "Please enter email in correct format! ";
+      
+      setAlertStr(errStr)
+    }
+    return valid
   }
 
 // onChange
   const updateEmail = e => {
     const userEmail = e.target.value;
-    setEmail({ userEmail });
+    setEmail(userEmail);
+    setAlertStr("");
+    setEmailErr(false);
   }
 
   const updateUserName = e => {
     const userName = e.target.value;
-    setUserName({ userName });
+    setUserName(userName);
+    setAlertStr("");
+    setNameErr(false);
   }
 
   const updatePwd = e => {
     const userPwd = e.target.value;
-    setUserPwd({ userPwd });
+    setUserPwd(userPwd);
+    setAlertStr("");
+    setPwdErr(false);
   }
 
   const updateConfirmPwd = e => {
     const userConfirmPwd = e.target.value;
-    setConfirmPwd({ userConfirmPwd });
+    setConfirmPwd(userConfirmPwd);
+    setAlertStr("");
+    setConfirmPwdErr(false);
   }
 
   return (
@@ -130,7 +217,13 @@ function SignUpBasic() {
       <Collapse in={alertStr != ""}>
           <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
       </Collapse>
-
+      <AlertModal
+        open={alertModalOpen}
+        handleClose={() => setAlertModalOpen(false)}
+        handleClick={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
+        title="You have logged in."
+        content="You'll be redirected to your personal page."
+      />
       <MKBox
         position="absolute"
         top={0}
@@ -181,28 +274,16 @@ function SignUpBasic() {
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" onChange={updateEmail} fullWidth />
+                    <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="username" label="Username" onChange={updateUserName} fullWidth />
+                    <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" onChange={updatePwd} fullWidth />
+                    <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
-                  </MKBox>
-                  <MKBox display="flex" alignItems="center" ml={-1}>
-                    <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-                    <MKTypography
-                      variant="button"
-                      fontWeight="regular"
-                      color="text"
-                      onClick={handleSetRememberMe}
-                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                    >
-                      &nbsp;&nbsp;Remember me
-                    </MKTypography>
+                    <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
                   </MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>

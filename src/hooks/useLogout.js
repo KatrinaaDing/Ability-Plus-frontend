@@ -9,8 +9,8 @@ const useLogout = () => {
     const { setAuth } = useAuth();
 
     const logout = () => {
-        setAuth(null);
         localStorage.clear();
+        setAuth(null);
     }
 
     return logout;
