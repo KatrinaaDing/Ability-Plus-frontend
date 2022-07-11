@@ -16,7 +16,7 @@ const useAxiosBasic = () => {
 
         const requestIntercept = axiosBasic.interceptors.request.use(        // interceptor are execute before .then and .catch
             config => {
-                console.log(config)    // uncomment it to debug
+                // console.log(config)    // uncomment it to debug
                 return config;
             }, (error) => Promise.reject(error)
         );

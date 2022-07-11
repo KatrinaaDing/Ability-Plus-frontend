@@ -54,6 +54,7 @@ import Tab from "@mui/material/Tab";
 import useAuth from "auth/useAuth";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import AlertModal from "glhfComponents/AlertModal";
+import md5 from "md5";
 
 function SignInBasic() {
   const { auth, setAuth } = useAuth();
@@ -84,9 +85,10 @@ function SignInBasic() {
       return
     
     // sign in user - use search params
+    const hashedPwd = userPwd//md5(userPwd) // TOFIX
     const loginData = new URLSearchParams({
       email: userEmail,
-      password: userPwd
+      password: hashedPwd // md5 hashing
     })
 
     // call api

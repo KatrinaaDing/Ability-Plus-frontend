@@ -22,7 +22,7 @@ const NotFound = () => {
                     m: 'auto'
                 }}
             >
-                <h1 class='num'>4<span><i class="fas fa-ghost"></i></span>4</h1>
+                <h1 class='num'>4<span><i className="fas fa-ghost"></i></span>4</h1>
                 <MKTypography variant='h2' sx={{ textAlign: 'center' }} >Error: 404 page not found</MKTypography>
                 
             </MKBox>

@@ -20,6 +20,7 @@ import FormSection from './sections/FormSection';
 import DatePicker from './sections/DatePicker';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 
 const categories = [
@@ -48,6 +49,8 @@ const CreateRequest = () => {
     const [rewards, setRewards] = React.useState('')
     const [error, setError] = React.useState('')
     const [preview, setPreview] = React.useState(false)
+
+    const axiosPrivate = useAxiosPrivate();
 
     const ActionButton = ({ ...props }) => {
         return (
@@ -103,7 +106,30 @@ const CreateRequest = () => {
         setDescription(sampleContent.desc)
         setRequirement(sampleContent.req)
         setRewards(sampleContent.rew)
+    }
+    
+    const handleSaveDraft = async () => {
 
+        const body = {
+            "categoryType": category,
+            "extraData": {
+                description: description,
+                requirement: requirement,
+                rewards: rewards,
+            },
+            "isDraft": true,
+            "proposalDue": new Date(propDdl).getTime() / 1000,
+            "solutionDue": new Date(soluDdl).getTime() / 1000,
+            "title": title
+        }
+
+        await axiosPrivate.post('/project/create_project_request', body)
+        .then(res => {
+            console.log(res)            
+        })
+        .catch(e => {
+            console.error(e)
+        })
     }
 
     return (
@@ -164,7 +190,7 @@ const CreateRequest = () => {
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
                     <ActionButton label='Cancel' color='secondary' />
-                    <ActionButton label='Save To Draft' color='info' />
+                    <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft}/>
                     <ActionButton label='Preview & Submit' onClick={handlePreview} value='Submit' color='success' />
                 </Grid>
                 

@@ -41,9 +41,7 @@ const MyFollowingPage = () => {
         })
         .catch(e=>{
             console.error(e)
-            console.log(e)
         })
-        
     
     }, [])
     
@@ -56,7 +54,7 @@ const MyFollowingPage = () => {
                     followList.map(f => (
                         <MKBox key={f.name}>
                             <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                Company Name
+                                {f.companyName}
                             </MKTypography>
                             <MKButton variant="outlined" color="info" size="small" onClick={isFollowModal}>
                                 Unfollow
@@ -64,7 +62,6 @@ const MyFollowingPage = () => {
                         </MKBox>
                     ))
                 }
-
             </Grid>
             <Modal open={follow} onClose={isFollowModal} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={follow} timeout={500}>

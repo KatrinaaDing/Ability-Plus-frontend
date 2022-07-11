@@ -55,6 +55,7 @@ import Tab from "@mui/material/Tab";
 import useAuth from "auth/useAuth";
 import AlertModal from "glhfComponents/AlertModal";
 import useAxiosBasic from "hooks/useAxiosBasic";
+import md5 from "md5";
 
 function SignUpBasic() {
   const { auth, setAuth } = useAuth();
@@ -89,15 +90,16 @@ function SignUpBasic() {
       return
     
     // wrap params
+    const hashedPwd = userPwd //md5(userPwd); // TOFIX
     const registerData = new URLSearchParams({
       email: userEmail,
-      password: userPwd,
+      password: hashedPwd,
       fullName: userName,
       isCompany: Boolean(activeTab)
     })
     const loginData = new URLSearchParams({
       email: userEmail,
-      password: userPwd
+      password: hashedPwd
     })
 
     // call api
@@ -113,8 +115,8 @@ function SignUpBasic() {
                 isCompany: res.data.isCompany,
                 accessToken: res.data.accessToken
               })
-              navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`)
             })
+            .then(res => navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`))
         })
         // on register failed
         .catch(e => {
