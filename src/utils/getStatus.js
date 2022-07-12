@@ -52,15 +52,15 @@ const statusBank = {
 
 const getCode = (type, statString) => {
     if (type === 'proposal') {
-        Object.keys(statusBank.proposal).forEach(sObj => {
-            if (sObj.label === statString)
-                return sObj.code
-        })
+        for (let sKey of Object.keys(statusBank.proposal)) {
+            if (statusBank.proposal[sKey].label === statString)
+                return statusBank.proposal[sKey].code
+        }
     } else if (type === 'request') {
-        Object.keys(statusBank.request).forEach(sObj => {
-            if (sObj.label === statString)
-                return sObj.code
-        })
+        for (let sKey of Object.keys(statusBank.request)) {
+            if (statusBank.request[sKey].label === statString)
+                return statusBank.request[sKey].code
+        }
     }
 
     return null // not found
@@ -68,15 +68,16 @@ const getCode = (type, statString) => {
 
 const getLabel = (type, statCode) => {
     if (type === 'proposal') {
-        Object.keys(statusBank.proposal).forEach(sObj => {
-            if (sObj.code === statCode)
-                return sObj.label
-        })
+        for (let sKey of Object.keys(statusBank.proposal)) {
+            if (statusBank.proposal[sKey].code === statCode) 
+                return statusBank.proposal[sKey].label
+        }
+        
     } else if (type === 'request') {
-        Object.keys(statusBank.request).forEach(sObj => {
-            if (sObj.code === statCode)
-                return sObj.label
-        })
+        for (let sKey of Object.keys(statusBank.request)) {
+            if (statusBank.request[sKey].code === statCode)
+                return statusBank.request[sKey].label
+        }
     }
 
     return null // not found

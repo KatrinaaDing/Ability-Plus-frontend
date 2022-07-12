@@ -15,14 +15,8 @@ import useAuth from 'auth/useAuth';
 
 
 
-const MetaData = () => {
+const MetaData = ({ data }) => {
     const { auth } = useAuth();
-
-    const sampleInfo = {
-        lastModified: `${new Date().toDateString()}`,
-        author: "Jane Wone",
-        requestTitle: 'Proposal Management'
-    }
 
     const listItemSx = { p: 0.5 }
 
@@ -34,7 +28,7 @@ const MetaData = () => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Last Modified At: " + sampleInfo.lastModified}
+                    secondary={"Last Modified At: " + data.lastModified}
                 />
             </ListItem>
             <ListItem sx={listItemSx}>
@@ -52,7 +46,7 @@ const MetaData = () => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Project Topic: " + sampleInfo.requestTitle}
+                    secondary={"Project Topic: " + data.requestTitle}
                 />
             </ListItem>
            

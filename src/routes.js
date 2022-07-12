@@ -174,12 +174,12 @@ const otherRoutes = {
   common: [
     {
       name: "Company Information",
-      route: "/company-info",
+      route: "/company-info/:id",
       component: <CompanyInfo />,
     },
     {
       name: "Student Information",
-      route: "/student-info",
+      route: "/student-info/:id",
       component: <StudentInfo />
     },
     {
