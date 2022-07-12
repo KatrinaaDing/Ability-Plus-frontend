@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { CardActionArea } from '@mui/material';
+import { CardActions } from '@mui/material';
 import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import { FcLike } from 'react-icons/fc';
 import StatusBadge from 'glhfComponents/StatusBadge';
-// 1. title
+// 1.title
 // 2.description
 // 3.author
 // 4.posted at
@@ -16,106 +17,163 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 // 7.last modification
 // 8.status
 // 9. View Ranking
-// popular proposals: 1 2 3 4 5 (userType: 'all', page: 'Popular Proposals')
-// Company My Project Requests: 1 2 8 9 (userType: 'company', page: 'My Project Requests')
-// Company All Proposals: 1 2 8 7 (userType: 'company', page: 'All Proposals')
-// Company see student's profile: 1 2 3 4 5 (userType: 'company', page: 'Student Profile'
-// Student's My Proposal page: 1 2 6 8 7 (userType: 'student', page: 'My Proposals')
-// Student's personal page: 1 2 5 8 (userType: 'student', page: 'Personal Page')
-// Student see company's profile: 1 2 3 8 9 (userType: 'student', page: 'Company Profile')
+// 10.View Details
+// popular proposals: 1 2 3 4 5 10 (userType: 'all', page: 'Popular Proposals')
+// Company Personal Page: 1 2 7 8 9 10 (userType: 'company', page: 'My Project Requests')
+// Company All Proposals: 1 2 3 8 7 10 (userType: 'company', page: 'All Proposals')
+// Company see student's profile: 1 2 4 5 10 (userType: 'company', page: 'Student Profile')
+// Student's My Proposal page: 1 2 3 6 8 7 10 (userType: 'student', page: 'My Proposals')
+// Student's personal page: 1 2 5 8 10 (userType: 'student', page: 'Personal Page')
+// Student see company's profile: 1 2 8 9 10 (userType: 'student', page: 'Company Profile')
 
 const RequestCard = ({ userType, page, data }) => {
+  print(userType, page)
+  const [authorId, setAuthorId] = useState(0);
+  const [title, setTitle] = useState('');
+  const [oneSentenceDescription, setOneSentenceDescription] = useState('');
+  const [authorName, setAuthorName] = useState('');
+  const [postedAt, setPostedAt] = useState('');
+  const [like, setLike] = useState('');
+  const [url, setUrl] = useState('');
+  const [topic, setTopic] = useState('');
+  const [lastModification, setLastModification] = useState('');
   const [statusCode, setStatusCode] = useState(0);
-  const sample = {
-    title: 'title',
-    description: 'description',
-    author: 'author',
-    postedAt: 'postedbydate',
-    like: '5',
-    topic: 'topic',
-    last_modification: 'last-modification-date',
-    status: 'Closed'
-  }
-  
+  const [status, setStatus] = useState('');
+  const [cardButtonStyle, setCardButtonStyle] = useState('flex-end');
   useEffect(() => {
-    if (sample.status === 'Draft') {
-    setStatusCode(0);
-  } else if (sample.status === 'Open for Proposal') {
-    setStatusCode(1);
-  } else if (sample.status === 'Approving') {
-    setStatusCode(2);
-  } else if (sample.status === 'Open for Solution') {
-    setStatusCode(3);
-  } else if (sample.status === 'Closed') {
-    setStatusCode(4);
-  } else if (sample.status === 'Ejected') {
-    setStatusCode(5);
-  }
-  }, [])
+    //if no data from backend, use this fake data
+    if (data === undefined) {
+      setAuthorId(0);
+      setTitle('title');
+      setOneSentenceDescription('Here is the description xxxxxxxxxxxxx');
+      setAuthorName('author');
+      setLike('5');
+      setLastModification('last-modification-date');
+      setPostedAt('2022-01-01');
+      setTopic('Topic Here')
+      setStatusCode(2);
+    } else if (userType === 'company' && page === 'All Proposals') {
+      setAuthorId(data.authorId);
+      setAuthorName(data.authorName);
+      setLastModification(data.lastModificationDate);
+      setTitle(data.title);
+    } else if (userType === 'company' && page === 'My Project Requests') {
+      setAuthorId(data.authorId);
+      setAuthorName(data.authorName);
+      setOneSentenceDescription(data.description);
+      setStatus(data.status);
+      setTitle(data.title);
+    } else if (userType === 'student' && page === 'Personal Page') {
+      setTitle('title');
+      setOneSentenceDescription('Here is the description xxxxxxxxxxxxx');
+      setLike('5');
+      setStatusCode(2);
+      setAuthorName('Google');
+    }
+    // student wants to see company's profile
+    if (userType === 'student') {
+      setUrl(`/company-info/${authorId}`);
+    } else if (userType === 'company' || userType === 'all') {
+      //company wants to see student's profile
+      setUrl(`/student-info/${authorId}`);
+    }
+    // if not on popular proposal page and not on company sees students' profile page
+    // it should have a status
+    if ((!(userType === 'all' && page === 'Popular Proposals')) && (!(userType === 'company' && page === 'Student Profile'))) {
+      setStatusCode(2);
+    }
+    if (status === 'draft') {
+      setStatusCode(0);
+    } else if (status === 'Open for Proposal') {
+      setStatusCode(1);
+    } else if (status === 'Approving') {
+      setStatusCode(2);
+    } else if (status === 'Open for Solution') {
+      setStatusCode(3);
+    } else if (status === 'Closed') {
+      setStatusCode(4);
+    } else if (status === 'Ejected') {
+      setStatusCode(5);
+    }
+    //for display view details and view rank buttons
+    if (page === 'Popular Proposals' || (userType === 'student' && page === 'Personal Page') || (userType === 'student' && page === 'Personal Page') || (userType === 'company' && page === 'Student Profile')) {
+      setCardButtonStyle('space-around');
+    }
+  })
 
   return (
     <Card sx={{ minWidth: 345, margin: '10px'}}>
-      <CardActionArea>
         <CardContent>
           <Grid container item justifyContent="center" xs={10}> 
             <MKTypography gutterBottom variant="h5" component="div">
               {/* 1 */}
-              {sample.title} 
+              {title} 
             </MKTypography>
             {(!(userType === 'company' && page === 'Student Profile')&& !(userType === 'all' && page === 'Popular Proposals')) &&
               // {/* 8 */}
-             <StatusBadge statusCode={ statusCode } size='sm' />
+              <StatusBadge statusCode={statusCode} size='xs'/>
             }
           </Grid>
           <MKTypography variant="body2" color="secondary">
             {/* 2 */}
-            {sample.description}
+            {(oneSentenceDescription).substring(0,50)}
           </MKTypography>
           <Grid>
             {(userType === 'student' && page === 'My Proposals') &&
               // {/* 6 */}
               <Grid item>
-              <MKTypography variant="caption">Topic: {sample.topic}</MKTypography>
+              <MKTypography variant="caption">Topic: {topic}</MKTypography>
               </Grid>
             }
-            {((page === 'Popular Proposals') || (userType === 'company' && page === 'Student Profile')|| (userType === 'student' && page === 'Company Profile')) && 
+            {((page === 'Popular Proposals')||(userType === 'company' && page === 'All Proposals')||(userType === 'student' && page === 'Personal Page')) && 
               <Grid item>
               {/* 3 */}
-              <MKTypography variant="caption">Posted by: {sample.author}</MKTypography>
+                <MKTypography variant="caption">Posted by:
+                
+                  <Link to={url}>
+                      {authorName}
+                  </Link>
+                </MKTypography>
             </Grid>
             }
             {((userType === 'company' && page === 'Student Profile')|| (userType === 'all' && page === 'Popular Proposals')) &&
               <Grid item>
               {/* 4 */}
-              <MKTypography variant="caption">Posted At: {sample.postedAt}</MKTypography>
+              <MKTypography variant="caption">Posted At: {postedAt}</MKTypography>
               </Grid>
             }
             
-            {((userType === 'student' && page === 'My Proposals') || (userType === 'company' && page === 'All Proposals')) &&
+            {((userType === 'student' && page === 'My Proposals') || (userType === 'company' && page === 'All Proposals') || (userType === 'company' && page === 'My Project Requests')) &&
             <Grid item>
               {/* 7 */}
-              <MKTypography variant="caption">Last Modification Date: {sample.last_modification}</MKTypography>
+              <MKTypography variant="caption">Last Modification Date: {lastModification}</MKTypography>
             </Grid>
             }
           </Grid>
+        </CardContent>
+        <CardActions>
           {((userType === 'company' && page === 'My Project Requests') || (userType === 'student' && page === 'Company Profile')) &&
             <Grid container justifyContent="flex-end"> 
               {/* 9 */}
-              {sample.status === 'Closed'&& <MKButton variant="gradient" color="info" size="small">View Ranking</MKButton>}
-              {sample.status === 'Draft' && <MKButton variant="gradient" color="info" size="small">Edit</MKButton>}
+              {status === 'Closed'&& <MKButton variant="gradient" color="info" size="small">View Ranking</MKButton>}
+              {status === 'Draft' && <MKButton variant="gradient" color="info" size="small">Edit</MKButton>}
             </Grid> 
           }
-          {((userType === 'student' && page === 'Personal Page') || (userType === 'company' && page === 'Student Profile')|| (userType === 'all' && page === 'Popular Proposals' ))&&
-            <Grid container justifyContent="flex-end"> 
-              <FcLike size={20} />
-              <MKTypography variant="body2" mb={1}>
-                {/* 5 */}
-                  {sample.like}
-              </MKTypography>
+          <br/>
+          <Grid container justifyContent={cardButtonStyle}> 
+            {/* 10 */}
+              <MKButton variant="gradient" color="info" size="small">View Details</MKButton>
+              {((userType === 'student' && page === 'Personal Page') || (userType === 'company' && page === 'Student Profile') || (userType === 'all' && page === 'Popular Proposals')) &&
+                <div>
+                  <FcLike size={20} display='inline-block'/>
+                  <MKTypography variant="body2" mb={1} display='inline-block'>
+                    {/* 5 */}
+                    {like}
+                  </MKTypography>
+                </div>
+              }
             </Grid>
-          }
-        </CardContent>
-      </CardActionArea>
+       </CardActions>
     </Card>
   );
 }
