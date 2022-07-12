@@ -19,9 +19,18 @@ import CompanyRating from './sections/CompanyRating';
 import CompanyNote from './sections/CompanyNote';
 import LikeButton from '../LikeButton';
 import StatusBadge from 'glhfComponents/StatusBadge';
+import useAuth from 'auth/useAuth';
 
 
 const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
+    const { auth } = useAuth();
+
+    const sampleMeta = {
+        lastModified: `${new Date().toDateString()}`,
+        author: "Jane Wone",
+        requestTitle: 'Proposal Management'
+    }
+
     return (
         <Dialog
             open={preview}
@@ -51,7 +60,7 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                        <MetaData />
+                        <MetaData data={sampleMeta} />
                     </Grid>
                     <DetailSection
                         order={3}
@@ -73,16 +82,23 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                         title='Details'
                         content={value.detail}
                     />
-                    <DetailSection
-                        order={7}
-                        title='Rate'
-                        content={<CompanyRating />}
-                    />
-                    <DetailSection
-                        order={8}
-                        title='Note'
-                        content={<CompanyNote />}
-                    />
+                    {
+                        auth.isCompany
+                            ? <>
+                                <DetailSection
+                                    order={7}
+                                    title='Rate'
+                                    content={<CompanyRating />}
+                                />
+                                <DetailSection
+                                    order={8}
+                                    title='Note'
+                                    content={<CompanyNote />}
+                                />
+                            </>
+                            : <></>
+
+                    }
                 </Grid>
             </MKBox>
             <Divider sx={{ my: 0 }} />
@@ -91,8 +107,13 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                     Close
                 </MKButton>
                 <MKBox>
-                    <LikeButton originLike={false} originNumLike={23}/>
-                    <MKButton variant="gradient" color="success" sx={{ml: 3}}>
+                    {
+                        value.status < 4
+                            ? <LikeButton originLike={false} originNumLike={23} />
+                            : <></>
+                    }
+
+                    <MKButton variant="gradient" color="success" sx={{ ml: 3 }}>
                         Submit
                     </MKButton>
                 </MKBox>
