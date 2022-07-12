@@ -27,7 +27,6 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 // Student see company's profile: 1 2 8 9 10 (userType: 'student', page: 'Company Profile')
 
 const RequestCard = ({ userType, page, data }) => {
-  print(userType, page)
   const [authorId, setAuthorId] = useState(0);
   const [title, setTitle] = useState('');
   const [oneSentenceDescription, setOneSentenceDescription] = useState('');
