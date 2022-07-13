@@ -39,7 +39,7 @@ const sampleContent = {
     desc: "<p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. <u>Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero</u>, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p><br></p><p>Morbi sed dictum dui. Aenean at est lectus. <span style=\"color: rgb(230, 0, 0);\">Suspendisse condimentum</span> leo ac nisl varius maximus. <span style=\"background-color: rgb(255, 255, 0);\">Nam commodo ultricies elit, ut sagittis dolor volutpat et. Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</span></p><p><br></p><p>Quisque eget luctus nunc. Morbi tempor pharetra sapien, <strong>ut interdum lacus interdum id</strong>. Nullam ac urna sed mauris interdum malesuada vitae eu enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vel eleifend lectus. Ut rutrum tellus a est volutpat, nec placerat sapien gravida. Sed sit amet lectus et libero fringilla varius vitae at velit. Cras vitae sapien at eros fermentum interdum quis ut velit. Mauris interdum feugiat felis, nec ornare justo laoreet vel. Suspendisse posuere a enim non rutrum. Praesent dapibus nisl erat.</p>",
     req: "<h2>Functional</h2><ol><li>Sed mollis euismod nulla non feugiat.</li><li>Nulla quis convallis massa.&nbsp;</li><li>Duis interdum enim nisi, vel viverra nibh dictum et.</li><li>Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</li></ol><p><br></p><h2>Non-functional</h2><ol><li>Morbi sed dictum dui. Aenean at est lectus. </li><li>Suspendisse condimentum leo ac nisl varius maximus. </li><li>Nam commodo ultricies elit, ut sagittis dolor volutpat et. </li><li>Curabitur quis lacus vitae justo efficitur gravida. </li><li>Aenean dictum orci eu elit fermentum aliquet. </li><li>Donec fermentum porttitor felis at eleifend.</li></ol><p><br></p>",
     rew: "<p>$1000</p>",
-    status: "Draft"
+    status: "draft"
 }
 
 const CreateRequest = () => {
@@ -136,9 +136,9 @@ const CreateRequest = () => {
         const body = {
             "categoryType": category,
             "extraData": {
-                description: description,
-                requirement: requirement,
-                rewards: rewards,
+                "description": description,
+                "requirement": requirement,
+                "rewards": rewards,
             },
             "isDraft": true,
             "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
@@ -161,9 +161,9 @@ const CreateRequest = () => {
         const body = {
             "categoryType": category,
             "extraData": {
-                description: description,
-                requirement: requirement,
-                rewards: rewards,
+                "description": description,
+                "requirement": requirement,
+                "rewards": rewards,
             },
             "isDraft": false,
             "proposalDue": new Date(propDdl).getTime() / 1000,
@@ -211,10 +211,14 @@ const CreateRequest = () => {
                 </MKAlert>
             </Collapse>
             <RequestDescriptionModal
-                preview={preview}
-                setPreview={setPreview}
+                open={preview}
+                setOpen={setPreview}
                 value={{title,category,propDdl,soluDdl,description,requirement,rewards,status}}
-                handleSubmit={handleSubmit}
+                actionButton={
+                    <MKButton variant="gradient" color="success" onClick={handleSubmit}>
+                        Submit
+                    </MKButton>
+                }
             />
             <Grid container spacing={2} justify='flex-start'>
                 <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>

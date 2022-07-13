@@ -18,21 +18,40 @@ import MetaData from './sections/MetaData';
 import ShortInfo from './sections/ShortInfo';
 import DetailSection from 'glhfComponents/ProposalDescriptionModal/sections/DetailSection';
 
+/**
 
-const RequestDescriptionModal = ({ preview, setPreview, value, handleSubmit }) => {
+value = {
+    title,
+    status,
+    category,
+    propDdl,
+    soluDdl,
+    description,
+    requirement,
+    rewards,
+    metaData: {
+        lastModified,
+        authorName,
+    }
+}
+
+ */
+const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
+    console.log('modal',value)
     return (
         <Dialog
-            open={preview}
+            open={open}
             fullWidth={true}
             maxWidth='xl'
-            onClose={() => setPreview(false)}
+            onClose={() => setOpen(false)}
+            
         >
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
-                    <MKTypography variant="h5">{value.title}</MKTypography>
+                    <MKTypography variant="h5">{value?.title}</MKTypography>
                     <StatusBadge statusLabel={value.status} type='request' />
                 </MKBox>
-                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setPreview(false)} />
+                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setOpen(false)} />
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox p={4}>
@@ -43,7 +62,7 @@ const RequestDescriptionModal = ({ preview, setPreview, value, handleSubmit }) =
                         <ShortInfo title="Solution Deadline" content={value.soluDdl} />
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                        <MetaData />
+                        <MetaData metaData={value.metaData}/>
                     </Grid>
                     <DetailSection
                         order={3}
@@ -60,18 +79,15 @@ const RequestDescriptionModal = ({ preview, setPreview, value, handleSubmit }) =
                         title='Rewards'
                         content={(value.rewards === '' || value.rewards === '<p><br></p>') ? '<p>None</p>' : value.rewards}
                     />
-                    
-                    
+                     
                 </Grid>
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                <MKButton variant="gradient" color="dark" onClick={() => setPreview(false)}>
+                <MKButton variant="gradient" color="dark" onClick={() => setOpen(false)}>
                     Close
                 </MKButton>
-                <MKButton variant="gradient" color="success" onClick={handleSubmit}>
-                    Submit
-                </MKButton>
+                {actionButton}
             </MKBox>
         </Dialog>
     );

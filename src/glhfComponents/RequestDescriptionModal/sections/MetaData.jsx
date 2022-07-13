@@ -10,14 +10,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import { Link } from 'react-router-dom';
 
-const sampleInfo = {
-    lastModified: `${new Date().toDateString()}`,
-    company: "Google",
-}
 
-const MetaData = () => {
-
+const MetaData = ({ metaData }) => {
+    console.log(metaData)
     const listItemSx = { p: 0.5 }
 
     return (
@@ -28,7 +25,7 @@ const MetaData = () => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Last Modified At: " + sampleInfo.lastModified}
+                    secondary={"Last Modified At: " + metaData.lastModified}
                 />
             </ListItem>
             <ListItem sx={listItemSx}>
@@ -37,7 +34,12 @@ const MetaData = () => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Company: " + sampleInfo.company}
+                    secondary={
+                        <>
+                            Company: &nbsp;
+                            <Link to={`/company-info/${metaData.authorId}`}>{metaData.authorName}</Link>
+                        </>
+                    }
                 />
             </ListItem>
 

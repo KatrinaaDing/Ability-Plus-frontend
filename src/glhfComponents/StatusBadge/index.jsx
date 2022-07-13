@@ -45,7 +45,7 @@ const StatusBadge = props => {
 
 StatusBadge.propTypes = {
     statusLabel: PropTypes.string.isRequired,
-    type: PropTypes.oneOf('proposal', 'request').isRequired,
+    type: PropTypes.oneOf(['proposal', 'request']).isRequired,
     size: PropTypes.string,
     varient: PropTypes.string
 };
