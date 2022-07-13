@@ -13,6 +13,8 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
+import { getLabel } from 'utils/getStatus';
+import { formatLabel } from 'utils/getStatus';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -57,22 +59,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
-  const [status, setStatus] = useState('0');
+  const [status, setStatus] = useState(0);
   const [ascending, setAcending] = useState(true);
   const handleChange = (e) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
-    if (currStatus === '0') {
-      handleStatus('Draft');
-    } else if ( currStatus === '1') {
-      handleStatus ('proposal');
-    } else if ( currStatus === '2') {
-      handleStatus('Approving');
-    } else if (currStatus === '3') {
-      handleStatus('solution');
-    } else if (currStatus === '4') {
-      handleStatus('closed')
-    }
+    handleStatus(getLabel('request', currStatus));
+    
   };
   useEffect(() => {
     handleDate(ascending)
@@ -91,11 +84,10 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
             onChange={handleChange}
              style={{height: '40px'}}
             >
-            <MenuItem value={'0'}>Draft</MenuItem>
-            <MenuItem value={'1'}>Open for proposal</MenuItem>
-            <MenuItem value={'2'}>Approving</MenuItem>
-            <MenuItem value={'3'}>Open for Solution</MenuItem>
-            <MenuItem value={'4'}>Closed</MenuItem>           
+              {
+                [...Array(5).keys()].map(i => 
+                  <MenuItem key={i} value={i}>{formatLabel(getLabel('request', i))}</MenuItem>)
+              }     
           </Select>
         </FormControl>
       </Box>

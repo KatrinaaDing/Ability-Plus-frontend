@@ -13,10 +13,9 @@ import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import FilterBar from "glhfComponents/Filter"
+import FilterBar from "glhfComponents/RequestFilter"
 
 import StatusBadge from "glhfComponents/StatusBadge";
-import { statusBank } from "utils/getStatus";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 
 const MyProjectRequests = () => {
@@ -28,7 +27,6 @@ const MyProjectRequests = () => {
 
     // request detail state
     const [reqOpen, setReqOpen] = useState(false);
-    const [proId, setProId] = useState(-1);
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
@@ -78,7 +76,7 @@ const MyProjectRequests = () => {
                 id: id
             })
         })
-            .then(res => setReqDetail(res.data))
+            .then(res => { console.log(res);setReqDetail(res.data)})
             .then(res => setReqOpen(true))
             .catch(e => console.error(e))
     }
@@ -95,16 +93,16 @@ const MyProjectRequests = () => {
                         setOpen={setReqOpen}
                         value={{
                             title: reqDetail.name,
-                            status: statusLabel,
-                            category: 'Frontend Development',   // TOFIX
-                            propDdl: new Date(reqDetail.proposalDdl * 1000).toDateString(),
-                            soluDdl: new Date(reqDetail.solutionDdl * 1000).toDateString(),
+                            status: status,
+                            category: reqDetail.projectArea,  
+                            propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
+                            soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
                             description: reqDetail.description,
                             requirement: "Sample Requirement",
                             rewards: "$1000",
                             metaData: {
-                                lastModified: new Date().toDateString(),
-                                authorName: "google",
+                                lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
+                                authorName: reqDetail.creatorName,
                                 authorId: reqDetail.creatorId,
                             }
                         }}
@@ -114,7 +112,7 @@ const MyProjectRequests = () => {
             
             <MKBox display='flex'>
                 <p>There are {total} reqeusts with status </p>
-                <StatusBadge statusLabel={statusLabel} type='request' size='sm' />
+                <StatusBadge statusLabel={status} type='request' size='sm' />
             </MKBox>
             <Grid container justifyContent="flex-end">
                 <MKButton variant="gradient" color="info" size="large" onClick={handleCreate}>Create Project</MKButton>
@@ -126,13 +124,15 @@ const MyProjectRequests = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Project Request match your criteria</MKTypography>
+                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    No Project Request match your criteria
+                                </MKTypography>
                             :    reqs.map(r => 
                                     <RequestCard
                                         key={r.id}
                                         data={{
                                             ...r,
-                                            lastModification: '2022-07-15'
+                                            lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
                                         }}
                                         openProp={() => getProjectDetail(r.id)}
                                     />

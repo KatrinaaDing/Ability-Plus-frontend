@@ -32,6 +32,7 @@ value = {
     metaData: {
         lastModified,
         authorName,
+        authorId
     }
 }
 

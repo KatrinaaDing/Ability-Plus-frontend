@@ -23,6 +23,7 @@ import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from 'glhfComponents/AlertModal';
+import useAuth from 'auth/useAuth';
 
 
 const categories = [
@@ -45,6 +46,7 @@ const sampleContent = {
 const CreateRequest = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
+    const { auth } = useAuth();
 
     const [title, setTitle] = React.useState('')
     const [category, setCategory] = React.useState('')
@@ -136,9 +138,9 @@ const CreateRequest = () => {
         const body = {
             "categoryType": category,
             "extraData": {
-                "description": description,
-                "requirement": requirement,
-                "rewards": rewards,
+                description: description,
+                requirement: requirement,
+                rewards: rewards,
             },
             "isDraft": true,
             "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
@@ -161,9 +163,9 @@ const CreateRequest = () => {
         const body = {
             "categoryType": category,
             "extraData": {
-                "description": description,
-                "requirement": requirement,
-                "rewards": rewards,
+                description: description,
+                requirement: requirement,
+                rewards: rewards,
             },
             "isDraft": false,
             "proposalDue": new Date(propDdl).getTime() / 1000,
@@ -213,7 +215,20 @@ const CreateRequest = () => {
             <RequestDescriptionModal
                 open={preview}
                 setOpen={setPreview}
-                value={{title,category,propDdl,soluDdl,description,requirement,rewards,status}}
+                value={{
+                    title,
+                    category,
+                    propDdl,
+                    soluDdl,
+                    description,
+                    requirement,
+                    rewards,
+                    status,
+                    metaData: {
+                        lastModified: new Date().toLocaleString(),
+                        authorName: auth.username,
+                    }
+                }}
                 actionButton={
                     <MKButton variant="gradient" color="success" onClick={handleSubmit}>
                         Submit

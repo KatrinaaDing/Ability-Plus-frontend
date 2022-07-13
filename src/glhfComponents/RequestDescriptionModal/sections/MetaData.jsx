@@ -37,7 +37,14 @@ const MetaData = ({ metaData }) => {
                     secondary={
                         <>
                             Company: &nbsp;
-                            <Link to={`/company-info/${metaData.authorId}`}>{metaData.authorName}</Link>
+                            <Link 
+                                to={ metaData.authorId
+                                        ? `/company-info/${metaData.authorId}`
+                                        : '/company/profile'
+                                    }
+                            >
+                                {metaData.authorName}
+                            </Link>
                         </>
                     }
                 />

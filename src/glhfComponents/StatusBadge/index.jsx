@@ -11,7 +11,6 @@ import { formatLabel } from 'utils/getStatus';
 
 
 const StatusBadge = props => {
-
     const color = {
         proposal: {
             0: 'light',
@@ -29,7 +28,6 @@ const StatusBadge = props => {
         }
         
     }
-
 
     return (
         <MKBadge
