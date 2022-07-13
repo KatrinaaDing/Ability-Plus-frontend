@@ -59,12 +59,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const StatusProposalSolutionFilter = ({ handleStatus, handleProposalDeadline, handleSolutionDeadline }) => {
 	const [isAscendingProposalDeadline, setIsAcendingProposalDeadline] = useState(true);
 	const [isAscendingSolutionDeadline, setIsAcendingSolutionDeadline] = useState(true);
-  const [status, setStatus] = useState('Draft');
+  const [status, setStatus] = useState(0);
   useEffect(() => {
   }, [isAscendingProposalDeadline, isAscendingSolutionDeadline, status])
   const handleChange = (e) => {
-    console.log(e.target.value);
-  }
+    const currStatus = e.target.value;
+    setStatus(currStatus)
+    handleStatus(getLabel('request', currStatus));
+  };
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>

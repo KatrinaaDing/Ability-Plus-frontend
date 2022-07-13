@@ -68,7 +68,7 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>
         <MKButton onClick={() => setIsAcendingOrderLike(!isAscendingOrderLike)}>
-          SortByLike{' '}
+          Sort By Like{' '}
           { isAscendingOrderLike && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !isAscendingOrderLike && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
