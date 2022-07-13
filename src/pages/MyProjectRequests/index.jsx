@@ -13,11 +13,11 @@ import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-
+import FilterBar from "glhfComponents/Filter"
 const MyProjectRequests = () => {
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
-
+    const [sortByDate, setSortByDate] = useState(true);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
@@ -45,7 +45,9 @@ const MyProjectRequests = () => {
     const handleCreate = () => {
         navigate('/create-request')
     }
-
+    const handleDate = (ascending) => {
+        console.log(ascending)
+    }
     return (
         <BasicPageLayout title="My Project Reqeusts">
             <p>There are {total} reqeusts in total</p>
@@ -54,6 +56,7 @@ const MyProjectRequests = () => {
             </Grid>
             <br />
             <Box sx={{ flexGrow: 1 }}>
+                <FilterBar handleDate={ handleDate }></FilterBar>
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
 
                     {
