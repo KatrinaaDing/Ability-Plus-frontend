@@ -10,7 +10,6 @@ import 'react-quill/dist/quill.snow.css';
 const RichTextEditor = ({ placeholder, height, value, setValue }) => {
 
     const handleChange = (html) => {
-        console.log(html)
         setValue(html);
     }
 

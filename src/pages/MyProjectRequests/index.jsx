@@ -13,13 +13,24 @@ import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import FilterBar from "glhfComponents/Filter"
+import FilterBar from "glhfComponents/RequestFilter"
+
+import StatusBadge from "glhfComponents/StatusBadge";
+import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
+
 const MyProjectRequests = () => {
-    const [reqs, setReqs] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [ascending, setAcending] = useState(true);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
+
+    const [reqs, setReqs] = useState([]);
+    const [total, setTotal] = useState(0);
+
+    // request detail state
+    const [reqOpen, setReqOpen] = useState(false);
+    const [reqDetail, setReqDetail] = useState({})
+
+    // searching state
+    const [ascending, setAcending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
     
@@ -35,18 +46,15 @@ const MyProjectRequests = () => {
             params: params
         })
             .then(res => {
-                console.log(res)
                 setReqs(res.data.records)
                 setTotal(res.data.total)
             })
             .catch(e => {
                 console.error(e)
             })
-      
+
     }, [ascending, status, searchKey])
-    const handleCreate = () => {
-        navigate('/create-request')
-    }
+
     const handleDate = (ascending) => {
         setAcending(ascending)
     }
@@ -56,9 +64,56 @@ const MyProjectRequests = () => {
     const handleSearch = (key) => {
         setSearchKey(key);
     }
+   
+    const handleCreate = () => {
+        navigate('/create-request')
+    }
+
+
+    const getProjectDetail = async (id) => {
+        await axiosPrivate.get('/project/get_project_info', {
+            params: new URLSearchParams({
+                id: id
+            })
+        })
+            .then(res => { console.log(res);setReqDetail(res.data)})
+            .then(res => setReqOpen(true))
+            .catch(e => console.error(e))
+    }
+
+
+
+
     return (
         <BasicPageLayout title="My Project Reqeusts">
-            <p>There are {total} reqeusts in total</p>
+            {
+                Object.keys(reqDetail).length > 0  &&
+                    <RequestDescriptionModal
+                        open={reqOpen}
+                        setOpen={setReqOpen}
+                        value={{
+                            title: reqDetail.name,
+                            status: status,
+                            category: reqDetail.projectArea,  
+                            propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
+                            soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
+                            description: reqDetail.description,
+                            requirement: "Sample Requirement",
+                            rewards: "$1000",
+                            metaData: {
+                                lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
+                                authorName: reqDetail.creatorName,
+                                authorId: reqDetail.creatorId,
+                            }
+                        }}
+                        actionButton={<></>}
+                    />
+            }
+            
+            <MKBox display='flex'>
+                <p>There are {total} reqeusts with status </p>
+                <StatusBadge statusLabel={status} type='request' size='sm' />
+            </MKBox>
             <Grid container justifyContent="flex-end">
                 <MKButton variant="gradient" color="info" size="large" onClick={handleCreate}>Create Project</MKButton>
             </Grid>
@@ -68,21 +123,23 @@ const MyProjectRequests = () => {
                 <br />
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
-                        reqs.map(r => 
-                             <RequestCard
-                                key={r.id}
-                                userType={'company'}
-                                page={'My Project Requests'}
-                                data={{...r}}
-                            />
-                        )
-                    }
-                    {
-                        reqs.length === 0 && <MKTypography sx={{display: 'flex', alignItems: 'center', justifyContent:'center'}}>No Project Request match your criteria</MKTypography>
+                        reqs.length === 0
+                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    No Project Request match your criteria
+                                </MKTypography>
+                            :    reqs.map(r => 
+                                    <RequestCard
+                                        key={r.id}
+                                        data={{
+                                            ...r,
+                                            lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
+                                        }}
+                                        openProp={() => getProjectDetail(r.id)}
+                                    />
+                                )
                     }
                 </Grid>
             </Box>
-
         </BasicPageLayout>
     );
 }

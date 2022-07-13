@@ -30,6 +30,7 @@ const CompanyInfoPage = () => {
     const title = sampleData.name;
   
     return (
+
       <BasicPageLayout title = {title + " Info "}>
         <MKBox bgColor="white">
           <MKBox
@@ -63,6 +64,7 @@ const CompanyInfoPage = () => {
           </Card>
         </MKBox>
       </BasicPageLayout>
+
     );
   }
 
