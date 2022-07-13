@@ -52,7 +52,7 @@ const PersonalPage = () => {
             />
             <ProposalDescriptionModal />
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {data.map((d, key) => <RequestCard key={key} userType={userType} page={page} data={ d } />)} 
+                {/* {data.map((d, key) => <RequestCard key={key} userType={userType} page={page} data={ d } />)}  */}
             </Grid>
         </BasicPageLayout>
     );

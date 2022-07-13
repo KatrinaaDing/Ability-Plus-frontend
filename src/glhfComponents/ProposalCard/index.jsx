@@ -3,6 +3,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import useAuth from 'auth/useAuth';
+import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKTypography from 'components/MKTypography';
 import StatusBadge from 'glhfComponents/StatusBadge';
@@ -22,9 +23,20 @@ import { getCode } from 'utils/getStatus';
 | my proposals          | s    | 1     | 1    | 1     | 1      | 0      | 1         | ==approved: 1, else 0 | view   |
 | student info          | c,s  | 1     | 1    | 1     | 0      | 0      | 1         | 1                     | view   |
 
+value = {
+    title,
+    status,
+    description,
+    topic,
+    authorId,
+    authorName,
+    lastModified,
+    likes,
+}
 
  * 
  */
+
 
 const ProposalCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1)
@@ -32,8 +44,8 @@ const ProposalCard = ({ data, openDetail }) => {
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
             <CardContent>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography gutterBottom variant="h5" component="div">
+                <Grid container item justifyContent="flex-start" xs={10}>
+                    <MKTypography gutterBottom variant="h5" sx={{py: 1.5}}>
                         {data.title}
                     </MKTypography>
                     {
@@ -61,22 +73,25 @@ const ProposalCard = ({ data, openDetail }) => {
                     </Grid>
                 </Grid>
             </CardContent>
-            <CardActions>
-                <br />
-                <Grid container justifyContent='flex-end'>
-                    {/* 10 */}
-                    <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+            <CardActions >
+                <MKBox sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '-webkit-fill-available'
+                }}>
                     {(page.startsWith('popular') ||
                         page.startsWith('student-info') ||
                         (page.startsWith('my-proposals') && data.status === statusBank.proposal.approved.label)) &&
-                            <div>
+                            <MKBox display='flex' flexDirection='row' px={3} sx={{mt: 'auto', mb: 'auto'}}>
                                 <FcLike size={20} display='inline-block' />
-                                <MKTypography variant="body2" mb={1} display='inline-block'>
+                                <MKTypography variant="body2"  display='inline-block'>
                                     {data.likes}
                                 </MKTypography>
-                            </div>
+                            </MKBox>
                     }
-                </Grid>
+                    <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                </MKBox>
             </CardActions>
         </Card>
     );

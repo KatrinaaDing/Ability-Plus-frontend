@@ -19,7 +19,8 @@ const useAxiosPrivate = () => {
         const requestIntercept = axiosPrivate.interceptors.request.use(                     // interceptor are execute before .then and .catch
             config => {
                 if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
-                    config.headers['token'] = auth?.accessToken;        // setting auth header for request
+                    assert(Object.keys(auth) > 0)
+                    config.headers['token'] = auth.accessToken;        // setting auth header for request
                 }
                 console.log('request', config) // uncomment this to debug
                 return config;

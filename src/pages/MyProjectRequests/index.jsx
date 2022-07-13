@@ -76,7 +76,7 @@ const MyProjectRequests = () => {
                 id: id
             })
         })
-            .then(res => { console.log(JSON.parse(res.data.extraData));setReqDetail(res.data)})
+            .then(res => setReqDetail(res.data))
             .then(res => setReqOpen(true))
             .catch(e => console.error(e))
     }

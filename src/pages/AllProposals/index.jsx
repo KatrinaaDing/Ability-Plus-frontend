@@ -9,18 +9,26 @@ import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import routes from "routes";
 import Box from '@mui/material/Box';
-import RequestCard from "glhfComponents/RequestCard-Backup";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import ProposalCard from "glhfComponents/ProposalCard";
 
 const AllProposals = () => {
     return (
         <BasicPageLayout title="All Proposals">
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                    <RequestCard userType={'company'} page={'All Proposals'} />
-                    <RequestCard userType={'company'} page={'All Proposals'} />
-                    <RequestCard userType={'company'} page={'All Proposals'} />
-                    <RequestCard userType={'company'} page={'All Proposals'} />
+                    <ProposalCard
+                        data={{
+                            title: "Sample Title",
+                            status: null,
+                            topic: "Proposal Management",
+                            authorId: 8,
+                            authorName: 'Student 1',
+                            lastModified: new Date().toLocaleString(),
+                            likes: 5
+                        }}
+                        openDetail={() => alert("open!")}
+                    />
                 </Grid>
             </Box>              
         </BasicPageLayout>

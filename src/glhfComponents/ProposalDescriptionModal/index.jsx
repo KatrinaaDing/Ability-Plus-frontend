@@ -24,19 +24,24 @@ import { statusBank } from 'utils/getStatus';
 
 /*
 value = {
-    
+    title,
+    status,
+    desc,
+    prob,
+    vStat,
+    goal,
+    detail,
+    metaData: {
+        lastModified,
+        authorName,
+        authorId,
+        topic
+    }
 }
 
 */
 const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
-
-    const sampleMeta = {
-        lastModified: `${new Date().toDateString()}`,
-        author: "Jane Wone",
-        requestTitle: 'Proposal Management'
-    }
-
 
     return (
         <Dialog
@@ -67,7 +72,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                        <MetaData data={sampleMeta} />
+                        <MetaData data={value.metaData} />
                     </Grid>
                     <DetailSection
                         order={3}

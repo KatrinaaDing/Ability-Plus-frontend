@@ -107,10 +107,7 @@ const CompanyInfoPage = () => {
                 </MKTypography>
                 </Grid>
                 <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                    <RequestCard userType={'student'} page={'Company Profile'} />
-                    <RequestCard userType={'student'} page={'Company Profile'} />
-                    <RequestCard userType={'student'} page={'Company Profile'} />
-                    <RequestCard userType={'student'} page={'Company Profile'} />
+                    {/* TODO request card */}
                 </Grid>
             </Container>
        
