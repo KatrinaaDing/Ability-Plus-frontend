@@ -6,34 +6,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MKBadge from 'components/MKBadge';
+import { getCode } from 'utils/getStatus';
+import { formatLabel } from 'utils/getStatus';
 
 
 const StatusBadge = props => {
 
-    const content = {
-        0: 'Draft',
-        1: 'Open for Proposal',
-        2: 'Approving',
-        3: 'Open for Solution',
-        4: 'Closed',
-        5: 'Ejected',
-    }
-
     const color = {
-        0: 'light',
-        1: 'success',
-        2: 'info',
-        3: 'success',
-        4: 'primary',
-        5: 'warning',
+        proposal: {
+            0: 'light',
+            1: 'info',
+            2: 'warning',
+            3: 'success',
+            4: 'primary',
+        },
+        request: {
+            0: 'light',
+            1: 'success',
+            2: 'warning',
+            3: 'info',
+            4: 'dark',
+        }
+        
     }
 
 
     return (
         <MKBadge
-            badgeContent={content[props.statusCode]}
+            badgeContent={formatLabel(props.statusLabel)}
             size={props.size || 'md'}
-            color={color[props.statusCode]}
+            color={color[props.type][getCode(props.type, props.statusLabel)]}
             container
             variant={props.varient || 'gradient'}
             sx={{ml:2}}
@@ -42,7 +44,8 @@ const StatusBadge = props => {
 };
 
 StatusBadge.propTypes = {
-    statusCode: PropTypes.number,
+    statusLabel: PropTypes.string.isRequired,
+    type: PropTypes.oneOf('proposal', 'request').isRequired,
     size: PropTypes.string,
     varient: PropTypes.string
 };

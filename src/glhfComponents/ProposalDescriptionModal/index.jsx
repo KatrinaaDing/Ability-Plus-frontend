@@ -22,7 +22,7 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 import useAuth from 'auth/useAuth';
 
 
-const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
+const ProposalDescriptionModal = ({ preview, setPreview, value, handleSubmit }) => {
     const { auth } = useAuth();
 
     const sampleMeta = {
@@ -30,6 +30,7 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
         author: "Jane Wone",
         requestTitle: 'Proposal Management'
     }
+
 
     return (
         <Dialog
@@ -41,7 +42,7 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
                     <MKTypography variant="h5">{value.title}</MKTypography>
-                    <StatusBadge statusCode={0} />
+                    <StatusBadge statusLabel={value.status} type='proposal' />
                 </MKBox>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setPreview(false)} />
             </MKBox>
@@ -113,7 +114,7 @@ const ProposalDescriptionModal = ({ preview, setPreview, value }) => {
                             : <></>
                     }
 
-                    <MKButton variant="gradient" color="success" sx={{ ml: 3 }}>
+                    <MKButton variant="gradient" color="success" onClick={handleSubmit} sx={{ ml: 3 }}>
                         Submit
                     </MKButton>
                 </MKBox>

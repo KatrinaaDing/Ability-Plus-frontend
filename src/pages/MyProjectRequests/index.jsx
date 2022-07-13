@@ -13,26 +13,28 @@ import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import StatusBadge from "glhfComponents/StatusBadge";
+import { statusBank } from "utils/getStatus";
 
 const MyProjectRequests = () => {
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
+    const [statusLabel, setStatusLabel] = useState(statusBank.request.draft.label);
 
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     const params = new URLSearchParams({
-        status: "Draft",
+        status: statusLabel,
         isAscendingOrder: true,
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 20,
     })
     useEffect(async () => {
         await axiosPrivate.get('/project/list_my_project_request/', {
             params: params
         })
             .then(res => {
-                console.log(res)
                 setReqs(res.data.records)
                 setTotal(res.data.total)
             })
@@ -48,14 +50,16 @@ const MyProjectRequests = () => {
 
     return (
         <BasicPageLayout title="My Project Reqeusts">
-            <p>There are {total} reqeusts in total</p>
+            <MKBox display='flex'>
+                <p>There are {total} reqeusts with status </p>
+                <StatusBadge statusLabel={statusLabel} type='request' size='sm' />
+            </MKBox>
             <Grid container justifyContent="flex-end">
                 <MKButton variant="gradient" color="info" size="large" onClick={handleCreate}>Create Project</MKButton>
             </Grid>
             <br />
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-
                     {
                         reqs.map(r => 
                              <RequestCard

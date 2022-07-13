@@ -19,7 +19,7 @@ import ShortInfo from './sections/ShortInfo';
 import DetailSection from 'glhfComponents/ProposalDescriptionModal/sections/DetailSection';
 
 
-const RequestDescriptionModal = ({ preview, setPreview, value }) => {
+const RequestDescriptionModal = ({ preview, setPreview, value, handleSubmit }) => {
     return (
         <Dialog
             open={preview}
@@ -30,7 +30,7 @@ const RequestDescriptionModal = ({ preview, setPreview, value }) => {
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
                     <MKTypography variant="h5">{value.title}</MKTypography>
-                    <StatusBadge statusCode={0} />
+                    <StatusBadge statusLabel={value.status} type='request' />
                 </MKBox>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setPreview(false)} />
             </MKBox>
@@ -69,7 +69,7 @@ const RequestDescriptionModal = ({ preview, setPreview, value }) => {
                 <MKButton variant="gradient" color="dark" onClick={() => setPreview(false)}>
                     Close
                 </MKButton>
-                <MKButton variant="gradient" color="success">
+                <MKButton variant="gradient" color="success" onClick={handleSubmit}>
                     Submit
                 </MKButton>
             </MKBox>

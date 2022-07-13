@@ -21,7 +21,7 @@ const useAxiosPrivate = () => {
                 if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
                     config.headers['token'] = auth?.accessToken;        // setting auth header for request
                 }
-                // console.log(config) // uncomment this to debug
+                console.log('request', config) // uncomment this to debug
                 return config;
             }, (error) => Promise.reject(error)
         );
@@ -32,7 +32,7 @@ const useAxiosPrivate = () => {
                 response.statusText = response.data.message
                 const resData = response.data.data;
                 response.data = resData;
-                // console.log(response)           // uncomment it to debug
+                console.log('response', response)           // uncomment it to debug
                 if (response.status >= 400)
                     return Promise.reject(response)
                 return response

@@ -64,7 +64,7 @@ const RequestCard = ({ userType, page, data }) => {
             </MKTypography>
             {(!(userType === 'company' && page === 'Student Profile')&& !(userType === 'all' && page === 'Popular Proposals')) &&
               // {/* 8 */}
-             <StatusBadge statusCode={ statusCode } size='sm' />
+              <StatusBadge type='request' statusLabel={sample.status} size='sm' />
             }
           </Grid>
           <MKTypography variant="body2" color="secondary">

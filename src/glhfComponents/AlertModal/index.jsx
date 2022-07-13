@@ -11,7 +11,7 @@ import MKTypography from 'components/MKTypography';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 
-const AlertModal = ({ open, handleClose, handleClick, title, content }) => {
+const AlertModal = ({ open, handleClose, handleConfirm, title, content }) => {
 
     const style = {
         position: 'absolute',
@@ -31,6 +31,7 @@ const AlertModal = ({ open, handleClose, handleClick, title, content }) => {
         <Modal
             open={open}
             onClose={(_, reason) => {
+                console.log('reason', reason)
                 if (reason !== "backdropClick") {
                     handleClose();
                 }
@@ -50,7 +51,7 @@ const AlertModal = ({ open, handleClose, handleClick, title, content }) => {
                     <MKTypography variant='body'> {content} </MKTypography>
                 </Box>
                 <Box display='flex' justifyContent='center' sx={{p: 2}}>
-                    <MKButton variant='outlined' fullWidth color='info' onClick={handleClick}>OK</MKButton>
+                    <MKButton variant='outlined' fullWidth color='info' onClick={handleConfirm}>OK</MKButton>
                 </Box>
             </Box>
             </Fade>

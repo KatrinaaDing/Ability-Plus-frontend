@@ -220,7 +220,7 @@ function SignUpBasic() {
       <AlertModal
         open={alertModalOpen}
         handleClose={() => setAlertModalOpen(false)}
-        handleClick={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
+        handleConfirm={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
         title="You have logged in."
         content="You'll be redirected to your personal page."
       />

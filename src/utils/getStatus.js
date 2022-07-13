@@ -7,45 +7,45 @@ const statusBank = {
     proposal: {
         draft: {
             code: 0,
-            label: 'Draft'
+            label: 'draft'
         },
         submitted: {
             code: 1,
-            label: 'Submitted'
+            label: 'submitted'
         },
         approving: {
             code: 2,
-            label: 'Approving'
+            label: 'approving'
         },
         approved: {
             code: 3,
-            label: 'Approved'
+            label: 'approved'
         },
         rejected: {
             code: 4,
-            label: 'Rejected'
+            label: 'rejected'
         }
     },
     request: {
         draft: {
             code: 0,
-            label: 'Draft'
+            label: 'draft'
         },
         proposal: {
             code: 1,
-            label: 'Open for proposal'
+            label: 'open_for_proposal'
         },
         approving: {
             code: 2,
-            label: 'Approving'
+            label: 'approving'
         },
         solution: {
             code: 3,
-            label: 'Open for solution'
+            label: 'open_for_solution'
         },
         closed: {
             code: 4,
-            label: 'Closed'
+            label: 'closed'
         }
     }
 }
@@ -79,12 +79,16 @@ const getLabel = (type, statCode) => {
                 return statusBank.request[sKey].label
         }
     }
-
     return null // not found
+}
+
+const formatLabel = (label) => {
+    return label = label.split('_').join(' ')
 }
 
 export {
     statusBank,
     getCode,
-    getLabel
+    getLabel,
+    formatLabel
 }

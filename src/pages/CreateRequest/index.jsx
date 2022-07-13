@@ -21,6 +21,8 @@ import DatePicker from './sections/DatePicker';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import { useNavigate } from 'react-router-dom';
+import AlertModal from 'glhfComponents/AlertModal';
 
 
 const categories = [
@@ -36,10 +38,14 @@ const sampleContent = {
     solddl: "2022-11-15 18:31",
     desc: "<p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. <u>Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero</u>, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p><br></p><p>Morbi sed dictum dui. Aenean at est lectus. <span style=\"color: rgb(230, 0, 0);\">Suspendisse condimentum</span> leo ac nisl varius maximus. <span style=\"background-color: rgb(255, 255, 0);\">Nam commodo ultricies elit, ut sagittis dolor volutpat et. Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</span></p><p><br></p><p>Quisque eget luctus nunc. Morbi tempor pharetra sapien, <strong>ut interdum lacus interdum id</strong>. Nullam ac urna sed mauris interdum malesuada vitae eu enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vel eleifend lectus. Ut rutrum tellus a est volutpat, nec placerat sapien gravida. Sed sit amet lectus et libero fringilla varius vitae at velit. Cras vitae sapien at eros fermentum interdum quis ut velit. Mauris interdum feugiat felis, nec ornare justo laoreet vel. Suspendisse posuere a enim non rutrum. Praesent dapibus nisl erat.</p>",
     req: "<h2>Functional</h2><ol><li>Sed mollis euismod nulla non feugiat.</li><li>Nulla quis convallis massa.&nbsp;</li><li>Duis interdum enim nisi, vel viverra nibh dictum et.</li><li>Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</li></ol><p><br></p><h2>Non-functional</h2><ol><li>Morbi sed dictum dui. Aenean at est lectus. </li><li>Suspendisse condimentum leo ac nisl varius maximus. </li><li>Nam commodo ultricies elit, ut sagittis dolor volutpat et. </li><li>Curabitur quis lacus vitae justo efficitur gravida. </li><li>Aenean dictum orci eu elit fermentum aliquet. </li><li>Donec fermentum porttitor felis at eleifend.</li></ol><p><br></p>",
-    rew: "<p>$1000</p>"
+    rew: "<p>$1000</p>",
+    status: "Draft"
 }
 
 const CreateRequest = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+
     const [title, setTitle] = React.useState('')
     const [category, setCategory] = React.useState('')
     const [propDdl, setPropDdl] = React.useState('')
@@ -49,8 +55,11 @@ const CreateRequest = () => {
     const [rewards, setRewards] = React.useState('')
     const [error, setError] = React.useState('')
     const [preview, setPreview] = React.useState(false)
+    const [status, setStatus] = React.useState('')
 
-    const axiosPrivate = useAxiosPrivate();
+    const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
+    const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
+
 
     const ActionButton = ({ ...props }) => {
         return (
@@ -75,7 +84,6 @@ const CreateRequest = () => {
             Description: description,
             Requirements: requirement
         }
-        console.log(checkList, rewards)
 
         const errorList = [];
         Object.keys(checkList).forEach(i => {
@@ -106,9 +114,24 @@ const CreateRequest = () => {
         setDescription(sampleContent.desc)
         setRequirement(sampleContent.req)
         setRewards(sampleContent.rew)
+        setStatus(sampleContent.status)
     }
-    
+
+    const checkEmpty = () => {
+        const checkList = [title, category, propDdl, soluDdl, description, requirement, rewards]
+        for (let input of checkList) {
+            if (input !== '') {
+                return false
+            }
+        }
+        return true
+    }
+
     const handleSaveDraft = async () => {
+        if (checkEmpty()) {
+            setError("Cannot save empty proposal!")
+            return
+        }
 
         const body = {
             "categoryType": category,
@@ -118,22 +141,68 @@ const CreateRequest = () => {
                 rewards: rewards,
             },
             "isDraft": true,
-            "proposalDue": new Date(propDdl).getTime() / 1000,
-            "solutionDue": new Date(soluDdl).getTime() / 1000,
+            "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
+            "solutionDue": soluDdl === '' ? 0 : new Date(soluDdl).getTime() / 1000,
             "title": title
         }
 
         await axiosPrivate.post('/project/create_project_request', body)
-        .then(res => {
-            console.log(res)            
-        })
-        .catch(e => {
-            console.error(e)
-        })
+            .then(res => {
+                setAlertOpenDraft(true)           
+            })
+            .catch(e => {
+                console.error(e)
+            })
     }
+
+ 
+
+    const handleSubmit = async () => {
+        const body = {
+            "categoryType": category,
+            "extraData": {
+                description: description,
+                requirement: requirement,
+                rewards: rewards,
+            },
+            "isDraft": false,
+            "proposalDue": new Date(propDdl).getTime() / 1000,
+            "solutionDue": new Date(soluDdl).getTime() / 1000,
+            "title": title
+        }
+        
+        await axiosPrivate.post('/project/create_project_request', body)
+            .then(res => {
+                setPreview(false)
+                setAlertOpenSubmit(true)
+            })
+            .catch(e => {
+                console.error(e)
+            })
+    }
+
+    const SaveDraftConfirm = () =>
+        <AlertModal
+            open={alertOpenDraft}
+            handleClose={() => setAlertOpenDraft(false)}
+            handleConfirm={() => setAlertOpenDraft(false)}
+            title="Successfully Saved"
+            content="Your proposal has been saved to draft!"
+        />
+
+    const SubmitConfirm = () =>
+        <AlertModal
+            open={alertOpenSubmit}
+            handleClose={() => setAlertOpenSubmit(false)}
+            handleConfirm={() => navigate('/my-project-requests')}
+            title="Your proposal has been publised!"
+            content="You'll be redirect to My Proposals page."
+        />
 
     return (
         <BasicPageLayout title="Create Project Request">
+            <SaveDraftConfirm />
+            <SubmitConfirm />
             <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
@@ -144,7 +213,8 @@ const CreateRequest = () => {
             <RequestDescriptionModal
                 preview={preview}
                 setPreview={setPreview}
-                value={{title,category,propDdl,soluDdl,description,requirement,rewards}}
+                value={{title,category,propDdl,soluDdl,description,requirement,rewards,status}}
+                handleSubmit={handleSubmit}
             />
             <Grid container spacing={2} justify='flex-start'>
                 <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
@@ -196,8 +266,8 @@ const CreateRequest = () => {
                 
                 <FormSection 
                     order={4}
-                    minHeight='600px'
-                    editorHeight='400px'
+                    minHeight='350px'
+                    editorHeight='200px'
                     title='Description'
                     value={description}
                     setValue={setDescription}
@@ -205,8 +275,8 @@ const CreateRequest = () => {
                 />
                 <FormSection
                     order={5}
-                    minHeight='600px'
-                    editorHeight='500px'
+                    minHeight='350px'
+                    editorHeight='200px'
                     title='Requirements (functional/non-functional)'
                     value={requirement}
                     setValue={setRequirement}
@@ -214,8 +284,8 @@ const CreateRequest = () => {
                 />
                 <FormSection
                     order={6}
-                    minHeight='600px'
-                    editorHeight='500px'
+                    minHeight='100px'
+                    editorHeight='100px'
                     title='Rewards (if any)'
                     value={rewards}
                     setValue={setRewards}

@@ -16,6 +16,8 @@ import FormSection from 'pages/CreateRequest/sections/FormSection';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import AlertModal from 'glhfComponents/AlertModal';
+import { getCode } from 'utils/getStatus';
+import { useNavigate } from 'react-router-dom';
 
 
 const sampleContent = {
@@ -25,20 +27,24 @@ const sampleContent = {
     goal: "<ol><li>a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst.</li><li>Morbi sed dictum dui. Aenean at est lectus.</li><li>Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</li><li>Quisque eget luctus nunc.&nbsp;</li></ol>",
     prob: `<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Fusce vitae orci ante</strong>. Sed est orci, congue non bibendum id, rhoncus ac nulla. Etiam elementum quam quis ultricies ornare. Pellentesque vehicula sapien sed suscipit aliquet. Curabitur non tellus vulputate, <span style="background-color: rgb(255, 255, 0);">condimentum lacus eu,</span> porttitor dui. Nunc id tortor nec metus fringilla pharetra. Nunc tempus venenatis diam, ut varius leo mollis id. Vivamus faucibus <em>et diam in </em>pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p><p><br></p><ul><li><span style="color: rgb(230, 0, 0);">piscing elit. Fusce vitae orci ante.</span> Sed est orci, congu</li><li>piscing elit. Fusce vitae orci ante. Sed est </li><li>piscing elit. Fusce vitae orci ante. Sed est orci, congupiscing elit. Fusce vitae orci ante. Sed est orci, congu</li></ul><p><br></p><p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p>`,
     vStat: "<p>s leo mollis id. Vivamus faucibus et diam in pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p>",
-    status: 0
+    status: "Draft"
 }
 
 const CreateProposal = () => {
+    const navigate = useNavigate();
+
     const [title, setTitle] = React.useState('');
     const [desc, setDesc] = React.useState('');
     const [prob, setProb] = React.useState('');
     const [vStat, setVStat] = React.useState('');
-    const [status, setStatus] = React.useState(0);
+    const [status, setStatus] = React.useState('');
     const [goal, setGoal] = React.useState('');
     const [detail, setDetail] = React.useState('');
     const [error, setError] = React.useState('')
     const [preview, setPreview] = React.useState(false);
-    const [alertOpen, setAlertOpen] = React.useState(false);
+
+    const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
+    const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
 
     const ActionButton = ({ ...props }) => {
         return (
@@ -48,7 +54,7 @@ const CreateProposal = () => {
         )
     }
 
-    const handleSubmit = () => {
+    const handlePreview = () => {
         const checkList = {
             title: title,
             description: desc,
@@ -81,22 +87,54 @@ const CreateProposal = () => {
         setStatus(sampleContent.status)
     }
 
-    const saveDraft = () => {
-        // handle savle draft
-        setAlertOpen(true)
+    const checkEmpty = () => {
+        const checkList = [title, desc, prob, vStat, goal, detail]
+        for (let input of checkList) {
+            if (input !== '') {
+                return false
+            }
+        }
+        return true
     }
 
+    // handle save draft
+    const saveDraft = () => {
+        if (checkEmpty()) {
+            setError("Cannot save empty proposal!")
+            return
+        }
+        setAlertOpenDraft(true)
+    }
+
+    const handleSubmit = () => {
+        setPreview(false)
+        setAlertOpenSubmit(true)
+
+    }
+    const SaveDraftConfirm = () =>
+        <AlertModal
+            open={alertOpenDraft}
+            handleClose={() => setAlertOpenDraft(false)}
+            handleConfirm={() => setAlertOpenDraft(false)}
+            title="Successfully Saved"
+            content="Your proposal has been saved to draft!"
+        />
+    
+    const SubmitConfirm = () =>
+        <AlertModal
+            open={alertOpenSubmit}
+            handleClose={() => setAlertOpenSubmit(false)}
+            handleConfirm={() => navigate('/my-proposals')}
+            title="Your proposal has been publised!"
+            content="You'll be redirect to My Proposals page."
+        />
+
     return (
-        <BasicPageLayout title={`${status < 1 ? 'Edit' : 'Create'} Proposal`}>
-            <AlertModal 
-                open={alertOpen}
-                handleClose={() => setAlertOpen(false)}
-                handleClick={() => setAlertOpen(false)}
-                title="Successfully Saved" 
-                content="Your proposal has been saved to draft!"  
-            />
-            <MKButton variant='outlined' color='info' onClick={()=>setSample()}>Fill with Sample Content</MKButton>
+        <BasicPageLayout title={`${getCode('proposal', status || 'Draft') < 2 ? 'Edit' : 'Create'} Proposal`}>
+            <SaveDraftConfirm />
+            <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: Proposal Management</MKTypography>
+            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;
@@ -106,7 +144,8 @@ const CreateProposal = () => {
             <ProposalDescriptionModal
                 preview={preview}
                 setPreview={setPreview}
-                value={{ title, desc, prob, vStat, goal, detail }}
+                value={{ title, desc, prob, vStat, goal, detail, status }}
+                handleSubmit={handleSubmit}
             />
             <Grid container spacing={2} justify='flex-start'>
                 <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
@@ -127,13 +166,13 @@ const CreateProposal = () => {
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
                     <ActionButton label='Cancel' color='secondary' />
                     <ActionButton label='Save Draft' color='info' onClick={saveDraft}/>
-                    <ActionButton label='Preview & Submit' onClick={handleSubmit} color='success' />
+                    <ActionButton label='Preview & Submit' onClick={handlePreview} color='success' />
                 </Grid>
 
                 <FormSection
                     order={3}
-                    minHeight='600px'
-                    editorHeight='400px'
+                    minHeight='350px'
+                    editorHeight='300px'
                     title='Problems to Solve'
                     value={prob}
                     setValue={setProb}
@@ -141,8 +180,8 @@ const CreateProposal = () => {
                 />
                 <FormSection
                     order={4}
-                    minHeight='600px'
-                    editorHeight='400px'
+                    minHeight='350px'
+                    editorHeight='300px'
                     title='Vision Statement'
                     value={vStat}
                     setValue={setVStat}
@@ -150,8 +189,8 @@ const CreateProposal = () => {
                 />
                 <FormSection
                     order={5}
-                    minHeight='600px'
-                    editorHeight='500px'
+                    minHeight='350px'
+                    editorHeight='300px'
                     title='General Goals'
                     value={goal}
                     setValue={setGoal}
@@ -159,8 +198,8 @@ const CreateProposal = () => {
                 />
                 <FormSection
                     order={6}
-                    minHeight='600px'
-                    editorHeight='500px'
+                    minHeight='350px'
+                    editorHeight='300px'
                     title='Details'
                     value={detail}
                     setValue={setDetail}
