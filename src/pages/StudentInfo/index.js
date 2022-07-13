@@ -15,7 +15,9 @@ import Box from '@mui/material/Box';
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
-
+import bgImage from "assets/images/city-profile.jpg";
+import Profile from "../StudentInfo/sections/Profile"
+import Posts from "../StudentInfo/sections/Posts"
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 
@@ -25,83 +27,45 @@ const sampleData = {
 
 const StudentInfoPage = () => {
 
+    const {auth} = useAuth();
+    const title = auth.isCompany ? 'Company' : 'Student';
+  
     return (
-        <BasicPageLayout title={sampleData.name}>
-                <Grid container item xs={12} lg={7}>
-                    <MKBox width="100%" component="form" method="post" autocomplete="off">
-                        <Grid container alignText="center" py={2}>
-                            <Grid item xs={12} sm={3}>
-                                <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                    Username
-                                </MKTypography>
-                            </Grid>
-
-{/* The actual username should be changed to a parameter with state change. Just an ui sample here*/}
-
-                            <Grid item xs={12} sm={9}>
-                                <MKTypography variant="h6">
-                                    {sampleData.name}
-                                </MKTypography>
-                            </Grid>
-                        </Grid>
-                    </MKBox>
-                </Grid>
-
-                <Grid container item xs={12} lg={7} justifyContent="flex-start">
-                    <MKBox width="100%" component="form" method="post" autocomplete="off">
-                        <Grid container alignItems="center" py={2}>
-                            <Grid item xs={12} sm={3}>
-                                <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                    Email
-                                </MKTypography>
-                            </Grid>
-
-{/* The actual email should be changed to a parameter with state change. Just an ui sample here*/}
-
-                            <Grid item xs={12} sm={9}>
-                                <MKTypography variant="h6">
-                                    JaneWong@sample.com
-                                </MKTypography>
-                            </Grid>
-                        </Grid>
-                    </MKBox>
-                </Grid>        
-                <Grid container item xs={12} lg={7} justifyContent="flex-start">
-                    <MKBox width="100%" component="form" method="post" autocomplete="off">
-                        <Grid container alignItems="center" py={2}>
-                            <Grid item xs={12} sm={3}>
-                                <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                    Description
-                                </MKTypography>
-                            </Grid>
-                        </Grid>
-{/* The actual description should be changed to a parameter with state change. Just an ui sample here*/}
-                        <Grid item xs={12} sm={3}>
-                            <Grid item xs={12} sm={9}>
-                                <MKTypography variant="body2" color="text">
-                                    xxxxxxxxxxx sample here
-                                </MKTypography>
-                            </Grid>
-                        </Grid>
-                    </MKBox>
-                </Grid>
-                <br />
-                <br />
-                <Grid container item xs={12} lg={7} justifyContent="flex-start">
-                    <MKTypography variant="h5" color="error" fontWeight="bold" textTransform="uppercase" mb={1}>
-                        Past Proposals
-                    </MKTypography>
-                </Grid>
-                <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                    <RequestCard userType={'company'} page={'Student Profile'} />
-                    <RequestCard userType={'company'} page={'Student Profile'} />
-                    <RequestCard userType={'company'} page={'Student Profile'} />
-                    <RequestCard userType={'company'} page={'Student Profile'} />
-                </Grid>
-            </Box>  
-        </BasicPageLayout>
+      <BasicPageLayout title = {title + " Info "}>
+        <MKBox bgColor="white">
+          <MKBox
+            minHeight="25rem"
+            width="100%"
+            sx={{
+              backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
+                `${linearGradient(
+                  rgba(gradients.dark.main, 0.8),
+                  rgba(gradients.dark.state, 0.8)
+                )}, url(${bgImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: "grid",
+              placeItems: "center",
+            }}
+          />
+          <Card
+            sx={{
+              p: 2,
+              mx: { xs: 2, lg: 3 },
+              mt: -8,
+              mb: 4,
+              backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
+              backdropFilter: "saturate(200%) blur(30px)",
+              boxShadow: ({ boxShadows: { xxl } }) => xxl,
+            }}
+          >
+            <Profile />
+            <Posts />
+          </Card>
+        </MKBox>
+      </BasicPageLayout>
     );
-}
+  }
+
 
 export default StudentInfoPage
