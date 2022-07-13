@@ -40,15 +40,11 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 
 function Author() {
-  const { auth } = useAuth();
+  const {auth} = useAuth();
+  const title = auth.isCompany ? 'Company' : 'Student';
 
   return (
-    <>
-      <DefaultNavbar
-        routes={getNavbarRoutes()}
-        transparent
-        light
-      />
+    <BasicPageLayout title = {title + " Profile "}>
       <MKBox bgColor="white">
         <MKBox
           minHeight="25rem"
@@ -79,11 +75,8 @@ function Author() {
           <Profile />
           <Posts />
         </Card>
-      <MKBox pt={6} px={1} mt={6}>
-        <DefaultFooter content={footerRoutes} />
       </MKBox>
-      </MKBox>
-    </>
+    </BasicPageLayout>
   );
 }
 

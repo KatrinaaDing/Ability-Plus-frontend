@@ -36,7 +36,7 @@ function Places() {
   return (
     <MKBox component="section" py={2}>
       <Container>
-        <Grid container item xs={12} lg={6}>
+{/*         <Grid container item xs={12} lg={6}>
           <MKTypography variant="h3" mb={6}>
             Latest Proposals
           </MKTypography>
@@ -46,7 +46,7 @@ function Places() {
           <RequestCard userType={'student'} page={'My Proposals'} />
           <RequestCard userType={'student'} page={'My Proposals'} />
           <RequestCard userType={'student'} page={'My Proposals'} />
-        </Grid>
+        </Grid> */}
       </Container>
     </MKBox>
   );
