@@ -17,12 +17,18 @@ import MetaData from './sections/MetaData';
 import DetailSection from './sections/DetailSection';
 import CompanyRating from './sections/CompanyRating';
 import CompanyNote from './sections/CompanyNote';
-import LikeButton from '../LikeButton';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import useAuth from 'auth/useAuth';
+import { getCode } from 'utils/getStatus';
+import { statusBank } from 'utils/getStatus';
 
+/*
+value = {
+    
+}
 
-const ProposalDescriptionModal = ({ preview, setPreview, value, handleSubmit }) => {
+*/
+const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
 
     const sampleMeta = {
@@ -34,17 +40,17 @@ const ProposalDescriptionModal = ({ preview, setPreview, value, handleSubmit }) 
 
     return (
         <Dialog
-            open={preview}
+            open={open}
             fullWidth={true}
             maxWidth='xl'
-            onClose={() => setPreview(false)}
+            onClose={() => setOpen(false)}
         >
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
                     <MKTypography variant="h5">{value.title}</MKTypography>
                     <StatusBadge statusLabel={value.status} type='proposal' />
                 </MKBox>
-                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setPreview(false)} />
+                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setOpen(false)} />
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox p={4}>
@@ -104,19 +110,11 @@ const ProposalDescriptionModal = ({ preview, setPreview, value, handleSubmit }) 
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                <MKButton variant="gradient" color="dark" onClick={() => setPreview(false)}>
+                <MKButton variant="gradient" color="dark" onClick={() => setOpen(false)}>
                     Close
                 </MKButton>
                 <MKBox>
-                    {
-                        value.status < 4
-                            ? <LikeButton originLike={false} originNumLike={23} />
-                            : <></>
-                    }
-
-                    <MKButton variant="gradient" color="success" onClick={handleSubmit} sx={{ ml: 3 }}>
-                        Submit
-                    </MKButton>
+                    {actionButton}
                 </MKBox>
             </MKBox>
         </Dialog>

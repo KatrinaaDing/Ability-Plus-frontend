@@ -31,7 +31,6 @@ const AlertModal = ({ open, handleClose, handleConfirm, title, content }) => {
         <Modal
             open={open}
             onClose={(_, reason) => {
-                console.log('reason', reason)
                 if (reason !== "backdropClick") {
                     handleClose();
                 }

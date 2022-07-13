@@ -1,5 +1,14 @@
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
 import useAuth from 'auth/useAuth';
+import MKButton from 'components/MKButton';
+import MKTypography from 'components/MKTypography';
+import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
+import { FcLike } from 'react-icons/fc';
+import { Link } from 'react-router-dom';
 import { statusBank } from 'utils/getStatus';
 import { getCode } from 'utils/getStatus';
 
@@ -17,9 +26,8 @@ import { getCode } from 'utils/getStatus';
  * 
  */
 
-const ProposalCard = ({ style, data }) => {
+const ProposalCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1)
-    console.log(page)
 
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
@@ -38,7 +46,7 @@ const ProposalCard = ({ style, data }) => {
                     {data.description}
                 </MKTypography>
                 <Grid>
-                    <MKTypography variant="caption">Topic: {topic}</MKTypography>
+                    <MKTypography variant="caption">Topic: {data.topic}</MKTypography>
                     {((page.startsWith('popular')) || page.startsWith('company/personal')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
@@ -49,7 +57,7 @@ const ProposalCard = ({ style, data }) => {
                         </Grid>
                     }
                     <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: {data.lastModification}</MKTypography>
+                        <MKTypography variant="caption">Last Modification Date: {data.lastModified}</MKTypography>
                     </Grid>
                 </Grid>
             </CardContent>
@@ -57,16 +65,16 @@ const ProposalCard = ({ style, data }) => {
                 <br />
                 <Grid container justifyContent='flex-end'>
                     {/* 10 */}
-                    <MKButton variant="gradient" color="info" size="small" onClick={handleViewDetail}>View Details</MKButton>
+                    <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
                     {(page.startsWith('popular') ||
                         page.startsWith('student-info') ||
                         (page.startsWith('my-proposals') && data.status === statusBank.proposal.approved.label)) &&
-                        <div>
-                            <FcLike size={20} display='inline-block' />
-                            <MKTypography variant="body2" mb={1} display='inline-block'>
-                                {data.likes}
-                            </MKTypography>
-                        </div>
+                            <div>
+                                <FcLike size={20} display='inline-block' />
+                                <MKTypography variant="body2" mb={1} display='inline-block'>
+                                    {data.likes}
+                                </MKTypography>
+                            </div>
                     }
                 </Grid>
             </CardActions>

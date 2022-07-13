@@ -30,7 +30,7 @@ import { statusBank } from 'utils/getStatus';
 // Student's personal page: 1 2 5 8 10 (userType: 'student', page: 'Personal Page')
 // Student see company's profile: 1 2 8 9 10 (userType: 'student', page: 'Company Profile')
 
-const RequestCard = ({ data, openProp }) => {
+const RequestCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1);
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const RequestCard = ({ data, openProp }) => {
             variant="gradient"
             color="info"
             size="small"
-            onClick={openProp}
+            onClick={openDetail}
         >
             View Detail
         </MKButton>

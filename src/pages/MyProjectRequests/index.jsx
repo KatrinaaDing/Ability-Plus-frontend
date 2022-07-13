@@ -76,11 +76,10 @@ const MyProjectRequests = () => {
                 id: id
             })
         })
-            .then(res => { console.log(res);setReqDetail(res.data)})
+            .then(res => { console.log(JSON.parse(res.data.extraData));setReqDetail(res.data)})
             .then(res => setReqOpen(true))
             .catch(e => console.error(e))
     }
-
 
 
 
@@ -98,8 +97,8 @@ const MyProjectRequests = () => {
                             propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
                             soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
                             description: reqDetail.description,
-                            requirement: "Sample Requirement",
-                            rewards: "$1000",
+                            requirement: JSON.parse(reqDetail.extraData).requirement,
+                            rewards: JSON.parse(reqDetail.extraData).rewards,
                             metaData: {
                                 lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
                                 authorName: reqDetail.creatorName,
@@ -134,7 +133,7 @@ const MyProjectRequests = () => {
                                             ...r,
                                             lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
                                         }}
-                                        openProp={() => getProjectDetail(r.id)}
+                                        openDetail={() => getProjectDetail(r.id)}
                                     />
                                 )
                     }

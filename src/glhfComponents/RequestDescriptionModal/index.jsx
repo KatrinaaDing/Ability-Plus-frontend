@@ -38,7 +38,6 @@ value = {
 
  */
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
-    console.log('modal',value)
     return (
         <Dialog
             open={open}

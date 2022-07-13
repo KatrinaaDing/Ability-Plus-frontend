@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import routes from "routes";
 import Box from '@mui/material/Box';
-import RequestCard from "glhfComponents/RequestCard";
+import RequestCard from "glhfComponents/RequestCard-Backup";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 
 const AllProposals = () => {
