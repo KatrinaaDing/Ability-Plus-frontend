@@ -17,17 +17,20 @@ import FilterBar from "glhfComponents/Filter"
 const MyProjectRequests = () => {
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
-    const [sortByDate, setSortByDate] = useState(true);
+    const [ascending, setAcending] = useState(true);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-
-    const params = new URLSearchParams({
-        status: "Draft",
-        isAscendingOrder: true,
-        pageNo: 1,
-        pageSize: 10,
-    })
+    const [status, setStatus] = useState('draft');
+    const [searchKey, setSearchKey] = useState('');
+    
     useEffect(async () => {
+        const params = new URLSearchParams({
+            status: status,
+            isAscendingOrder: ascending,
+            pageNo: 1,
+            pageSize: 10,
+            searchKey: searchKey === '' ? undefined : searchKey
+        })
         await axiosPrivate.get('/project/list_my_project_request/', {
             params: params
         })
@@ -40,13 +43,18 @@ const MyProjectRequests = () => {
                 console.error(e)
             })
       
-    }, [])
-    
+    }, [ascending, status, searchKey])
     const handleCreate = () => {
         navigate('/create-request')
     }
     const handleDate = (ascending) => {
-        console.log(ascending)
+        setAcending(ascending)
+    }
+    const handleStatus = (status) => {
+        setStatus(status)
+    }
+    const handleSearch = (key) => {
+        setSearchKey(key);
     }
     return (
         <BasicPageLayout title="My Project Reqeusts">
@@ -56,9 +64,9 @@ const MyProjectRequests = () => {
             </Grid>
             <br />
             <Box sx={{ flexGrow: 1 }}>
-                <FilterBar handleDate={ handleDate }></FilterBar>
+                <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={ handleSearch}></FilterBar>
+                <br />
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-
                     {
                         reqs.map(r => 
                              <RequestCard
@@ -69,7 +77,9 @@ const MyProjectRequests = () => {
                             />
                         )
                     }
-
+                    {
+                        reqs.length === 0 && <MKTypography sx={{display: 'flex', alignItems: 'center', justifyContent:'center'}}>No Project Request match your criteria</MKTypography>
+                    }
                 </Grid>
             </Box>
 
