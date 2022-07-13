@@ -14,6 +14,7 @@ import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
+import RequestFilter from '../../glhfComponents/RequestFilter'
 
 const PersonalPage = () => {
     const { auth } = useAuth();
@@ -25,49 +26,19 @@ const PersonalPage = () => {
     const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
     const [reqDetail, setReqDetail] = useState();
-
-    useEffect(() => {
-      if (auth.isCompany) {
-        setCards([{
-            id: 5,
-            title: 'sdfdf',
-            status: 'submitted',
-            description: 'sdfdsf',
-            topic: 'sdfsdf',
-            authorId: 3,
-            authorName: 'sdfdsf',
-            lastModified: 0,
-        }])
-
-      } else {
-        setCards([
-            {
-              id: 35,
-              title: 'title',
-              status: 'open_for_proposal',
-              description: 'desc',
-              topic: 'management',
-              authorId: 4,
-              authorName: 'Google',
-              lastModification: 0,
-           },
-            {
-                id: 35,
-                title: 'title',
-                status: 'approving',
-                description: 'desc',
-                topic: 'Health Record',
-                authorId: 4,
-                authorName: 'Microsoft',
-                lastModification: 0,
-            }
-        ])
-      }
-      
-    }, [])
-    
-
-    // what button to put in the proposal detail modal
+    const [ascending, setAcending] = useState(true);
+    const [status, setStatus] = useState('draft');
+    const [searchKey, setSearchKey] = useState('');
+    const handleDate = (ascending) => {
+        setAcending(ascending)
+    }
+    const handleStatus = (status) => {
+        setStatus(status)
+    }
+    const handleSearch = (key) => {
+        setSearchKey(key);
+    }
+  // what button to put in the proposal detail modal
     const getProposalModalActionButton = (statusStr) => {
         // if the status is waiting approval
         if (statusStr === statusBank.proposal.approving.label) {
@@ -157,7 +128,9 @@ const PersonalPage = () => {
 
     return (
         <BasicPageLayout title={ auth.isCompany ? "View Student's Submitted Proposals" : "Browse Company Requests" }>
-            {   
+            <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
+            <br />
+            {
                 // student view
                 // mount modal only when detail is loaded
                 reqDetail &&
@@ -219,6 +192,7 @@ const PersonalPage = () => {
                 />
 
             }
+
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {auth.isCompany && renderProposalCards()}
                 {!auth.isCompany && renderRequestCards()}

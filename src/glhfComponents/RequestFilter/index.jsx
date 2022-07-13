@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -58,6 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
+
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const [status, setStatus] = useState(0);
   const [ascending, setAcending] = useState(true);
@@ -65,7 +64,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
     handleStatus(getLabel('request', currStatus));
-    
+
   };
   useEffect(() => {
     handleDate(ascending)
