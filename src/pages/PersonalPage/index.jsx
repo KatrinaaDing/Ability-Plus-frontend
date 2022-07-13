@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestCard from 'glhfComponents/RequestCard';
 import useAuth from "auth/useAuth";
+
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import { statusBank } from 'utils/getStatus';
@@ -14,7 +15,8 @@ import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
-import RequestFilter from '../../glhfComponents/RequestFilter'
+import RequestFilter from "glhfComponents/RequestFilter";
+import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 const PersonalPage = () => {
     const { auth } = useAuth();
@@ -29,14 +31,22 @@ const PersonalPage = () => {
     const [ascending, setAcending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
+    const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
+    const [isAscendingProposalDealine, setIsAscendingProposalDealine] = useState(true);
     const handleDate = (ascending) => {
-        setAcending(ascending)
+        setAscending(ascending)
     }
     const handleStatus = (status) => {
         setStatus(status)
     }
     const handleSearch = (key) => {
         setSearchKey(key);
+    }
+    const handleProposalDeadline = (proposal) => {
+        setIsAscendingProposalDeadline(proposal)
+    }
+        const handleSolutionDeadline = (solution) => {
+            setIsAscendingProposalDeadline(solution)
     }
   // what button to put in the proposal detail modal
     const getProposalModalActionButton = (statusStr) => {
@@ -128,7 +138,11 @@ const PersonalPage = () => {
 
     return (
         <BasicPageLayout title={ auth.isCompany ? "View Student's Submitted Proposals" : "Browse Company Requests" }>
-            <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
+            {auth.isCompany ?
+                <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
+                : <StatusProposalSolutionFilter handleStatus={handleStatus} handleProposalDeadline={handleProposalDeadline} handleSolutionDeadline={handleSolutionDeadline} >
+                </StatusProposalSolutionFilter>
+            }
             <br />
             {
                 // student view
