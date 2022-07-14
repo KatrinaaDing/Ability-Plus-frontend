@@ -71,7 +71,7 @@ import CompanyList from 'pages/CompanyList';
 // routes in navbar (company view)
 const companyRoutes = (username) => [
   {
-    name: "Submitted Proposals",
+    name: "Received Proposals",
     route: "/company/personal-page",
     icon: <HomeIcon />,
     component: <PersonalPage />
