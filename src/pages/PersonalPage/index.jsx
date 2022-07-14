@@ -156,7 +156,7 @@ const PersonalPage = () => {
 
 
     return (
-        <BasicPageLayout title="Personal Page">
+        <BasicPageLayout title={ auth.isCompany ? "View Student's Submitted Proposals" : "Browse Company Requests" }>
             {   
                 // student view
                 // mount modal only when detail is loaded

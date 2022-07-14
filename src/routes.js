@@ -71,7 +71,7 @@ import CompanyList from 'pages/CompanyList';
 // routes in navbar (company view)
 const companyRoutes = (username) => [
   {
-    name: "Personal Page",
+    name: "Submitted Proposals",
     route: "/company/personal-page",
     icon: <HomeIcon />,
     component: <PersonalPage />
@@ -101,10 +101,10 @@ const companyRoutes = (username) => [
 // routes in navbar (student view)
 const studentRoutes = (username) => [
   {
-    name: "Personal Page",
+    name: "Browse Requests",
     route: "/student/personal-page",
     icon: <HomeIcon />,
-    component: <PersonalPage />
+    component: <PersonalPage />,
   },
   {
     name: "My Proposals",
