@@ -163,11 +163,21 @@ const otherRoutes = {
       route: "/create-request",
       component: <CreateRequest />,
     },
+    {
+      name: "create request",
+      route: "/edit-request/:id",
+      component: <CreateRequest />,
+    },
   ],
   student: [
     {
       name: "create proposal",
-      route: "/create-proposal",
+      route: "/create-proposal/:reqName/:id",
+      component: <CreateProposal />,
+    },
+    {
+      name: "create proposal",
+      route: "/edit-proposal/:id",
       component: <CreateProposal />,
     },
   ],

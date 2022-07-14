@@ -17,10 +17,17 @@ import StatusBadge from '../StatusBadge';
 import MetaData from './sections/MetaData';
 import ShortInfo from './sections/ShortInfo';
 import DetailSection from 'glhfComponents/ProposalDescriptionModal/sections/DetailSection';
+import useAuth from 'auth/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { getCode } from 'utils/getStatus';
+import { statusBank } from 'utils/getStatus';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 /**
 
 value = {
+    id,
+    canEdit: undifined,
     title,
     status,
     category,
@@ -38,13 +45,18 @@ value = {
 
  */
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
+    const { auth } = useAuth();
+    const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
+    console.log(value)
+
     return (
         <Dialog
             open={open}
             fullWidth={true}
             maxWidth='xl'
             onClose={() => setOpen(false)}
-            
+
         >
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
@@ -62,7 +74,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         <ShortInfo title="Solution Deadline" content={value.soluDdl} />
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                        <MetaData metaData={value.metaData}/>
+                        <MetaData metaData={value.metaData} />
                     </Grid>
                     <DetailSection
                         order={3}
@@ -79,7 +91,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         title='Rewards'
                         content={(value.rewards === '' || value.rewards === '<p><br></p>') ? '<p>None</p>' : value.rewards}
                     />
-                     
+
                 </Grid>
             </MKBox>
             <Divider sx={{ my: 0 }} />
@@ -88,6 +100,16 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                     Close
                 </MKButton>
                 {actionButton}
+                {
+                    value.canEdit &&
+                    <MKButton
+                        variant="gradient"
+                        color="info"
+                        onClick={() => navigate(`/edit-request/${value.id}`)}
+                    >
+                        Edit
+                    </MKButton>
+                }
             </MKBox>
         </Dialog>
     );

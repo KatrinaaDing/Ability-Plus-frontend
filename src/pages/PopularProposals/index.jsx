@@ -29,6 +29,7 @@ const PopularProposals = () => {
         // if user logged in, open detail
         } else {
             setDetailContent({
+                id: 5,
                 title: 'title 1',
                 status: statusBank.proposal.approved.label,
                 desc: "sample description",

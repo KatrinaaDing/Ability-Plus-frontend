@@ -37,9 +37,13 @@ const MetaData = ({ data }) => {
                     secondary={
                         <>
                             Author: &nbsp;
-                            <Link to={`/student-info/${data.authorId}`}>
-                                {data.authorName}
-                            </Link>
+                            {
+                                data.authorId
+                                    ? <Link to={`/student-info/${data.authorId}`}>
+                                        {data.authorName}
+                                    </Link>
+                                    : data.authorName
+                            }
                         </>
                     }
                 />
@@ -53,7 +57,7 @@ const MetaData = ({ data }) => {
                     secondary={"Project Topic: " + data.topic}
                 />
             </ListItem>
-           
+
         </List>
     );
 };

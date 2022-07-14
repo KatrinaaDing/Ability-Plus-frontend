@@ -33,7 +33,7 @@ const MyProjectRequests = () => {
     const [ascending, setAcending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
-    
+
     useEffect(async () => {
         const params = new URLSearchParams({
             status: status,
@@ -64,7 +64,7 @@ const MyProjectRequests = () => {
     const handleSearch = (key) => {
         setSearchKey(key);
     }
-   
+
     const handleCreate = () => {
         navigate('/create-request')
     }
@@ -76,39 +76,56 @@ const MyProjectRequests = () => {
                 id: id
             })
         })
-            .then(res => setReqDetail(res.data))
-            .then(res => setReqOpen(true))
+            .then(async res => {
+                await axiosPrivate.get('/project/can_edit_project', {
+                    params: new URLSearchParams({
+                        projectId: id
+                    })
+                })
+                    .then(canEdit =>
+                        setReqDetail({
+                            ...res.data,
+                            id: id,
+                            canEdit: canEdit.data,
+                        })
+                    )
+                    .then(res => setReqOpen(true))
+                    .catch(e => console.error(e))
+            })
             .catch(e => console.error(e))
     }
 
 
+    console.log(reqDetail);
 
     return (
         <BasicPageLayout title="My Project Reqeusts">
             {
-                Object.keys(reqDetail).length > 0  &&
-                    <RequestDescriptionModal
-                        open={reqOpen}
-                        setOpen={setReqOpen}
-                        value={{
-                            title: reqDetail.name,
-                            status: status,
-                            category: reqDetail.projectArea,  
-                            propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
-                            soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
-                            description: reqDetail.description,
-                            requirement: JSON.parse(reqDetail.extraData).requirement,
-                            rewards: JSON.parse(reqDetail.extraData).rewards,
-                            metaData: {
-                                lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
-                                authorName: reqDetail.creatorName,
-                                authorId: reqDetail.creatorId,
-                            }
-                        }}
-                        actionButton={<></>}
-                    />
+                reqOpen &&
+                <RequestDescriptionModal
+                    open={reqOpen}
+                    setOpen={setReqOpen}
+                    value={{
+                        id: reqDetail.id,
+                        title: reqDetail.name,
+                        status: status,
+                        category: reqDetail.projectArea,
+                        propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
+                        soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
+                        description: reqDetail.description,
+                        canEdit: reqDetail.canEdit,
+                        requirement: JSON.parse(reqDetail.extraData).requirement,
+                        rewards: JSON.parse(reqDetail.extraData).rewards,
+                        metaData: {
+                            lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
+                            authorName: reqDetail.creatorName,
+                            authorId: reqDetail.creatorId,
+                        }
+                    }}
+                    actionButton={<></>}
+                />
             }
-            
+
             <MKBox display='flex'>
                 <p>There are {total} reqeusts with status </p>
                 <StatusBadge statusLabel={status} type='request' size='sm' />
@@ -118,24 +135,24 @@ const MyProjectRequests = () => {
             </Grid>
             <br />
             <Box sx={{ flexGrow: 1 }}>
-                <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={ handleSearch}></FilterBar>
+                <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
                 <br />
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         reqs.length === 0
                             ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    No Project Request match your criteria
-                                </MKTypography>
-                            :    reqs.map(r => 
-                                    <RequestCard
-                                        key={r.id}
-                                        data={{
-                                            ...r,
-                                            lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
-                                        }}
-                                        openDetail={() => getProjectDetail(r.id)}
-                                    />
-                                )
+                                No Project Request match your criteria
+                            </MKTypography>
+                            : reqs.map(r =>
+                                <RequestCard
+                                    key={r.id}
+                                    data={{
+                                        ...r,
+                                        lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
+                                    }}
+                                    openDetail={() => getProjectDetail(r.id)}
+                                />
+                            )
                     }
                 </Grid>
             </Box>

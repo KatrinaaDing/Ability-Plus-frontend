@@ -21,9 +21,11 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 import useAuth from 'auth/useAuth';
 import { getCode } from 'utils/getStatus';
 import { statusBank } from 'utils/getStatus';
+import { useNavigate } from 'react-router-dom';
 
 /*
 value = {
+    id,
     title,
     status,
     desc,
@@ -34,7 +36,7 @@ value = {
     metaData: {
         lastModified,
         authorName,
-        authorId,
+        authorId: undefined,
         topic
     }
 }
@@ -42,6 +44,14 @@ value = {
 */
 const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
+    const navigate = useNavigate();
+
+    // is student &&  is author && status < approving
+    const canEdit = 
+        !auth.isCompany && 
+        auth.id == value.metaData.authorId &&
+        getCode('proposal', value.status) < statusBank.proposal.approving
+
 
     return (
         <Dialog
@@ -95,7 +105,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         content={value.detail}
                     />
                     {
-                        auth.isCompany
+                        auth.isCompany && getCode(value.status) <= statusBank.proposal.approving.code
                             ? <>
                                 <DetailSection
                                     order={7}
@@ -120,6 +130,16 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                 </MKButton>
                 <MKBox>
                     {actionButton}
+                    {
+                        canEdit && 
+                        <MKButton
+                            variant="gradient" 
+                            color="info"
+                            onClick={() => navigate(`/edit-proposal/${value.id}`)}
+                        >
+                            Edit    
+                        </MKButton>
+                    }
                 </MKBox>
             </MKBox>
         </Dialog>

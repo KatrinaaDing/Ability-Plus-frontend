@@ -45,13 +45,13 @@ const ProposalCard = ({ data, openDetail }) => {
         <Card sx={{ minWidth: 345, margin: '10px' }}>
             <CardContent>
                 <Grid container item justifyContent="flex-start" xs={10}>
-                    <MKTypography gutterBottom variant="h5" sx={{py: 1.5}}>
+                    <MKTypography gutterBottom variant="h5" sx={{mt: 'auto', mb: 'auto', py: 1.5}}>
                         {data.title}
                     </MKTypography>
                     {
                         page.startsWith('student-info') || page.startsWith('popular')
                             ? <></>
-                            : <StatusBadge type='request' statusLabel={data.status} size='sm' />
+                            : <StatusBadge type='proposal' statusLabel={data.status} size='sm' variant='contained'  />
                     }
                 </Grid>
                 <MKTypography variant="body2" color="secondary">

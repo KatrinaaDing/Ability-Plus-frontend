@@ -17,11 +17,13 @@ import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import AlertModal from 'glhfComponents/AlertModal';
 import { getCode } from 'utils/getStatus';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import useAuth from 'auth/useAuth';
 
 
 const sampleContent = {
-    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
+    title: "Neque porro quisquam",
     desc: "Aenean at est lectus. Suspendisse condimentum leo ac nisl varius maximus.",
     detail: `<p class="ql- align - justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae orci ante. Sed est orci, congue non bibendum id, rhoncus ac nulla. Etiam elementum quam quis ultricies ornare. Pellentesque vehicula sapien sed suscipit aliquet. Curabitur non tellus vulputate, condimentum lacus eu, porttitor dui. Nunc id tortor nec metus fringilla pharetra. Nunc tempus venenatis diam, ut varius leo mollis id. Vivamus faucibus et diam in pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p><p class="ql - align - justify"><br></p><p class="ql - align - justify">Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p class="ql - align - justify"><br></p><p class="ql - align - justify">Morbi sed dictum dui. Aenean at est lectus. Suspendisse condimentum leo ac nisl varius maximus. Nam commodo ultricies elit, ut sagittis dolor volutpat et. Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</p><p class="ql - align - justify"><br></p><p class="ql - align - justify">Quisque eget luctus nunc. Morbi tempor pharetra sapien, ut interdum lacus interdum id. Nullam ac urna sed mauris interdum malesuada vitae eu enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vel eleifend lectus. Ut rutrum tellus a est volutpat, nec placerat sapien gravida. Sed sit amet lectus et libero fringilla varius vitae at velit. Cras vitae sapien at eros fermentum interdum quis ut velit. Mauris interdum feugiat felis, nec ornare justo laoreet vel. Suspendisse posuere a enim non rutrum. Praesent dapibus nisl erat.</p><p class="ql - align - justify"><br></p><p class="ql - align - justify">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque iaculis finibus tellus, in interdum tortor dignissim vel. Duis eget mi rutrum, vulputate odio ut, lacinia enim. Sed a neque ligula. Aliquam eu ullamcorper arcu, id sollicitudin nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed et enim quis massa accumsan facilisis. Aliquam ornare ornare mi, quis maximus orci congue ut. Ut luctus tellus nec semper rutrum. Pellentesque mi dui, vestibulum in tempor nec, vehicula eu eros.</p><p><br></p>`,
     goal: "<ol><li>a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst.</li><li>Morbi sed dictum dui. Aenean at est lectus.</li><li>Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</li><li>Quisque eget luctus nunc.&nbsp;</li></ol>",
@@ -31,7 +33,12 @@ const sampleContent = {
 }
 
 const CreateProposal = () => {
+    const isEditing = window.location.pathname.startsWith('edit');
+
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
+    const { auth } = useAuth();
+    const { id: pathId, reqName: topic } = useParams();
 
     const [title, setTitle] = React.useState('');
     const [desc, setDesc] = React.useState('');
@@ -40,11 +47,28 @@ const CreateProposal = () => {
     const [status, setStatus] = React.useState('');
     const [goal, setGoal] = React.useState('');
     const [detail, setDetail] = React.useState('');
+
     const [error, setError] = React.useState('')
     const [preview, setPreview] = React.useState(false);
+    const [projectId, setProjectId] = React.useState(null)
 
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
+
+    React.useEffect(async () => {
+        if (isEditing) {
+            await axiosPrivate('/proposal/get_proposal_detail_info',{
+                params: new URLSearchParams({
+                    proposalId: pathId
+                })
+            })
+                .then(res => {
+                    console.log('edit proposal', res.data)
+                })
+                .catch(e => console.error(e))
+        }
+    })
+
 
     const ActionButton = ({ ...props }) => {
         return (
@@ -85,7 +109,9 @@ const CreateProposal = () => {
         setGoal(sampleContent.goal)
         setDetail(sampleContent.detail)
         setStatus(sampleContent.status)
+        setProjectId(35)
     }
+
 
     const checkEmpty = () => {
         const checkList = [title, desc, prob, vStat, goal, detail]
@@ -97,20 +123,80 @@ const CreateProposal = () => {
         return true
     }
 
+    const getContent = () => {
+        return {
+            "title": title,
+            "shortDescription": desc,
+            "projectId": isEditing ? parseInt(projectId) : parseInt(pathId),
+            "extraData": {
+                problemStatement: prob,
+                visionStatement: vStat,
+                goal: goal,
+                detail: detail,
+            },
+        }
+    }
+
     // handle save draft
-    const saveDraft = () => {
+    const saveDraft = async () => {
         if (checkEmpty()) {
             setError("Cannot save empty proposal!")
             return
         }
+
+        const body = {
+            ...getContent(),
+            "isDraft": true,
+        }
+        // save edited proposal
+        if (isEditing) {
+            await axiosPrivate.post('/proposal/edit_proposal', { ...body, proposalId: pathId})
+                .then(res => {
+                    setAlertOpenDraft(true)
+                })
+                .catch(e => console.error(e))
+
+            // save new created proposal
+        } else {
+            await axiosPrivate.post('/proposal/create_proposal', body)
+                .then(res => {
+                    setAlertOpenDraft(true)
+                })
+                .catch(e => console.error(e))
+        }
         setAlertOpenDraft(true)
     }
 
-    const handleSubmit = () => {
-        setPreview(false)
-        setAlertOpenSubmit(true)
+    const handleSubmit = async () => {
+        const body = {
+            ...getContent(),
+            "isDraft": false,
+        }
 
+        // submit edited request
+        if (isEditing) {
+            await axiosPrivate.post('/proposal/edit_proposal', { ...body, proposalId: pathId })
+                .then(res => {
+                    setPreview(false)
+                    setAlertOpenSubmit(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+            // submit new created request
+        } else {
+            await axiosPrivate.post('/proposal/create_proposal', body)
+                .then(res => {
+                    setPreview(false)
+                    setAlertOpenSubmit(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+        }
     }
+
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
@@ -133,7 +219,7 @@ const CreateProposal = () => {
         <BasicPageLayout title={`${getCode('proposal', status || 'Draft') < 2 ? 'Edit' : 'Create'} Proposal`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
-            <MKTypography variant='subtitle1'>This proposal is submitted for: Proposal Management</MKTypography>
+            <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
             <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
@@ -142,10 +228,31 @@ const CreateProposal = () => {
                 </MKAlert>
             </Collapse>
             <ProposalDescriptionModal
-                preview={preview}
-                setPreview={setPreview}
-                value={{ title, desc, prob, vStat, goal, detail, status }}
-                handleSubmit={handleSubmit}
+                open={preview}
+                setOpen={setPreview}
+                value={{ 
+                    title, 
+                    desc, 
+                    prob, 
+                    vStat, 
+                    goal, 
+                    detail, 
+                    status, 
+                    metaData: {
+                        lastModified: new Date().toLocaleString(),
+                        authorName: auth.username,
+                        topic: topic,
+                    }
+                }}
+                actionButton={
+                    <MKButton
+                        variant='gradient'
+                        color='success'
+                        onClick={handleSubmit}
+                    >
+                        Submit
+                    </MKButton>
+                }
             />
             <Grid container spacing={2} justify='flex-start'>
                 <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
