@@ -45,6 +45,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import GradeIcon from '@mui/icons-material/Grade';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';;
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 // Pages
 import SignIn from "layouts/pages/authentication/sign-in";
@@ -64,6 +65,7 @@ import AllProposals from "pages/AllProposals";
 import MyProjectRequests from "pages/MyProjectRequests";
 import ProposalRanks from "pages/ProposalRanks";
 import Logout from "pages/Logout";
+import CompanyList from 'pages/CompanyList';
 
 
 // routes in navbar (company view)
@@ -110,12 +112,19 @@ const studentRoutes = (username) => [
     icon: <DashboardIcon />,
     component: <MyProposals />
   },
-
   {
-    name: "Followings",
-    route: "/following",
-    icon: <GradeIcon />,
-    component: <Following />,
+    name: "Company List",
+    route: "/company-list",
+    icon: <ApartmentIcon />,
+    component: <CompanyList />,
+    collapse: [
+      {
+        name: "My Followings",
+        route: "/following",
+        icon: <GradeIcon />,
+        component: <Following />,
+      },
+    ]
   },
   {
     name: username,
