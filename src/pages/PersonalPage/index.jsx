@@ -20,11 +20,52 @@ const PersonalPage = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
+    const [cards, setCards] = useState([])
     const [proOpen, setProOpen] = useState(false);
     const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
     const [reqDetail, setReqDetail] = useState();
 
+    useEffect(() => {
+      if (auth.isCompany) {
+        setCards([{
+            id: 5,
+            title: 'sdfdf',
+            status: 'submitted',
+            description: 'sdfdsf',
+            topic: 'sdfsdf',
+            authorId: 3,
+            authorName: 'sdfdsf',
+            lastModified: 0,
+        }])
+
+      } else {
+        setCards([
+            {
+              id: 35,
+              title: 'title',
+              status: 'open_for_proposal',
+              description: 'desc',
+              topic: 'management',
+              authorId: 4,
+              authorName: 'Google',
+              lastModification: 0,
+           },
+            {
+                id: 35,
+                title: 'title',
+                status: 'approving',
+                description: 'desc',
+                topic: 'Health Record',
+                authorId: 4,
+                authorName: 'Microsoft',
+                lastModification: 0,
+            }
+        ])
+      }
+      
+    }, [])
+    
 
     // what button to put in the proposal detail modal
     const getProposalModalActionButton = (statusStr) => {
@@ -83,7 +124,7 @@ const PersonalPage = () => {
                     "extraData": "string",
                     'status': 'open_for_proposal',
                     "lastModifiedTime": 0,
-                    "name": "proposal management",
+                    "name": "health record",
                     "projectArea": "string",
                     "proposalDdl": 0,
                     "solutionDdl": 0
@@ -93,36 +134,21 @@ const PersonalPage = () => {
             .catch(e => console.error(e))
 
     const renderRequestCards = () => {
-        return (
+        return cards.map(content => 
             <RequestCard
-                data={{
-                    id: 35,
-                    title: 'title',
-                    status: 'open_for_proposal',
-                    description: 'desc',
-                    topic: 'management',
-                    authorId: 4,
-                    authorName: 'Google',
-                    lastModification: 0,
-                }}
-                openDetail={() => getReqDetail(35)}
+                key={content.id}
+                data={content}
+                openDetail={() => getReqDetail(content.id)}
             />
         )
     }
 
     const renderProposalCards = () => {
-        return (
+        return cards.map(content => 
             <ProposalCard
-                data={{
-                    title: 'sdfdf',
-                    status: 'submitted',
-                    description: 'sdfdsf',
-                    topic: 'sdfsdf',
-                    authorId: 3,
-                    authorName: 'sdfdsf',
-                    lastModified: 'sdfsdf',
-                }}
-                openDetail={() => getProDetail(3)}
+                key={content.id}
+                data={content}
+                openDetail={() => getProDetail(content.id)}
             />
         )
 
@@ -195,6 +221,7 @@ const PersonalPage = () => {
             }
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {/* {data.map((d, key) => <RequestCard key={key} userType={userType} page={page} data={ d } />)}  */}
+
                 {auth.isCompany && renderProposalCards()}
                 {!auth.isCompany && renderRequestCards()}
             </Grid>

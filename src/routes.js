@@ -155,7 +155,7 @@ const otherRoutes = {
   company: [
     {
       name: "All Proposals",
-      route: "/all-proposals",
+      route: "/view-proposals/:reqName/:reqId",
       component: <AllProposals />,
     },
     {

@@ -52,7 +52,6 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
         auth.id == value.metaData.authorId &&
         getCode('proposal', value.status) < statusBank.proposal.approving
 
-
     return (
         <Dialog
             open={open}
@@ -78,7 +77,6 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                             <MKTypography variant='body2'>
                                 {value.desc}
                             </MKTypography>
-
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
@@ -105,7 +103,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         content={value.detail}
                     />
                     {
-                        auth.isCompany && getCode(value.status) <= statusBank.proposal.approving.code
+                        auth.isCompany && getCode('proposal', value.status) <= statusBank.proposal.approving.code
                             ? <>
                                 <DetailSection
                                     order={7}

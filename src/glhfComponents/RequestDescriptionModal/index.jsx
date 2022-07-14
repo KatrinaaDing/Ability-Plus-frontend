@@ -24,7 +24,6 @@ import { statusBank } from 'utils/getStatus';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 /**
-
 value = {
     id,
     canEdit: undifined,
@@ -42,13 +41,11 @@ value = {
         authorId
     }
 }
-
  */
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
-    console.log(value)
 
     return (
         <Dialog
@@ -99,17 +96,20 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                 <MKButton variant="gradient" color="dark" onClick={() => setOpen(false)}>
                     Close
                 </MKButton>
-                {actionButton}
-                {
-                    value.canEdit &&
-                    <MKButton
-                        variant="gradient"
-                        color="info"
-                        onClick={() => navigate(`/edit-request/${value.id}`)}
-                    >
-                        Edit
-                    </MKButton>
-                }
+                <MKBox>
+                    {actionButton}
+                    {
+                        value.canEdit &&
+                        <MKButton
+                            variant="gradient"
+                            color="info"
+                            onClick={() => navigate(`/edit-request/${value.id}`)}
+                            sx={{ ml: 2 }}
+                        >
+                            Edit
+                        </MKButton>
+                    }
+                </MKBox>
             </MKBox>
         </Dialog>
     );

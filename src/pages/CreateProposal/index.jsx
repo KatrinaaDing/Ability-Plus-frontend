@@ -20,6 +20,7 @@ import { getCode } from 'utils/getStatus';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import useAuth from 'auth/useAuth';
+import ActionButton from 'pages/CreateRequest/components/ActionButton';
 
 
 const sampleContent = {
@@ -67,16 +68,8 @@ const CreateProposal = () => {
                 })
                 .catch(e => console.error(e))
         }
-    })
+    },[])
 
-
-    const ActionButton = ({ ...props }) => {
-        return (
-            <MKButton variant='gradient' sx={{ m: 2 }} color={props.color} onClick={props.onClick}>
-                {props.label}
-            </MKButton>
-        )
-    }
 
     const handlePreview = () => {
         const checkList = {

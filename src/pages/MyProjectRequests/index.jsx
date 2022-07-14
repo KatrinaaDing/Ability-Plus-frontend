@@ -17,6 +17,10 @@ import FilterBar from "glhfComponents/RequestFilter"
 
 import StatusBadge from "glhfComponents/StatusBadge";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
+import { getCode } from "utils/getStatus";
+import { statusBank } from "utils/getStatus";
+import ViewProposalsBtn from "./components/ViewProposalsBtn";
+import CreateProjectBtn from "./components/CreateProjectBtn";
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -65,9 +69,6 @@ const MyProjectRequests = () => {
         setSearchKey(key);
     }
 
-    const handleCreate = () => {
-        navigate('/create-request')
-    }
 
 
     const getProjectDetail = async (id) => {
@@ -96,8 +97,6 @@ const MyProjectRequests = () => {
     }
 
 
-    console.log(reqDetail);
-
     return (
         <BasicPageLayout title="My Project Reqeusts">
             {
@@ -122,7 +121,10 @@ const MyProjectRequests = () => {
                             authorId: reqDetail.creatorId,
                         }
                     }}
-                    actionButton={<></>}
+                    actionButton={
+                        getCode('request', status) > statusBank.request.draft.code &&
+                            <ViewProposalsBtn />
+                    }
                 />
             }
 
@@ -131,7 +133,7 @@ const MyProjectRequests = () => {
                 <StatusBadge statusLabel={status} type='request' size='sm' />
             </MKBox>
             <Grid container justifyContent="flex-end">
-                <MKButton variant="gradient" color="info" size="large" onClick={handleCreate}>Create Project</MKButton>
+                <CreateProjectBtn />
             </Grid>
             <br />
             <Box sx={{ flexGrow: 1 }}>

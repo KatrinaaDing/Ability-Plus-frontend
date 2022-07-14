@@ -24,6 +24,7 @@ import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'glhfComponents/AlertModal';
 import useAuth from 'auth/useAuth';
+import ActionButton from './components/ActionButton';
 
 
 const categories = [
@@ -80,13 +81,6 @@ const CreateRequest = () => {
         }
     },[])
 
-    const ActionButton = ({ ...props }) => {
-        return (
-            <MKButton variant='gradient' sx={{ m: 2 }} color={props.color} onClick={props.onClick}>
-                {props.label}
-            </MKButton>
-        )
-    }
 
     const titleSx = { mb: 1, mt: 2 }
 
@@ -290,7 +284,6 @@ const CreateRequest = () => {
                             <MKTypography variant='h5' sx={titleSx}>
                                 Category
                             </MKTypography>
-
                             <FormControl fullWidth >
                                 <InputLabel id="category-select-label">Category</InputLabel>
                                 <Select
