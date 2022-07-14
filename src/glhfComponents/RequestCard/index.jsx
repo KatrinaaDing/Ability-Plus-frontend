@@ -6,7 +6,6 @@ import { CardActions } from '@mui/material';
 import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
-import { FcLike } from 'react-icons/fc';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
@@ -30,7 +29,20 @@ import { statusBank } from 'utils/getStatus';
 // Student's personal page: 1 2 5 8 10 (userType: 'student', page: 'Personal Page')
 // Student see company's profile: 1 2 8 9 10 (userType: 'student', page: 'Company Profile')
 
-const RequestCard = ({ data, openProp }) => {
+
+/*
+value = {
+    id,
+    title,
+    status,
+    description,
+    topic,
+    authorName,
+    authorId,
+    lastModification,
+}
+*/
+const RequestCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1);
     const navigate = useNavigate();
 
@@ -50,7 +62,7 @@ const RequestCard = ({ data, openProp }) => {
             variant="gradient"
             color="info"
             size="small"
-            onClick={openProp}
+            onClick={openDetail}
         >
             View Detail
         </MKButton>
@@ -59,23 +71,23 @@ const RequestCard = ({ data, openProp }) => {
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
             <CardContent>
-                <Grid container item justifyContent="center" xs={10}>
-                    <MKTypography gutterBottom variant="h5" component="div">
+                <Grid container item justifyContent="flex-start" xs={10}>
+                    <MKTypography gutterBottom variant="h5" sx={{ mt: 'auto', mb: 'auto', py: 1.5 }}>
                         {data.id}.{data.title}
                     </MKTypography>
-                    <StatusBadge type='request' statusLabel={data.status} size='sm' />
+                    <StatusBadge type='request' statusLabel={data.status} size='sm' variant="contained" />
                 </Grid>
                 <MKTypography variant="body2" color="secondary">
                     {data.description.substring(0, 50)}
                 </MKTypography>
                 <Grid>
                     <Grid item>
-                        <MKTypography variant="caption">Topic: {data.topic}</MKTypography>
+                        <MKTypography variant="caption">Topic: &nbsp;{data.topic}</MKTypography>
                     </Grid>
                     {
                         page.startsWith('student/personal') &&
                         <Grid item>
-                            <MKTypography variant="caption">Posted by:
+                            <MKTypography variant="caption">Posted by: &nbsp;
                                 <Link to={`/company-info/${data.authorId}`}>
                                     {data.authorName}
                                 </Link>
@@ -83,7 +95,7 @@ const RequestCard = ({ data, openProp }) => {
                         </Grid>
                     }
                     <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: {data.lastModification}</MKTypography>
+                        <MKTypography variant="caption">Last Modification Date: &nbsp;{data.lastModification}</MKTypography>
                     </Grid>
                 </Grid>
             </CardContent>

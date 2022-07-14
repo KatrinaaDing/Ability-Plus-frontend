@@ -45,6 +45,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import GradeIcon from '@mui/icons-material/Grade';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';;
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 // Pages
 import SignIn from "layouts/pages/authentication/sign-in";
@@ -64,12 +65,13 @@ import AllProposals from "pages/AllProposals";
 import MyProjectRequests from "pages/MyProjectRequests";
 import ProposalRanks from "pages/ProposalRanks";
 import Logout from "pages/Logout";
+import CompanyList from 'pages/CompanyList';
 
 
 // routes in navbar (company view)
 const companyRoutes = (username) => [
   {
-    name: "Personal Page",
+    name: "Submitted Proposals",
     route: "/company/personal-page",
     icon: <HomeIcon />,
     component: <PersonalPage />
@@ -99,10 +101,10 @@ const companyRoutes = (username) => [
 // routes in navbar (student view)
 const studentRoutes = (username) => [
   {
-    name: "Personal Page",
+    name: "Browse Requests",
     route: "/student/personal-page",
     icon: <HomeIcon />,
-    component: <PersonalPage />
+    component: <PersonalPage />,
   },
   {
     name: "My Proposals",
@@ -110,12 +112,19 @@ const studentRoutes = (username) => [
     icon: <DashboardIcon />,
     component: <MyProposals />
   },
-
   {
-    name: "Followings",
-    route: "/following",
-    icon: <GradeIcon />,
-    component: <Following />,
+    name: "Company List",
+    route: "/company-list",
+    icon: <ApartmentIcon />,
+    component: <CompanyList />,
+    collapse: [
+      {
+        name: "My Followings",
+        route: "/following",
+        icon: <GradeIcon />,
+        component: <Following />,
+      },
+    ]
   },
   {
     name: username,
@@ -155,7 +164,7 @@ const otherRoutes = {
   company: [
     {
       name: "All Proposals",
-      route: "/all-proposals",
+      route: "/view-proposals/:reqName/:reqId",
       component: <AllProposals />,
     },
     {
@@ -163,11 +172,21 @@ const otherRoutes = {
       route: "/create-request",
       component: <CreateRequest />,
     },
+    {
+      name: "create request",
+      route: "/edit-request/:id",
+      component: <CreateRequest />,
+    },
   ],
   student: [
     {
       name: "create proposal",
-      route: "/create-proposal",
+      route: "/create-proposal/:reqName/:id",
+      component: <CreateProposal />,
+    },
+    {
+      name: "create proposal",
+      route: "/edit-proposal/:id",
       component: <CreateProposal />,
     },
   ],

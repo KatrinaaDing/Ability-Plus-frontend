@@ -218,7 +218,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             alignItems="center"
             variant="button"
             textTransform="capitalize"
-            minWidth={item.description ? "14rem" : "12rem"}
+            minWidth={item.description ? "14rem" : "6rem"}
             color={item.description ? "dark" : "text"}
             fontWeight={item.description ? "bold" : "regular"}
             py={item.description ? 1 : 0.625}
@@ -264,7 +264,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 </MKTypography>
               </MKBox>
             ) : (
-              item.name
+                item.name
             )}
             {item.collapse && (
               <Icon

@@ -21,9 +21,10 @@ import DatePicker from './sections/DatePicker';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'glhfComponents/AlertModal';
 import useAuth from 'auth/useAuth';
+import ActionButton from './components/ActionButton';
 
 
 const categories = [
@@ -44,9 +45,12 @@ const sampleContent = {
 }
 
 const CreateRequest = () => {
+    const isEditing = window.location.pathname.slice(1).startsWith('edit');
+
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const { auth } = useAuth();
+    const { id: requestId } = useParams();
 
     const [title, setTitle] = React.useState('')
     const [category, setCategory] = React.useState('')
@@ -63,13 +67,20 @@ const CreateRequest = () => {
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
 
 
-    const ActionButton = ({ ...props }) => {
-        return (
-            <MKButton variant='gradient' sx={{ m: 2 }} color={props.color} onClick={props.onClick}>
-                {props.label}
-            </MKButton>
-        )
-    }
+    React.useEffect(async () => {   // TOFIX
+        if (isEditing) {
+            await axiosPrivate.get('/project/get_project_info', {
+                params: new URLSearchParams({
+                    id: parseInt(requestId)
+                })
+            })
+                .then(res => {
+                    console.log('edit request', res)
+                })
+                .catch(e => setError(e))
+        }
+    },[])
+
 
     const titleSx = { mb: 1, mt: 2 }
 
@@ -97,9 +108,9 @@ const CreateRequest = () => {
         if (errorList.length > 0) {
             setError(errorList.join(', ') + ' cannot be empty! Please check again.')
             return
-        } 
+        }
         // prop deadline must < solu deadline
-        if (new Date(propDdl) > new Date(soluDdl)){
+        if (new Date(propDdl) > new Date(soluDdl)) {
             setError("Solution deadline cannot be before proposal deadline! Please check again.")
             return
         }
@@ -129,6 +140,21 @@ const CreateRequest = () => {
         return true
     }
 
+    const getContent = () => {
+        return {
+            "categoryType": category,
+            "extraData": {
+                description: description,
+                requirement: requirement,
+                rewards: rewards,
+            },
+            "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
+            "solutionDue": soluDdl === '' ? 0 : new Date(soluDdl).getTime() / 1000,
+            "title": title
+        }
+    }
+
+
     const handleSaveDraft = async () => {
         if (checkEmpty()) {
             setError("Cannot save empty proposal!")
@@ -136,51 +162,61 @@ const CreateRequest = () => {
         }
 
         const body = {
-            "categoryType": category,
-            "extraData": {
-                description: description,
-                requirement: requirement,
-                rewards: rewards,
-            },
+            ...getContent(),
             "isDraft": true,
-            "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
-            "solutionDue": soluDdl === '' ? 0 : new Date(soluDdl).getTime() / 1000,
-            "title": title
         }
 
-        await axiosPrivate.post('/project/create_project_request', body)
-            .then(res => {
-                setAlertOpenDraft(true)           
-            })
-            .catch(e => {
-                console.error(e)
-            })
+        // save edited request
+        if (isEditing) {
+            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
+                .then(res => {
+                    setAlertOpenDraft(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+            // save new created request
+        } else {
+            await axiosPrivate.post('/project/create_project_request', body)
+                .then(res => {
+                    setAlertOpenDraft(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+        }
     }
 
- 
 
     const handleSubmit = async () => {
         const body = {
-            "categoryType": category,
-            "extraData": {
-                description: description,
-                requirement: requirement,
-                rewards: rewards,
-            },
+            ...getContent(),
             "isDraft": false,
-            "proposalDue": new Date(propDdl).getTime() / 1000,
-            "solutionDue": new Date(soluDdl).getTime() / 1000,
-            "title": title
         }
-        
-        await axiosPrivate.post('/project/create_project_request', body)
-            .then(res => {
-                setPreview(false)
-                setAlertOpenSubmit(true)
-            })
-            .catch(e => {
-                console.error(e)
-            })
+
+        // submit edited request
+        if (isEditing) {
+            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
+                .then(res => {
+                    setPreview(false)
+                    setAlertOpenSubmit(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+            // submit new created request
+        } else {
+            await axiosPrivate.post('/project/create_project_request', body)
+                .then(res => {
+                    setPreview(false)
+                    setAlertOpenSubmit(true)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+        }
     }
 
     const SaveDraftConfirm = () =>
@@ -202,13 +238,13 @@ const CreateRequest = () => {
         />
 
     return (
-        <BasicPageLayout title="Create Project Request">
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Request`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
-                    <WarningAmberIcon fontSize='medium' sx={{ mr: 2}}/> &nbsp;
+                    <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;
                     {error}
                 </MKAlert>
             </Collapse>
@@ -239,7 +275,7 @@ const CreateRequest = () => {
                 <Grid item xs={12} md={8} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
                     <div>
                         <MKTypography variant='h5' sx={titleSx}>
-                            Title 
+                            Title
                         </MKTypography>
                         <MKInput fullWidth type='text' required value={title} onChange={(e) => setTitle(e.target.value)} label="Insert your project topic here..." sx={{ mr: 5 }} />
                     </div>
@@ -248,7 +284,6 @@ const CreateRequest = () => {
                             <MKTypography variant='h5' sx={titleSx}>
                                 Category
                             </MKTypography>
-
                             <FormControl fullWidth >
                                 <InputLabel id="category-select-label">Category</InputLabel>
                                 <Select
@@ -257,7 +292,7 @@ const CreateRequest = () => {
                                     value={category}
                                     label="Category"
                                     onChange={handleCategory}
-                                    style={{height: '45px'}}
+                                    style={{ height: '45px' }}
                                 >
                                     {
                                         categories.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)
@@ -279,11 +314,11 @@ const CreateRequest = () => {
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
                     <ActionButton label='Cancel' color='secondary' />
-                    <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft}/>
+                    <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />
                     <ActionButton label='Preview & Submit' onClick={handlePreview} value='Submit' color='success' />
                 </Grid>
-                
-                <FormSection 
+
+                <FormSection
                     order={4}
                     minHeight='350px'
                     editorHeight='200px'

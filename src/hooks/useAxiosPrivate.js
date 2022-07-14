@@ -15,11 +15,10 @@ const useAxiosPrivate = () => {
     const logout = useLogout();
 
     useEffect(() => {
-
         const requestIntercept = axiosPrivate.interceptors.request.use(                     // interceptor are execute before .then and .catch
             config => {
                 if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
-                    config.headers['token'] = auth?.accessToken;        // setting auth header for request
+                    config.headers['token'] = auth.accessToken;        // setting auth header for request
                 }
                 console.log('request', config) // uncomment this to debug
                 return config;
@@ -28,10 +27,11 @@ const useAxiosPrivate = () => {
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => {
-                response.status = response.data.status
-                response.statusText = response.data.message
-                const resData = response.data.data;
-                response.data = resData;
+                const copiedRes = structuredClone(response.data)
+                console.log("copiedRes", copiedRes)
+                response.status = copiedRes.status;
+                response.statusText = copiedRes.message;
+                response.data = copiedRes.data
                 console.log('response', response)           // uncomment it to debug
                 if (response.status >= 400)
                     return Promise.reject(response)

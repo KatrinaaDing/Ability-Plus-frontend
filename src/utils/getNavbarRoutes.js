@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 10 Jul 2022
+ * Discription: A helper function to get routes that correspond to user role
+ */
 import useAuth from "auth/useAuth"
 import { guestRoutes } from "routes";
 import { studentRoutes } from "routes";

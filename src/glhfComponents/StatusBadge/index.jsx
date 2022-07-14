@@ -20,7 +20,7 @@ const StatusBadge = props => {
             4: 'primary',
         },
         request: {
-            0: 'light',
+            0: 'secondary',
             1: 'success',
             2: 'warning',
             3: 'info',
@@ -35,8 +35,12 @@ const StatusBadge = props => {
             size={props.size || 'md'}
             color={color[props.type][getCode(props.type, props.statusLabel)]}
             container
-            variant={props.varient || 'gradient'}
-            sx={{ml:2}}
+            variant={props.variant || 'contained'}
+            sx={{ 
+                ml: 2, 
+                mt: 'auto', 
+                mb: 'auto', 
+            }}
         />
     );
 };
@@ -45,7 +49,7 @@ StatusBadge.propTypes = {
     statusLabel: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['proposal', 'request']).isRequired,
     size: PropTypes.string,
-    varient: PropTypes.string
+    variant: PropTypes.oneOf(['gradient', 'contained'])
 };
 
 export default StatusBadge;

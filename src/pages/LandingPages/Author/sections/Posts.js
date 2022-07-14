@@ -42,10 +42,7 @@ function Places() {
           </MKTypography>
         </Grid>
         <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          <RequestCard userType={'student'} page={'My Proposals'} />
-          <RequestCard userType={'student'} page={'My Proposals'} />
-          <RequestCard userType={'student'} page={'My Proposals'} />
-          <RequestCard userType={'student'} page={'My Proposals'} />
+          // TODO reqeust cards
         </Grid> */}
       </Container>
     </MKBox>

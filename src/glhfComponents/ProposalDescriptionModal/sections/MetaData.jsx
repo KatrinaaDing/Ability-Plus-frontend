@@ -11,13 +11,10 @@ import ListItemText from '@mui/material/ListItemText';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
 import DescriptionIcon from '@mui/icons-material/Description';
-import useAuth from 'auth/useAuth';
-
+import { Link } from 'react-router-dom';
 
 
 const MetaData = ({ data }) => {
-    const { auth } = useAuth();
-
     const listItemSx = { p: 0.5 }
 
     return (
@@ -37,7 +34,18 @@ const MetaData = ({ data }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Author: " + auth.username}
+                    secondary={
+                        <>
+                            Author: &nbsp;
+                            {
+                                data.authorId
+                                    ? <Link to={`/student-info/${data.authorId}`}>
+                                        {data.authorName}
+                                    </Link>
+                                    : data.authorName
+                            }
+                        </>
+                    }
                 />
             </ListItem>
             <ListItem sx={listItemSx}>
@@ -46,10 +54,10 @@ const MetaData = ({ data }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Project Topic: " + data.requestTitle}
+                    secondary={"Project Topic: " + data.topic}
                 />
             </ListItem>
-           
+
         </List>
     );
 };

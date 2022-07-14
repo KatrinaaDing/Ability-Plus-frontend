@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 
 
 const MetaData = ({ metaData }) => {
-    console.log(metaData)
     const listItemSx = { p: 0.5 }
 
     return (
@@ -37,15 +36,15 @@ const MetaData = ({ metaData }) => {
                     secondary={
                         <>
                             Company: &nbsp;
-                            <Link 
-                                to={ metaData.authorId
-                                        ? `/company-info/${metaData.authorId}`
-                                        : '/company/profile'
-                                    }
-                            >
-                                {metaData.authorName}
-                            </Link>
+                            {
+                                metaData.authorId
+                                    ? <Link to={`/company-info/${metaData.authorId}`}>
+                                        {metaData.authorName}
+                                    </Link>
+                                    : metaData.authorName
+                            }
                         </>
+
                     }
                 />
             </ListItem>
