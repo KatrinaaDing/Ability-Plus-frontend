@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 13 Jul 2022
+ * Discription: A card to demo proposal
+ */
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';

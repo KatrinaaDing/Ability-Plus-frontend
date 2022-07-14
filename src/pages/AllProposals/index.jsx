@@ -80,7 +80,8 @@ const AllProposals = () => {
             .then(res => setPropDetailOpen(true))
             .catch(e => console.error(e))
     }
-
+    
+    // TODO put proposal rank if status > approving
 
     return (
         <BasicPageLayout title={`All Proposals for project "${projectName}"`}>

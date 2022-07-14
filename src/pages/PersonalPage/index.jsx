@@ -220,8 +220,6 @@ const PersonalPage = () => {
 
             }
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {/* {data.map((d, key) => <RequestCard key={key} userType={userType} page={page} data={ d } />)}  */}
-
                 {auth.isCompany && renderProposalCards()}
                 {!auth.isCompany && renderRequestCards()}
             </Grid>
