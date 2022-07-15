@@ -34,7 +34,7 @@ const MyProjectRequests = () => {
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
-    const [ascending, setAcending] = useState(true);
+    const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
 
@@ -60,7 +60,7 @@ const MyProjectRequests = () => {
     }, [ascending, status, searchKey])
 
     const handleDate = (ascending) => {
-        setAcending(ascending)
+        setAscending(ascending)
     }
     const handleStatus = (status) => {
         setStatus(status)

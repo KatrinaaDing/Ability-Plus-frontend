@@ -7,6 +7,7 @@ import LikeButton from 'glhfComponents/LikeButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
 import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
@@ -19,10 +20,10 @@ const PopularProposals = () => {
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
     const [searchKey, setSearchKey] = useState('');
-    const [ascending, setAcending] = useState(true);
+    const [ascending, setAscending] = useState(true);
     const [isAscendingOrderLike, setIsAcendingOrderLike] = useState('');
     const handleDate = (ascending) => {
-        setAcending(ascending)
+        setAscending(ascending)
     }
     const handleSearch = (key) => {
         setSearchKey(key);

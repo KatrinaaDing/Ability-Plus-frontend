@@ -28,7 +28,7 @@ const PersonalPage = () => {
     const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
     const [reqDetail, setReqDetail] = useState();
-    const [ascending, setAcending] = useState(true);
+    const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
     const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
