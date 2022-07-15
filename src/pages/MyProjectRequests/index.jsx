@@ -142,7 +142,7 @@ const MyProjectRequests = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         reqs.length === 0
-                            ? <MKTypography s x={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 No Project Request match your criteria
                             </MKTypography>
                             : reqs.map(r =>
