@@ -45,9 +45,10 @@ const PersonalPage = () => {
     const handleProposalDeadline = (proposal) => {
         setIsAscendingProposalDeadline(proposal)
     }
-        const handleSolutionDeadline = (solution) => {
-            setIsAscendingProposalDeadline(solution)
+    const handleSolutionDeadline = (solution) => {
+        setIsAscendingProposalDeadline(solution)
     }
+
   // what button to put in the proposal detail modal
     const getProposalModalActionButton = (statusStr) => {
         // if the status is waiting approval

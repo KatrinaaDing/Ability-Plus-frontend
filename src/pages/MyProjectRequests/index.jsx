@@ -98,7 +98,7 @@ const MyProjectRequests = () => {
 
 
     return (
-        <BasicPageLayout title="My Project Reqeusts">
+        <BasicPageLayout title="My Project Requests">
             {
                 reqOpen &&
                 <RequestDescriptionModal
@@ -129,7 +129,7 @@ const MyProjectRequests = () => {
             }
 
             <MKBox display='flex'>
-                <p>There are {total} reqeusts with status </p>
+                <p>There are {total} requests with status </p>
                 <StatusBadge statusLabel={status} type='request' size='sm' />
             </MKBox>
             <Grid container justifyContent="flex-end">
@@ -142,7 +142,7 @@ const MyProjectRequests = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            ? <MKTypography s x={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 No Project Request match your criteria
                             </MKTypography>
                             : reqs.map(r =>

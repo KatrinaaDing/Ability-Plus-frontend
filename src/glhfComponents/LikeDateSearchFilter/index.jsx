@@ -57,8 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
-  const [ascending, setAcending] = useState(true);
-  const [isAscendingOrderLike, setIsAcendingOrderLike] = useState('');
+  const [ascending, setAscending] = useState(true);
+  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState('');
   useEffect(() => {
     handleDate(ascending)
     handleLike(isAscendingOrderLike)
@@ -67,7 +67,7 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>
-        <MKButton onClick={() => setIsAcendingOrderLike(!isAscendingOrderLike)}>
+        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)}>
           Sort By Like{' '}
           { isAscendingOrderLike && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
@@ -75,7 +75,7 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
         </MKButton>
       </Box>
       <Box>
-        <MKButton onClick={() => setAcending(!ascending)}>
+        <MKButton onClick={() => setAscending(!ascending)}>
           Date{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
