@@ -32,7 +32,7 @@ value = {
     title,
     status,
     description,
-    topic,
+    topic, (category)
     authorId,
     authorName,
     lastModified,
@@ -63,8 +63,16 @@ const ProposalCard = ({ data, openDetail }) => {
                     {data.description}
                 </MKTypography>
                 <Grid>
-                    <MKTypography variant="caption">Category: {data.topic}</MKTypography><br/>
-                    <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
+                    {
+                        data.topic &&
+                            <MKTypography variant="caption">Category: {data.topic}</MKTypography>
+                    }
+                    <br/>
+                    {
+                        data.projectName &&
+                        <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
+
+                    }
                     {((page.startsWith('popular')) || page.startsWith('company/personal')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:

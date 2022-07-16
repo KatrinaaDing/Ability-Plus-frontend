@@ -33,7 +33,9 @@ const ProjectProposals = () => {
                 pageNo: 1,
                 pageSize: 20,
                 projectId: projectId,
-                whatOrder: 'LastModifiedTime'
+                whatOrder: 'LastModifiedTime',
+                isPick: 0,
+                searchKey: ''
             })
         })
             .then(res => {
@@ -42,50 +44,17 @@ const ProjectProposals = () => {
                 setTotal(res.data.total)
             })
             .catch(e => console.error(e))
-
-            /*
-        "authorId": 0,
-        "authorName": "string",
-        "id": 0,
-        "oneSentenceDescription": "string",
-        "rating": 0,
-        "title": "string"
-            */
     }, [])
-/*
-{
-    "createTime": 0,
-    "creatorId": 0,
-    "extraData": "string",
-    "id": 0,
-    "lastModifiedTime": 0,
-    "likeNum": 0,
-    "oneSentenceDescription": "string",
-    "status": "string",
-    "title": "string"
-  },
-  */
-    const getPropDetail = async () => {
+
+    const getPropDetail = async (id) => {
         await axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
-                proposalId: parseInt(projectId)
+                proposalId: parseInt(id)
             })
         })
             .then(res => {
-                // TODO handle data
-                // res.data.extraData = JSON.parse(res.data.extraData)
-                // setPropDetail(res.data)
-                setPropDetail({
-                    "createTime": 0,
-                    "creatorId": 1,
-                    "extraData": "string",
-                    "id": 0,
-                    "lastModifiedTime": 0,
-                    "likeNum": 0,
-                    "oneSentenceDescription": "string",
-                    "status": "approving",
-                    "title": "string"
-                })
+                res.data.extraData = JSON.parse(res.data.extraData)
+                setPropDetail({...res.data, id})
             })
             .then(res => setPropDetailOpen(true))
             .catch(e => console.error(e))
@@ -121,14 +90,22 @@ const ProjectProposals = () => {
                         actionButton={<></>}
                     />
             }
+
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
                     {
                         propCards.map(p =>
                             <ProposalCard
                                 key={p.id}
-                                data={p}
-                                openDetail={() => getPropDetail()}
+                                data={{
+                                    title: p.title,
+                                    status: 'submitted', //FIXME: need status
+                                    description: p.oneSentenceDescription,
+                                    authorId: p.authorId,
+                                    aurhorName: p.authorName,
+                                    lastModified: new Date, // FIXME: need time
+                                }}
+                                openDetail={() => getPropDetail(p.id)}
                             />
                             
                         )
