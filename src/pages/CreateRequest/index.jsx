@@ -234,7 +234,8 @@ const CreateRequest = () => {
                     setAlertOpenSubmit(true)
                 })
                 .catch(e => {
-                    console.error(e)
+                    console.log({ ...body, contactEmail: contactEmail, projectId: parseInt(requestId) })
+                    console.log(e)
                 })
 
         // submit new created request
