@@ -33,6 +33,7 @@ const BrowseRequests = () => {
     const [searchKey, setSearchKey] = useState('');
     const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
     const [isAscendingProposalDealine, setIsAscendingProposalDealine] = useState(true);
+    
     const handleDate = (ascending) => {
         setAscending(ascending)
     }

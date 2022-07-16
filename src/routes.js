@@ -77,6 +77,12 @@ const companyRoutes = (username) => [
   //   component: <PersonalPage />
   // },
   {
+    name: "Browse Requests",
+    route: "/browse-requests",
+    icon: <HomeIcon />,
+    component: <BrowseRequests />,
+  },
+  {
     name: "My Project Requests",
     route: "/my-project-requests",
     icon: <DashboardIcon />,
@@ -100,7 +106,12 @@ const companyRoutes = (username) => [
 
 // routes in navbar (student view)
 const studentRoutes = (username) => [
-
+  {
+    name: "Browse Requests",
+    route: "/browse-requests",
+    icon: <HomeIcon />,
+    component: <BrowseRequests />,
+  },
   {
     name: "My Proposals",
     route: "/my-proposals",
@@ -186,12 +197,7 @@ const otherRoutes = {
     },
   ],
   common: [
-    {
-      name: "Browse Requests",
-      route: "/browse-requests",
-      icon: <HomeIcon />,
-      component: <BrowseRequests />,
-    },
+    
     {
       name: "Company Information",
       route: "/company-info/:id",
