@@ -81,9 +81,9 @@ function SignInBasic() {
 
   const handleSubmit = async (event) => {
     // validate form
-    if (!validateInput(userEmail, userPwd)) 
+    if (!validateInput(userEmail, userPwd))
       return
-    
+
     // sign in user - use search params
     const hashedPwd = userPwd//md5(userPwd) // TOFIX
     const loginData = new URLSearchParams({
@@ -94,25 +94,30 @@ function SignInBasic() {
     // call api
     try {
       await axiosBasic.post('/user/login', loginData)
-      // on success
-      .then(res => {
-        setAuth({
-          username: res.data.userName,
-          isCompany: res.data.isCompany,
-          accessToken: res.data.accessToken
+        // on success
+        .then(res => {
+          setAuth({
+            username: res.data.userName,
+            isCompany: res.data.isCompany,
+            accessToken: res.data.accessToken
+          })
+          
         })
-        navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`)
-      })
-      // on failed
-      .catch(e => {
-        setAlertStr(e.statusText)
-      })
+        .then(res => 
+          navigate(res.data.isCompany
+          ? '/my-project-requests'
+          : '/browse-requests'
+        ))
+        // on failed
+        .catch(e => {
+          setAlertStr(e.statusText)
+        })
 
     } catch (err) {
       console.error(err)
       setAlertStr("Login failed. Please try again later.")
     }
-     
+
   }
 
   const validateInput = (email, pwd) => {
@@ -147,7 +152,7 @@ function SignInBasic() {
     setPwdErr(false)
     setAlertStr("");
   }
-  
+
 
   return (
     <>
@@ -159,12 +164,17 @@ function SignInBasic() {
       <AlertModal
         open={alertModalOpen}
         handleClose={() => setAlertModalOpen(false)}
-        handleConfirm={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
+        handleConfirm={() =>
+          navigate(auth.isCompany
+            ? '/my-project-requests'
+            : '/browse-requests'
+          )
+        }
         title="You have logged in."
-        content="You'll be redirected to your personal page."
+        content="You'll be redirected."
       />
       <Collapse in={alertStr != ""}>
-        <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
+        <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
       </Collapse>
       <MKBox
         position="absolute"
@@ -201,7 +211,7 @@ function SignInBasic() {
               >
                 <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
                   Sign in
-                </MKTypography>  
+                </MKTypography>
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
@@ -211,18 +221,6 @@ function SignInBasic() {
                   <MKBox mb={2}>
                     <MKInput type="password" error={pwdErr} label="Password" onChange={updateUserPwd} fullWidth />
                   </MKBox>
-                  {/* <MKBox display="flex" alignItems="center" ml={-1}>
-                    <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-                    <MKTypography
-                      variant="button"
-                      fontWeight="regular"
-                      color="text"
-                      onClick={handleSetRememberMe}
-                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                    >
-                      &nbsp;&nbsp;Remember me
-                    </MKTypography>
-                  </MKBox> */}
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" name="signIn" fullWidth onClick={handleSubmit}>
                       sign in

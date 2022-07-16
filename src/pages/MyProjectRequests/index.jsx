@@ -35,7 +35,7 @@ const MyProjectRequests = () => {
 
     // searching state
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('draft');
+    const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
 
     useEffect(async () => {
@@ -129,8 +129,18 @@ const MyProjectRequests = () => {
             }
 
             <MKBox display='flex'>
-                <p>There are {total} requests with status </p>
-                <StatusBadge statusLabel={status} type='request' size='sm' />
+                <p>There are {total} requests with &nbsp;</p>
+                {
+                    status === ''
+                        ? <p> all status</p>
+                        : (
+                            <>
+                                status
+                                <StatusBadge statusLabel={status} type='request' size='sm' />
+                            </>
+                        )
+                }
+                
             </MKBox>
             <Grid container justifyContent="flex-end">
                 <CreateProjectBtn />

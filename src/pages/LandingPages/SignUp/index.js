@@ -116,7 +116,10 @@ function SignUpBasic() {
                 accessToken: res.data.accessToken
               })
             })
-            .then(res => navigate(`/${res.data.isCompany ? 'company' : 'student'}/personal-page`))
+            .then(res => navigate(res.data.isCompany
+              ? '/my-project-requests'
+              : '/browse-requests'
+            ))
         })
         // on register failed
         .catch(e => {
@@ -220,9 +223,14 @@ function SignUpBasic() {
       <AlertModal
         open={alertModalOpen}
         handleClose={() => setAlertModalOpen(false)}
-        handleConfirm={() => navigate(`/${auth.isCompany ? 'company' : 'student'}/personal-page`)}
+        handleConfirm={() =>
+          navigate(auth.isCompany
+            ? '/my-project-requests'
+            : '/browse-requests'
+          )
+        }
         title="You have logged in."
-        content="You'll be redirected to your personal page."
+        content="You'll be redirected."
       />
       <MKBox
         position="absolute"
