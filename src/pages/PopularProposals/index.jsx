@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
 import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
+import axios from 'axios';
+import { BASE_URL } from 'api/axios';
 
 const PopularProposals = () => {
     const { auth } = useAuth();
@@ -21,7 +23,7 @@ const PopularProposals = () => {
     const [alertOpen, setAlertOpen] = React.useState(false);
     const [searchKey, setSearchKey] = useState('');
     const [ascending, setAscending] = useState(true);
-    const [isAscendingOrderLike, setIsAcendingOrderLike] = useState('');
+    const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(true);
     const handleDate = (ascending) => {
         setAscending(ascending)
     }
@@ -31,6 +33,27 @@ const PopularProposals = () => {
     const handleLike = (like) => {
         setIsAcendingOrderLike(like)
     }
+
+    useEffect(async () => {
+        // FIXME: add search key
+      await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
+        params: new URLSearchParams({
+            isAscendingOrderLike: isAscendingOrderLike,
+            isAscendingOrderTime: ascending,
+            pageNo: 1,
+            pageSize: 20,
+        }),
+        headers:  {
+            token: auth.accessToken
+        }
+      })
+        .then(res => {
+            console.log(res)
+        })
+        .catch(e => console.error(e))
+    
+    }, [ascending, isAscendingOrderLike])
+    
 
     const handleOpenDetail = () => {
         // if no login info, navigate to login

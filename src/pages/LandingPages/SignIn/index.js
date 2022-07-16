@@ -101,16 +101,16 @@ function SignInBasic() {
             isCompany: res.data.isCompany,
             accessToken: res.data.accessToken
           })
-          
-        })
-        .then(res => 
           navigate(res.data.isCompany
-          ? '/my-project-requests'
-          : '/browse-requests'
-        ))
+            ? '/my-project-requests'
+            : '/student/browse-requests'
+          )
+        })
+        
+          
         // on failed
         .catch(e => {
-          setAlertStr(e.statusText)
+          setAlertStr(e)
         })
 
     } catch (err) {
@@ -167,7 +167,7 @@ function SignInBasic() {
         handleConfirm={() =>
           navigate(auth.isCompany
             ? '/my-project-requests'
-            : '/browse-requests'
+            : '/student/browse-requests'
           )
         }
         title="You have logged in."

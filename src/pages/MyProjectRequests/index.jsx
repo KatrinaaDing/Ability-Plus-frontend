@@ -24,13 +24,13 @@ import ViewProposalsBtn from "./components/ViewProposalsBtn";
 import CreateProjectBtn from "./components/CreateProjectBtn";
 
 // FIXME fake data, testing purpose only
-import projects from "assets/data/projects"
-const myId = 9;
+import { BASE_URL } from "api/axios";
+import useAuth from "auth/useAuth";
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-
+    const {auth} = useAuth();
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
 
@@ -44,19 +44,22 @@ const MyProjectRequests = () => {
     const [searchKey, setSearchKey] = useState('');
 
     useEffect(async () => {
-        const params = new URLSearchParams({
-            status: status,
+        let params = {
+            status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
-            searchKey: searchKey === '' ? undefined : searchKey
-        })
-        await axiosPrivate.get('/project/list_my_project_request/', {
-            params: params
+        }
+        // FIXME search key
+        if (searchKey !== '')
+            params = {...params, searchKey: searchKey}
+
+        await axiosPrivate.get(`/project/list_my_project_request`, {
+            params:  new URLSearchParams(params)
         })
             .then(res => {
-                // setReqs(res.data.records)
-                setReqs(projects[myId])
+                console.log(res)
+                setReqs(res.data.records)
                 setTotal(res.data.total)
             })
             .catch(e => {
@@ -102,7 +105,6 @@ const MyProjectRequests = () => {
             .catch(e => console.error(e))
     }
 
-
     return (
         <BasicPageLayout title="My Project Requests">
             {
@@ -135,7 +137,7 @@ const MyProjectRequests = () => {
             }
 
             <MKBox display='flex'>
-                <p>There are {total} requests with &nbsp;</p>
+                <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
                     status === ''
                         ? <p>all status</p>

@@ -22,7 +22,7 @@ const DatePicker = ({title, value, setValue}) => {
                 }} 
                 input={{ placeholder: "Select a date" }} 
                 value={value} 
-                onChange={(dates, dateStr) => setValue(dateStr)} 
+                onChange={(dates, dateStr) => setValue(new Date(dateStr))} 
                 sx={{ mt: 2 }} />
         </Grid>
     );

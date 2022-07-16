@@ -18,16 +18,24 @@ import { useNavigate } from 'react-router-dom';
 import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
+import { BASE_URL } from 'api/axios';
+import axios from 'axios';
+import MKBox from 'components/MKBox';
+import StatusBadge from 'glhfComponents/StatusBadge';
+
 const BrowseRequests = () => {
+    // hooks
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
+    // request states
+    const [total, setTotal] = useState(0);
     const [cards, setCards] = useState([])
-    const [proOpen, setProOpen] = useState(false);
-    const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
-    const [reqDetail, setReqDetail] = useState();
+    const [reqDetail, setReqDetail] = useState({});
+
+    // filter states
     const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
@@ -49,7 +57,7 @@ const BrowseRequests = () => {
     }
 
     useEffect(async () => {
-        await axiosPrivate.get('/project/list_all_project_requests', {
+        await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
             params: new URLSearchParams({
                 isAscendingOrder: ascending,
                 pageNo: 1,
@@ -57,9 +65,14 @@ const BrowseRequests = () => {
                 searchKey: searchKey,
                 status: status,
                 whatOrder: 'SolutionDue'
-            })
+            }),
+            headers: {
+                token: auth.accessToken
+            }
         })
             .then(res => {
+                setCards(res.data.data.records)
+                setTotal(res.data.data.total)
                 console.log('get all request with status [', status, ']')
             })
             .catch(e => console.error(e))
@@ -67,52 +80,17 @@ const BrowseRequests = () => {
     }, [status, searchKey, ascending])
     
 
-    // const getProDetail = async (proId) => {
-    //   await axiosPrivate.get('/proposal/get_proposal_detail_info',{
-    //     params: new URLSearchParams({
-    //         proposalId: proId
-    //     })
-    //   })
-    //     .then(res => 
-    //         setProDetail({
-    //             "createTime": 0,
-    //             "creatorId": 0,
-    //             "description": "string",
-    //             "id": proId,
-    //             "lastModifiedTime": 0,
-    //             "likeNum": 0,
-    //             "oneSentenceDescription": "string",
-    //             "status": "submitted",
-    //             "title": "string"
-    //         })
-    //     )
-    //     .then(res => setProOpen(true))
-    //     .catch(e => console.error(e))
-    // }
-
     const getReqDetail = async (reqId) =>
-        await axiosPrivate.get('/project/get_project_info', {
-            params: new URLSearchParams({
-                id: reqId
-            })
+        await axios.get(`${BASE_URL}/project/get_project_info?id=${reqId}`, {
+            headers: {
+                token: auth.accessToken
+            }
         })
-            .then(res => 
-                setReqDetail({
-                    id: reqId,
-                    "contactEmail": "string",
-                    "createTime": 0,
-                    "creatorId": 0,
-                    "creatorName": "string",
-                    "description": "string",
-                    "extraData": "string",
-                    'status': 'open_for_proposal',
-                    "lastModifiedTime": 0,
-                    "name": "health record",
-                    "projectArea": "string",
-                    "proposalDdl": 0,
-                    "solutionDdl": 0
-                })
-            )
+            .then(res => {
+                if (res.data.status >= 400)
+                    return Promise.reject(res.data.message)
+                setReqDetail({ ...res.data.data, id: reqId })
+            })
             .then(res => setReqOpen(true))
             .catch(e => console.error(e))
 
@@ -127,9 +105,21 @@ const BrowseRequests = () => {
     }
 
 
-
     return (
         <BasicPageLayout title="Browse All Project Requests">
+            <MKBox display='flex'>
+                <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
+                {
+                    status === ''
+                        ? <p>all status</p>
+                        : (
+                            <>
+                                status
+                                <StatusBadge statusLabel={status} type='request' size='sm' />
+                            </>
+                        )
+                }
+            </MKBox>
             {
                 // auth.isCompany 
                 // ? <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
@@ -147,13 +137,13 @@ const BrowseRequests = () => {
                         title: reqDetail.name,
                         status: reqDetail.status,
                         category: reqDetail.projectArea,
-                        propDdl: reqDetail.proposalDdl,
-                        soluDdl: reqDetail.solutionDdl,
+                        propDdl: new Date(reqDetail.proposalDdl*1000),
+                        soluDdl: new Date(reqDetail.solutionDdl*1000),
                         description: reqDetail.description,
                         requirement: 'req',
                         rewards: 'rew',
                         metaData: {
-                            lastModified: reqDetail.lastModifiedTime,
+                            lastModified: new Date(reqDetail.lastModifiedTime*1000),
                             authorName: reqDetail.creatorName,
                             authorId: reqDetail.creatorId
                         }

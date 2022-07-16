@@ -118,7 +118,7 @@ function SignUpBasic() {
             })
             .then(res => navigate(res.data.isCompany
               ? '/my-project-requests'
-              : '/browse-requests'
+              : '/student/browse-requests'
             ))
         })
         // on register failed

@@ -49,7 +49,7 @@ const RequestCard = ({ data, openDetail }) => {
     const ViewRankingBtn = () => 
          <MKButton
             variant="gradient"
-            color="info"
+            color="primary"
             size="small"
             onClick={() => navigate(`/view-request-ranks/${data.id}`)}
         >
@@ -66,7 +66,6 @@ const RequestCard = ({ data, openDetail }) => {
         >
             View Detail
         </MKButton>
-
 
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
@@ -85,7 +84,7 @@ const RequestCard = ({ data, openDetail }) => {
                         <MKTypography variant="caption">Topic: &nbsp;{data.topic}</MKTypography>
                     </Grid>
                     {
-                        page.startsWith('student/personal') &&
+                        page.indexOf('browse') >= 0 &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by: &nbsp;
                                 <Link to={`/company-info/${data.authorId}`}>
@@ -95,7 +94,7 @@ const RequestCard = ({ data, openDetail }) => {
                         </Grid>
                     }
                     <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: &nbsp;{data.lastModification}</MKTypography>
+                        <MKTypography variant="caption">Last Modification Date: &nbsp;{new Date(data.lastModifiedTime*1000).toLocaleString()}</MKTypography>
                     </Grid>
                 </Grid>
             </CardContent>

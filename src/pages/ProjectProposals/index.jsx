@@ -20,24 +20,37 @@ const ProjectProposals = () => {
     const axiosPrivate = useAxiosPrivate();
     const [propCards, setPropCards] = useState([]);
 
+    const [total, setTotal] = useState(0);
+
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
 
     useEffect(async () => {
-        // await axiosPrivate.get('')
-        // TODO call api
-        setPropCards([
-            {
-                id: 1,
-                title: "Sample Title",
-                status: 'submitted',
-                topic: "Proposal Management",
-                authorId: 8,
-                authorName: 'Student 1',
-                lastModified: new Date().toLocaleString(),
-                likes: 5
-            }
-        ])
+        // TODO add search key
+        await axiosPrivate('/proposal/list_project_proposals', {
+            params: new URLSearchParams({
+                isAscendingOrder: true,
+                pageNo: 1,
+                pageSize: 20,
+                projectId: projectId,
+                whatOrder: 'LastModifiedTime'
+            })
+        })
+            .then(res => {
+                setPropCards(res.data.records)
+                setTotal(res.data.total)
+            })
+            .catch(e => console.error(e))
+
+            /*
+        "authorId": 0,
+        "authorName": "string",
+        "id": 0,
+        "oneSentenceDescription": "string",
+        "rating": 0,
+        "title": "string"
+            */
+        
 
 
 
@@ -85,6 +98,7 @@ const ProjectProposals = () => {
 
     return (
         <BasicPageLayout title={`All Proposals for project "${projectName}"`}>
+            <p>There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}</p>
             {
                 propDetail &&
                     <ProposalDescriptionModal

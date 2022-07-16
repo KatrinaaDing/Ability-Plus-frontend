@@ -78,7 +78,7 @@ const companyRoutes = (username) => [
   // },
   {
     name: "Browse Requests",
-    route: "/browse-requests",
+    route: "/company/browse-requests",
     icon: <HomeIcon />,
     component: <BrowseRequests />,
   },
@@ -108,7 +108,7 @@ const companyRoutes = (username) => [
 const studentRoutes = (username) => [
   {
     name: "Browse Requests",
-    route: "/browse-requests",
+    route: "/student/browse-requests",
     icon: <HomeIcon />,
     component: <BrowseRequests />,
   },
@@ -192,7 +192,7 @@ const otherRoutes = {
     },
     {
       name: "create proposal",
-      route: "/edit-proposal/:id",
+      route: "/edit-proposal/:reqName/:id",
       component: <CreateProposal />,
     },
   ],
