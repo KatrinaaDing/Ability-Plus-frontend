@@ -8,6 +8,8 @@ import MKBox from 'components/MKBox';
 import Divider from "@mui/material/Divider";
 
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from '@mui/icons-material/Edit';
+
 
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
@@ -103,6 +105,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         <MKButton
                             variant="gradient"
                             color="info"
+                            startIcon={<EditIcon />}
                             onClick={() => navigate(`/edit-request/${value.id}`)}
                             sx={{ ml: 2 }}
                         >

@@ -6,6 +6,8 @@
 import MKButton from 'components/MKButton';
 import React from 'react';
 import { useNavigate} from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add';
+
 const CreateProjectBtn = () => {
     const navigate = useNavigate();
     const handleCreate = () => {
@@ -17,6 +19,7 @@ const CreateProjectBtn = () => {
             variant="gradient" 
             color="info" 
             size="large" 
+            startIcon={<AddIcon />}
             onClick={handleCreate}
         >
             Create Project

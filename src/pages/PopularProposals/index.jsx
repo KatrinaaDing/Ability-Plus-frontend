@@ -119,7 +119,7 @@ const PopularProposals = () => {
                         }}
                         openDetail={() => handleOpenDetail()}
                     />
-
+                    
                 </Grid>
             </Box>
         </BasicPageLayout>

@@ -14,7 +14,7 @@ import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import FilterBar from "glhfComponents/RequestFilter"
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import StatusBadge from "glhfComponents/StatusBadge";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
@@ -105,8 +105,20 @@ const MyProjectRequests = () => {
             .catch(e => console.error(e))
     }
 
+    const deleteProject = async (id) => {
+        if (confirm("Do you really want to delete the project request?")) {
+            await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
+                .then(res => {
+                    alert(`Project ${id} has been deleted`);
+                    setReqOpen(false)
+                    location.reload();
+                })
+                .catch(e => console.error(e))
+        }
+    }
+
     return (
-        <BasicPageLayout title="My Project Requests">
+        <BasicPageLayout title="My Project Requests" secondaryContent={<CreateProjectBtn />}>
             {
                 reqOpen &&
                 <RequestDescriptionModal
@@ -130,8 +142,19 @@ const MyProjectRequests = () => {
                         }
                     }}
                     actionButton={
-                        getCode('request', status) > statusBank.request.draft.code &&
-                            <ViewProposalsBtn  reqName={reqDetail.name} reqId={reqDetail.id}/>
+                        // if status is not draft, can view proposal.
+                        // if is draft, can delete
+                        getCode('request', status) > statusBank.request.draft.code 
+                            ? <ViewProposalsBtn reqName={reqDetail.name} reqId={reqDetail.id}/>
+                            : <MKButton
+                                variant="gradient"
+                                color="error"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => deleteProject(reqDetail.id)}
+                                sx={{ ml: 2 }}
+                            >
+                                Delete
+                            </MKButton>
                     }
                 />
             }
@@ -150,13 +173,8 @@ const MyProjectRequests = () => {
                 }
                 
             </MKBox>
-            <Grid container justifyContent="flex-end">
-                <CreateProjectBtn />
-            </Grid>
-            <br />
             <Box sx={{ flexGrow: 1 }}>
                 <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
-                <br />
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         reqs.length === 0

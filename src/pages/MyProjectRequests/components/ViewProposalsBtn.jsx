@@ -5,12 +5,14 @@
  */
 import MKButton from 'components/MKButton';
 import React from 'react';
+import FileOpenIcon from '@mui/icons-material/FileOpen';
 
 const ViewProposalsBtn = ({reqName, reqId}) => {
     return (
         <MKButton
             variant='gradient'
             color='info'
+            startIcon={<FileOpenIcon />}
             onClick={() => window.open(`/view-proposals/${reqName}/${reqId}`, '_blank')}
         >
             View All Proposals

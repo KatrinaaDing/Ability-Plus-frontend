@@ -27,7 +27,7 @@ const ProjectProposals = () => {
 
     useEffect(async () => {
         // TODO add search key
-        await axiosPrivate('/proposal/list_project_proposals', {
+        await axiosPrivate.get('/proposal/list_project_proposals', {
             params: new URLSearchParams({
                 isAscendingOrder: true,
                 pageNo: 1,
@@ -37,6 +37,7 @@ const ProjectProposals = () => {
             })
         })
             .then(res => {
+                console.log(res)
                 setPropCards(res.data.records)
                 setTotal(res.data.total)
             })
@@ -50,10 +51,6 @@ const ProjectProposals = () => {
         "rating": 0,
         "title": "string"
             */
-        
-
-
-
     }, [])
 /*
 {

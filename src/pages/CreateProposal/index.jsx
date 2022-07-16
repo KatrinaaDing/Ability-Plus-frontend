@@ -38,7 +38,7 @@ const sampleContent = {
 
 const CreateProposal = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
-
+    console.log(isEditing)
     // hooks
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
@@ -228,7 +228,7 @@ const CreateProposal = () => {
         />
 
     return (
-        <BasicPageLayout title={`${getCode('proposal', status || 'Draft') < 2 ? 'Edit' : 'Create'} Proposal`}>
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Proposal`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
@@ -285,7 +285,8 @@ const CreateProposal = () => {
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
                     <ActionButton label='Cancel' color='secondary' />
                     {
-                        status === statusBank.request.draft.label && 
+                        (status === '' || 
+                        status === statusBank.request.draft.label) && 
                         <ActionButton label='Save Draft' color='info' onClick={saveDraft}/>
                     }
                     <ActionButton label='Preview & Submit' onClick={handlePreview} color='success' />

@@ -173,8 +173,8 @@ const CreateRequest = () => {
                 requirement: requirement,
                 rewards: rewards,
             },
-            "proposalDue": propDdl.getTime() / 1000,
-            "solutionDue": soluDdl.getTime() / 1000,
+            "proposalDue": propDdl === '' ? 0 : propDdl.getTime() / 1000,
+            "solutionDue": soluDdl === '' ? 0 : soluDdl.getTime() / 1000,
             "title": title
         }
     }

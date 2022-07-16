@@ -13,6 +13,7 @@ import { getCode } from "utils/getStatus";
 import { statusBank } from "utils/getStatus";
 import MKButton from "components/MKButton";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const MyProposals = () => {
     // hooks
@@ -85,21 +86,20 @@ const MyProposals = () => {
             .then(res => setPropOpen(true))
             .catch(e => console.error(e))
     }
-/*
-"data": {
-   "area": "string",
-    "authorId": 0,
-    "authorName": "string",
-    "lastModifiedTime": 0,
-    "likeNum": 0,
-    "oneSentenceDescription": "string",
-    "projectName": "string",
-    "proposalId": 0,
-    "status": "string",
-    "title": "string"
-  },
 
-*/
+    const deleteProposal = async(id) => {
+        if (confirm("Do you really want to delete the proposal?")) {
+            await axiosPrivate.post(`/proposal/delete_proposal?proposalId=${id}`)
+                .then(res => {
+                    alert(`Proposal ${id} has been deleted`);
+                    setPropOpen(false)
+                    location.reload(); 
+                })
+                .catch(e => console.error(e))
+        }
+    }
+        
+
     return (
         <BasicPageLayout title="My Proposals">
             {
@@ -117,6 +117,7 @@ const MyProposals = () => {
                         goal: propDetail.extraData.goal,
                         detail: propDetail.extraData.detail,
                         likeNum: propDetail.likeNum,
+                        canEdit: propDetail.canEdit,
                         metaData: {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
@@ -125,15 +126,15 @@ const MyProposals = () => {
                         }
                     }}
                     actionButton={
-                        // can edit before proposal ddl
-                       propDetail.canEdit &&
+                        propDetail.status === statusBank.proposal.draft.label &&
                         <MKButton
                             variant="gradient"
-                            color="info"
-                            onClick={() => navigate(`/edit-proposal/${propDetail.projectName}/${propDetail.id}`)}
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => deleteProposal(propDetail.id)}
                             sx={{ ml: 2 }}
                         >
-                            Edit
+                            Delete
                         </MKButton>
                     }
                 />
