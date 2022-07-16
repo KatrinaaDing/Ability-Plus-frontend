@@ -38,7 +38,11 @@ const sampleContent = {
 
 const CreateProposal = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
+<<<<<<< HEAD
     console.log(isEditing)
+=======
+
+>>>>>>> e9dfdb7 (implement edit and create project and proposal, fix bug showing description)
     // hooks
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
@@ -285,8 +289,12 @@ const CreateProposal = () => {
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
                     <ActionButton label='Cancel' color='secondary' />
                     {
+<<<<<<< HEAD
                         (status === '' || 
                         status === statusBank.request.draft.label) && 
+=======
+                        status === statusBank.request.draft.label && 
+>>>>>>> e9dfdb7 (implement edit and create project and proposal, fix bug showing description)
                         <ActionButton label='Save Draft' color='info' onClick={saveDraft}/>
                     }
                     <ActionButton label='Preview & Submit' onClick={handlePreview} color='success' />
