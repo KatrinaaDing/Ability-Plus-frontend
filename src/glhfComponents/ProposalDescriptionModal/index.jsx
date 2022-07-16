@@ -8,6 +8,7 @@ import MKBox from 'components/MKBox';
 import Divider from "@mui/material/Divider";
 
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from '@mui/icons-material/Edit';
 
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
@@ -47,8 +48,8 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const navigate = useNavigate();
 
     // is student &&  is author && status < approving
-    const canEdit = 
-        !auth.isCompany && 
+    const canEdit =
+        !auth.isCompany &&
         auth.id == value.metaData.authorId &&
         getCode('proposal', value.status) < statusBank.proposal.approving
 
@@ -129,13 +130,15 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                 <MKBox>
                     {actionButton}
                     {
-                        canEdit && 
+                        value.canEdit &&
                         <MKButton
-                            variant="gradient" 
+                            variant="gradient"
                             color="info"
-                            onClick={() => navigate(`/edit-proposal/${value.id}`)}
+                            startIcon={<EditIcon />}
+                            onClick={() => navigate(`/edit-proposal/${value.metaData.topic}/${value.id}`)}
+                            sx={{ ml: 2 }}
                         >
-                            Edit    
+                            Edit
                         </MKButton>
                     }
                 </MKBox>

@@ -3,9 +3,11 @@
  * Created At: 14 Jul 2022
  * Discription: A button that allow company to create project
  */
-import React from 'react';
 import MKButton from 'components/MKButton';
+import React from 'react';
 import { useNavigate} from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add';
+
 const CreateProjectBtn = () => {
     const navigate = useNavigate();
     const handleCreate = () => {
@@ -13,10 +15,11 @@ const CreateProjectBtn = () => {
     }
 
     return (
-        <MKButton 
+        <MKButton
             variant="gradient" 
             color="info" 
             size="large" 
+            startIcon={<AddIcon />}
             onClick={handleCreate}
         >
             Create Project

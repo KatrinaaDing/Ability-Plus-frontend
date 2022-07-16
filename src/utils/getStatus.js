@@ -83,6 +83,7 @@ const getLabel = (type, statCode) => {
 }
 
 const formatLabel = (label) => {
+    if (label === 'all') return ''
     return label = label.split('_').join(' ')
 }
 
