@@ -39,13 +39,23 @@ const MyProjectRequests = () => {
     const [searchKey, setSearchKey] = useState('');
 
     useEffect(async () => {
-        const params = new URLSearchParams({
+        let params;
+        if (searchKey != '') {
+            params = new URLSearchParams({
             status: status,
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
-            searchKey: searchKey === '' ? undefined : searchKey
-        })
+            searchKey: searchKey 
+            })
+        } else {
+            params = new URLSearchParams({
+            status: status,
+            isAscendingOrder: ascending,
+            pageNo: 1,
+            pageSize: 10
+            })
+        }
         await axiosPrivate.get('/project/list_my_project_request/', {
             params: params
         })
