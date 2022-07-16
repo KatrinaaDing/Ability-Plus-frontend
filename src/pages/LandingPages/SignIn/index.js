@@ -85,7 +85,7 @@ function SignInBasic() {
       return
 
     // sign in user - use search params
-    const hashedPwd = userPwd//md5(userPwd) // TOFIX
+    const hashedPwd = userPwd//md5(userPwd) // FIXME
     const loginData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd // md5 hashing

@@ -15,12 +15,17 @@ import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import FilterBar from "glhfComponents/RequestFilter"
 
+
 import StatusBadge from "glhfComponents/StatusBadge";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import { getCode } from "utils/getStatus";
 import { statusBank } from "utils/getStatus";
 import ViewProposalsBtn from "./components/ViewProposalsBtn";
 import CreateProjectBtn from "./components/CreateProjectBtn";
+
+// FIXME fake data, testing purpose only
+import projects from "assets/data/projects"
+const myId = 9;
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -50,7 +55,8 @@ const MyProjectRequests = () => {
             params: params
         })
             .then(res => {
-                setReqs(res.data.records)
+                // setReqs(res.data.records)
+                setReqs(projects[myId])
                 setTotal(res.data.total)
             })
             .catch(e => {
@@ -107,16 +113,16 @@ const MyProjectRequests = () => {
                     value={{
                         id: reqDetail.id,
                         title: reqDetail.name,
-                        status: status,
+                        status: reqDetail.status,
                         category: reqDetail.projectArea,
-                        propDdl: new Date(reqDetail.proposalDdl * 1000).toLocaleString(),
-                        soluDdl: new Date(reqDetail.solutionDdl * 1000).toLocaleString(),
+                        propDdl: reqDetail.proposalDdl * 1000,
+                        soluDdl: reqDetail.solutionDdl * 1000,
                         description: reqDetail.description,
                         canEdit: reqDetail.canEdit,
                         requirement: JSON.parse(reqDetail.extraData).requirement,
                         rewards: JSON.parse(reqDetail.extraData).rewards,
                         metaData: {
-                            lastModified: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString(),
+                            lastModified: reqDetail.lastModifiedTime * 1000,
                             authorName: reqDetail.creatorName,
                             authorId: reqDetail.creatorId,
                         }
@@ -132,7 +138,7 @@ const MyProjectRequests = () => {
                 <p>There are {total} requests with &nbsp;</p>
                 {
                     status === ''
-                        ? <p> all status</p>
+                        ? <p>all status</p>
                         : (
                             <>
                                 status

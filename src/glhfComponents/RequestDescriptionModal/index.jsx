@@ -67,8 +67,8 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                 <Grid container spacing={2} justify='flex-start'>
                     <Grid item xs={12} md={7} display='flex' flexDirection='column' justifyContent='space-between' order={{ xs: 2, md: 1 }}>
                         <ShortInfo title="Category" content={value.category} />
-                        <ShortInfo title="Proposal Deadline" content={value.propDdl} />
-                        <ShortInfo title="Solution Deadline" content={value.soluDdl} />
+                        <ShortInfo title="Proposal Deadline" content={new Date(value.propDdl).toLocaleString()} />
+                        <ShortInfo title="Solution Deadline" content={new Date(value.soluDdl).toLocaleString()} />
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
                         <MetaData metaData={value.metaData} />

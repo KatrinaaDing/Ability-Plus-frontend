@@ -17,7 +17,7 @@ const DatePicker = ({title, value, setValue}) => {
             <MKDatePicker 
                 options={{
                     enableTime: true,
-                    dateFormat: "Y-m-d H:i",
+                    dateFormat:  "d M Y, h:i K",
                     minDate: new Date()
                 }} 
                 input={{ placeholder: "Select a date" }} 

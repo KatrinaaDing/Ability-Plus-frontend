@@ -24,7 +24,7 @@ const MetaData = ({ metaData }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Last Modified At: " + metaData.lastModified}
+                    secondary={"Last Modified At: " + new Date(metaData.lastModified).toLocaleString()}
                 />
             </ListItem>
             <ListItem sx={listItemSx}>

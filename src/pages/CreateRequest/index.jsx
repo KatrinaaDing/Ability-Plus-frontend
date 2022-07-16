@@ -25,7 +25,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'glhfComponents/AlertModal';
 import useAuth from 'auth/useAuth';
 import ActionButton from './components/ActionButton';
-
+import axios from 'axios';
+import { BASE_URL } from 'api/axios'
+import { statusBank } from 'utils/getStatus';
 
 const categories = [
     'Frontend Develop',
@@ -47,37 +49,75 @@ const sampleContent = {
 const CreateRequest = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
 
+    // hooks
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const { auth } = useAuth();
     const { id: requestId } = useParams();
 
+    // input state
     const [title, setTitle] = React.useState('')
     const [category, setCategory] = React.useState('')
-    const [propDdl, setPropDdl] = React.useState('')
-    const [soluDdl, setSoluDdl] = React.useState('')
+    const [propDdl, setPropDdl] = React.useState(0)
+    const [soluDdl, setSoluDdl] = React.useState(0)
     const [description, setDescription] = React.useState('')
     const [requirement, setRequirement] = React.useState('')
     const [rewards, setRewards] = React.useState('')
-    const [error, setError] = React.useState('')
-    const [preview, setPreview] = React.useState(false)
     const [status, setStatus] = React.useState('')
-
+    const [contactEmail, setContactEmail] = React.useState('');
+    
+    // error alert state
+    const [error, setError] = React.useState('')
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
 
+    const [preview, setPreview] = React.useState(false)
 
-    React.useEffect(async () => {   // TOFIX
+    /*
+canProcess: false
+contactEmail: "katC@test.com"
+createTime: 1657705547
+creatorId: 9
+creatorName: "kat ding"
+description: "<p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. <u>Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero</u>, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p><br></p><p>Morbi sed dictum dui. Aenean at est lectus. <span style=\"color: rgb(230, 0, 0);\">Suspendisse condimentum</span> leo ac nisl varius maximus. <span style=\"background-color: rgb(255, 255, 0);\">Nam commodo ultricies elit, ut sagittis dolor volutpat et. Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</span></p><p><br></p><p>Quisque eget luctus nunc. Morbi tempor pharetra sapien, <strong>ut interdum lacus interdum id</strong>. Nullam ac urna sed mauris interdum malesuada vitae eu enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vel eleifend lectus. Ut rutrum tellus a est volutpat, nec placerat sapien gravida. Sed sit amet lectus et libero fringilla varius vitae at velit. Cras vitae sapien at eros fermentum interdum quis ut velit. Mauris interdum feugiat felis, nec ornare justo laoreet vel. Suspendisse posuere a enim non rutrum. Praesent dapibus nisl erat.</p>"
+extraData: "{\"requirement\":\"<h2>Functional</h2><ol><li>Sed mollis euismod nulla non feugiat.</li><li>Nulla quis convallis massa.&nbsp;</li><li>Duis interdum enim nisi, vel viverra nibh dictum et.</li><li>Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</li></ol><p><br></p><h2>Non-functional</h2><ol><li>Morbi sed dictum dui. Aenean at est lectus.</li><li>Suspendisse condimentum leo ac nisl varius maximus.</li><li>Nam commodo ultricies elit, ut sagittis dolor volutpat et.</li><li>Curabitur quis lacus vitae justo efficitur gravida.</li><li>Aenean dictum orci eu elit fermentum aliquet.</li><li>Donec fermentum porttitor felis at eleifend.</li></ol>\",\"rewards\":\"<p>$1000</p>\"}"
+isProcessingDone: false
+lastModifiedTime: 1657705547
+name: "nametest1"
+projectArea: "Frontend Develop"
+proposalDdl: 1660725065
+solutionDdl: 1668497462
+status: "open_for_proposal"
+    */
+
+    React.useEffect(async () => {   // FIXME
+        // load data if is to edit request
         if (isEditing) {
-            await axiosPrivate.get('/project/get_project_info', {
-                params: new URLSearchParams({
-                    id: parseInt(requestId)
-                })
+            await axios.get(`${BASE_URL}/project/get_project_info?id=${requestId}`, {
+                headers: {
+                    token: auth.accessToken
+                }
             })
                 .then(res => {
-                    console.log('edit request', res)
+                    // if return with error, return reject
+                    if (res.data.status >= 400) 
+                        return Promise.reject(res.data.message)
+                    
+                    // else
+                    const data = res.data.data
+                    const extraData = JSON.parse(data.extraData)
+                    setTitle(data.name)
+                    setCategory(data.projectArea)
+                    setPropDdl(new Date(data.proposalDdl * 1000))
+                    setSoluDdl(new Date(data.solutionDdl * 1000))
+                    setDescription(data.description)
+                    setRequirement(extraData.requirement)
+                    setRewards(extraData.rewards)
+                    setStatus(data.status)
+                    setContactEmail(data.contactEmail)
                 })
-                .catch(e => setError(e))
+                // .catch(e => setError(e))
+                .catch(e => console.log('err', e))
         }
     },[])
 
@@ -100,7 +140,7 @@ const CreateRequest = () => {
 
         const errorList = [];
         Object.keys(checkList).forEach(i => {
-            if (checkList[i] === '' || checkList[i] === '<p><br></p>')
+            if (checkList[i] === 0 || checkList[i] === '' || checkList[i] === '<p><br></p>')
                 errorList.push(i)
         })
 
@@ -110,7 +150,7 @@ const CreateRequest = () => {
             return
         }
         // prop deadline must < solu deadline
-        if (new Date(propDdl) > new Date(soluDdl)) {
+        if (propDdl > soluDdl) {
             setError("Solution deadline cannot be before proposal deadline! Please check again.")
             return
         }
@@ -133,7 +173,7 @@ const CreateRequest = () => {
     const checkEmpty = () => {
         const checkList = [title, category, propDdl, soluDdl, description, requirement, rewards]
         for (let input of checkList) {
-            if (input !== '') {
+            if (input !== '' && input !== 0) {
                 return false
             }
         }
@@ -148,8 +188,8 @@ const CreateRequest = () => {
                 requirement: requirement,
                 rewards: rewards,
             },
-            "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
-            "solutionDue": soluDdl === '' ? 0 : new Date(soluDdl).getTime() / 1000,
+            "proposalDue": propDdl / 1000,
+            "solutionDue": soluDdl / 1000,
             "title": title
         }
     }
@@ -168,18 +208,36 @@ const CreateRequest = () => {
 
         // save edited request
         if (isEditing) {
-            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
+            await axios.post(BASE_URL+'/project/edit_project', {
+                body: { ...body, projectId: requestId }
+            }, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    // if return with error, return reject
+                    if (res.data.status >= 400)
+                        return Promise.reject(res.data.message)
                     setAlertOpenDraft(true)
                 })
                 .catch(e => {
-                    console.error(e)
+                    setError(e)
                 })
 
             // save new created request
         } else {
-            await axiosPrivate.post('/project/create_project_request', body)
+            await axios.post(BASE_URL + '/project/create_project_request', {
+                body: body
+            }, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    // if return with error, return reject
+                    if (res.data.status >= 400)
+                        return Promise.reject(res.data.message)
                     setAlertOpenDraft(true)
                 })
                 .catch(e => {
@@ -197,19 +255,38 @@ const CreateRequest = () => {
 
         // submit edited request
         if (isEditing) {
-            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
+            await axios.post(`${BASE_URL}/project/edit_project`, {
+                body: { ...body, contactEmail: contactEmail, projectId: parseInt(requestId) }
+            }, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    // if return with error, return reject
+                    if (res.data.status >= 400)
+                        return Promise.reject(res)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
                 .catch(e => {
-                    console.error(e)
+                    console.log({ ...body, contactEmail: contactEmail, projectId: parseInt(requestId) })
+                    console.log(e)
                 })
 
             // submit new created request
         } else {
-            await axiosPrivate.post('/project/create_project_request', body)
+            await axios.post(BASE_URL + '/project/create_project_request', {
+                body: body
+            }, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    // if return with error, return reject
+                    if (res.data.status >= 400)
+                        return Promise.reject(res.data.message)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
@@ -218,7 +295,6 @@ const CreateRequest = () => {
                 })
         }
     }
-
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
@@ -314,7 +390,10 @@ const CreateRequest = () => {
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
                     <ActionButton label='Cancel' color='secondary' />
-                    <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />
+                    {
+                        status === statusBank.request.draft.label && 
+                        <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />
+                    }
                     <ActionButton label='Preview & Submit' onClick={handlePreview} value='Submit' color='success' />
                 </Grid>
 
