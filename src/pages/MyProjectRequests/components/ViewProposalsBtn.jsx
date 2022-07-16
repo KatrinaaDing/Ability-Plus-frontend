@@ -6,12 +6,12 @@
 import MKButton from 'components/MKButton';
 import React from 'react';
 
-const ViewProposalsBtn = () => {
+const ViewProposalsBtn = ({reqName, reqId}) => {
     return (
         <MKButton
             variant='gradient'
             color='info'
-            onClick={() => window.open(`/view-proposals/${reqDetail.name}/${reqDetail.id}`, '_blank')}
+            onClick={() => window.open(`/view-proposals/${reqName}/${reqId}`, '_blank')}
         >
             View All Proposals
         </MKButton>

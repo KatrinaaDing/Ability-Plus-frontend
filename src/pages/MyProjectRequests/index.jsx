@@ -123,7 +123,7 @@ const MyProjectRequests = () => {
                     }}
                     actionButton={
                         getCode('request', status) > statusBank.request.draft.code &&
-                            <ViewProposalsBtn />
+                            <ViewProposalsBtn  reqName={reqDetail.name} reqId={reqDetail.id}/>
                     }
                 />
             }

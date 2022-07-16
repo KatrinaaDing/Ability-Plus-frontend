@@ -28,7 +28,6 @@ const useAxiosPrivate = () => {
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => {
                 const copiedRes = structuredClone(response.data)
-                console.log("copiedRes", copiedRes)
                 response.status = copiedRes.status;
                 response.statusText = copiedRes.message;
                 response.data = copiedRes.data

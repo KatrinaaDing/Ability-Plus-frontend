@@ -59,23 +59,23 @@ import StudentInfo from "layouts/pages/landing-pages/student-info";
 import CreateProposal from "pages/CreateProposal";
 import CreateRequest from "pages/CreateRequest";
 import ProfilePage from "layouts/pages/landing-pages/profile";
-import PersonalPage from "pages/PersonalPage";
 import MyProposals from "pages/MyProposals";
-import AllProposals from "pages/AllProposals";
 import MyProjectRequests from "pages/MyProjectRequests";
 import ProposalRanks from "pages/ProposalRanks";
 import Logout from "pages/Logout";
 import CompanyList from 'pages/CompanyList';
+import ProjectProposals from 'pages/ProjectProposals';
+import BrowseRequests from 'pages/BrowseRequests';
 
 
 // routes in navbar (company view)
 const companyRoutes = (username) => [
-  {
-    name: "Received Proposals",
-    route: "/company/personal-page",
-    icon: <HomeIcon />,
-    component: <PersonalPage />
-  },
+  // {
+  //   name: "All Received Proposals",
+  //   route: "/company/personal-page",
+  //   icon: <HomeIcon />,
+  //   component: <PersonalPage />
+  // },
   {
     name: "My Project Requests",
     route: "/my-project-requests",
@@ -100,12 +100,7 @@ const companyRoutes = (username) => [
 
 // routes in navbar (student view)
 const studentRoutes = (username) => [
-  {
-    name: "Browse Requests",
-    route: "/student/personal-page",
-    icon: <HomeIcon />,
-    component: <PersonalPage />,
-  },
+
   {
     name: "My Proposals",
     route: "/my-proposals",
@@ -165,7 +160,7 @@ const otherRoutes = {
     {
       name: "All Proposals",
       route: "/view-proposals/:reqName/:reqId",
-      component: <AllProposals />,
+      component: <ProjectProposals />,
     },
     {
       name: "create request",
@@ -191,6 +186,12 @@ const otherRoutes = {
     },
   ],
   common: [
+    {
+      name: "Browse Requests",
+      route: "/browse-requests",
+      icon: <HomeIcon />,
+      component: <BrowseRequests />,
+    },
     {
       name: "Company Information",
       route: "/company-info/:id",

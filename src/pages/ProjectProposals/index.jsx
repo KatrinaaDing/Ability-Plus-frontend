@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 
-const AllProposals = () => {
+const ProjectProposals = () => {
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const [propCards, setPropCards] = useState([]);
@@ -127,4 +127,4 @@ const AllProposals = () => {
         </BasicPageLayout>
     );
 }
-export default AllProposals;
+export default ProjectProposals;

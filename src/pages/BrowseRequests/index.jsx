@@ -15,7 +15,7 @@ import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
 
-const PersonalPage = () => {
+const BrowseRequests = () => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
@@ -227,4 +227,4 @@ const PersonalPage = () => {
     );
 };
 
-export default PersonalPage;
+export default BrowseRequests;
