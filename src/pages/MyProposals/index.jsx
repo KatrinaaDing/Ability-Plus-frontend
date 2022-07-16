@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import StatusDateDueSearchFilter from "glhfComponents/StatusDateDueSearchFilter";
-import StatusBadge from "../../glhfComponents/StatusBadge";
+import StatusBadge from "glhfComponents/StatusBadge";
 import MKBox from "../../components/MKBox";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 
