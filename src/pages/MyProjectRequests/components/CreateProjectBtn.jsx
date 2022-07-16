@@ -5,8 +5,10 @@
  */
 import MKButton from 'components/MKButton';
 import React from 'react';
-
+import MKButton from 'components/MKButton';
+import { useNavigate} from 'react-router-dom'
 const CreateProjectBtn = () => {
+    const navigate = useNavigate();
     const handleCreate = () => {
         navigate('/create-request')
     }

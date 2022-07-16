@@ -8,6 +8,8 @@ import ProposalCard from 'glhfComponents/ProposalCard';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
+import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
 
 const PopularProposals = () => {
@@ -17,7 +19,18 @@ const PopularProposals = () => {
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
-
+    const [searchKey, setSearchKey] = useState('');
+    const [ascending, setAscending] = useState(true);
+    const [isAscendingOrderLike, setIsAcendingOrderLike] = useState('');
+    const handleDate = (ascending) => {
+        setAscending(ascending)
+    }
+    const handleSearch = (key) => {
+        setSearchKey(key);
+    }
+    const handleLike = (like) => {
+        setIsAcendingOrderLike(like)
+    }
 
     const handleOpenDetail = () => {
         // if no login info, navigate to login
@@ -47,9 +60,6 @@ const PopularProposals = () => {
             setDetailOpen(true)
         }
     }
-
-
-
     return (
         <BasicPageLayout title='Popular Proposals'>
             {
@@ -70,6 +80,8 @@ const PopularProposals = () => {
                 handleConfirm={() => navigate('/authentication/sign-in')}
             />
             <Box sx={{ flexGrow: 1 }}>
+                <LikeDateSearchFilter handleLike={handleLike} handleDate={ handleDate} handleSearch={ handleSearch}></LikeDateSearchFilter>
+                <br/>
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <ProposalCard
                         data={{

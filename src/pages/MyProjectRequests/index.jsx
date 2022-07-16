@@ -34,7 +34,7 @@ const MyProjectRequests = () => {
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
-    const [ascending, setAcending] = useState(true);
+    const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('draft');
     const [searchKey, setSearchKey] = useState('');
 
@@ -60,7 +60,7 @@ const MyProjectRequests = () => {
     }, [ascending, status, searchKey])
 
     const handleDate = (ascending) => {
-        setAcending(ascending)
+        setAscending(ascending)
     }
     const handleStatus = (status) => {
         setStatus(status)
@@ -98,7 +98,7 @@ const MyProjectRequests = () => {
 
 
     return (
-        <BasicPageLayout title="My Project Reqeusts">
+        <BasicPageLayout title="My Project Requests">
             {
                 reqOpen &&
                 <RequestDescriptionModal
@@ -129,7 +129,7 @@ const MyProjectRequests = () => {
             }
 
             <MKBox display='flex'>
-                <p>There are {total} reqeusts with status </p>
+                <p>There are {total} requests with status </p>
                 <StatusBadge statusLabel={status} type='request' size='sm' />
             </MKBox>
             <Grid container justifyContent="flex-end">
