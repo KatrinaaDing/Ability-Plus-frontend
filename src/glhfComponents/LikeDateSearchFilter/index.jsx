@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,8 +13,6 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
-import { getLabel } from 'utils/getStatus';
-import { formatLabel } from 'utils/getStatus';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -56,43 +56,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-
-const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
-  const [status, setStatus] = useState(0);
-  const [ascending, setAcending] = useState(true);
-  const handleChange = (e) => {
-    const currStatus = e.target.value;
-    setStatus(currStatus)
-    handleStatus(getLabel('request', currStatus));
-
-  };
+const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
+  const [ascending, setAscending] = useState(true);
+  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState('');
   useEffect(() => {
     handleDate(ascending)
-  }, [ascending])
+    handleLike(isAscendingOrderLike)
+  }, [ascending, isAscendingOrderLike])
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>
-        <FormControl sx={{ m: 1, minWidth: 80 }}>
-          <InputLabel id="select">Sort By Status</InputLabel>
-          <Select
-            labelId="Status"
-            id="Request Status"
-            value={status}
-            label="Status"
-            onChange={handleChange}
-             style={{height: '40px'}}
-            >
-              {
-                [...Array(5).keys()].map(i => 
-                  <MenuItem key={i} value={i}>{formatLabel(getLabel('request', i))}</MenuItem>)
-              }     
-          </Select>
-        </FormControl>
+        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)}>
+          Sort By Like{' '}
+          { isAscendingOrderLike && <KeyboardArrowDownIcon>
+          </KeyboardArrowDownIcon>}
+          { !isAscendingOrderLike && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
+        </MKButton>
       </Box>
       <Box>
-        <MKButton onClick={() => setAcending(!ascending)}>
-          Solution Deadline{' '}
+        <MKButton onClick={() => setAscending(!ascending)}>
+          Date{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
@@ -113,4 +97,4 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
     </Box>
   );
 }
-export default FilterBar;
+export default LikeDateSearchFilter;

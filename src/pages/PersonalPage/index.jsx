@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestCard from 'glhfComponents/RequestCard';
 import useAuth from "auth/useAuth";
+
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import { statusBank } from 'utils/getStatus';
@@ -14,6 +15,8 @@ import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
+import RequestFilter from "glhfComponents/RequestFilter";
+import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 const PersonalPage = () => {
     const { auth } = useAuth();
@@ -25,49 +28,28 @@ const PersonalPage = () => {
     const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
     const [reqDetail, setReqDetail] = useState();
+    const [ascending, setAscending] = useState(true);
+    const [status, setStatus] = useState('draft');
+    const [searchKey, setSearchKey] = useState('');
+    const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
+    const [isAscendingProposalDealine, setIsAscendingProposalDealine] = useState(true);
+    const handleDate = (ascending) => {
+        setAscending(ascending)
+    }
+    const handleStatus = (status) => {
+        setStatus(status)
+    }
+    const handleSearch = (key) => {
+        setSearchKey(key);
+    }
+    const handleProposalDeadline = (proposal) => {
+        setIsAscendingProposalDeadline(proposal)
+    }
+    const handleSolutionDeadline = (solution) => {
+        setIsAscendingProposalDeadline(solution)
+    }
 
-    useEffect(() => {
-      if (auth.isCompany) {
-        setCards([{
-            id: 5,
-            title: 'sdfdf',
-            status: 'submitted',
-            description: 'sdfdsf',
-            topic: 'sdfsdf',
-            authorId: 3,
-            authorName: 'sdfdsf',
-            lastModified: 0,
-        }])
-
-      } else {
-        setCards([
-            {
-              id: 35,
-              title: 'title',
-              status: 'open_for_proposal',
-              description: 'desc',
-              topic: 'management',
-              authorId: 4,
-              authorName: 'Google',
-              lastModification: 0,
-           },
-            {
-                id: 35,
-                title: 'title',
-                status: 'approving',
-                description: 'desc',
-                topic: 'Health Record',
-                authorId: 4,
-                authorName: 'Microsoft',
-                lastModification: 0,
-            }
-        ])
-      }
-      
-    }, [])
-    
-
-    // what button to put in the proposal detail modal
+  // what button to put in the proposal detail modal
     const getProposalModalActionButton = (statusStr) => {
         // if the status is waiting approval
         if (statusStr === statusBank.proposal.approving.label) {
@@ -157,7 +139,13 @@ const PersonalPage = () => {
 
     return (
         <BasicPageLayout title={ auth.isCompany ? "View Student's Submitted Proposals" : "Browse Company Requests" }>
-            {   
+            {auth.isCompany ?
+                <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
+                : <StatusProposalSolutionFilter handleStatus={handleStatus} handleProposalDeadline={handleProposalDeadline} handleSolutionDeadline={handleSolutionDeadline} >
+                </StatusProposalSolutionFilter>
+            }
+            <br />
+            {
                 // student view
                 // mount modal only when detail is loaded
                 reqDetail &&
@@ -219,6 +207,7 @@ const PersonalPage = () => {
                 />
 
             }
+
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {auth.isCompany && renderProposalCards()}
                 {!auth.isCompany && renderRequestCards()}

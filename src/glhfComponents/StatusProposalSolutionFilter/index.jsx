@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,8 +13,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
-import { getLabel } from 'utils/getStatus';
-import { formatLabel } from 'utils/getStatus';
+import {getLabel} from "../../utils/getStatus";
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -56,20 +57,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-
-const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
+const StatusProposalSolutionFilter = ({ handleStatus, handleProposalDeadline, handleSolutionDeadline }) => {
+	const [isAscendingProposalDeadline, setIsAcendingProposalDeadline] = useState(true);
+	const [isAscendingSolutionDeadline, setIsAcendingSolutionDeadline] = useState(true);
   const [status, setStatus] = useState(0);
-  const [ascending, setAcending] = useState(true);
+  useEffect(() => {
+  }, [isAscendingProposalDeadline, isAscendingSolutionDeadline, status])
   const handleChange = (e) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
     handleStatus(getLabel('request', currStatus));
-
   };
-  useEffect(() => {
-    handleDate(ascending)
-  }, [ascending])
-
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>
@@ -83,34 +81,32 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
             onChange={handleChange}
              style={{height: '40px'}}
             >
-              {
-                [...Array(5).keys()].map(i => 
-                  <MenuItem key={i} value={i}>{formatLabel(getLabel('request', i))}</MenuItem>)
-              }     
+            <MenuItem value={'0'}>Draft</MenuItem>
+            <MenuItem value={'1'}>Open for proposal</MenuItem>
+            <MenuItem value={'2'}>Approving</MenuItem>
+            <MenuItem value={'3'}>Open for Solution</MenuItem>
+            <MenuItem value={'4'}>Closed</MenuItem>           
           </Select>
         </FormControl>
       </Box>
       <Box>
-        <MKButton onClick={() => setAcending(!ascending)}>
-          Solution Deadline{' '}
-          { ascending && <KeyboardArrowDownIcon>
+        <MKButton onClick={() => setIsAcendingProposalDeadline(!isAscendingProposalDeadline)}>
+          Proposal Deadline{' '}
+          {isAscendingProposalDeadline && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
-          { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
+          { !isAscendingProposalDeadline && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
         </MKButton>
       </Box>
       <Box>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </Search>
+        <MKButton onClick={() => setIsAcendingSolutionDeadline(!isAscendingSolutionDeadline)}>
+          Solution Deadline{' '}
+          {isAscendingSolutionDeadline && <KeyboardArrowDownIcon>
+          </KeyboardArrowDownIcon>}
+          { !isAscendingSolutionDeadline && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
+        </MKButton>
       </Box>
+      
     </Box>
   );
 }
-export default FilterBar;
+export default StatusProposalSolutionFilter;
