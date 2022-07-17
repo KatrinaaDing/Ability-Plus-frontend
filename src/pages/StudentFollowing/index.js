@@ -29,8 +29,8 @@ import axiosBasic from "api/axios";
 const MyFollowingPage = () => {
     const axiosPrivate = useAxiosPrivate();
     const [followList, setFollowList] = useState([]);
-    const [follow, setFollow] = useState(false);
 
+    const [follow, setFollow] = useState(false);
     const isFollowModal = () => setFollow(!follow);
 
 
@@ -45,6 +45,12 @@ const MyFollowingPage = () => {
     
     }, [])
     
+    const handleFollow = (event) => {
+        if (Object.is(event.target.name, "confirm")) {
+            axiosPrivate.delete("/student_following/{id}", ) 
+        }
+
+    }
 
 
     return (
@@ -88,7 +94,7 @@ const MyFollowingPage = () => {
                             <MKButton variant="gradient" color="light">
                                 No
                             </MKButton>
-                            <MKButton variant="gradient" color="info">
+                            <MKButton variant="gradient" color="info" name="confirm">
                                 Yes
                             </MKButton>
                         </MKBox>
