@@ -51,7 +51,6 @@ const MyProjectRequests = () => {
             pageNo: 1,
             pageSize: 10,
         }
-        // FIXME search key
         if (searchKey !== '')
             params = {...params, searchKey: searchKey}
 
