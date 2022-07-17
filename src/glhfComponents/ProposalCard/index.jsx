@@ -11,6 +11,7 @@ import useAuth from 'auth/useAuth';
 import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKTypography from 'components/MKTypography';
+import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
 import { FcLike } from 'react-icons/fc';
@@ -59,6 +60,10 @@ const ProposalCard = ({ data, openDetail }) => {
                             ? <></>
                             : <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
                     }
+                    {
+                        page.startsWith('view-proposals') &&
+                            <ProcessStatusBadge status={data.rating > 0 || data.note !== ''} />
+                    }
                 </Grid>
                 <MKTypography variant="body2" color="secondary">
                     {data.description}
@@ -72,9 +77,9 @@ const ProposalCard = ({ data, openDetail }) => {
                     {
                         data.projectName &&
                         <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
-
                     }
-                    {((page.startsWith('popular')) || page.startsWith('company/personal')) &&
+                    {
+                        ((page.startsWith('popular')) || page.startsWith('company/personal')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
                                 <Link to={`/student-info/${data.authorId}`}>
@@ -82,6 +87,11 @@ const ProposalCard = ({ data, openDetail }) => {
                                 </Link>
                             </MKTypography>
                         </Grid>
+                    }
+                    {
+                        data.rating &&
+                        <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
+
                     }
                     {
                         data.lastModified &&

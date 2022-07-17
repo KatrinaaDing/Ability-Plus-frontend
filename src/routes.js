@@ -169,7 +169,7 @@ const guestRoutes = [
 const otherRoutes = {
   company: [
     {
-      name: "All Proposals",
+      name: "project proposals",
       route: "/view-proposals/:reqName/:reqId",
       component: <ProjectProposals />,
     },

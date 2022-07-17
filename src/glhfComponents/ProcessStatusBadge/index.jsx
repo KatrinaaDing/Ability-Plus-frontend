@@ -25,7 +25,7 @@ const ProcessStatusBadge = () => {
         3: {
             label: 'approved',
             color: 'success'
-        },
+        },  
         4: {
             label: 'rejected',
             color: 'primary'

@@ -14,6 +14,9 @@ import ProposalCard from "glhfComponents/ProposalCard";
 import { useEffect } from "react";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
+import ProcessStatusBadge from "glhfComponents/ProcessStatusBadge";
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const ProjectProposals = () => {
     const { reqName: projectName, reqId: projectId } = useParams();
@@ -21,12 +24,13 @@ const ProjectProposals = () => {
     const [propCards, setPropCards] = useState([]);
 
     const [total, setTotal] = useState(0);
+    const [isPick, setIsPick] = useState(0);
 
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
 
     useEffect(async () => {
-        // TODO add search key
+        // FIXME: add search key
         await axiosPrivate.get('/proposal/list_project_proposals', {
             params: new URLSearchParams({
                 isAscendingOrder: true,
@@ -34,7 +38,7 @@ const ProjectProposals = () => {
                 pageSize: 20,
                 projectId: projectId,
                 whatOrder: 'LastModifiedTime',
-                isPick: 0,
+                isPick: isPick,
                 searchKey: ''
             })
         })
@@ -87,7 +91,20 @@ const ProjectProposals = () => {
                                 topic: projectName
                             }
                         }}
-                        actionButton={<></>}
+                        actionButton={
+                            <MKButton 
+                                variant="gradient" 
+                                color="warning" 
+                                startIcon={
+                                    true
+                                        ? <PlaylistAddCheckIcon />
+                                        : <PlaylistAddIcon />
+                                }
+                                onClick={() => alert('approved')}
+                            >
+                                Shortlist
+                            </MKButton>
+                        }
                     />
             }
 
@@ -99,10 +116,12 @@ const ProjectProposals = () => {
                                 key={p.id}
                                 data={{
                                     title: p.title,
-                                    status: 'submitted', //FIXME: need status
                                     description: p.oneSentenceDescription,
                                     authorId: p.authorId,
                                     aurhorName: p.authorName,
+                                    isPicked: isPick,
+                                    rating: p.rating,
+                                    note: ''              // FIXME: 目前api没有返回公司的note
                                 }}
                                 openDetail={() => getPropDetail(p.id)}
                             />
