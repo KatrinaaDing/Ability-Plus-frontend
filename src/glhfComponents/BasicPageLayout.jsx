@@ -13,7 +13,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import getNavbarRoutes from 'utils/getNavbarRoutes'
 
-const BasicPageLayout = ({ title, children }) => {
+const BasicPageLayout = ({ title, secondaryContent, children }) => {
     return (
         <>
             <MKBox sx={{ mt: 2 }}>
@@ -25,10 +25,11 @@ const BasicPageLayout = ({ title, children }) => {
             <MKBox minHeight="75vh" >
                 <Container sx={{ mt: 6 }}>
                     <Grid container item xs={12} flexDirection="column" justifyContent="center" mx="auto">
-                        <MKBox width={{ xs: "100%", md: "100%", lg: "100%" }} mb={3}>
+                        <MKBox width={{ xs: "100%", md: "100%", lg: "100%" }} mb={3} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <MKTypography variant="h3" mb={1}>
                                 {title}
                             </MKTypography>
+                            {secondaryContent}
                         </MKBox>
                         { children }
                     </Grid>

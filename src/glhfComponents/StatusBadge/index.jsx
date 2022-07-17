@@ -13,7 +13,7 @@ import { formatLabel } from 'utils/getStatus';
 const StatusBadge = props => {
     const color = {
         proposal: {
-            0: 'light',
+            0: 'secondary',
             1: 'info',
             2: 'warning',
             3: 'success',

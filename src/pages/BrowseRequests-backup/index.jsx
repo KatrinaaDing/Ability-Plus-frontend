@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
-const PersonalPage = () => {
+const BrowseRequests = () => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
@@ -33,6 +33,7 @@ const PersonalPage = () => {
     const [searchKey, setSearchKey] = useState('');
     const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
     const [isAscendingProposalDealine, setIsAscendingProposalDealine] = useState(true);
+    
     const handleDate = (ascending) => {
         setAscending(ascending)
     }
@@ -216,4 +217,4 @@ const PersonalPage = () => {
     );
 };
 
-export default PersonalPage;
+export default BrowseRequests;

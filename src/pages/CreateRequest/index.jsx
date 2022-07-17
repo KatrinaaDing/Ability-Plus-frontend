@@ -25,7 +25,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'glhfComponents/AlertModal';
 import useAuth from 'auth/useAuth';
 import ActionButton from './components/ActionButton';
-
+import axios from 'axios';
+import { BASE_URL } from 'api/axios'
+import { statusBank } from 'utils/getStatus';
 
 const categories = [
     'Frontend Develop',
@@ -36,48 +38,71 @@ const categories = [
 const sampleContent = {
     title: "Quisque eget luctus nunc",
     cate: "Frontend Develop",
-    ppddl: "2022-08-17 18:31",
-    solddl: "2022-11-15 18:31",
-    desc: "<p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. <u>Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero</u>, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p><br></p><p>Morbi sed dictum dui. Aenean at est lectus. <span style=\"color: rgb(230, 0, 0);\">Suspendisse condimentum</span> leo ac nisl varius maximus. <span style=\"background-color: rgb(255, 255, 0);\">Nam commodo ultricies elit, ut sagittis dolor volutpat et. Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</span></p><p><br></p><p>Quisque eget luctus nunc. Morbi tempor pharetra sapien, <strong>ut interdum lacus interdum id</strong>. Nullam ac urna sed mauris interdum malesuada vitae eu enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vel eleifend lectus. Ut rutrum tellus a est volutpat, nec placerat sapien gravida. Sed sit amet lectus et libero fringilla varius vitae at velit. Cras vitae sapien at eros fermentum interdum quis ut velit. Mauris interdum feugiat felis, nec ornare justo laoreet vel. Suspendisse posuere a enim non rutrum. Praesent dapibus nisl erat.</p>",
+    ppddl: new Date('2022-08-17'),
+    solddl: new Date('2022-10-09'),
+    desc: "<p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. <u>Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero</u>, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p><p><br></p>",
     req: "<h2>Functional</h2><ol><li>Sed mollis euismod nulla non feugiat.</li><li>Nulla quis convallis massa.&nbsp;</li><li>Duis interdum enim nisi, vel viverra nibh dictum et.</li><li>Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</li></ol><p><br></p><h2>Non-functional</h2><ol><li>Morbi sed dictum dui. Aenean at est lectus. </li><li>Suspendisse condimentum leo ac nisl varius maximus. </li><li>Nam commodo ultricies elit, ut sagittis dolor volutpat et. </li><li>Curabitur quis lacus vitae justo efficitur gravida. </li><li>Aenean dictum orci eu elit fermentum aliquet. </li><li>Donec fermentum porttitor felis at eleifend.</li></ol><p><br></p>",
     rew: "<p>$1000</p>",
-    status: "draft"
 }
 
 const CreateRequest = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
 
+    // hooks
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const { auth } = useAuth();
     const { id: requestId } = useParams();
 
+    // input state
     const [title, setTitle] = React.useState('')
     const [category, setCategory] = React.useState('')
-    const [propDdl, setPropDdl] = React.useState('')
-    const [soluDdl, setSoluDdl] = React.useState('')
+    const [propDdl, setPropDdl] = React.useState('')    // date object
+    const [soluDdl, setSoluDdl] = React.useState('')    // date object
     const [description, setDescription] = React.useState('')
     const [requirement, setRequirement] = React.useState('')
     const [rewards, setRewards] = React.useState('')
+    const [status, setStatus] = React.useState(
+        isEditing ? '' : statusBank.request.draft.label
+    )
+    const [contactEmail, setContactEmail] = React.useState('');
+    
+    // error alert state
     const [error, setError] = React.useState('')
-    const [preview, setPreview] = React.useState(false)
-    const [status, setStatus] = React.useState('')
-
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
 
+    const [preview, setPreview] = React.useState(false)
 
-    React.useEffect(async () => {   // TOFIX
+
+    React.useEffect(async () => {   
+        // load data if is to edit request
         if (isEditing) {
-            await axiosPrivate.get('/project/get_project_info', {
-                params: new URLSearchParams({
-                    id: parseInt(requestId)
-                })
+            await axios.get(`${BASE_URL}/project/get_project_info?id=${requestId}`, {
+                headers: {
+                    token: auth.accessToken
+                }
             })
                 .then(res => {
-                    console.log('edit request', res)
+                    // if return with error, return reject
+                    if (res.data.status >= 400) 
+                        return Promise.reject(res.data.message)
+                    
+                    // else
+                    const data = res.data.data
+                    const extraData = JSON.parse(data.extraData)
+                    setTitle(data.name)
+                    setCategory(data.projectArea)
+                    setPropDdl(new Date(data.proposalDdl * 1000))
+                    setSoluDdl(new Date(data.solutionDdl * 1000))
+                    setDescription(data.description)
+                    setRequirement(extraData.requirement)
+                    setRewards(extraData.rewards)
+                    setStatus(data.status)
+                    setContactEmail(data.contactEmail)
                 })
-                .catch(e => setError(e))
+                // .catch(e => setError(e))
+                .catch(e => console.log('err', e))
         }
     },[])
 
@@ -95,12 +120,12 @@ const CreateRequest = () => {
             'Proposal Deadline': propDdl,
             'Solution Deadline': soluDdl,
             Description: description,
-            Requirements: requirement
+            Requirements: requirement,
         }
 
         const errorList = [];
         Object.keys(checkList).forEach(i => {
-            if (checkList[i] === '' || checkList[i] === '<p><br></p>')
+            if (checkList[i] === 0 || checkList[i] === '' || checkList[i] === '<p><br></p>')
                 errorList.push(i)
         })
 
@@ -110,7 +135,7 @@ const CreateRequest = () => {
             return
         }
         // prop deadline must < solu deadline
-        if (new Date(propDdl) > new Date(soluDdl)) {
+        if (propDdl > soluDdl) {
             setError("Solution deadline cannot be before proposal deadline! Please check again.")
             return
         }
@@ -127,16 +152,16 @@ const CreateRequest = () => {
         setDescription(sampleContent.desc)
         setRequirement(sampleContent.req)
         setRewards(sampleContent.rew)
-        setStatus(sampleContent.status)
     }
 
-    const checkEmpty = () => {
-        const checkList = [title, category, propDdl, soluDdl, description, requirement, rewards]
-        for (let input of checkList) {
-            if (input !== '') {
+    const isAllEmpty = () => {
+        const strCheckList = [title, category, propDdl, soluDdl, description, requirement, rewards]
+        for (let input of strCheckList) {
+            if (input !== '' && input !== '<p><br></p>') {
                 return false
             }
         }
+
         return true
     }
 
@@ -148,15 +173,15 @@ const CreateRequest = () => {
                 requirement: requirement,
                 rewards: rewards,
             },
-            "proposalDue": propDdl === '' ? 0 : new Date(propDdl).getTime() / 1000,
-            "solutionDue": soluDdl === '' ? 0 : new Date(soluDdl).getTime() / 1000,
+            "proposalDue": propDdl === '' ? 0 : propDdl.getTime() / 1000,
+            "solutionDue": soluDdl === '' ? 0 : soluDdl.getTime() / 1000,
             "title": title
         }
     }
 
 
     const handleSaveDraft = async () => {
-        if (checkEmpty()) {
+        if (isAllEmpty()) {
             setError("Cannot save empty proposal!")
             return
         }
@@ -168,37 +193,43 @@ const CreateRequest = () => {
 
         // save edited request
         if (isEditing) {
-            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
-                .then(res => {
-                    setAlertOpenDraft(true)
-                })
-                .catch(e => {
-                    console.error(e)
-                })
+            await axiosPrivate.post('/project/edit_project', {
+                ...body,
+                projectId: requestId
+            })
+            .then(res => {
+                setAlertOpenDraft(true)
+            })
+            .catch(e => {
+                setError(e)
+            })
 
             // save new created request
         } else {
             await axiosPrivate.post('/project/create_project_request', body)
-                .then(res => {
-                    setAlertOpenDraft(true)
-                })
-                .catch(e => {
-                    console.error(e)
-                })
+            .then(res => {
+                setAlertOpenDraft(true)
+            })
+            .catch(e => console.error(e))
         }
     }
 
 
     const handleSubmit = async () => {
-        const body = {
-            ...getContent(),
-            "isDraft": false,
-        }
+        const body = getContent()
 
         // submit edited request
         if (isEditing) {
-            await axiosPrivate.post('/project/edit_project', { ...body, projectId: requestId })
+            body.contactEmail = contactEmail
+            body.projectId = parseInt(requestId)
+            await axios.post(`${BASE_URL}/project/edit_project`, body, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    if (res.data.status > 400)
+                        return Promise.reject(res.data)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
@@ -206,10 +237,17 @@ const CreateRequest = () => {
                     console.error(e)
                 })
 
-            // submit new created request
+        // submit new created request
         } else {
-            await axiosPrivate.post('/project/create_project_request', body)
+            body.isDraft = false;
+            await axios.post(`${BASE_URL}/project/create_project_request`, body, {
+                headers: {
+                    token: auth.accessToken
+                }
+            })
                 .then(res => {
+                    if (res.data.status > 400)
+                        return Promise.reject(res.data)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
@@ -218,7 +256,6 @@ const CreateRequest = () => {
                 })
         }
     }
-
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
@@ -259,9 +296,9 @@ const CreateRequest = () => {
                     description,
                     requirement,
                     rewards,
-                    status,
+                    status: statusBank.request.proposal.label,
                     metaData: {
-                        lastModified: new Date().toLocaleString(),
+                        lastModified: new Date(),
                         authorName: auth.username,
                     }
                 }}
@@ -314,7 +351,10 @@ const CreateRequest = () => {
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
                     <ActionButton label='Cancel' color='secondary' />
-                    <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />
+                    {
+                        status === statusBank.request.draft.label && 
+                        <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />
+                    }
                     <ActionButton label='Preview & Submit' onClick={handlePreview} value='Submit' color='success' />
                 </Grid>
 

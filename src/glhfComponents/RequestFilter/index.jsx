@@ -58,20 +58,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
-  const [status, setStatus] = useState(0);
+  const notPrivatepage = window.location.pathname.slice(1).indexOf('browse') >= 0
+
+  const [status, setStatus] = useState(-1);
   const [ascending, setAcending] = useState(true);
   const handleChange = (e) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
-    handleStatus(getLabel('request', currStatus));
-
+    handleStatus(getLabel('request', currStatus) || '');
   };
+
   useEffect(() => {
+      setStatus(-1)
+
     handleDate(ascending)
   }, [ascending])
 
+  const getStatusOptions =
+    notPrivatepage
+      ? [...Array(5).keys()].slice(1)
+      : [...Array(5).keys()]
+
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
+    <Box sx={{ py: 5, flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
       <Box sx={{minWidth: 120}}>
         <FormControl sx={{ m: 1, minWidth: 80 }}>
           <InputLabel id="select">Sort By Status</InputLabel>
@@ -83,8 +92,9 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
             onChange={handleChange}
              style={{height: '40px'}}
             >
+              <MenuItem value={-1}>all</MenuItem>
               {
-                [...Array(5).keys()].map(i => 
+                getStatusOptions.map(i => 
                   <MenuItem key={i} value={i}>{formatLabel(getLabel('request', i))}</MenuItem>)
               }     
           </Select>

@@ -21,6 +21,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import useAuth from 'auth/useAuth';
 import ActionButton from 'pages/CreateRequest/components/ActionButton';
+import axios from 'axios';
+import { BASE_URL } from 'api/axios';
+import { statusBank } from 'utils/getStatus';
 
 
 const sampleContent = {
@@ -30,17 +33,19 @@ const sampleContent = {
     goal: "<ol><li>a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst.</li><li>Morbi sed dictum dui. Aenean at est lectus.</li><li>Curabitur quis lacus vitae justo efficitur gravida. Aenean dictum orci eu elit fermentum aliquet. Donec fermentum porttitor felis at eleifend.</li><li>Quisque eget luctus nunc.&nbsp;</li></ol>",
     prob: `<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Fusce vitae orci ante</strong>. Sed est orci, congue non bibendum id, rhoncus ac nulla. Etiam elementum quam quis ultricies ornare. Pellentesque vehicula sapien sed suscipit aliquet. Curabitur non tellus vulputate, <span style="background-color: rgb(255, 255, 0);">condimentum lacus eu,</span> porttitor dui. Nunc id tortor nec metus fringilla pharetra. Nunc tempus venenatis diam, ut varius leo mollis id. Vivamus faucibus <em>et diam in </em>pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p><p><br></p><ul><li><span style="color: rgb(230, 0, 0);">piscing elit. Fusce vitae orci ante.</span> Sed est orci, congu</li><li>piscing elit. Fusce vitae orci ante. Sed est </li><li>piscing elit. Fusce vitae orci ante. Sed est orci, congupiscing elit. Fusce vitae orci ante. Sed est orci, congu</li></ul><p><br></p><p>Vestibulum eu efficitur quam. Ut laoreet a felis vitae mattis. Donec tincidunt vitae nisi sit amet posuere. Duis vel massa massa. Sed et neque leo. In hac habitasse platea dictumst. Sed mollis euismod nulla non feugiat. Nulla quis convallis massa. Duis interdum enim nisi, vel viverra nibh dictum et. Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p>`,
     vStat: "<p>s leo mollis id. Vivamus faucibus et diam in pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p>",
-    status: "Draft"
+    status: "draft"
 }
 
 const CreateProposal = () => {
-    const isEditing = window.location.pathname.startsWith('edit');
-
+    const isEditing = window.location.pathname.slice(1).startsWith('edit');
+    console.log(isEditing)
+    // hooks
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const { id: pathId, reqName: topic } = useParams();
 
+    // input state
     const [title, setTitle] = React.useState('');
     const [desc, setDesc] = React.useState('');
     const [prob, setProb] = React.useState('');
@@ -48,23 +53,37 @@ const CreateProposal = () => {
     const [status, setStatus] = React.useState('');
     const [goal, setGoal] = React.useState('');
     const [detail, setDetail] = React.useState('');
-
-    const [error, setError] = React.useState('')
-    const [preview, setPreview] = React.useState(false);
     const [projectId, setProjectId] = React.useState(null)
 
+    // alert state
+    const [error, setError] = React.useState('')
+    const [preview, setPreview] = React.useState(false);
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
+    
 
     React.useEffect(async () => {
         if (isEditing) {
-            await axiosPrivate('/proposal/get_proposal_detail_info',{
-                params: new URLSearchParams({
-                    proposalId: pathId
-                })
+            await axios.get(`${BASE_URL}/proposal/get_proposal_detail_info/?proposalId=${pathId}`, {
+                headers: {
+                    token: auth.accessToken
+                }
             })
                 .then(res => {
-                    console.log('edit proposal', res.data)
+                    // if get 400, return promise reject
+                    if (res.data.data.status >= 400) 
+                        return Promise.reject(res.message)
+
+                    res.data.data.extraData = JSON.parse(res.data.data.extraData)
+                    const data = res.data.data;
+                    setTitle(data.title)
+                    setDesc(data.oneSentenceDescription)
+                    setProb(data.extraData.problemStatement)
+                    setVStat(data.extraData.visionStatement)
+                    setGoal(data.extraData.goal)
+                    setDetail(data.extraData.detail)
+                    setStatus(data.status)
+                    setProjectId(data.id)
                 })
                 .catch(e => console.error(e))
         }
@@ -209,7 +228,7 @@ const CreateProposal = () => {
         />
 
     return (
-        <BasicPageLayout title={`${getCode('proposal', status || 'Draft') < 2 ? 'Edit' : 'Create'} Proposal`}>
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Proposal`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
@@ -265,7 +284,11 @@ const CreateProposal = () => {
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
                     <ActionButton label='Cancel' color='secondary' />
-                    <ActionButton label='Save Draft' color='info' onClick={saveDraft}/>
+                    {
+                        (status === '' || 
+                        status === statusBank.request.draft.label) && 
+                        <ActionButton label='Save Draft' color='info' onClick={saveDraft}/>
+                    }
                     <ActionButton label='Preview & Submit' onClick={handlePreview} color='success' />
                 </Grid>
 

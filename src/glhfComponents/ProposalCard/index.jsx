@@ -32,7 +32,7 @@ value = {
     title,
     status,
     description,
-    topic,
+    topic, (category)
     authorId,
     authorName,
     lastModified,
@@ -56,14 +56,23 @@ const ProposalCard = ({ data, openDetail }) => {
                     {
                         page.startsWith('student-info') || page.startsWith('popular')
                             ? <></>
-                            : <StatusBadge type='proposal' statusLabel={data.status} size='sm' variant='contained'  />
+                            : <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
                     }
                 </Grid>
                 <MKTypography variant="body2" color="secondary">
                     {data.description}
                 </MKTypography>
                 <Grid>
-                    <MKTypography variant="caption">Topic: {data.topic}</MKTypography>
+                    {
+                        data.topic &&
+                            <MKTypography variant="caption">Category: {data.topic}</MKTypography>
+                    }
+                    <br/>
+                    {
+                        data.projectName &&
+                        <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
+
+                    }
                     {((page.startsWith('popular')) || page.startsWith('company/personal')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
@@ -74,7 +83,7 @@ const ProposalCard = ({ data, openDetail }) => {
                         </Grid>
                     }
                     <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: {data.lastModified}</MKTypography>
+                        <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
                     </Grid>
                 </Grid>
             </CardContent>
@@ -82,12 +91,13 @@ const ProposalCard = ({ data, openDetail }) => {
                 <MKBox sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     width: '-webkit-fill-available'
                 }}>
-                    {(page.startsWith('popular') ||
+                    {
+                        (page.startsWith('popular') ||
                         page.startsWith('student-info') ||
-                        (page.startsWith('my-proposals') && data.status === statusBank.proposal.approved.label)) &&
+                        (page.startsWith('my-proposals') && getCode('proposal', data.status) > statusBank.proposal.approved.code)) &&
                             <MKBox display='flex' flexDirection='row' px={3} sx={{mt: 'auto', mb: 'auto'}}>
                                 <FcLike size={20} display='inline-block' />
                                 <MKTypography variant="body2"  display='inline-block'>
