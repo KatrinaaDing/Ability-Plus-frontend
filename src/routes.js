@@ -199,6 +199,12 @@ const otherRoutes = {
   common: [
     
     {
+      name: "Browse Requests",
+      route: "/browse-requests",
+      icon: <HomeIcon />,
+      component: <BrowseRequests />,
+    },
+    {
       name: "Company Information",
       route: "/company-info/:id",
       component: <CompanyInfo />,

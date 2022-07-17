@@ -22,9 +22,10 @@ import { BASE_URL } from 'api/axios';
 import axios from 'axios';
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
-
+import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 const BrowseRequests = () => {
     // hooks
+
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
@@ -37,8 +38,10 @@ const BrowseRequests = () => {
 
     // filter states
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('open_for_proposal');
     const [searchKey, setSearchKey] = useState('');
+    const [whatOrder, setWhatOrder] = useState('ProposalDue');
+    const type = 'request';
 
     const handleDate = (ascending) => {
         setAscending(ascending)
@@ -49,23 +52,33 @@ const BrowseRequests = () => {
     const handleSearch = (key) => {
         setSearchKey(key);
     }
-    const handleProposalDeadline = (proposal) => {
-        setIsAscendingProposalDeadline(proposal)
-    }
-    const handleSolutionDeadline = (solution) => {
-        setIsAscendingProposalDeadline(solution)
-    }
 
+    const handleWhatOrder = (order) => {
+        setWhatOrder(order);
+    }
     useEffect(async () => {
-        await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
-            params: new URLSearchParams({
+        let params;
+        console.log(status)
+        if (searchKey == '') {
+            params = new URLSearchParams({
+                status: status,
                 isAscendingOrder: ascending,
                 pageNo: 1,
-                pageSize: 20,
-                searchKey: searchKey,
+                pageSize: 10,
+                whatOrder: whatOrder
+            })
+        } else {
+            params = new URLSearchParams({
                 status: status,
-                whatOrder: 'SolutionDue'
-            }),
+                isAscendingOrder: ascending,
+                pageNo: 1,
+                pageSize: 10,
+                whatOrder: whatOrder,
+                searchKey: searchKey
+            })
+        }
+        await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
+            params: params,
             headers: {
                 token: auth.accessToken
             }
@@ -76,10 +89,8 @@ const BrowseRequests = () => {
                 console.log('get all request with status [', status, ']')
             })
             .catch(e => console.error(e))
-    
-    }, [status, searchKey, ascending])
-    
-
+    }, [ascending, status, whatOrder, searchKey])
+        
     const getReqDetail = async (reqId) =>
         await axios.get(`${BASE_URL}/project/get_project_info?id=${reqId}`, {
             headers: {
@@ -121,10 +132,7 @@ const BrowseRequests = () => {
                 }
             </MKBox>
             {
-                // auth.isCompany 
-                // ? <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
-                // : <StatusProposalSolutionFilter handleStatus={handleStatus} handleProposalDeadline={handleProposalDeadline} handleSolutionDeadline={handleSolutionDeadline} />
-                <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
+                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
             }
             {
                 // mount modal only when detail is loaded
@@ -149,6 +157,7 @@ const BrowseRequests = () => {
                         }
                     }}
                     actionButton={
+
                         // allow student submission when open for proposal
                         !auth.isCompany && 
                         reqDetail.status === statusBank.request.proposal.label &&
