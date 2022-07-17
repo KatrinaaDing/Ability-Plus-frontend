@@ -19,6 +19,7 @@ import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 import { BASE_URL } from 'api/axios';
+import axios from 'axios';
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
@@ -169,32 +170,6 @@ const BrowseRequests = () => {
                         </MKButton>
                     }
                 />
-            }
-            {
-                // company view
-                proDetail &&
-                <ProposalDescriptionModal
-                    open={proOpen}
-                    setOpen={setProOpen}
-                    value={{
-                        id: proDetail.id,
-                        title: proDetail.title,
-                        status: proDetail.status,
-                        desc: proDetail.description,
-                        prob: 'problem statement',
-                        vStat: 'vision statement',
-                        goal: 'general goals',
-                        detail: 'detail',
-                        metaData: {
-                            lastModified: proDetail.lastModifiedTime,
-                            authorName: 'fds',
-                            authorId: proDetail.creatorId,
-                            topic: 'proposal management'
-                        }
-                    }}
-                    actionButton={getProposalModalActionButton(proDetail.status)}
-                />
-
             }
 
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
