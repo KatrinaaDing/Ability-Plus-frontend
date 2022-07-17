@@ -12,6 +12,7 @@ const ViewProposalsBtn = ({reqName, reqId}) => {
         <MKButton
             variant='gradient'
             color='info'
+            startIcon={<FileOpenIcon />}
             onClick={() => window.open(`/view-proposals/${reqName}/${reqId}`, '_blank')}
         >
             View All Proposals
