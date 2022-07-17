@@ -57,43 +57,74 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch }) => {
+const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
     const [status, setStatus] = useState(0);
     const [ascending, setAscending] = useState(true);
+    const [statusType, setStatusType] = useState('proposal')
     useEffect(() => {
         handleDate(ascending);
         handleWhatOrder(whatOrder);
     }, [whatOrder, ascending])
+    useEffect(() => {
+        if (type) {
+            setStatusType('request')
+        }
+    }, [])
     const handleChange = (e) => {
         const currStatus = e.target.value;
         setStatus(currStatus)
-        handleStatus(getLabel('proposal', currStatus));
+        if (type != 'request') {
+            handleStatus(getLabel('proposal', currStatus));
+        } else {
+            handleStatus(getLabel('request', currStatus))
+        }
+        
     };
     return (
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
             <Box sx={{minWidth: 120}}>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
                     <InputLabel id="select">Sort By Status</InputLabel>
-                    <Select
-                        labelId="Status"
-                        id="Request Status"
-                        value={status}
-                        label="Status"
-                        onChange={handleChange}
-                        style={{height: '40px'}}
-                    >
-                        <MenuItem value={0}>Draft</MenuItem>
-                        <MenuItem value={1}>Submitted</MenuItem>
-                        <MenuItem value={2}>Approving</MenuItem>
-                        <MenuItem value={3}>Approved</MenuItem>
-                        <MenuItem value={4}>Rejected</MenuItem>
-                    </Select>
+                        {statusType === 'proposal' ? 
+                            <Select
+                                labelId="Status"
+                                id="Proposal Status"
+                                value={status}
+                                label="Status"
+                                onChange={handleChange}
+                                style={{height: '40px'}}
+                        >
+
+                                <MenuItem value={0}>Draft</MenuItem>
+                                <MenuItem value={1}>Submitted</MenuItem>
+                                <MenuItem value={2}>Approving</MenuItem>
+                                <MenuItem value={3}>Approved</MenuItem>
+                                <MenuItem value={4}>Rejected</MenuItem>
+                            </Select>
+                         : <Select
+                                labelId="Status"
+                                id="Proposal Status"
+                                value={status}
+                                label="Status"
+                                onChange={handleChange}
+                                style={{height: '40px'}}
+                        >
+                            {
+                                userType != 'public' &&
+                                <MenuItem value={0}>Draft</MenuItem>
+                            }
+                                <MenuItem value={1}>Open For Proposal</MenuItem>
+                                <MenuItem value={2}>Approving</MenuItem>
+                                <MenuItem value={3}>Open For Solution</MenuItem>
+                                <MenuItem value={4}>Closed</MenuItem>
+                            </Select>   
+                        }
                 </FormControl>
             </Box>
             <Box>
                 <MKButton onClick={() => setAscending(!ascending)}>
-                    Date{' '}
+                    Submission Date{' '}
                     { ascending && <KeyboardArrowDownIcon>
                     </KeyboardArrowDownIcon>}
                     { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
