@@ -41,21 +41,52 @@ import useAuth from "auth/useAuth";
 import profilePicture from "assets/images/bruce-mars.jpg";
 import { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
-import { axiosPrivate } from "api/axios";
-
-
-function Profile() {
-
-  const axiosBasic = useAxiosBasic();
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import axios from "axios";
+import { BASE_URL } from 'api/axios';
+function Profile({ companyInfo }) {
+  console.log(companyInfo.companyId)
   const {auth, setAuth} = useAuth();
-
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const [followText, setFollowText] = useState('Follow');
+  const [companyId, setCompanyId] = useState(0);
+  
+  useEffect(async () => {
+    setCompanyId(companyInfo.companyId)
+    await axios.get(`${BASE_URL}/student_following/all`, {
+        headers: {
+          token: auth.accessToken
+        }
+      })
+      .then(res => {
+        let follow = false
+        for (const { _, companyId, __} of res.data.data) {
+          if (companyId === parseInt(companyInfo.companyId)) {
+            follow = true
+          }
+        }
+        setFollowText(follow ? 'Unfollow': 'Follow')
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }, [companyInfo.companyId])
 
-  const sampleData = {
-    name: 'Google',
-    email: "google@gmail.com"
+  const handleFollow = () => {
+    console.log(companyId)
+    if (followText !== 'Unfollow') {
+      axiosPrivate.post(`/student_following/${companyId}`)
+        .then(res => {
+          setFollowText('Unfollow')
+      })
+    } else {
+      axiosPrivate.delete(`/student_following/${companyId}`)
+        .then(res => {
+          setFollowText('Follow')
+      })
+    }
   }
-
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>
       <Container>
@@ -68,14 +99,11 @@ function Profile() {
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
               <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <MKTypography variant="h3">
-                  {sampleData.name}
+                  {companyInfo.name}
                 </MKTypography>
-                <MKButton variant="outlined" color="error" size="small">
-                    Follow
+                <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
+                  { followText }
                 </MKButton> 
-{/*                 <MKButton variant="outlined" color="info" size="small">
-                  Follow
-                </MKButton> */}
               </MKBox>
               <Grid container spacing={3} mb={3}>
                 <Grid item>
@@ -83,22 +111,10 @@ function Profile() {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {sampleData.email}&nbsp;&nbsp;&nbsp;
-                  </MKTypography>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
-                    Tel&nbsp;&nbsp;
-                  </MKTypography>
-                  <MKTypography component="span" variant="body2" color="text">
-                    xxxx xxxx
+                    {companyInfo.email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
                 </Grid>
               </Grid>
-              <MKTypography component="span" variant="body2" fontWeight="bold">
-                Description&nbsp;&nbsp;
-              </MKTypography>
-              <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                Google Company
-              </MKTypography>
             </Grid>
           </Grid>
         </Grid>   
