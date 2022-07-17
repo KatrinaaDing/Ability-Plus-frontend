@@ -73,7 +73,6 @@ function Profile() {
   //Params of Password change
   const [oldPwd, setOldPwd] = useState("")
   const [newPwd, setNewPwd] = useState("")
-  const [cNewPwd, setCNewPwd] = useState("")
 
 
   useEffect (async () => {
@@ -172,7 +171,9 @@ function Profile() {
     }
     setTimeout(function () {
       setAlertStr("")
+      window.location.reload()
     }, 3000);
+
   }
 
   //Password change func
@@ -182,16 +183,21 @@ function Profile() {
       oldPassword: oldPwd.oldPwd,
       newPassword: newPwd.newPwd
     }
-
-    if (Object.is(event.target.name, "changePwd")) {
+    if (Object.keys(oldPwd).length === 0) {
+      return setAlertStr("Old password is empty!")
+    }
+    else if (Object.keys(newPwd).length === 0) {
+      return setAlertStr("New password is empty!")
+    }      
+    else if (Object.is(oldPwd.oldPwd, newPwd.newPwd)) {
+      return setAlertStr("There is no change of password!")
+    }
+    else if (Object.is(event.target.name, "changePwd")) {
       axiosPrivate.post("/user/change_password", body)
         .then(res => {
           if (res.status == 200) {
             return setAlertStr("Success!")
           } 
-          if (body.newPassword !== cNewPwd.cNewPwd) {
-            return setAlertStr("The password confirm should be same as the new password!")
-          }
         })
         .catch (err => {
           if (err !== undefined && err.res !== undefined && err.res.data !== undefined) {
@@ -206,6 +212,8 @@ function Profile() {
       setAlertStr("")
     }, 3000);
   }
+
+
 
   //Profile edit related params onChange 
   const updateUserName = e => { 
@@ -241,10 +249,7 @@ function Profile() {
     const newPwd = e.target.value
     setNewPwd({newPwd})
   }
-  const updateCNewPwd = e => {
-    const cNewPwd = e.target.value
-    setCNewPwd({cNewPwd})
-  }
+
 
 
   return (
@@ -289,7 +294,7 @@ function Profile() {
                 </MKTypography>
               </Grid>
               <br />
-              <MKButton variant="outlined" color="error" size="middle" onClick={pwdChangeModal}>
+              <MKButton variant="outlined" color="error" size="medium" onClick={pwdChangeModal}>
                 Password Change
               </MKButton>
             </Grid>
@@ -373,11 +378,7 @@ function Profile() {
                         <br />
                         <Grid container item xs={12}>
                             <MKInput type="password" label="New Password" onChange={updateNewPwd} fullWidth />
-                        </Grid>    
-                        <br />
-                        <Grid container item xs={12}>
-                            <MKInput type="password" label="Confirm New Password" onChange={updateCNewPwd} fullWidth />
-                        </Grid>                                                           
+                        </Grid>                                                          
                     </MKBox>
                     <Divider sx={{my: 0}} />
                     <MKBox display="flex" justifyContent="space-between" p={1.5}>
