@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Card from "@mui/material/Card";
@@ -27,48 +27,70 @@ import Profile from "../CompanyInfo/sections/Profile";
 import Posts from "../CompanyInfo/sections/Posts";
 import profilePicture from "assets/images/bruce-mars.jpg";
 import bgImage from "assets/images/city-profile.jpg";
-
-const sampleData = {
-    name: 'Google'
-}
-
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from 'api/axios';
+import useAuth from "auth/useAuth";
 const CompanyInfoPage = () => {
-
-    return (
-        <BasicPageLayout title = {sampleData.name}>
-        <MKBox bgColor="white">
-          <MKBox
-            minHeight="25rem"
-            width="100%"
-            sx={{
-              backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-                `${linearGradient(
-                  rgba(gradients.dark.main, 0.8),
-                  rgba(gradients.dark.state, 0.8)
-                )}, url(${bgImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              display: "grid",
-              placeItems: "center",
-            }}
-          />
-          <Card
-            sx={{
-              p: 2,
-              mx: { xs: 2, lg: 3 },
-              mt: -8,
-              mb: 4,
-              backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
-              backdropFilter: "saturate(200%) blur(30px)",
-              boxShadow: ({ boxShadows: { xxl } }) => xxl,
-            }}
-          >
-            <Profile />
-            <Posts />
-          </Card>
-        </MKBox>
-      </BasicPageLayout>
-    );
-  }
-
-export default CompanyInfoPage
+  const params = useParams();
+  const { auth } = useAuth();
+  const [companyInfo, setCompanyInfo] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(`${BASE_URL}/user/get_profile_info`, {
+      params: new URLSearchParams({
+        id: params.id
+      }),
+      headers: {
+        token: auth.accessToken
+      }
+      })
+        .then(res => {
+          const newCompanyInfo = { ...companyInfo }
+          newCompanyInfo.companyName = res.data.data.fullName
+          newCompanyInfo.companyId = params.id
+          setCompanyInfo(newCompanyInfo)
+      })
+      .catch(e => {
+        console.error(e)
+      })
+    }
+    fetchData()
+  }, [params.id])
+  return (
+    <BasicPageLayout title={companyInfo === {} ? '': companyInfo.name}>
+      <MKBox bgColor="white">
+        <MKBox
+          minHeight="25rem"
+          width="100%"
+          sx={{
+            backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
+              `${linearGradient(
+                rgba(gradients.dark.main, 0.8),
+                rgba(gradients.dark.state, 0.8)
+              )}, url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            display: "grid",
+            placeItems: "center",
+          }}
+        />
+        <Card
+          sx={{
+            p: 2,
+            mx: { xs: 2, lg: 3 },
+            mt: -8,
+            mb: 4,
+            backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
+            backdropFilter: "saturate(200%) blur(30px)",
+            boxShadow: ({ boxShadows: { xxl } }) => xxl,
+          }}
+        >
+          <Profile companyInfo={ companyInfo } />
+        </Card>
+      </MKBox>
+      <Posts />
+    </BasicPageLayout>
+  );
+}
+export default CompanyInfoPage;

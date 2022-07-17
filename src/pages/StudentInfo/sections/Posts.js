@@ -32,7 +32,7 @@ import post2 from "assets/images/examples/testimonial-6-3.jpg";
 import post3 from "assets/images/examples/blog-9-4.jpg";
 import post4 from "assets/images/examples/blog2.jpg";
 
-function Places() {
+const Posts = () => {
   return (
     <MKBox component="section" py={2}>
       <Container>
@@ -51,4 +51,4 @@ function Places() {
   );
 }
 
-export default Places;
+export default Posts;
