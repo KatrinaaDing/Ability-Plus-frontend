@@ -35,24 +35,27 @@ const PopularProposals = () => {
     }
 
     useEffect(async () => {
-        // FIXME: add search key
-      await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
-        params: new URLSearchParams({
+        let params = {
             isAscendingOrderLike: isAscendingOrderLike,
             isAscendingOrderTime: ascending,
             pageNo: 1,
             pageSize: 20,
-        }),
-        headers:  {
-            token: auth.accessToken
         }
-      })
+        if (searchKey !== '') {
+            params = {...params, searchKey: searchKey}
+        }
+        await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
+            params: new URLSearchParams(params),
+            headers:  {
+                token: auth.accessToken
+            }
+        })
         .then(res => {
             console.log(res)
         })
         .catch(e => console.error(e))
     
-    }, [ascending, isAscendingOrderLike])
+    }, [ascending, isAscendingOrderLike, searchKey])
     
 
     const handleOpenDetail = () => {

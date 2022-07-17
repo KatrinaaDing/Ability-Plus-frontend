@@ -17,6 +17,8 @@ import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
 import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
+import axios from 'axios';
+import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 
 const BrowseRequests = () => {
     const { auth } = useAuth();
@@ -27,69 +29,103 @@ const BrowseRequests = () => {
     const [proOpen, setProOpen] = useState(false);
     const [proDetail, setProDetail] = useState();
     const [reqOpen, setReqOpen] = useState(false);
-    const [reqDetail, setReqDetail] = useState();
+    const [reqDetail, setReqDetail] = useState([]);
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('draft');
+    const [status, setStatus] = useState('open_for_proposal');
     const [searchKey, setSearchKey] = useState('');
-    const [isAscendingProposalDeadline, setIsAscendingProposalDeadline] = useState(true);
-    const [isAscendingProposalDealine, setIsAscendingProposalDealine] = useState(true);
-    
+    const [whatOrder, setWhatOrder] = useState('ProposalDue');
+    const [reqs, setReqs] = useState([]);
+    const [total, setTotal] = useState(0);
+    const type = 'request';
+
     const handleDate = (ascending) => {
         setAscending(ascending)
     }
     const handleStatus = (status) => {
         setStatus(status)
+        console.log(status)
     }
     const handleSearch = (key) => {
         setSearchKey(key);
     }
-    const handleProposalDeadline = (proposal) => {
-        setIsAscendingProposalDeadline(proposal)
+    const handleWhatOrder = (order) => {
+        setWhatOrder(order);
     }
-    const handleSolutionDeadline = (solution) => {
-        setIsAscendingProposalDeadline(solution)
-    }
+    useEffect(async () => {
+        let params;
+        console.log(status)
+        if (searchKey == '') {
+            params = new URLSearchParams({
+                status: status,
+                isAscendingOrder: ascending,
+                pageNo: 1,
+                pageSize: 10,
+                whatOrder: whatOrder
+            })
+        } else {
+            params = new URLSearchParams({
+                status: status,
+                isAscendingOrder: ascending,
+                pageNo: 1,
+                pageSize: 10,
+                whatOrder: whatOrder,
+                searchKey: searchKey
+            })
+        }
+        console.log(params)
+        await axiosPrivate.get('/project/list_all_project_requests/', {
+            params: params
+        })
+            .then(res => {
+                console.log(res)
+                setReqs(res.data.records)
+                setTotal(res.data.total)
+            })
+            .catch(e => {
+                console.error(e)
+            })
+    }, [ascending, status, whatOrder, searchKey])
 
   // what button to put in the proposal detail modal
-    const getProposalModalActionButton = (statusStr) => {
-        // if the status is waiting approval
-        if (statusStr === statusBank.proposal.approving.label) {
-            return (
-                <>
-                    <MKButton variant="gradient" color="error" onClick={() => alert('reject')} sx={{ mx: 1 }}>
-                        Reject
-                    </MKButton>
-                    <MKButton variant="gradient" color="success" onClick={() => alert('approved')}>
-                        Approve
-                    </MKButton>
-                </>
-            )
-        }
-        return <></>
-    }
+    // const getProposalModalActionButton = (statusStr) => {
+    //     // if the status is waiting approval
+    //     if (statusStr === statusBank.proposal.approving.label) {
+    //         return (
+    //             <>
+    //                 <MKButton variant="gradient" color="error" onClick={() => alert('reject')} sx={{ mx: 1 }}>
+    //                     Reject
+    //                 </MKButton>
+    //                 <MKButton variant="gradient" color="success" onClick={() => alert('approved')}>
+    //                     Approve
+    //                 </MKButton>
+    //             </>
+    //         )
+    //     }
+    //     return <></>
+    // }
 
-    const getProDetail = async (proId) => {
-      await axiosPrivate.get('/proposal/get_proposal_detail_info',{
-        params: new URLSearchParams({
-            proposalId: proId
-        })
-      })
-        .then(res => 
-            setProDetail({
-                "createTime": 0,
-                "creatorId": 0,
-                "description": "string",
-                "id": proId,
-                "lastModifiedTime": 0,
-                "likeNum": 0,
-                "oneSentenceDescription": "string",
-                "status": "submitted",
-                "title": "string"
-            })
-        )
-        .then(res => setProOpen(true))
-        .catch(e => console.error(e))
-    }
+    // const getProDetail = async (proId) => {
+    //   await axiosPrivate.get('/proposal/get_proposal_detail_info',{
+    //     params: new URLSearchParams({
+    //         proposalId: proId
+    //     })
+    //   })
+    //     .then(res => 
+    //         setProDetail({
+    //             "createTime": 0,
+    //             "creatorId": 0,
+    //             "description": "string",
+    //             "id": proId,
+    //             "lastModifiedTime": 0,
+    //             "likeNum": 0,
+    //             "oneSentenceDescription": "string",
+    //             "status": "submitted",
+    //             "title": "string"
+    //         })
+    //     )
+    //     .then(res => setProOpen(true))
+    //     .catch(e => console.error(e))
+    // }
     const getReqDetail = async (reqId) =>
         await axiosPrivate.get('/project/get_project_info', {
             params: new URLSearchParams({
@@ -99,6 +135,7 @@ const BrowseRequests = () => {
             .then(res => 
                 setReqDetail({
                     id: reqId,
+                    "status": "open_for_solution",
                     "contactEmail": "string",
                     "createTime": 0,
                     "creatorId": 0,
@@ -126,25 +163,20 @@ const BrowseRequests = () => {
         )
     }
 
-    const renderProposalCards = () => {
-        return cards.map(content => 
-            <ProposalCard
-                key={content.id}
-                data={content}
-                openDetail={() => getProDetail(content.id)}
-            />
-        )
+    // const renderProposalCards = () => {
+    //     return cards.map(content => 
+    //         <ProposalCard
+    //             key={content.id}
+    //             data={content}
+    //             openDetail={() => getProDetail(content.id)}
+    //         />
+    //     )
 
-    }
-
+    // }
 
     return (
-        <BasicPageLayout title={ auth.isCompany ? "View Student's Submitted Proposals" : "Browse Company Requests" }>
-            {auth.isCompany ?
-                <RequestFilter handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></RequestFilter>
-                : <StatusProposalSolutionFilter handleStatus={handleStatus} handleProposalDeadline={handleProposalDeadline} handleSolutionDeadline={handleSolutionDeadline} >
-                </StatusProposalSolutionFilter>
-            }
+        <BasicPageLayout title={"Browse Company Requests" }>
+            <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type={ type }></StatusDateDueSearchFilter>
             <br />
             {
                 // student view
