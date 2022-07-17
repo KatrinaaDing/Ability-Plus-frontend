@@ -86,7 +86,6 @@ function Profile() {
           setDes("?");
           setAge("?"); 
           setCAge("?"); 
-          console.log(999)
           return;
         }
         if(res.data.fullName){
