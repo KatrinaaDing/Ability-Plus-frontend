@@ -57,7 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type }) => {
+const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
     const [status, setStatus] = useState(0);
     const [ascending, setAscending] = useState(true);
@@ -81,7 +81,6 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
         }
         
     };
-    console.log(type)
     return (
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
             <Box sx={{minWidth: 120}}>
@@ -95,7 +94,8 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                                 label="Status"
                                 onChange={handleChange}
                                 style={{height: '40px'}}
-                            >
+                        >
+
                                 <MenuItem value={0}>Draft</MenuItem>
                                 <MenuItem value={1}>Submitted</MenuItem>
                                 <MenuItem value={2}>Approving</MenuItem>
@@ -109,8 +109,11 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                                 label="Status"
                                 onChange={handleChange}
                                 style={{height: '40px'}}
-                            >
+                        >
+                            {
+                                userType != 'public' &&
                                 <MenuItem value={0}>Draft</MenuItem>
+                            }
                                 <MenuItem value={1}>Open For Proposal</MenuItem>
                                 <MenuItem value={2}>Approving</MenuItem>
                                 <MenuItem value={3}>Open For Solution</MenuItem>
