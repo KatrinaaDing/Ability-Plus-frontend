@@ -103,7 +103,6 @@ const ProjectProposals = () => {
                                     description: p.oneSentenceDescription,
                                     authorId: p.authorId,
                                     aurhorName: p.authorName,
-                                    lastModified: new Date, // FIXME: need time
                                 }}
                                 openDetail={() => getPropDetail(p.id)}
                             />

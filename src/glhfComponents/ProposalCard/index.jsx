@@ -38,7 +38,6 @@ value = {
     lastModified,
     likes,
 }
-
  * 
  */
 
@@ -54,7 +53,9 @@ const ProposalCard = ({ data, openDetail }) => {
                         {data.title}
                     </MKTypography>
                     {
-                        page.startsWith('student-info') || page.startsWith('popular')
+                        // student info/popular page does not show status
+                        // (page.startsWith('student-info') || page.startsWith('popular')) ||
+                        !data.status
                             ? <></>
                             : <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
                     }
@@ -82,9 +83,12 @@ const ProposalCard = ({ data, openDetail }) => {
                             </MKTypography>
                         </Grid>
                     }
-                    <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
-                    </Grid>
+                    {
+                        data.lastModified &&
+                        <Grid item>
+                            <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
+                        </Grid>
+                    }
                 </Grid>
             </CardContent>
             <CardActions >

@@ -109,7 +109,6 @@ const PopularProposals = () => {
                     <ProposalCard
                         data={{
                             title: "Sample Title",
-                            status: null,
                             description: "1 sentence description",
                             topic: "Proposal Management",
                             authorId: 8,
