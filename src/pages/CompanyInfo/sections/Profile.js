@@ -45,7 +45,6 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "axios";
 import { BASE_URL } from 'api/axios';
 function Profile({ companyInfo }) {
-  console.log(companyInfo.companyId)
   const {auth, setAuth} = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -73,15 +72,15 @@ function Profile({ companyInfo }) {
       })
   }, [companyInfo.companyId])
 
-  const handleFollow = () => {
+  const handleFollow = async () => {
     console.log(companyId)
     if (followText !== 'Unfollow') {
-      axiosPrivate.post(`/student_following/${companyId}`)
+      await axiosPrivate.post(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Unfollow')
       })
     } else {
-      axiosPrivate.delete(`/student_following/${companyId}`)
+      await axiosPrivate.delete(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Follow')
       })
