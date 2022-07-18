@@ -50,7 +50,7 @@ const CreateProposal = () => {
     const [desc, setDesc] = React.useState('');
     const [prob, setProb] = React.useState('');
     const [vStat, setVStat] = React.useState('');
-    const [status, setStatus] = React.useState('');
+    const [status, setStatus] = React.useState('draft');
     const [goal, setGoal] = React.useState('');
     const [detail, setDetail] = React.useState('');
     const [projectId, setProjectId] = React.useState(null)

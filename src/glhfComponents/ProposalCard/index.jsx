@@ -62,7 +62,13 @@ const ProposalCard = ({ data, openDetail }) => {
                     }
                     {
                         page.startsWith('view-proposals') &&
-                            <ProcessStatusBadge status={data.rating > 0 || data.note !== ''} />
+                            <ProcessStatusBadge 
+                                status={
+                                    data.rating > 0 || data.note !== '' 
+                                        ? 1
+                                        : 0
+                                } 
+                            />
                     }
                 </Grid>
                 <MKTypography variant="body2" color="secondary">

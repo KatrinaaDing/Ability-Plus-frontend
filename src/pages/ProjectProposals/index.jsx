@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
@@ -17,17 +17,20 @@ import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import ProcessStatusBadge from "glhfComponents/ProcessStatusBadge";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import MKButton from "components/MKButton";
 
 const ProjectProposals = () => {
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const [propCards, setPropCards] = useState([]);
+    const navigate = useNavigate();
 
     const [total, setTotal] = useState(0);
     const [isPick, setIsPick] = useState(0);
 
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
+
 
     useEffect(async () => {
         // FIXME: add search key
@@ -58,16 +61,37 @@ const ProjectProposals = () => {
         })
             .then(res => {
                 res.data.extraData = JSON.parse(res.data.extraData)
-                setPropDetail({...res.data, id})
+                setPropDetail({
+                    ...res.data, 
+                    id,
+                    status: 0
+                })
             })
             .then(res => setPropDetailOpen(true))
             .catch(e => console.error(e))
     }
+
+    const approveProposals =  () => {
+        alert('All shorlisted proposals has been approved!')
+        navigate('/view-request-ranks/' + projectId)
+    }
     
     // TODO put proposal rank if status > approving
 
+
     return (
-        <BasicPageLayout title={`All Proposals for project "${projectName}"`}>
+        <BasicPageLayout 
+            title={`All Proposals for project "${projectName}"`}
+            secondaryContent={
+                <MKButton
+                    vairnat='gradient'
+                    color='success'
+                    onClick={approveProposals}
+                >
+                    Approve all shortlisted proposal
+                </MKButton>
+            }
+        >
             <p>There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}</p>
             {
                 propDetail &&
@@ -77,7 +101,7 @@ const ProjectProposals = () => {
                         value={{
                             id: propDetail.id,
                             title: propDetail.title,
-                            status: propDetail.status,
+                            status: propDetail.status, // FIXME
                             desc: propDetail.oneSentenceDescription,
                             prob: propDetail.extraData.problemStatement,
                             vStat: propDetail.extraData.visionStatement,
@@ -94,13 +118,16 @@ const ProjectProposals = () => {
                         actionButton={
                             <MKButton 
                                 variant="gradient" 
-                                color="warning" 
+                                color={isPick ? 'success' : "warning"}
                                 startIcon={
-                                    true
+                                    isPick
                                         ? <PlaylistAddCheckIcon />
                                         : <PlaylistAddIcon />
                                 }
-                                onClick={() => alert('approved')}
+                                onClick={() => {
+                                    setIsPick(!isPick)  //FIXME revert is pick status
+                                    // alert('The proposal has been added to shortlist.')
+                                }}
                             >
                                 Shortlist
                             </MKButton>

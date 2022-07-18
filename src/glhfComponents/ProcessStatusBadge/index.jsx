@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-const ProcessStatusBadge = () => {
+const ProcessStatusBadge = props => {
     const propStatus = {
         0: {
             label: 'unviewed',
