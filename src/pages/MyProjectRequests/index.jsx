@@ -27,6 +27,7 @@ import CreateProjectBtn from "./components/CreateProjectBtn";
 // FIXME fake data, testing purpose only
 import { BASE_URL } from "api/axios";
 import useAuth from "auth/useAuth";
+import axios from "axios";
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -54,12 +55,15 @@ const MyProjectRequests = () => {
         if (searchKey !== '')
             params = {...params, searchKey: searchKey}
 
-        await axiosPrivate.get(`/project/list_my_project_request`, {
-            params:  new URLSearchParams(params)
+        await axios.get(`${BASE_URL}/project/list_my_project_request`, {
+            params:  new URLSearchParams(params),
+            headers: {
+                token: auth.accessToken
+            }
         })
             .then(res => {
-                console.log(res)
-                setReqs(res.data.records)
+                
+                setReqs(res.data.data.records)
                 setTotal(res.data.total)
             })
             .catch(e => {
@@ -77,7 +81,6 @@ const MyProjectRequests = () => {
     const handleSearch = (key) => {
         setSearchKey(key);
     }
-
 
 
     const getProjectDetail = async (id) => {
