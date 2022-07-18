@@ -57,26 +57,14 @@ const BrowseRequests = () => {
         setWhatOrder(order);
     }
     useEffect(async () => {
-        let params;
-        console.log(status)
-        if (searchKey == '') {
-            params = new URLSearchParams({
-                status: status,
-                isAscendingOrder: ascending,
-                pageNo: 1,
-                pageSize: 10,
-                whatOrder: whatOrder
-            })
-        } else {
-            params = new URLSearchParams({
-                status: status,
-                isAscendingOrder: ascending,
-                pageNo: 1,
-                pageSize: 10,
-                whatOrder: whatOrder,
-                searchKey: searchKey
-            })
-        }
+        const params = new URLSearchParams({
+            status: status,
+            isAscendingOrder: ascending,
+            pageNo: 1,
+            pageSize: 10,
+            whatOrder: whatOrder,
+            searchKey: searchKey
+        })
         await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
             params: params,
             headers: {
@@ -131,9 +119,7 @@ const BrowseRequests = () => {
                         )
                 }
             </MKBox>
-            {
-                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
-            }
+            <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
             {
                 // mount modal only when detail is loaded
                 reqDetail &&
