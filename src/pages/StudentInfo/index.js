@@ -60,9 +60,9 @@ const StudentInfoPage = () => {
             }}
           >
             <Profile />
-            <Posts />
           </Card>
         </MKBox>
+        <Posts />
       </BasicPageLayout>
     );
   }

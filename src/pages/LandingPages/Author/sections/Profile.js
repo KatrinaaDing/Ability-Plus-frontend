@@ -38,7 +38,7 @@ import AlertModal from "glhfComponents/AlertModal";
 //Other components
 import useAuth from "auth/useAuth";
 import profilePicture from "assets/images/bruce-mars.jpg";
-import { Axios } from "axios";
+import axios, { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import { axiosPrivate } from "api/axios";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -49,44 +49,68 @@ function Profile() {
   const axiosPrivate = useAxiosPrivate();
   const { auth, setAuth } = useAuth();
 
+  //Profile edit modal show or not
   const [show, setShow] = useState(false);
   const toggleModal = () =>{
     setShow(!show);
   } 
-
+  // Password change modal show or not
+  const [pShow, setPShow] = useState(false);
+  const pwdChangeModal = () =>{
+    setPShow(!pShow);
+  } 
+  //Params of Profile edit
   const [userName, setUserName] = useState("");
   const [des, setDes] = useState("");
   const [age, setAge] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [alertStr, setAlertStr] = useState("");
-
   const [fullName, setFullName] = useState("");
   const [cEmail, setCEmail] = useState(localStorage.getItem("cEmail"));
   const [cAge, setCAge] = useState(localStorage.getItem("cAge"));
   const [cDes, setCDes] = useState(localStorage.getItem("cDes"));
 
+  //Params of Password change
+  const [oldPwd, setOldPwd] = useState("")
+  const [newPwd, setNewPwd] = useState("")
+
+
   useEffect (async () => {
     await axiosPrivate.get("/user/get_profile_info")
       .then (res => {
+        if(res.data.extraData === null){
+          setCEmail("sample@email.com");
+          setUserEmail ('sample@email.com');
+          setCDes("Please introduce yourself");
+          setDes("?");
+          setAge("?"); 
+          setCAge("?"); 
+          return;
+        }
         if(res.data.fullName){
+
           setAuth({
             username:  res.data.fullName,
             isCompany: auth.isCompany,
             accessToken: auth.accessToken
           })
         }
-        if (JSON.parse(res.data.extraData).email === null) {
-          setCEmail("sample@email.com")
+        if (JSON.parse(res.data.extraData).email === null || JSON.parse(res.data.extraData).email ==='') {
+          setCEmail("sample@email.com");
+          setUserEmail ('sample@email.com');
         } else {
           setCEmail(JSON.parse(res.data.extraData).email)
         }
-        if (JSON.parse(res.data.extraData).des === null) {
-          setCDes("Please introduce yourself")
+        if (JSON.parse(res.data.extraData).des === null || JSON.parse(res.data.extraData).des == '') {
+          setCDes("Please introduce yourself");
+          setDes("Please introduce yourself");
         } else {
           setCDes(JSON.parse(res.data.extraData).des)
         }
-        if (JSON.parse(res.data.extraData).age === null) {
+        if (JSON.parse(res.data.extraData).age === null || JSON.parse(res.data.extraData).age == '') {
           setCAge("?")
+          setAge("?"); 
+        
         } else {
           setCAge(JSON.parse(res.data.extraData).age)
         }
@@ -95,24 +119,14 @@ function Profile() {
       .catch(e => console.error(e))
   }, [])
 
+  //Profile edit func
   const changeProfile = (event) => {
-    if(des.des === ''){
-      return setAlertStr("Description is empty!")
-    }
-    if(age.age === ''){
-      return setAlertStr("Age is empty!")
-    }
-    if(userEmail.userEmail === ''){
-      return setAlertStr("Contact email is necessary!")
-    }
-    if(userName.userName === ''){
-      return setAlertStr("Username is empty")
-    }
+
     const body = {
       "extraData": {
-        "des": des.des || cDes,
-        "age": age.age || cAge,
-        "email": userEmail.userEmail || cEmail,
+        "des": des.des == '' ? '': des.des || cDes,
+        "age": age.age == ''? '' : age.age || cAge,
+        "email": userEmail.userEmail == ''? '': userEmail.userEmail || cEmail,
       },
       "userName": userName.userName || auth.username
     }
@@ -127,6 +141,10 @@ function Profile() {
       axiosPrivate.post("/user/edit_own_profile_info", body)
         .then(function (res) {
           console.log("response:", res);
+          if(userName.userName === ''){
+            return setAlertStr("Username is empty")
+          }      
+
           if (res.code == 201) {
             return setAlertStr(res.data.message)
           }
@@ -140,26 +158,64 @@ function Profile() {
             isCompany: auth.isCompany,
             accessToken: auth.accessToken
           })
-          
+          setAlertStr("Success!")
         })
         .catch (err => {
           if (err !== undefined && err.response !== undefined && err.response.data !== undefined) {
             setAlertStr(err.res.data.error);
           }
-          else if (err !== undefined) {
-            setAlertStr(err.message)
-          } else {
+          else {
             setAlertStr("Failed to change profile")
           }
         })
     }
     setTimeout(function () {
-      setAlertStr("");
+      setAlertStr("")
+      window.location.reload()
     }, 3000);
 
-    window.location.reload();
   }
 
+  //Password change func
+  const pwdChange = (event) => {
+
+    const body = {
+      oldPassword: oldPwd.oldPwd,
+      newPassword: newPwd.newPwd
+    }
+    if (Object.keys(oldPwd).length === 0) {
+      return setAlertStr("Old password is empty!")
+    }
+    else if (Object.keys(newPwd).length === 0) {
+      return setAlertStr("New password is empty!")
+    }      
+    else if (Object.is(oldPwd.oldPwd, newPwd.newPwd)) {
+      return setAlertStr("There is no change of password!")
+    }
+    else if (Object.is(event.target.name, "changePwd")) {
+      axiosPrivate.post("/user/change_password", body)
+        .then(res => {
+          if (res.status == 200) {
+            return setAlertStr("Success!")
+          } 
+        })
+        .catch (err => {
+          if (err !== undefined && err.res !== undefined && err.res.data !== undefined) {
+            setAlertStr(err.res.data.error);
+          }
+          else {
+            setAlertStr("Old password is incorrect!")
+          }
+        })
+    }
+    setTimeout(() => {
+      setAlertStr("")
+    }, 3000);
+  }
+
+
+
+  //Profile edit related params onChange 
   const updateUserName = e => { 
     const userName = e.target.value
     setUserName({userName})
@@ -184,6 +240,18 @@ function Profile() {
     localStorage.setItem("cAge", age)
   } 
 
+  //Password change related params onChange
+  const updateOldPwd = e => {
+    const oldPwd = e.target.value
+    setOldPwd({oldPwd})
+  }
+  const updateNewPwd = e => {
+    const newPwd = e.target.value
+    setNewPwd({newPwd})
+  }
+
+
+
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>
       <Container>    
@@ -191,7 +259,6 @@ function Profile() {
           <MKBox mt={{ xs: -16, md: -20 }} textAlign="center">
             <MKAvatar src={profilePicture} alt="Burce Mars" size="xxl" shadow="xl" />
           </MKBox>
-          
           <Grid container justifyContent="center" py={6}>
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
               <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
@@ -201,9 +268,6 @@ function Profile() {
                 <MKButton variant="outlined" color="info" size="small" onClick={toggleModal}>
                   Edit Profile
                 </MKButton>
-{/*                 <MKButton variant="outlined" color="info" size="small">
-                  Follow
-                </MKButton> */}
               </MKBox>
               <Grid container spacing={3} mb={3}>
                 <Grid item>
@@ -221,17 +285,23 @@ function Profile() {
                   </MKTypography>
                 </Grid>
               </Grid>
-              <MKTypography component="span" variant="body2" fontWeight="bold">
-                Description&nbsp;&nbsp;
-              </MKTypography>
-              <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                {cDes}
-              </MKTypography>
+              <Grid item>
+                <MKTypography component="span" variant="body2" fontWeight="bold">
+                  Description&nbsp;&nbsp;
+                </MKTypography>
+                <MKTypography variant="body2" component="span" fontWeight="light" color="text">
+                  {cDes}
+                </MKTypography>
+              </Grid>
+              <br />
+              <MKButton variant="outlined" color="error" size="medium" onClick={pwdChangeModal}>
+                Password Change
+              </MKButton>
             </Grid>
           </Grid>
         </Grid>
+{/* Profile edit modal */}
         <Modal open={show} onClose={toggleModal} sx={{display:"grid", placeItems:"center"}}>
- 
             <Slide direction="down" in={show} timeout={500}>
                 <MKBox
                     position="relative"
@@ -250,8 +320,7 @@ function Profile() {
                         <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={toggleModal} />
                     </MKBox>
                     <Divider sx={{my: 0}} />
-                    <MKBox component="form" role="form" p={2} py={12}>
-{/* The 'value' of Input should be parameters which have state change. */}                               
+                    <MKBox component="form" role="form" p={2} py={12}>                            
                         <Grid container item xs={12}>
                             <MKInput label="Username" fullWidth defaultValue={auth.username} onChange={updateUserName} />
                         </Grid>      
@@ -279,7 +348,50 @@ function Profile() {
                     </MKBox>                            
                 </MKBox>
             </Slide>
-        </Modal>     
+        </Modal>
+
+{/* Password change modal */}
+        <Modal open={pShow} onClose={pwdChangeModal} sx={{display:"grid", placeItems:"center"}}>
+ 
+            <Slide direction="down" in={pShow} timeout={500}>
+                <MKBox
+                    position="relative"
+                    width="30%"
+                    display="flex"
+                    flexDirection="column"
+                    borderRadius="xl"
+                    bgColor="white"
+                    shadow="xl"    
+                >
+                <Collapse in={alertStr != ""}>
+                  <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
+                </Collapse>   
+                    <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
+                        <MKTypography variant="h5">Password Change</MKTypography>
+                        <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={pwdChangeModal} />
+                    </MKBox>
+                    <Divider sx={{my: 0}} />
+                    <MKBox component="form" role="form" p={2} py={12}>                            
+                        <Grid container item xs={12}>
+                            <MKInput type= "password" label="Old Password" onChange={updateOldPwd} fullWidth />
+                        </Grid> 
+                        <br />
+                        <Grid container item xs={12}>
+                            <MKInput type="password" label="New Password" onChange={updateNewPwd} fullWidth />
+                        </Grid>                                                          
+                    </MKBox>
+                    <Divider sx={{my: 0}} />
+                    <MKBox display="flex" justifyContent="space-between" p={1.5}>
+                        <MKButton variant="gradient" color="light" onClick={pwdChangeModal}>
+                        Cancel
+                        </MKButton>
+                        <MKButton variant="gradient" color="info" name="changePwd" onClick={pwdChange}>
+                        Submit
+                        </MKButton>
+                    </MKBox>                            
+                </MKBox>
+            </Slide>
+        </Modal>             
       </Container>
     </MKBox>
   );

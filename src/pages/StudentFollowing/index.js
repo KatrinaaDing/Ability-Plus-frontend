@@ -25,27 +25,52 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "axios";
 import useAuth from "auth/useAuth";
 import axiosBasic from "api/axios";
-
+import { BASE_URL } from 'api/axios';
 const MyFollowingPage = () => {
+    const {auth, setAuth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [followList, setFollowList] = useState([]);
     const [follow, setFollow] = useState(false);
-
-    const isFollowModal = () => setFollow(!follow);
-
-
+    const [followChanged, setFollowChanged] = useState(false);
+    const [currentClick, setCurrentClick] = useState('');
     useEffect(async () =>  {
-      await axiosPrivate.get('/student_following/all')
+        await axios.get(`${BASE_URL}/student_following/all`, {
+            headers: {
+              token: auth.accessToken
+            }
+        })
         .then(res => {
-            setFollowList(res.data)
+            setFollowList(res.data.data)
         })
         .catch(e=>{
             console.error(e)
         })
+    }, [followChanged])
     
-    }, [])
-    
-
+    const handleFollow = async (event) => {
+        if (Object.is(event.target.name, "confirm")) {
+            try {
+                const response = await fetch(`${BASE_URL}student_following/${currentClick}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: auth.accessToken
+                    },
+                });
+                if (response.status === 200) {
+                    setFollowChanged(!followChanged)
+                    setFollow(!follow)
+                    console.log(followChanged)
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+    const handleSetCurFollow = (f) => {
+        setCurrentClick(f.companyId)
+        setFollow(!follow)
+    }
 
     return (
         <BasicPageLayout title="My Followings">
@@ -56,14 +81,14 @@ const MyFollowingPage = () => {
                             <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
                                 {f.companyName}
                             </MKTypography>
-                            <MKButton variant="outlined" color="info" size="small" onClick={isFollowModal}>
+                            <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
                                 Unfollow
                             </MKButton>
                         </MKBox>
                     ))
                 }
             </Grid>
-            <Modal open={follow} onClose={isFollowModal} sx={{ display: "grid", placeItems: "center" }}>
+            <Modal open={follow} onClose={()=> setFollow(!follow)} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={follow} timeout={500}>
                     <MKBox
                         position="relative"
@@ -76,7 +101,7 @@ const MyFollowingPage = () => {
                     >
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                             <MKTypography variant="h6">Unfollow Confirm</MKTypography>
-                            <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={isFollowModal} />
+                            <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setFollow(!follow)} />
                         </MKBox>
 
                         <Divider sx={{ my: 0 }} />
@@ -85,18 +110,16 @@ const MyFollowingPage = () => {
                         </MKTypography>
                         <Divider sx={{ my: 0 }} />
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                            <MKButton variant="gradient" color="light">
+                            <MKButton variant="gradient" color="light" onClick={ ()=> setFollow(!follow)}>
                                 No
                             </MKButton>
-                            <MKButton variant="gradient" color="info">
+                            <MKButton variant="gradient" color="info" name="confirm" onClick={ handleFollow }>
                                 Yes
                             </MKButton>
                         </MKBox>
                     </MKBox>
                 </Slide>
             </Modal>
-
-
         </BasicPageLayout>
     );
 }
