@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -51,8 +51,8 @@ function Profile({ companyInfo }) {
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
 
-  const [search] = useSearchParams();
-  const id = search.get("id");
+  const params = useParams();
+  const {id} = params;
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("")
 

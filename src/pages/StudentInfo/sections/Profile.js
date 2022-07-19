@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -52,8 +52,9 @@ function Profile() {
 
   const navigate = useNavigate();
 
-  const [search] = useSearchParams();
-  const id = search.get("id");
+
+  const params = useParams();
+  const {id} = params;
   const [des, setDes] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
