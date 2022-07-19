@@ -209,13 +209,17 @@ const CreateRequest = () => {
 
 
     const handleSubmit = async () => {
-        const body = getContent()
+        const body = {
+            ...getContent(),
+            isDraft: false
+        }
 
         // submit edited request
         if (isEditing) {
             body.contactEmail = contactEmail
             body.projectId = parseInt(requestId)
-            await axiosPrivate.post(`/project/edit_project`, { ...body, isDraft: false })
+            console.log('body',body)
+            await axiosPrivate.post(`/project/edit_project`, body)
                 .then(res => {
                     setPreview(false)
                     setAlertOpenSubmit(true)
@@ -226,7 +230,7 @@ const CreateRequest = () => {
 
         // submit new created request
         } else {
-            await axiosPrivate.post(`/project/create_project_request`, {...body, isDraft: false})
+            await axiosPrivate.post(`/project/create_project_request`, body)
                 .then(res => {
                     setPreview(false)
                     setAlertOpenSubmit(true)

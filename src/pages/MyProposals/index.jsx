@@ -67,8 +67,6 @@ const MyProposals = () => {
             })
     }, [ascending, status, searchKey, whatOrder])
 
-    console.log('my props', props)
-
     const getPropDetail = async (propId, projectName) => {
         console.log(propId)
         await axiosPrivate('/proposal/get_proposal_detail_info', {

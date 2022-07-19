@@ -117,7 +117,7 @@ const MyProjectRequests = () => {
         if (confirm("Do you really want to delete the project request?")) {
             await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
                 .then(res => {
-                    alert(`Project ${id} has been deleted`);
+                    alert(`Project has been deleted`);
                     setReqOpen(false)
                     location.reload();
                 })
