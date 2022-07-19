@@ -51,16 +51,15 @@ const MyProjectRequests = () => {
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
+            searchKey: searchKey
         }
-        if (searchKey !== '')
-            params = {...params, searchKey: searchKey}
 
         await axiosPrivate.get(`/project/list_my_project_request`, {
             params:  new URLSearchParams(params)
         })
             .then(res => {
                 setReqs(res.data.data.records)
-                setTotal(res.data.total)
+                setTotal(res.data.data.total)
             })
             .catch(e => {
                 console.error(e)

@@ -11,6 +11,7 @@ import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import { getCode } from 'utils/getStatus';
 import { statusBank } from 'utils/getStatus';
+import { getRandomCategory } from 'assets/data/categories';
 // 1.title
 // 2.description
 // 3.author
@@ -42,6 +43,8 @@ value = {
     lastModification,
 }
 */
+
+
 const RequestCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1);
     const navigate = useNavigate();
@@ -72,16 +75,16 @@ const RequestCard = ({ data, openDetail }) => {
             <CardContent>
                 <Grid container item justifyContent="flex-start" xs={10}>
                     <MKTypography gutterBottom variant="h5" sx={{ mt: 'auto', mb: 'auto', py: 1.5 }}>
-                        {data.id}.{data.title}
+                        {data.title}
                     </MKTypography>
                     <StatusBadge type='request' statusLabel={data.status} size='sm' variant="contained" />
                 </Grid>
-                <MKTypography variant="body2" color="secondary">
+                {/* <MKTypography variant="body2" color="secondary">
                     {data.description.substring(0, 50)}
-                </MKTypography>
+                </MKTypography> */}
                 <Grid>
                     <Grid item>
-                        <MKTypography variant="caption">Topic: &nbsp;{data.topic}</MKTypography>
+                        <MKTypography variant="caption">Topic: &nbsp;{data.topic ?? getRandomCategory()}</MKTypography>
                     </Grid>
                     {
                         page.indexOf('browse') >= 0 &&
@@ -100,14 +103,12 @@ const RequestCard = ({ data, openDetail }) => {
             </CardContent>
             <CardActions>
                     <Grid container justifyContent="flex-end">
-                        {/* 9 */}
                         {
                             getCode('request', data.status) > statusBank.request.approving.code 
                                 ? <ViewRankingBtn />
                                 : <ViewDetailBtn />
                         }
                     </Grid>
-                <br />
                 
             </CardActions>
         </Card>

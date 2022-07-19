@@ -28,12 +28,9 @@ import ActionButton from './components/ActionButton';
 import axios from 'axios';
 import { BASE_URL } from 'api/axios'
 import { statusBank } from 'utils/getStatus';
+import { categories } from 'assets/data/categories';
 
-const categories = [
-    'Frontend Develop',
-    'Management',
-    'Backend Develop',
-]
+
 
 const sampleContent = {
     title: "Quisque eget luctus nunc",

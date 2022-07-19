@@ -13,17 +13,24 @@ import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
 import axios from 'axios';
 import { BASE_URL } from 'api/axios';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 const PopularProposals = () => {
+    //hooks
     const { auth } = useAuth();
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
 
+    // info display states
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
+
+    // search bar states
     const [searchKey, setSearchKey] = useState('');
     const [ascending, setAscending] = useState(true);
     const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(true);
+
     const handleDate = (ascending) => {
         setAscending(ascending)
     }
@@ -74,7 +81,7 @@ const PopularProposals = () => {
                 goal: '1., 2.,..',
                 detail: 'detail haha',
                 metaData: {
-                    lastModified: new Date().toLocaleString(),
+                    lastModified: new Date().getTime()/1000,
                     authorName: 'Student M',
                     authorId: 9,
                     topic: 'project topic'
@@ -113,7 +120,7 @@ const PopularProposals = () => {
                             topic: "Proposal Management",
                             authorId: 8,
                             authorName: 'Student 1',
-                            lastModified: new Date().toLocaleString(),
+                            lastModified: new Date('08-05-2021').getTime()/1000,
                             likes: 5
                         }}
                         openDetail={() => handleOpenDetail()}

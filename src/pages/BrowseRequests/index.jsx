@@ -25,7 +25,6 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 const BrowseRequests = () => {
     // hooks
-
     const { auth } = useAuth();
     const navigate = useNavigate();
 

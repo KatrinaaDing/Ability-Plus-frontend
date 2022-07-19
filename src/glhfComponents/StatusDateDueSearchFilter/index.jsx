@@ -59,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
-    const [status, setStatus] = useState(0);
+    const [status, setStatus] = useState(userType == 'public' ? 1 : 0);
     const [ascending, setAscending] = useState(true);
     const [statusType, setStatusType] = useState('proposal')
     useEffect(() => {
