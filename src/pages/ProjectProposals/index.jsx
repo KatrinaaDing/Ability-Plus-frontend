@@ -95,22 +95,26 @@ const ProjectProposals = () => {
         navigate('/view-request-ranks/' + projectId)
     }
     
-    const shortlistItem = (id) => {
+    const shortlistItem = (id, toShortList) => {
+        // change propcards and details
         const toShortlist = propCards.find(e => e.id === id);
         const idx = propCards.indexOf(toShortlist)
-        toShortlist.status = 2;
+        toShortlist.status = toShortList ? 2 : 1;
         const newPropCards = [...propCards]
         newPropCards[idx] = toShortlist
 
         const newDetail = { ...propDetail }
-        newDetail.status = 2
+        newDetail.status = toShortList ? 2 : 1
         setPropDetail(newDetail)
         setPropCards(newPropCards);
         // setIsPick(Number(!isPick))  //FIXME revert is pick status
+
+        // change selectedItem
+        setSelectedItem({ ...selectedItem, [`select-${id}`]: toShortList })
+
     }
 
     const handleSelect = (e) => {
-        const newC = { ...selectedItem, [e.target.name]: e.target.checked }
         setSelectedItem({ ...selectedItem, [e.target.name]: e.target.checked })
     }
 
@@ -123,6 +127,13 @@ const ProjectProposals = () => {
                 const toShortlist = propCards.find(e => e.id === id);
                 const idx = propCards.indexOf(toShortlist)
                 toShortlist.status = 2;
+                newPropCards[idx] = toShortlist
+            }
+            else {
+                const id = parseInt(key.split('-')[1]);
+                const toShortlist = propCards.find(e => e.id === id);
+                const idx = propCards.indexOf(toShortlist)
+                toShortlist.status = 0;
                 newPropCards[idx] = toShortlist
             }
         })
@@ -205,7 +216,7 @@ const ProjectProposals = () => {
                                         : <PlaylistAddIcon />
                                 }
                                 onClick={() => {
-                                    shortlistItem(propDetail.id)
+                                    shortlistItem(propDetail.id, propDetail.status === 2 ? false : true)
                                     // alert('The proposal has been added to shortlist.')
                                 }}
                             >
@@ -224,7 +235,7 @@ const ProjectProposals = () => {
                                     title: p.title,
                                     description: p.oneSentenceDescription,
                                     authorId: p.authorId,
-                                    aurhorName: p.authorName,
+                                    authorName: p.authorName,
                                     rating: p.rating,
                                     status: p.status,   // FIXME: hardcode status
                                     note: ''              // FIXME: 目前api没有返回公司的note

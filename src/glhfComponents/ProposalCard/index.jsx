@@ -75,7 +75,7 @@ const ProposalCard = ({ data, openDetail, secondary }) => {
                             />
                     }
                 </Grid>
-                <MKTypography variant="body2" color="secondary">
+                <MKTypography variant="body2" color="secondary" >
                     {data.description}
                 </MKTypography>
                 <Grid>
@@ -89,7 +89,7 @@ const ProposalCard = ({ data, openDetail, secondary }) => {
                         <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
                     }
                     {
-                        ((page.startsWith('popular')) || page.startsWith('company/personal')) &&
+                        ((page.startsWith('popular')) || page.startsWith('company/personal') || page.startsWith('view')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
                                 <Link to={`/student-info/${data.authorId}`}>
