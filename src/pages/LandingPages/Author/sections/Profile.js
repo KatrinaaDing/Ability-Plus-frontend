@@ -162,10 +162,10 @@ function Profile() {
         })
         .catch (err => {
           if (err !== undefined && err.response !== undefined && err.response.data !== undefined) {
-            setAlertStr(err.res.data.error);
+            return setAlertStr(err.res.data.error);
           }
           else {
-            setAlertStr("Failed to change profile")
+            return setAlertStr("Failed to change profile")
           }
         })
     }
@@ -201,10 +201,10 @@ function Profile() {
         })
         .catch (err => {
           if (err !== undefined && err.res !== undefined && err.res.data !== undefined) {
-            setAlertStr(err.res.data.error);
+            return setAlertStr(err.res.data.error);
           }
           else {
-            setAlertStr("Old password is incorrect!")
+            return setAlertStr("Old password is incorrect!")
           }
         })
     }

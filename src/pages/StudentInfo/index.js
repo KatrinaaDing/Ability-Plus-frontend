@@ -20,6 +20,7 @@ import Profile from "../StudentInfo/sections/Profile"
 import Posts from "../StudentInfo/sections/Posts"
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
+import { axiosPrivate } from "api/axios";
 
 const sampleData = {
     name: 'Jane Wong'
@@ -29,7 +30,7 @@ const StudentInfoPage = () => {
 
     const {auth} = useAuth();
     const title = auth.isCompany ? 'Company' : 'Student';
-  
+
     return (
       <BasicPageLayout title = {title + " Info "}>
         <MKBox bgColor="white">
