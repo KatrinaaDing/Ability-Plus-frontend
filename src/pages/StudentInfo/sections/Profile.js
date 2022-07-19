@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -52,9 +52,8 @@ function Profile() {
 
   const navigate = useNavigate();
 
-  const [studentId, setStudentId] = useState({
-    id: this.props.match.id,
-  })
+  const [search] = useSearchParams();
+  const id = search.get("id");
   const [des, setDes] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
@@ -62,7 +61,7 @@ function Profile() {
 
   /* Get studentInfo by id */
   useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info/${Number(studentId.id)}`)
+    await axiosPrivate.get(`/user/get_profile_info/${Number(id)}`)
       .then(res => {
         setDes(JSON.parse(res.data.extraData).des)
         setAge(JSON.parse(res.data.extraData).age)
