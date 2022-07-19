@@ -62,12 +62,12 @@ function Profile() {
 
   /* Get studentInfo by id */
   useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info/${Number(id)}`)
+    await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
       .then(res => {
-        setDes(JSON.parse(res.data.extraData).des)
-        setAge(JSON.parse(res.data.extraData).age)
-        setEmail(JSON.parse(res.data.extraData).email)
-        setStudentName(res.data.fullName)
+        setDes(JSON.parse(res.data.data.extraData).des)
+        setAge(JSON.parse(res.data.data.extraData).age)
+        setEmail(JSON.parse(res.data.data.extraData).email)
+        setStudentName(res.data.data.fullName)
       })
       .catch(e => console.error(e))
   })

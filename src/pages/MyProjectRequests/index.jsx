@@ -27,6 +27,7 @@ import CreateProjectBtn from "./components/CreateProjectBtn";
 // FIXME fake data, testing purpose only
 import { BASE_URL } from "api/axios";
 import useAuth from "auth/useAuth";
+import axios from "axios";
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -41,7 +42,7 @@ const MyProjectRequests = () => {
 
     // searching state
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
     useEffect(async () => {
@@ -49,18 +50,25 @@ const MyProjectRequests = () => {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
             pageNo: 1,
-            pageSize: 10,
+            pageSize: 20,
+            searchKey: searchKey
         }
-        if (searchKey !== '')
-            params = {...params, searchKey: searchKey}
 
         await axiosPrivate.get(`/project/list_my_project_request`, {
             params:  new URLSearchParams(params)
         })
             .then(res => {
-                console.log(res)
-                setReqs(res.data.records)
-                setTotal(res.data.total)
+                res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
+                // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
+                if (status !== 'all'){
+                    const filteredData = res.data.data.records.filter(e => e.status == status)
+                    setReqs(filteredData)
+                    setTotal(filteredData.length)
+                } else {
+                    setReqs(res.data.data.records)
+                    setTotal(res.data.data.total)
+
+                }
             })
             .catch(e => {
                 console.error(e)
@@ -79,7 +87,6 @@ const MyProjectRequests = () => {
     }
 
 
-
     const getProjectDetail = async (id) => {
         await axiosPrivate.get('/project/get_project_info', {
             params: new URLSearchParams({
@@ -87,6 +94,7 @@ const MyProjectRequests = () => {
             })
         })
             .then(async res => {
+                const data = res.data.data
                 await axiosPrivate.get('/project/can_edit_project', {
                     params: new URLSearchParams({
                         projectId: id
@@ -94,9 +102,9 @@ const MyProjectRequests = () => {
                 })
                     .then(canEdit =>
                         setReqDetail({
-                            ...res.data,
+                            ...data,
                             id: id,
-                            canEdit: canEdit.data,
+                            canEdit: canEdit.data.data,
                         })
                     )
                     .then(res => setReqOpen(true))
@@ -109,7 +117,7 @@ const MyProjectRequests = () => {
         if (confirm("Do you really want to delete the project request?")) {
             await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
                 .then(res => {
-                    alert(`Project ${id} has been deleted`);
+                    alert(`Project has been deleted`);
                     setReqOpen(false)
                     location.reload();
                 })
@@ -144,7 +152,7 @@ const MyProjectRequests = () => {
                     actionButton={
                         // if status is not draft, can view proposal.
                         // if is draft, can delete
-                        getCode('request', status) > statusBank.request.draft.code 
+                        reqDetail.status !== statusBank.request.draft.label 
                             ? <ViewProposalsBtn reqName={reqDetail.name} reqId={reqDetail.id}/>
                             : <MKButton
                                 variant="gradient"
@@ -162,7 +170,7 @@ const MyProjectRequests = () => {
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
-                    status === ''
+                    status === 'all'
                         ? <p>all status</p>
                         : (
                             <>
@@ -173,27 +181,25 @@ const MyProjectRequests = () => {
                 }
                 
             </MKBox>
-            <Box sx={{ flexGrow: 1 }}>
-                <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
-                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {
-                        reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                No Project Request match your criteria
-                            </MKTypography>
-                            : reqs.map(r =>
-                                <RequestCard
-                                    key={r.id}
-                                    data={{
-                                        ...r,
-                                        lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
-                                    }}
-                                    openDetail={() => getProjectDetail(r.id)}
-                                />
-                            )
-                    }
-                </Grid>
-            </Box>
+            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {
+                    reqs.length === 0
+                        ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            No Project Request match your criteria
+                        </MKTypography>
+                        : reqs.map(r =>
+                            <RequestCard
+                                key={r.id}
+                                data={{
+                                    ...r,
+                                    lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
+                                }}
+                                openDetail={() => getProjectDetail(r.id)}
+                            />
+                        )
+                }
+            </Grid>
         </BasicPageLayout>
     );
 }

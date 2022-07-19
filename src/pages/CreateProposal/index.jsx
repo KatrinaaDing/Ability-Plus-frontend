@@ -50,7 +50,7 @@ const CreateProposal = () => {
     const [desc, setDesc] = React.useState('');
     const [prob, setProb] = React.useState('');
     const [vStat, setVStat] = React.useState('');
-    const [status, setStatus] = React.useState('');
+    const [status, setStatus] = React.useState('draft');
     const [goal, setGoal] = React.useState('');
     const [detail, setDetail] = React.useState('');
     const [projectId, setProjectId] = React.useState(null)
@@ -64,16 +64,8 @@ const CreateProposal = () => {
 
     React.useEffect(async () => {
         if (isEditing) {
-            await axios.get(`${BASE_URL}/proposal/get_proposal_detail_info/?proposalId=${pathId}`, {
-                headers: {
-                    token: auth.accessToken
-                }
-            })
+            await axiosPrivate.get(`/proposal/get_proposal_detail_info/?proposalId=${pathId}`)
                 .then(res => {
-                    // if get 400, return promise reject
-                    if (res.data.data.status >= 400) 
-                        return Promise.reject(res.message)
-
                     res.data.data.extraData = JSON.parse(res.data.data.extraData)
                     const data = res.data.data;
                     setTitle(data.title)
@@ -232,7 +224,7 @@ const CreateProposal = () => {
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;
@@ -251,7 +243,7 @@ const CreateProposal = () => {
                     detail, 
                     status, 
                     metaData: {
-                        lastModified: new Date().toLocaleString(),
+                        lastModified: new Date().getTime()/1000,
                         authorName: auth.username,
                         topic: topic,
                     }

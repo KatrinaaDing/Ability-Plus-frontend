@@ -25,16 +25,14 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 const BrowseRequests = () => {
     // hooks
-
     const { auth } = useAuth();
-    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     // request states
     const [total, setTotal] = useState(0);
     const [cards, setCards] = useState([])
     const [reqOpen, setReqOpen] = useState(false);
-    const [reqDetail, setReqDetail] = useState({});
+    const [reqDetail, setReqDetail] = useState();
 
     // filter states
     const [ascending, setAscending] = useState(true);
@@ -57,26 +55,14 @@ const BrowseRequests = () => {
         setWhatOrder(order);
     }
     useEffect(async () => {
-        let params;
-        console.log(status)
-        if (searchKey == '') {
-            params = new URLSearchParams({
-                status: status,
-                isAscendingOrder: ascending,
-                pageNo: 1,
-                pageSize: 10,
-                whatOrder: whatOrder
-            })
-        } else {
-            params = new URLSearchParams({
-                status: status,
-                isAscendingOrder: ascending,
-                pageNo: 1,
-                pageSize: 10,
-                whatOrder: whatOrder,
-                searchKey: searchKey
-            })
-        }
+        const params = new URLSearchParams({
+            status: status,
+            isAscendingOrder: ascending,
+            pageNo: 1,
+            pageSize: 10,
+            whatOrder: whatOrder,
+            searchKey: searchKey
+        })
         await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
             params: params,
             headers: {
@@ -131,9 +117,7 @@ const BrowseRequests = () => {
                         )
                 }
             </MKBox>
-            {
-                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
-            }
+            <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
             {
                 // mount modal only when detail is loaded
                 reqDetail &&
@@ -148,8 +132,8 @@ const BrowseRequests = () => {
                         propDdl: new Date(reqDetail.proposalDdl*1000),
                         soluDdl: new Date(reqDetail.solutionDdl*1000),
                         description: reqDetail.description,
-                        requirement: 'req',
-                        rewards: 'rew',
+                        requirement: JSON.parse(reqDetail.extraData).requirement,
+                        rewards: JSON.parse(reqDetail.extraData).rewards,
                         metaData: {
                             lastModified: new Date(reqDetail.lastModifiedTime*1000),
                             authorName: reqDetail.creatorName,

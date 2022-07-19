@@ -42,7 +42,7 @@ const useAxiosBasic = () => {
             axiosBasic.interceptors.request.eject(requestIntercept);                  // removing the interceptors and the end 
             axiosBasic.interceptors.response.eject(responseIntercept);
         }
-    }, [auth])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
+    }, [])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
 
     return axiosBasic;
 }

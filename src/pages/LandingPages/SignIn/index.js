@@ -85,7 +85,7 @@ function SignInBasic() {
       return
 
     // sign in user - use search params
-    const hashedPwd = userPwd//md5(userPwd) // FIXME
+    const hashedPwd = userPwd;//md5(userPwd) 
     const loginData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd // md5 hashing
@@ -110,7 +110,7 @@ function SignInBasic() {
           
         // on failed
         .catch(e => {
-          setAlertStr(e)
+          setAlertStr(e.statusText)
         })
 
     } catch (err) {

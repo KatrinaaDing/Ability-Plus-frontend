@@ -58,10 +58,10 @@ function Profile({ companyInfo }) {
 
   /* Get companyInfo by id */
   useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info/${Number(id)}`)
+    await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
       .then(res => {
-        setEmail(JSON.parse(res.data.extraData).email)
-        setCompanyName(res.data.fullName)
+        setEmail(JSON.parse(res.data.data.extraData).email)
+        setCompanyName(res.data.data.fullName)
       })
       .catch(e => console.error(e))
   })
@@ -94,12 +94,14 @@ function Profile({ companyInfo }) {
       await axiosPrivate.post(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Unfollow')
-      })
+        })
+        .catch(e => console.error(e))
     } else {
       await axiosPrivate.delete(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Follow')
-      })
+        })
+        .then(e => console.error(e))
     }
   }
   return (

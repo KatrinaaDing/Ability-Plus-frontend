@@ -3,6 +3,7 @@
  * Created At: 13 Jul 2022
  * Discription: A card to demo proposal
  */
+import { Checkbox } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -11,6 +12,7 @@ import useAuth from 'auth/useAuth';
 import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKTypography from 'components/MKTypography';
+import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
 import { FcLike } from 'react-icons/fc';
@@ -38,13 +40,20 @@ value = {
     lastModified,
     likes,
 }
-
  * 
  */
 
 
-const ProposalCard = ({ data, openDetail }) => {
+const ProposalCard = ({ data, openDetail, secondary }) => {
     const page = window.location.pathname.slice(1)
+
+    const getProcessStatus = () => {
+        // has notes or rating => viewed
+        if (data.status !== undefined)
+            return data.status
+        else if (data.rating > 0 || data.note !== '') 
+            return 1
+    }
 
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
@@ -54,12 +63,19 @@ const ProposalCard = ({ data, openDetail }) => {
                         {data.title}
                     </MKTypography>
                     {
-                        page.startsWith('student-info') || page.startsWith('popular')
-                            ? <></>
-                            : <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
+                        // student info/popular page does not show status
+                        // (page.startsWith('student-info') || page.startsWith('popular')) ||
+                        !page.startsWith('view-proposals') && data.status &&
+                            <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
+                    }
+                    {
+                        page.startsWith('view-proposals') &&
+                            <ProcessStatusBadge 
+                                status={getProcessStatus()} 
+                            />
                     }
                 </Grid>
-                <MKTypography variant="body2" color="secondary">
+                <MKTypography variant="body2" color="secondary" >
                     {data.description}
                 </MKTypography>
                 <Grid>
@@ -71,23 +87,31 @@ const ProposalCard = ({ data, openDetail }) => {
                     {
                         data.projectName &&
                         <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
-
                     }
-                    {((page.startsWith('popular')) || page.startsWith('company/personal')) &&
+                    {
+                        ((page.startsWith('popular')) || page.startsWith('company/personal') || page.startsWith('view')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
-                                <Link to={`/student-info/${data.authorId}`}>
+                                <Link to={`/student-info/${data.authorId}`} target="_blank">
                                     {data.authorName}
                                 </Link>
                             </MKTypography>
                         </Grid>
                     }
-                    <Grid item>
-                        <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
-                    </Grid>
+                    {
+                        data.rating &&
+                        <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
+
+                    }
+                    {
+                        data.lastModified &&
+                        <Grid item>
+                            <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
+                        </Grid>
+                    }
                 </Grid>
             </CardContent>
-            <CardActions >
+            <CardActions>
                 <MKBox sx={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -105,7 +129,11 @@ const ProposalCard = ({ data, openDetail }) => {
                                 </MKTypography>
                             </MKBox>
                     }
-                    <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                    {
+                        secondary !== undefined
+                            ? secondary
+                            : <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                    }
                 </MKBox>
             </CardActions>
         </Card>

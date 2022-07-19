@@ -28,12 +28,9 @@ import ActionButton from './components/ActionButton';
 import axios from 'axios';
 import { BASE_URL } from 'api/axios'
 import { statusBank } from 'utils/getStatus';
+import { categories } from 'assets/data/categories';
 
-const categories = [
-    'Frontend Develop',
-    'Management',
-    'Backend Develop',
-]
+
 
 const sampleContent = {
     title: "Quisque eget luctus nunc",
@@ -78,11 +75,7 @@ const CreateRequest = () => {
     React.useEffect(async () => {   
         // load data if is to edit request
         if (isEditing) {
-            await axios.get(`${BASE_URL}/project/get_project_info?id=${requestId}`, {
-                headers: {
-                    token: auth.accessToken
-                }
-            })
+            await axiosPrivate.get(`/project/get_project_info?id=${requestId}`)
                 .then(res => {
                     // if return with error, return reject
                     if (res.data.status >= 400) 
@@ -216,20 +209,18 @@ const CreateRequest = () => {
 
 
     const handleSubmit = async () => {
-        const body = getContent()
+        const body = {
+            ...getContent(),
+            isDraft: false
+        }
 
         // submit edited request
         if (isEditing) {
             body.contactEmail = contactEmail
             body.projectId = parseInt(requestId)
-            await axios.post(`${BASE_URL}/project/edit_project`, body, {
-                headers: {
-                    token: auth.accessToken
-                }
-            })
+            console.log('body',body)
+            await axiosPrivate.post(`/project/edit_project`, body)
                 .then(res => {
-                    if (res.data.status > 400)
-                        return Promise.reject(res.data)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
@@ -239,15 +230,8 @@ const CreateRequest = () => {
 
         // submit new created request
         } else {
-            body.isDraft = false;
-            await axios.post(`${BASE_URL}/project/create_project_request`, body, {
-                headers: {
-                    token: auth.accessToken
-                }
-            })
+            await axiosPrivate.post(`/project/create_project_request`, body)
                 .then(res => {
-                    if (res.data.status > 400)
-                        return Promise.reject(res.data)
                     setPreview(false)
                     setAlertOpenSubmit(true)
                 })
@@ -278,7 +262,7 @@ const CreateRequest = () => {
         <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Request`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;

@@ -82,6 +82,26 @@ function SignUpBasic() {
     
   }, [])
   
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <MKBox sx={{ p: 3 }}>
+            <MKTypography>{children}</MKTypography>
+          </MKBox>
+        )}
+      </div>
+    );
+  }
+
   const handleTabType = (event, newValue) => setActiveTab(newValue);
 
   const handleRegister = async (event) => {
@@ -90,7 +110,7 @@ function SignUpBasic() {
       return
     
     // wrap params
-    const hashedPwd = userPwd //md5(userPwd); // FIXME
+    const hashedPwd = userPwd;//md5(userPwd); 
     const registerData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd,
@@ -135,10 +155,12 @@ function SignUpBasic() {
 
   const validateInput = () => {
     let valid = true
+    let pwdLen = true;
     let confirm = true;
     let format = true
     const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const emptyInput = [];
+
     if (!userEmail){
       emptyInput.push('email')
       setEmailErr(true);
@@ -159,6 +181,11 @@ function SignUpBasic() {
       setPwdErr(true);
       valid = false;
     } 
+    if (userPwd.length <= 8) {
+      setPwdErr(true);
+      valid = false;
+      pwdLen = false;
+    }
     if (userPwd !== userConfirmPwd) {
       setConfirmPwdErr(true);
       valid = false;
@@ -168,6 +195,9 @@ function SignUpBasic() {
       let errStr = '';
       if (emptyInput.length > 0)
         errStr += "Please enter " + emptyInput.join(', ') + "! ";
+
+      if (!pwdLen)
+        errStr += " Password must be >= 8 characters! "
 
       if (!emptyInput.includes('password') && !confirm)
         errStr += " The confirm password doesn't match the password! "
@@ -279,41 +309,57 @@ function SignUpBasic() {
                   </AppBar>
                 </Grid>
               </Container>
-              <MKBox pt={4} pb={3} px={3}>
-                <MKBox component="form" role="form">
-                  <MKBox mb={2}>
-                    <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
-                    <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
-                    <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
-                    <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
-                  </MKBox>
-                  <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
-                      sign up
-                    </MKButton>
-                  </MKBox>
-                  <MKBox mt={3} mb={1} textAlign="center">
-                    <MKTypography variant="button" color="text">
-                      Already have an account?{" "}
-                      <MKTypography
-                        component={Link}
-                        to="/authentication/sign-in"
-                        variant="button"
-                        color="info"
-                        fontWeight="medium"
-                        textGradient
-                      >
-                        Sign in
+              <MKBox pt={3} pb={2} px={2} sx={{minHeight: '450px'}}>
+                <TabPanel value={activeTab} index={0}>
+                  <MKBox component="form" role="form">
+                    <MKBox mb={2}>
+                      <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
+                    </MKBox>
+                    <MKBox mb={2}>
+                      <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
+                    </MKBox>
+                    <MKBox mb={2}>
+                      <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
+                    </MKBox>
+                    <MKBox mb={2}>
+                      <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
+                    </MKBox>
+                    <MKBox mt={4} mb={1}>
+                      <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
+                        sign up
+                      </MKButton>
+                    </MKBox>
+                    <MKBox mt={3} mb={1} textAlign="center">
+                      <MKTypography variant="button" color="text">
+                        Already have an account?{" "}
+                        <MKTypography
+                          component={Link}
+                          to="/authentication/sign-in"
+                          variant="button"
+                          color="info"
+                          fontWeight="medium"
+                          textGradient
+                        >
+                          Sign in
+                        </MKTypography>
                       </MKTypography>
+                    </MKBox>
+                  </MKBox>
+                </TabPanel>
+                <TabPanel value={activeTab} index={1}>
+                  <MKBox sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
+
+                    <MKTypography variant='h5' sx={{ px: 4, pb: 5, m: 'auto'}}>
+                      Want to post a project request? 
+                    </MKTypography>
+                    <MKTypography variant='body' sx={{ p: 3, m: 'auto'}}>
+                      Contact us to get a new account today!
+                    </MKTypography>
+                    <MKTypography variant='subtitle1' sx={{ p: 3, m: 'auto' }}>
+                      <a href="mailto:ability.test.official@outlook.com">ability.test.official@outlook.com</a>
                     </MKTypography>
                   </MKBox>
-                </MKBox>
+                </TabPanel>
               </MKBox>
             </Card>
           </Grid>

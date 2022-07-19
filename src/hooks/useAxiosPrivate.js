@@ -27,12 +27,8 @@ const useAxiosPrivate = () => {
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => {
-                const copiedRes = structuredClone(response.data)
-                response.status = copiedRes.status;
-                response.statusText = copiedRes.message;
-                response.data = copiedRes.data
                 console.log('response', response)           // uncomment it to debug
-                if (response.status >= 400)
+                if (response.data.status >= 400)
                     return Promise.reject(response)
                 return response
             },                                                           // if the response is good, just return it
@@ -51,7 +47,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);                  // removing the interceptors and the end 
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
-    }, [auth])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
+    }, [])     // put auth and refresh in dependencies array so that if they change, the hook would be triggered
 
     return axiosPrivate;
 }

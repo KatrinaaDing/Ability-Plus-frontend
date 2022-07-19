@@ -28,22 +28,21 @@ import Posts from "../CompanyInfo/sections/Posts";
 import profilePicture from "assets/images/bruce-mars.jpg";
 import bgImage from "assets/images/city-profile.jpg";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { BASE_URL } from 'api/axios';
 import useAuth from "auth/useAuth";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+
 const CompanyInfoPage = () => {
   const params = useParams();
-  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const [companyInfo, setCompanyInfo] = useState({});
+  
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`${BASE_URL}/user/get_profile_info`, {
-      params: new URLSearchParams({
-        id: params.id
-      }),
-      headers: {
-        token: auth.accessToken
-      }
+      await axiosPrivate.get(`/user/get_profile_info`, {
+        params: new URLSearchParams({
+          id: params.id
+        })
       })
         .then(res => {
           const newCompanyInfo = { ...companyInfo }

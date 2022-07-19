@@ -3,7 +3,7 @@
  * Created At: 05 Jul 2022
  * Discription: Section for company to rate a proposal
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
@@ -24,11 +24,15 @@ const labels = {
 };
 
 
-const CompanyRating = () => {
-    const [value, setValue] = React.useState(2);
+const CompanyRating = ({rating}) => {
+    const [value, setValue] = React.useState(rating);
     const [hover, setHover] = React.useState(-1);
     const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success， 2: fail
 
+
+    useEffect(() => {
+        setValue(rating)
+    }, [rating])
 
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
@@ -64,7 +68,7 @@ const CompanyRating = () => {
             >
                 <Rating
                     name="customized-10"
-                    defaultValue={0}
+                    defaultValue={value}
                     max={5}
                     getLabelText={getLabelText}
                     precision={0.5}

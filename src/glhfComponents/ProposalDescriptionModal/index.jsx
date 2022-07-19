@@ -23,6 +23,7 @@ import useAuth from 'auth/useAuth';
 import { getCode } from 'utils/getStatus';
 import { statusBank } from 'utils/getStatus';
 import { useNavigate } from 'react-router-dom';
+import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
 
 /*
 value = {
@@ -46,12 +47,13 @@ value = {
 const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
     const navigate = useNavigate();
+    const page = window.location.pathname.slice(1)
 
     // is student &&  is author && status < approving
-    const canEdit =
-        !auth.isCompany &&
-        auth.id == value.metaData.authorId &&
-        getCode('proposal', value.status) < statusBank.proposal.approving
+    // const canEdit =
+    //     !auth.isCompany &&
+    //     auth.id == value.metaData.authorId &&
+    //     getCode('proposal', value.status) < statusBank.proposal.approving
 
     return (
         <Dialog
@@ -63,7 +65,15 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
                     <MKTypography variant="h5">{value.title}</MKTypography>
-                    <StatusBadge statusLabel={value.status} type='proposal' />
+                    {
+                        page.startsWith('view-proposals') 
+                            ? <ProcessStatusBadge
+                                status={value.status}  //FIXME 要根据有没有notes和rating判断
+                            />
+                            : <StatusBadge statusLabel={value.status} type='proposal' />
+                        
+                    }
+                    
                 </MKBox>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setOpen(false)} />
             </MKBox>
@@ -104,12 +114,14 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         content={value.detail}
                     />
                     {
-                        auth.isCompany && getCode('proposal', value.status) <= statusBank.proposal.approving.code
+                        auth.isCompany && 
+                        getCode('proposal', value.status) <= statusBank.proposal.approving.code &&
+                        page.startsWith('view-proposals')
                             ? <>
                                 <DetailSection
                                     order={7}
                                     title='Rate'
-                                    content={<CompanyRating />}
+                                    content={<CompanyRating rating={value.rating}/>}
                                 />
                                 <DetailSection
                                     order={8}
@@ -135,7 +147,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                             variant="gradient"
                             color="info"
                             startIcon={<EditIcon />}
-                            onClick={() => navigate(`/edit-proposal/${value.metaData.topic}/${value.id}`)}
+                            onClick={() => window.open(`/edit-proposal/${value.metaData.topic}/${value.id}`)}
                             sx={{ ml: 2 }}
                         >
                             Edit

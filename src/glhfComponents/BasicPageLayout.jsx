@@ -8,7 +8,6 @@ import Container from "@mui/material/Container";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import { companyRoutes, studentRoutes, guestRoutes } from "routes";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import getNavbarRoutes from 'utils/getNavbarRoutes'
