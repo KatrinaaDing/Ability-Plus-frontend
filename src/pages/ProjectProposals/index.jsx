@@ -18,18 +18,26 @@ import ProcessStatusBadge from "glhfComponents/ProcessStatusBadge";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import MKButton from "components/MKButton";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const ProjectProposals = () => {
+    // hooks
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
-    const [propCards, setPropCards] = useState([]);
     const navigate = useNavigate();
-
-    const [total, setTotal] = useState(0);
+    
+    // search bar states
     const [isPick, setIsPick] = useState(0);
-
+    
+    // display states
+    const [propCards, setPropCards] = useState([]);
+    const [total, setTotal] = useState(0);
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
+
+    // select states
+    const [selectMode, setSelectMode] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({});
 
     useEffect(async () => {
         // FIXME: add search key
@@ -46,11 +54,19 @@ const ProjectProposals = () => {
         })
             .then(res => {
                 const data = res.data.data
-                data.records.forEach((item, idx, arr) => arr[idx].status = 0) // FIXME this only for demo, hard code status to unviewed
+                // FIXME let everything unviewed. this only for demo, hard code status to unviewed
+                const initialSelected = {}
+                data.records.forEach((item, idx, arr) => {
+                    arr[idx].status = 0
+                    initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
+                }) 
+                setSelectedItem(initialSelected)
                 setPropCards(data.records)
                 setTotal(data.total)
             })
             .catch(e => console.error(e))
+
+        
     }, [])
 
 
@@ -80,11 +96,8 @@ const ProjectProposals = () => {
     }
     
     const shortlistItem = (id) => {
-        console.log(propCards)
         const toShortlist = propCards.find(e => e.id === id);
-        console.log(id, toShortlist)
         const idx = propCards.indexOf(toShortlist)
-        console.log(idx)
         toShortlist.status = 2;
         const newPropCards = [...propCards]
         newPropCards[idx] = toShortlist
@@ -95,6 +108,29 @@ const ProjectProposals = () => {
         setPropCards(newPropCards);
         // setIsPick(Number(!isPick))  //FIXME revert is pick status
     }
+
+    const handleSelect = (e) => {
+        const newC = { ...selectedItem, [e.target.name]: e.target.checked }
+        setSelectedItem({ ...selectedItem, [e.target.name]: e.target.checked })
+    }
+
+    const commitSelect = (e) => {
+        const newPropCards = [...propCards]
+
+        Object.keys(selectedItem).forEach(key => {
+            if (selectedItem[key]) {
+                const id = parseInt(key.split('-')[1]);
+                const toShortlist = propCards.find(e => e.id === id);
+                const idx = propCards.indexOf(toShortlist)
+                toShortlist.status = 2;
+                newPropCards[idx] = toShortlist
+            }
+        })
+
+        setPropCards(newPropCards)
+        setSelectMode(false);
+    } 
+
     // TODO put proposal rank if status > approving
     
     
@@ -112,7 +148,30 @@ const ProjectProposals = () => {
                 </MKButton>
             }
         >
-            <p>There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}</p>
+            <MKBox
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    py: 3
+                }}                
+            >
+                <MKTypography variant='subtitle1'>
+                    There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}
+                </MKTypography>
+                {
+                    !selectMode
+                        ? <MKButton variant='outlined' color='info' onClick={() => setSelectMode(true)}> Select Mode</MKButton>
+                        : (
+                            <MKBox>
+                                <MKButton variant='outlined' color='dark' onClick={() => setSelectMode(false)} sx={{ mx: 1 }}>Cancel</MKButton>
+                                <MKButton variant='outlined' color='warning' onClick={() => commitSelect()}>Shorlisted</MKButton>
+                            </MKBox>
+                        )
+                        
+                }
+                
+            </MKBox>
             {
                 propDetail &&
                     <ProposalDescriptionModal
@@ -155,11 +214,10 @@ const ProjectProposals = () => {
                         }
                     />
             }
-
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
                     {
-                        propCards.map(p =>
+                        propCards.map(p => 
                             <ProposalCard
                                 key={p.id}
                                 data={{
@@ -172,12 +230,26 @@ const ProjectProposals = () => {
                                     note: ''              // FIXME: 目前api没有返回公司的note
                                 }}
                                 openDetail={() => getPropDetail(p.id)}
+                                secondary={
+                                    selectMode 
+                                        ? <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={selectedItem[`select-${p.id}`]}
+                                                    onChange={handleSelect}
+                                                    name={`select-${p.id}`}
+                                                />
+                                            }
+                                            label="Shortlisted"
+                                        />
+                                        : undefined
+                                    
+                                }
                             />
-                            
                         )
                     }
                 </Grid>
-            </Box>              
+            </Box>   
         </BasicPageLayout>
     );
 }

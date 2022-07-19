@@ -3,6 +3,7 @@
  * Created At: 13 Jul 2022
  * Discription: A card to demo proposal
  */
+import { Checkbox } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -43,7 +44,7 @@ value = {
  */
 
 
-const ProposalCard = ({ data, openDetail }) => {
+const ProposalCard = ({ data, openDetail, secondary }) => {
     const page = window.location.pathname.slice(1)
 
     const getProcessStatus = () => {
@@ -110,7 +111,7 @@ const ProposalCard = ({ data, openDetail }) => {
                     }
                 </Grid>
             </CardContent>
-            <CardActions >
+            <CardActions>
                 <MKBox sx={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -128,7 +129,11 @@ const ProposalCard = ({ data, openDetail }) => {
                                 </MKTypography>
                             </MKBox>
                     }
-                    <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                    {
+                        secondary !== undefined
+                            ? secondary
+                            : <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                    }
                 </MKBox>
             </CardActions>
         </Card>

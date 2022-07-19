@@ -31,7 +31,7 @@ const ProcessStatusBadge = props => {
             color: 'primary'
         }
     }
-    console.log(props)
+
     return (
         <MKBadge
             badgeContent={propStatus[props.status].label}
