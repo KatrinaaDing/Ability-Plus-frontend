@@ -54,7 +54,7 @@ const RequestCard = ({ data, openDetail }) => {
             variant="gradient"
             color="primary"
             size="small"
-            onClick={() => navigate(`/view-request-ranks/${data.id}`)}
+            onClick={() => window.open(`/view-request-ranks/${data.id}`)}
         >
             View Ranking
         </MKButton>

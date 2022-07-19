@@ -114,7 +114,9 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         content={value.detail}
                     />
                     {
-                        auth.isCompany && getCode('proposal', value.status) <= statusBank.proposal.approving.code
+                        auth.isCompany && 
+                        getCode('proposal', value.status) <= statusBank.proposal.approving.code &&
+                        page.startsWith('view-proposals')
                             ? <>
                                 <DetailSection
                                     order={7}

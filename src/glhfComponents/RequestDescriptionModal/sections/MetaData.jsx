@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import EmailIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
 
 
@@ -38,7 +39,7 @@ const MetaData = ({ metaData }) => {
                             Company: &nbsp;
                             {
                                 metaData.authorId
-                                    ? <Link to={`/company-info/${metaData.authorId}`}>
+                                    ? <Link to={`/company-info/${metaData.authorId}`} target="_blank">
                                         {metaData.authorName}
                                     </Link>
                                     : metaData.authorName
@@ -48,7 +49,24 @@ const MetaData = ({ metaData }) => {
                     }
                 />
             </ListItem>
-
+            {
+                metaData.contactEmail &&
+                <ListItem sx={listItemSx}>
+                    <ListItemIcon>
+                        <EmailIcon fontSize='medium' />
+                    </ListItemIcon>
+                        <ListItemText
+                            primary={null}
+                            secondary={
+                                <>
+                                    Contact Email: &nbsp;
+                                    <a href={`mailto:${metaData.contactEmail}`}>{metaData.contactEmail}</a>
+                                </>
+                                
+                            }
+                        />
+                </ListItem>
+            }
         </List>
     );
 };

@@ -39,7 +39,7 @@ const MetaData = ({ data }) => {
                             Author: &nbsp;
                             {
                                 data.authorId
-                                    ? <Link to={`/student-info/${data.authorId}`}>
+                                    ? <Link to={`/student-info/${data.authorId}`} target="_blank">
                                         {data.authorName}
                                     </Link>
                                     : data.authorName

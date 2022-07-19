@@ -50,8 +50,8 @@ const MyProposals = () => {
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
-            searchKey: searchKey === '' ? undefined: searchKey,
-            whatOrder: whatOrder === '' ? undefined: whatOrder
+            searchKey: searchKey,
+            whatOrder: whatOrder
         })
         
         await axiosPrivate.get('/proposal/list_my_proposal',{
@@ -67,7 +67,10 @@ const MyProposals = () => {
             })
     }, [ascending, status, searchKey, whatOrder])
 
+    console.log('my props', props)
+
     const getPropDetail = async (propId, projectName) => {
+        console.log(propId)
         await axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
                 proposalId: propId
@@ -75,7 +78,7 @@ const MyProposals = () => {
         })
             .then(async res => {
                 // TODO handle data
-                res.data.extraData = JSON.parse(res.data.extraData)
+                res.data.data.extraData = JSON.parse(res.data.data.extraData)
                 await axiosPrivate('/proposal/can_edit_proposal', {
                     params: new URLSearchParams({
                         proposalId: propId
@@ -152,7 +155,7 @@ const MyProposals = () => {
                     {
                         props.map(p => 
                             <ProposalCard
-                                key={p.title}
+                                key={p.proposalId}
                                 data={{
                                     title: p.title,
                                     status: p.status,

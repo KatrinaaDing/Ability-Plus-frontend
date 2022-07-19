@@ -243,7 +243,7 @@ const CreateProposal = () => {
                     detail, 
                     status, 
                     metaData: {
-                        lastModified: new Date().toLocaleString(),
+                        lastModified: new Date().getTime()/1000,
                         authorName: auth.username,
                         topic: topic,
                     }

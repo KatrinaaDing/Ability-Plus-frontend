@@ -25,7 +25,7 @@ import { BulletList } from 'react-content-loader'
 
 const sampleProps = [
     {
-        id: 18,
+        id: 32,
         rank: 1,
         title: 'title1',
         description: 'description1',
@@ -33,7 +33,7 @@ const sampleProps = [
         like: 100
     },
     {
-        id: 17,
+        id: 31,
         rank: 2,
         title: 'title2',
         description: 'description2',
@@ -180,6 +180,7 @@ const ProposalRanks = () => {
                             lastModified: reqDetail.lastModifiedTime * 1000,
                             authorName: reqDetail.creatorName,
                             authorId: reqDetail.creatorId,
+                            contactEmail: reqDetail.contactEmail,
                         }
                     }}
                     actionButton={
