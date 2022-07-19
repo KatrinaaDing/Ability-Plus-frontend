@@ -119,7 +119,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                                 <DetailSection
                                     order={7}
                                     title='Rate'
-                                    content={<CompanyRating />}
+                                    content={<CompanyRating rating={value.rating}/>}
                                 />
                                 <DetailSection
                                     order={8}

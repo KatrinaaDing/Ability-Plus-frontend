@@ -21,7 +21,7 @@ const CompanyNote = () => {
     const handleSave = (e) => {
         setLoading(0)
         setTimeout(() => {
-            setLoading(2)
+            setLoading(1)
         }, 800);
     }
 

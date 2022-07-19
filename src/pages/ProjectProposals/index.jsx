@@ -18,17 +18,22 @@ import ProcessStatusBadge from "glhfComponents/ProcessStatusBadge";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import MKButton from "components/MKButton";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import ProposalsTableView from "glhfComponents/ProposalsTableView";
+
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import list from "assets/theme/components/list";
 
 const ProjectProposals = () => {
     // hooks
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-    
+
     // search bar states
     const [isPick, setIsPick] = useState(0);
-    
+
     // display states
     const [propCards, setPropCards] = useState([]);
     const [total, setTotal] = useState(0);
@@ -37,7 +42,14 @@ const ProjectProposals = () => {
 
     // select states
     const [selectMode, setSelectMode] = useState(false);
-    const [selectedItem, setSelectedItem] = useState({});
+    const [selectedItem, setSelectedItem] = useState([]);
+
+    const [view, setView] = useState("card");
+
+    const handleViewChange = (event, nextView) => {
+        setView(nextView);
+    };
+
 
     useEffect(async () => {
         // FIXME: add search key
@@ -55,18 +67,21 @@ const ProjectProposals = () => {
             .then(res => {
                 const data = res.data.data
                 // FIXME let everything unviewed. this only for demo, hard code status to unviewed
-                const initialSelected = {}
+                // const initialSelected = {}
                 data.records.forEach((item, idx, arr) => {
                     arr[idx].status = 0
-                    initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
-                }) 
-                setSelectedItem(initialSelected)
+                    arr[idx].rating = item.rating == null
+                        ? (Math.floor(Math.random() * 10) / 2)
+                        : item.rating // FIXME random generated rating
+                    // initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
+                })
+                // setSelectedItem(initialSelected)
                 setPropCards(data.records)
                 setTotal(data.total)
             })
             .catch(e => console.error(e))
 
-        
+
     }, [])
 
 
@@ -81,20 +96,21 @@ const ProjectProposals = () => {
                 data.extraData = JSON.parse(data.extraData)
                 console.log(propCards.find(e => e.id === id).status)
                 setPropDetail({
-                    ...data, 
+                    ...data,
                     id,
-                    status: propCards.find(e => e.id === id).status 
+                    status: propCards.find(e => e.id === id).status,
+                    rating: (Math.floor(Math.random() * 10) / 2), // FIXME: random generated rating
                 })
             })
             .then(res => setPropDetailOpen(true))
             .catch(e => console.error(e))
     }
 
-    const approveProposals =  () => {
+    const approveProposals = () => {
         alert('All shorlisted proposals has been approved!')
         navigate('/view-request-ranks/' + projectId)
     }
-    
+
     const shortlistItem = (id, toShortList) => {
         // change propcards and details
         const toShortlist = propCards.find(e => e.id === id);
@@ -103,6 +119,7 @@ const ProjectProposals = () => {
         const newPropCards = [...propCards]
         newPropCards[idx] = toShortlist
 
+
         const newDetail = { ...propDetail }
         newDetail.status = toShortList ? 2 : 1
         setPropDetail(newDetail)
@@ -110,44 +127,105 @@ const ProjectProposals = () => {
         // setIsPick(Number(!isPick))  //FIXME revert is pick status
 
         // change selectedItem
-        setSelectedItem({ ...selectedItem, [`select-${id}`]: toShortList })
+        // setSelectedItem({ ...selectedItem, [`select-${id}`]: toShortList })
+        setSelectedItem([...selectedItem, id])
 
     }
 
     const handleSelect = (e) => {
-        setSelectedItem({ ...selectedItem, [e.target.name]: e.target.checked })
+        // setSelectedItem({ ...selectedItem, [e.target.name]: e.target.checked })
+        const id = parseInt(e.target.name.split('-')[1])
+        // to check
+        if (e.target.checked) {
+            setSelectedItem([...selectedItem, id])
+
+            // to uncheck
+        } else {
+            const newSel = selectedItem.splice(selectedItem.indexOf(id), 1)
+            setSelectedItem(newSel)
+
+        }
     }
 
     const commitSelect = (e) => {
         const newPropCards = [...propCards]
 
-        Object.keys(selectedItem).forEach(key => {
-            if (selectedItem[key]) {
-                const id = parseInt(key.split('-')[1]);
-                const toShortlist = propCards.find(e => e.id === id);
-                const idx = propCards.indexOf(toShortlist)
-                toShortlist.status = 2;
-                newPropCards[idx] = toShortlist
-            }
-            else {
-                const id = parseInt(key.split('-')[1]);
-                const toShortlist = propCards.find(e => e.id === id);
-                const idx = propCards.indexOf(toShortlist)
-                toShortlist.status = 0;
-                newPropCards[idx] = toShortlist
+        // Object.keys(selectedItem).forEach(key => {
+        //     if (selectedItem[key]) {
+        //         const id = parseInt(key.split('-')[1]);
+        //         const toShortlist = propCards.find(e => e.id === id);
+        //         const idx = propCards.indexOf(toShortlist)
+        //         toShortlist.status = 2;
+        //         newPropCards[idx] = toShortlist
+        //     }
+        //     else {
+        //         const id = parseInt(key.split('-')[1]);
+        //         const toShortlist = propCards.find(e => e.id === id);
+        //         const idx = propCards.indexOf(toShortlist)
+        //         toShortlist.status = 0;
+        //         newPropCards[idx] = toShortlist
+        //     }
+        // })
+
+        newPropCards.forEach(p => {
+            // if the card is selected to commit
+            if (selectedItem.indexOf(p.id) >= 0) {
+                p.status = 2;
+            } else {
+                p.status = 0;
             }
         })
 
+
         setPropCards(newPropCards)
         setSelectMode(false);
-    } 
+    }
 
     // TODO put proposal rank if status > approving
-    
-    
+
+    console.log(selectedItem)
+
+    const CardView = () => (
+        <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {
+                    propCards.map(p =>
+                        <ProposalCard
+                            key={p.id}
+                            data={{
+                                title: p.title,
+                                description: p.oneSentenceDescription,
+                                authorId: p.authorId,
+                                authorName: p.authorName,
+                                rating: p.rating,
+                                status: p.status,   // FIXME: hardcode status
+                                note: ''              // FIXME: 目前api没有返回公司的note
+                            }}
+                            openDetail={() => getPropDetail(p.id)}
+                            secondary={
+                                selectMode
+                                    ? <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={selectedItem.indexOf(p.id) >= 0}
+                                                onChange={handleSelect}
+                                                name={`select-${p.id}`}
+                                            />
+                                        }
+                                        label="Shortlisted"
+                                    />
+                                    : undefined
+                            }
+                        />
+                    )
+                }
+            </Grid>
+        </Box>
+    )
+
 
     return (
-        <BasicPageLayout 
+        <BasicPageLayout
             title={`All Proposals for project "${projectName}"`}
             secondaryContent={
                 <MKButton
@@ -165,7 +243,7 @@ const ProjectProposals = () => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     py: 3
-                }}                
+                }}
             >
                 <MKTypography variant='subtitle1'>
                     There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}
@@ -179,88 +257,80 @@ const ProjectProposals = () => {
                                 <MKButton variant='outlined' color='warning' onClick={() => commitSelect()}>Shorlisted</MKButton>
                             </MKBox>
                         )
-                        
                 }
-                
+            </MKBox>
+            <MKBox py={2}>
+                <ToggleButtonGroup
+                    orientation="horizontal"
+                    value={view}
+                    exclusive
+                    onChange={handleViewChange}
+                >
+                    <ToggleButton value="card" aria-label="module">
+                        <ViewModuleIcon />
+                        Card
+                    </ToggleButton>
+                    <ToggleButton value="table" aria-label="list">
+                        <ViewListIcon />
+                        Table
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </MKBox>
             {
                 propDetail &&
-                    <ProposalDescriptionModal
-                        key={propDetail}
-                        open={propDetailOpen}
-                        setOpen={setPropDetailOpen}
-                        value={{
-                            id: propDetail.id,
-                            title: propDetail.title,
-                            status: propDetail.status ,//propDetail.status, // FIXME
-                            desc: propDetail.oneSentenceDescription,
-                            prob: propDetail.extraData.problemStatement,
-                            vStat: propDetail.extraData.visionStatement,
-                            goal: propDetail.extraData.goal,
-                            detail: propDetail.extraData.detail,
-                            likeNum: propDetail.likeNum,
-                            metaData: {
-                                lastModified: propDetail.lastModifiedTime,
-                                authorName: propDetail.creatorName ?? "No Name",
-                                authorId: propDetail.creatorId,
-                                topic: projectName
-                            }
-                        }}
-                        actionButton={
-                            <MKButton 
-                                variant="gradient" 
-                                color={propDetail.status === 2 ? 'success' : "warning"}
-                                startIcon={
-                                    propDetail.status === 2
-                                        ? <PlaylistAddCheckIcon />
-                                        : <PlaylistAddIcon />
-                                }
-                                onClick={() => {
-                                    shortlistItem(propDetail.id, propDetail.status === 2 ? false : true)
-                                    // alert('The proposal has been added to shortlist.')
-                                }}
-                            >
-                                Shortlist
-                            </MKButton>
+                <ProposalDescriptionModal
+                    key={propDetail}
+                    open={propDetailOpen}
+                    setOpen={setPropDetailOpen}
+                    value={{
+                        id: propDetail.id,
+                        title: propDetail.title,
+                        status: propDetail.status,//propDetail.status, // FIXME
+                        desc: propDetail.oneSentenceDescription,
+                        prob: propDetail.extraData.problemStatement,
+                        vStat: propDetail.extraData.visionStatement,
+                        goal: propDetail.extraData.goal,
+                        detail: propDetail.extraData.detail,
+                        likeNum: propDetail.likeNum,
+                        rating: propDetail.rating,
+                        metaData: {
+                            lastModified: propDetail.lastModifiedTime,
+                            authorName: propDetail.creatorName ?? "No Name",
+                            authorId: propDetail.creatorId,
+                            topic: projectName
                         }
+                    }}
+                    actionButton={
+                        <MKButton
+                            variant="gradient"
+                            color={propDetail.status === 2 ? 'success' : "warning"}
+                            startIcon={
+                                propDetail.status === 2
+                                    ? <PlaylistAddCheckIcon />
+                                    : <PlaylistAddIcon />
+                            }
+                            onClick={() => {
+                                shortlistItem(propDetail.id, propDetail.status === 2 ? false : true)
+                                // alert('The proposal has been added to shortlist.')
+                            }}
+                        >
+                            Shortlist
+                        </MKButton>
+                    }
+                />
+            }
+            {
+                view === 'card'
+                    ? <CardView />
+                    : <ProposalsTableView
+                        proposals={propCards}
+                        selectMode={selectMode}
+                        selectedItem={selectedItem}
+                        setSelectedItem={setSelectedItem}
                     />
             }
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                    {
-                        propCards.map(p => 
-                            <ProposalCard
-                                key={p.id}
-                                data={{
-                                    title: p.title,
-                                    description: p.oneSentenceDescription,
-                                    authorId: p.authorId,
-                                    authorName: p.authorName,
-                                    rating: p.rating,
-                                    status: p.status,   // FIXME: hardcode status
-                                    note: ''              // FIXME: 目前api没有返回公司的note
-                                }}
-                                openDetail={() => getPropDetail(p.id)}
-                                secondary={
-                                    selectMode 
-                                        ? <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={selectedItem[`select-${p.id}`]}
-                                                    onChange={handleSelect}
-                                                    name={`select-${p.id}`}
-                                                />
-                                            }
-                                            label="Shortlisted"
-                                        />
-                                        : undefined
-                                    
-                                }
-                            />
-                        )
-                    }
-                </Grid>
-            </Box>   
+
+
         </BasicPageLayout>
     );
 }

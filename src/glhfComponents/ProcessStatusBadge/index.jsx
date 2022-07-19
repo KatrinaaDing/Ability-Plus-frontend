@@ -8,29 +8,29 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-const ProcessStatusBadge = props => {
-    const propStatus = {
-        0: {
-            label: 'unviewed',
-            color: 'secondary'
-        },
-        1: {
-            label: 'viewed',
-            color: 'dark',
-        },
-        2: {
-            label: 'shortlisted',
-            color: 'success',
-        },
-        3: {
-            label: 'approved',
-            color: 'success'
-        },  
-        4: {
-            label: 'rejected',
-            color: 'primary'
-        }
+export const propStatus = {
+    0: {
+        label: 'unviewed',
+        color: 'secondary'
+    },
+    1: {
+        label: 'viewed',
+        color: 'dark',
+    },
+    2: {
+        label: 'shortlisted',
+        color: 'success',
+    },
+    3: {
+        label: 'approved',
+        color: 'success'
+    },  
+    4: {
+        label: 'rejected',
+        color: 'primary'
     }
+}
+const ProcessStatusBadge = props => {
 
     return (
         <MKBadge
