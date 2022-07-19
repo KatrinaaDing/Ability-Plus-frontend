@@ -73,15 +73,15 @@ function SignUpBasic() {
   const [nameErr, setNameErr] = useState(false);
   const [pwdErr, setPwdErr] = useState(false);
   const [confirmPwdErr, setConfirmPwdErr] = useState(false);
-  
+
   useEffect(() => {
     // if user has logged in, redirect to personal page
     if (auth) {
       setAlertModalOpen(true)
     }
-    
+
   }, [])
-  
+
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -108,7 +108,7 @@ function SignUpBasic() {
     // input validation
     if (!validateInput())
       return
-    
+
     // wrap params
     const hashedPwd = userPwd;//md5(userPwd); 
     const registerData = new URLSearchParams({
@@ -150,7 +150,7 @@ function SignUpBasic() {
       console.error(err)
       setAlertStr("Register failed. Please try again later.")
     }
-    
+
   }
 
   const validateInput = () => {
@@ -161,11 +161,11 @@ function SignUpBasic() {
     const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const emptyInput = [];
 
-    if (!userEmail){
+    if (!userEmail) {
       emptyInput.push('email')
       setEmailErr(true);
       valid = false;
-    } 
+    }
     if (userEmail.length && !userEmail.match(emailReg)) {
       setEmailErr(true);
       valid = false;
@@ -175,12 +175,12 @@ function SignUpBasic() {
       emptyInput.push('username')
       setNameErr(true);
       valid = false;
-    } 
+    }
     if (!userPwd) {
       emptyInput.push('password')
       setPwdErr(true);
       valid = false;
-    } 
+    }
     if (userPwd.length <= 8) {
       setPwdErr(true);
       valid = false;
@@ -190,7 +190,7 @@ function SignUpBasic() {
       setConfirmPwdErr(true);
       valid = false;
       confirm = false;
-    } 
+    }
     if (!valid) {
       let errStr = '';
       if (emptyInput.length > 0)
@@ -204,13 +204,13 @@ function SignUpBasic() {
 
       if (!format)
         errStr += "Please enter email in correct format! ";
-      
+
       setAlertStr(errStr)
     }
     return valid
   }
 
-// onChange
+  // onChange
   const updateEmail = e => {
     const userEmail = e.target.value;
     setEmail(userEmail);
@@ -248,7 +248,7 @@ function SignUpBasic() {
       />
 
       <Collapse in={alertStr != ""}>
-          <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
+        <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
       </Collapse>
       <AlertModal
         open={alertModalOpen}
@@ -297,7 +297,7 @@ function SignUpBasic() {
               >
                 <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
                   Sign up
-                </MKTypography>  
+                </MKTypography>
               </MKBox>
               <Container>
                 <Grid container item justifyContent="center" xs={40} lg={20} mx="auto">
@@ -309,57 +309,63 @@ function SignUpBasic() {
                   </AppBar>
                 </Grid>
               </Container>
-              <MKBox pt={3} pb={2} px={2} sx={{minHeight: '450px'}}>
-                <TabPanel value={activeTab} index={0}>
-                  <MKBox component="form" role="form">
-                    <MKBox mb={2}>
-                      <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
-                    </MKBox>
-                    <MKBox mb={2}>
-                      <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
-                    </MKBox>
-                    <MKBox mb={2}>
-                      <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
-                    </MKBox>
-                    <MKBox mb={2}>
-                      <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
-                    </MKBox>
-                    <MKBox mt={4} mb={1}>
-                      <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
-                        sign up
-                      </MKButton>
-                    </MKBox>
-                    <MKBox mt={3} mb={1} textAlign="center">
-                      <MKTypography variant="button" color="text">
-                        Already have an account?{" "}
-                        <MKTypography
-                          component={Link}
-                          to="/authentication/sign-in"
-                          variant="button"
-                          color="info"
-                          fontWeight="medium"
-                          textGradient
-                        >
-                          Sign in
+              <MKBox pt={5} pb={4} px={4} sx={{ minHeight: '450px' }}>
+                  {
+                    activeTab === 0 &&
+                    <>
+                    <MKBox component="form" role="form">
+                      <MKBox mb={2}>
+                        <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
+                      </MKBox>
+                      <MKBox mb={2}>
+                        <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
+                      </MKBox>
+                      <MKBox mb={2}>
+                        <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
+                      </MKBox>
+                      <MKBox mb={2}>
+                        <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
+                      </MKBox>
+                      <MKBox mt={4} mb={1}>
+                        <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
+                          sign up
+                        </MKButton>
+                      </MKBox>
+                      <MKBox mt={3} mb={1} textAlign="center">
+                        <MKTypography variant="button" color="text">
+                          Already have an account?{" "}
+                          <MKTypography
+                            component={Link}
+                            to="/authentication/sign-in"
+                            variant="button"
+                            color="info"
+                            fontWeight="medium"
+                            textGradient
+                          >
+                            Sign in
+                          </MKTypography>
                         </MKTypography>
-                      </MKTypography>
+                      </MKBox>
                     </MKBox>
-                  </MKBox>
-                </TabPanel>
-                <TabPanel value={activeTab} index={1}>
-                  <MKBox sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
 
-                    <MKTypography variant='h5' sx={{ px: 4, pb: 5, m: 'auto'}}>
-                      Want to post a project request? 
-                    </MKTypography>
-                    <MKTypography variant='body' sx={{ p: 3, m: 'auto'}}>
-                      Contact us to get a new account today!
-                    </MKTypography>
-                    <MKTypography variant='subtitle1' sx={{ p: 3, m: 'auto' }}>
-                      <a href="mailto:ability.test.official@outlook.com">ability.test.official@outlook.com</a>
-                    </MKTypography>
-                  </MKBox>
-                </TabPanel>
+                    </>
+                  }
+                  {
+                    activeTab === 1 &&
+                    <>
+                      <MKBox sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
+                        <MKTypography variant='h5' sx={{ px: 4, pb: 5, m: 'auto' }}>
+                          Want to post a project request?
+                        </MKTypography>
+                        <MKTypography variant='body' sx={{ p: 3, m: 'auto' }}>
+                          Contact us to get a new account today!
+                        </MKTypography>
+                        <MKTypography variant='subtitle1' sx={{ p: 3, m: 'auto' }}>
+                          <a href="mailto:ability.test.official@outlook.com">ability.test.official@outlook.com</a>
+                        </MKTypography>
+                      </MKBox>
+                    </>
+                  }
               </MKBox>
             </Card>
           </Grid>
