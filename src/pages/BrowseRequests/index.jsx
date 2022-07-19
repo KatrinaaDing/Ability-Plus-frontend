@@ -27,7 +27,6 @@ const BrowseRequests = () => {
     // hooks
 
     const { auth } = useAuth();
-    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     // request states
@@ -134,8 +133,8 @@ const BrowseRequests = () => {
                         propDdl: new Date(reqDetail.proposalDdl*1000),
                         soluDdl: new Date(reqDetail.solutionDdl*1000),
                         description: reqDetail.description,
-                        requirement: 'req',
-                        rewards: 'rew',
+                        requirement: JSON.parse(reqDetail.extraData).requirement,
+                        rewards: JSON.parse(reqDetail.extraData).rewards,
                         metaData: {
                             lastModified: new Date(reqDetail.lastModifiedTime*1000),
                             authorName: reqDetail.creatorName,
