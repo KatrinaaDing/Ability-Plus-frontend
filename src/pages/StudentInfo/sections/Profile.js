@@ -41,15 +41,36 @@ import useAuth from "auth/useAuth";
 import profilePicture from "assets/images/bruce-mars.jpg";
 import { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
-import { axiosPrivate } from "api/axios";
-
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import ProposalCard from "glhfComponents/ProposalCard";
 
 function Profile() {
 
   const axiosBasic = useAxiosBasic();
   const {auth, setAuth} = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
+
+  const [studentId, setStudentId] = useState({
+    id: this.props.match.id,
+  })
+  const [des, setDes] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [studentName, setStudentName] = useState("")
+
+  /* Get studentInfo by id */
+  useEffect( async () => {
+    await axiosPrivate.get(`/user/get_profile_info/${Number(studentId.id)}`)
+      .then(res => {
+        setDes(JSON.parse(res.data.extraData).des)
+        setAge(JSON.parse(res.data.extraData).age)
+        setEmail(JSON.parse(res.data.extraData).email)
+        setStudentName(res.data.fullName)
+      })
+      .catch(e => console.error(e))
+  })
 
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>
@@ -63,7 +84,7 @@ function Profile() {
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
               <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <MKTypography variant="h3">
-                  Jane Wong
+                  {studentName}
                 </MKTypography>
 
 {/*                 <MKButton variant="outlined" color="info" size="small">
@@ -76,13 +97,13 @@ function Profile() {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    JaneWong@sample.com&nbsp;&nbsp;&nbsp;
+                    {email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" fontWeight="bold">
                     Age&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    24
+                    {age}
                   </MKTypography>
                 </Grid>
               </Grid>
@@ -90,7 +111,7 @@ function Profile() {
                 Description&nbsp;&nbsp;
               </MKTypography>
               <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                Hello, nice to meet you all.
+                {des}
               </MKTypography>
             </Grid>
           </Grid>

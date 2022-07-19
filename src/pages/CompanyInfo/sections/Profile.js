@@ -50,7 +50,25 @@ function Profile({ companyInfo }) {
   const navigate = useNavigate();
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
-  
+
+  const [companyInfoId, setCompanyInfoId] = useState({
+    id: this.props.match.id,
+  })
+
+  const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("")
+
+  /* Get companyInfo by id */
+  useEffect( async () => {
+    await axiosPrivate.get(`/user/get_profile_info/${Number(companyInfoId.id)}`)
+      .then(res => {
+        setEmail(JSON.parse(res.data.extraData).email)
+        setCompanyName(res.data.fullName)
+      })
+      .catch(e => console.error(e))
+  })
+
+
   useEffect(async () => {
     setCompanyId(companyInfo.companyId)
     await axios.get(`${BASE_URL}/student_following/all`, {
@@ -100,7 +118,7 @@ function Profile({ companyInfo }) {
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
               <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <MKTypography variant="h3">
-                  {companyInfo.name}
+                  {companyName}
                 </MKTypography>
                 <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
                   { followText }
@@ -112,7 +130,7 @@ function Profile({ companyInfo }) {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {companyInfo.email}&nbsp;&nbsp;&nbsp;
+                    {email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
                 </Grid>
               </Grid>
