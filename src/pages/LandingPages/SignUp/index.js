@@ -90,7 +90,7 @@ function SignUpBasic() {
       return
     
     // wrap params
-    const hashedPwd = userPwd //md5(userPwd); // FIXME
+    const hashedPwd = md5(userPwd); 
     const registerData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd,
@@ -135,10 +135,12 @@ function SignUpBasic() {
 
   const validateInput = () => {
     let valid = true
+    let pwdLen = true;
     let confirm = true;
     let format = true
     const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const emptyInput = [];
+
     if (!userEmail){
       emptyInput.push('email')
       setEmailErr(true);
@@ -159,6 +161,11 @@ function SignUpBasic() {
       setPwdErr(true);
       valid = false;
     } 
+    if (userPwd.length <= 8) {
+      setPwdErr(true);
+      valid = false;
+      pwdLen = false;
+    }
     if (userPwd !== userConfirmPwd) {
       setConfirmPwdErr(true);
       valid = false;
@@ -169,6 +176,9 @@ function SignUpBasic() {
       if (emptyInput.length > 0)
         errStr += "Please enter " + emptyInput.join(', ') + "! ";
 
+      if (!pwdLen)
+        errStr += " Password must be >= 8 characters! "
+        
       if (!emptyInput.includes('password') && !confirm)
         errStr += " The confirm password doesn't match the password! "
 
