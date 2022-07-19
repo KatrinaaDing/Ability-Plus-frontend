@@ -110,7 +110,7 @@ function SignUpBasic() {
       return
     
     // wrap params
-    const hashedPwd = md5(userPwd); 
+    const hashedPwd = userPwd;//md5(userPwd); 
     const registerData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd,

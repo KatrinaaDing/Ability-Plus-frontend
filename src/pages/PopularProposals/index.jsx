@@ -25,6 +25,7 @@ const PopularProposals = () => {
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
+    const [popularProps, setPopularProps] = React.useState([]);
 
     // search bar states
     const [searchKey, setSearchKey] = useState('');
@@ -47,20 +48,20 @@ const PopularProposals = () => {
             isAscendingOrderTime: ascending,
             pageNo: 1,
             pageSize: 20,
+            searchKey: searchKey,
         }
-        if (searchKey !== '') {
-            params = {...params, searchKey: searchKey}
-        }
+        
         await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {
             params: new URLSearchParams(params)
         })
         .then(res => {
-            console.log(res)
+            setPopularProps(res.data.data.records)
         })
         .catch(e => console.error(e))
     
     }, [ascending, isAscendingOrderLike, searchKey])
     
+    console.log(popularProps)
 
     const handleOpenDetail = () => {
         // if no login info, navigate to login
@@ -90,6 +91,7 @@ const PopularProposals = () => {
             setDetailOpen(true)
         }
     }
+
     return (
         <BasicPageLayout title='Popular Proposals'>
             {
@@ -113,18 +115,24 @@ const PopularProposals = () => {
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={ handleDate} handleSearch={ handleSearch}></LikeDateSearchFilter>
                 <br/>
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    <ProposalCard
-                        data={{
-                            title: "Sample Title",
-                            description: "1 sentence description",
-                            topic: "Proposal Management",
-                            authorId: 8,
-                            authorName: 'Student 1',
-                            lastModified: new Date('08-05-2021').getTime()/1000,
-                            likes: 5
-                        }}
-                        openDetail={() => handleOpenDetail()}
-                    />
+                    {
+                        popularProps.map(p =>
+                            <ProposalCard
+                                key={p.title}       // FIXME 没给id，没法get details
+                                data={{
+                                    title: p.title,
+                                    description: p.oneSentenceDescription,
+                                    topic: p.area,
+                                    projectName: p.projectName,
+                                    authorId: p.authorId,
+                                    authorName: p.authorName,
+                                    lastModified: p.lastModifiedTime,
+                                    likes: p.likeNum
+                                }}
+                                openDetail={() => handleOpenDetail()}
+                            />
+                        )
+                    }
                     
                 </Grid>
             </Box>
