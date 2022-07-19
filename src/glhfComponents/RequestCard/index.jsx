@@ -90,7 +90,7 @@ const RequestCard = ({ data, openDetail }) => {
                         page.indexOf('browse') >= 0 &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by: &nbsp;
-                                <Link to={`/company-info/${data.authorId}`}>
+                                    <Link to={`/company-info/${data.authorId}`} target="_blank">
                                     {data.authorName}
                                 </Link>
                             </MKTypography>

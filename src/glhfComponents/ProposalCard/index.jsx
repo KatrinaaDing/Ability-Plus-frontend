@@ -92,7 +92,7 @@ const ProposalCard = ({ data, openDetail, secondary }) => {
                         ((page.startsWith('popular')) || page.startsWith('company/personal') || page.startsWith('view')) &&
                         <Grid item>
                             <MKTypography variant="caption">Posted by:
-                                <Link to={`/student-info/${data.authorId}`}>
+                                <Link to={`/student-info/${data.authorId}`} target="_blank">
                                     {data.authorName}
                                 </Link>
                             </MKTypography>
