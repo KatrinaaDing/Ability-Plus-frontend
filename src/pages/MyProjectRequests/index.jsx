@@ -42,7 +42,7 @@ const MyProjectRequests = () => {
 
     // searching state
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
     useEffect(async () => {
@@ -50,7 +50,7 @@ const MyProjectRequests = () => {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
             pageNo: 1,
-            pageSize: 10,
+            pageSize: 20,
             searchKey: searchKey
         }
 
@@ -58,8 +58,16 @@ const MyProjectRequests = () => {
             params:  new URLSearchParams(params)
         })
             .then(res => {
-                setReqs(res.data.data.records)
-                setTotal(res.data.data.total)
+                // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
+                if (status !== 'all'){
+                    const filteredData = res.data.data.records.filter(e => e.status == status)
+                    setReqs(filteredData)
+                    setTotal(filteredData.length)
+                } else {
+                    setReqs(res.data.data.records)
+                    setTotal(res.data.data.total)
+
+                }
             })
             .catch(e => {
                 console.error(e)
@@ -161,7 +169,7 @@ const MyProjectRequests = () => {
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
-                    status === ''
+                    status === 'all'
                         ? <p>all status</p>
                         : (
                             <>
@@ -172,27 +180,25 @@ const MyProjectRequests = () => {
                 }
                 
             </MKBox>
-            <Box sx={{ flexGrow: 1 }}>
-                <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
-                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {
-                        reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                No Project Request match your criteria
-                            </MKTypography>
-                            : reqs.map(r =>
-                                <RequestCard
-                                    key={r.id}
-                                    data={{
-                                        ...r,
-                                        lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
-                                    }}
-                                    openDetail={() => getProjectDetail(r.id)}
-                                />
-                            )
-                    }
-                </Grid>
-            </Box>
+            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {
+                    reqs.length === 0
+                        ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            No Project Request match your criteria
+                        </MKTypography>
+                        : reqs.map(r =>
+                            <RequestCard
+                                key={r.id}
+                                data={{
+                                    ...r,
+                                    lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
+                                }}
+                                openDetail={() => getProjectDetail(r.id)}
+                            />
+                        )
+                }
+            </Grid>
         </BasicPageLayout>
     );
 }

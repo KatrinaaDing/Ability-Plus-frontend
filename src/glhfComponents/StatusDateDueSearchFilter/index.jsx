@@ -82,7 +82,7 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
         
     };
     return (
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
+        <Box sx={{ py: 5, flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
             <Box sx={{minWidth: 120}}>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
                     <InputLabel id="select">Sort By Status</InputLabel>
