@@ -33,7 +33,7 @@ const BrowseRequests = () => {
     const [total, setTotal] = useState(0);
     const [cards, setCards] = useState([])
     const [reqOpen, setReqOpen] = useState(false);
-    const [reqDetail, setReqDetail] = useState({});
+    const [reqDetail, setReqDetail] = useState();
 
     // filter states
     const [ascending, setAscending] = useState(true);

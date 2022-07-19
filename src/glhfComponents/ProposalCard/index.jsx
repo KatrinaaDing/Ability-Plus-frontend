@@ -46,6 +46,14 @@ value = {
 const ProposalCard = ({ data, openDetail }) => {
     const page = window.location.pathname.slice(1)
 
+    const getProcessStatus = () => {
+        // has notes or rating => viewed
+        if (data.status !== undefined)
+            return data.status
+        else if (data.rating > 0 || data.note !== '') 
+            return 1
+    }
+
     return (
         <Card sx={{ minWidth: 345, margin: '10px' }}>
             <CardContent>
@@ -56,18 +64,13 @@ const ProposalCard = ({ data, openDetail }) => {
                     {
                         // student info/popular page does not show status
                         // (page.startsWith('student-info') || page.startsWith('popular')) ||
-                        !data.status
-                            ? <></>
-                            : <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
+                        !page.startsWith('view-proposals') && data.status &&
+                            <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
                     }
                     {
                         page.startsWith('view-proposals') &&
                             <ProcessStatusBadge 
-                                status={
-                                    data.rating > 0 || data.note !== '' 
-                                        ? 1
-                                        : 0
-                                } 
+                                status={getProcessStatus()} 
                             />
                     }
                 </Grid>

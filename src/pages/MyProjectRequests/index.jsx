@@ -55,14 +55,10 @@ const MyProjectRequests = () => {
         if (searchKey !== '')
             params = {...params, searchKey: searchKey}
 
-        await axios.get(`${BASE_URL}/project/list_my_project_request`, {
-            params:  new URLSearchParams(params),
-            headers: {
-                token: auth.accessToken
-            }
+        await axiosPrivate.get(`/project/list_my_project_request`, {
+            params:  new URLSearchParams(params)
         })
             .then(res => {
-                
                 setReqs(res.data.data.records)
                 setTotal(res.data.total)
             })
@@ -90,6 +86,7 @@ const MyProjectRequests = () => {
             })
         })
             .then(async res => {
+                const data = res.data.data
                 await axiosPrivate.get('/project/can_edit_project', {
                     params: new URLSearchParams({
                         projectId: id
@@ -97,9 +94,9 @@ const MyProjectRequests = () => {
                 })
                     .then(canEdit =>
                         setReqDetail({
-                            ...res.data,
+                            ...data,
                             id: id,
-                            canEdit: canEdit.data,
+                            canEdit: canEdit.data.data,
                         })
                     )
                     .then(res => setReqOpen(true))
@@ -147,7 +144,7 @@ const MyProjectRequests = () => {
                     actionButton={
                         // if status is not draft, can view proposal.
                         // if is draft, can delete
-                        getCode('request', status) > statusBank.request.draft.code 
+                        reqDetail.status !== statusBank.request.draft.label 
                             ? <ViewProposalsBtn reqName={reqDetail.name} reqId={reqDetail.id}/>
                             : <MKButton
                                 variant="gradient"

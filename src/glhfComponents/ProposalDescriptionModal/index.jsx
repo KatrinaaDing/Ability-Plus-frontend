@@ -68,7 +68,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                     {
                         page.startsWith('view-proposals') 
                             ? <ProcessStatusBadge
-                                status={0}  //FIXME 要根据有没有notes和rating判断
+                                status={value.status}  //FIXME 要根据有没有notes和rating判断
                             />
                             : <StatusBadge statusLabel={value.status} type='proposal' />
                         
@@ -145,7 +145,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                             variant="gradient"
                             color="info"
                             startIcon={<EditIcon />}
-                            onClick={() => navigate(`/edit-proposal/${value.metaData.topic}/${value.id}`)}
+                            onClick={() => window.open(`/edit-proposal/${value.metaData.topic}/${value.id}`)}
                             sx={{ ml: 2 }}
                         >
                             Edit

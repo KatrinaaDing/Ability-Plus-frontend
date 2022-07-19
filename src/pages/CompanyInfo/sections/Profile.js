@@ -78,12 +78,14 @@ function Profile({ companyInfo }) {
       await axiosPrivate.post(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Unfollow')
-      })
+        })
+        .catch(e => console.error(e))
     } else {
       await axiosPrivate.delete(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Follow')
-      })
+        })
+        .then(e => console.error(e))
     }
   }
   return (

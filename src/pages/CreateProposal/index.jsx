@@ -64,16 +64,8 @@ const CreateProposal = () => {
 
     React.useEffect(async () => {
         if (isEditing) {
-            await axios.get(`${BASE_URL}/proposal/get_proposal_detail_info/?proposalId=${pathId}`, {
-                headers: {
-                    token: auth.accessToken
-                }
-            })
+            await axiosPrivate.get(`/proposal/get_proposal_detail_info/?proposalId=${pathId}`)
                 .then(res => {
-                    // if get 400, return promise reject
-                    if (res.data.data.status >= 400) 
-                        return Promise.reject(res.message)
-
                     res.data.data.extraData = JSON.parse(res.data.data.extraData)
                     const data = res.data.data;
                     setTitle(data.title)

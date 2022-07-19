@@ -58,8 +58,9 @@ const MyProposals = () => {
             params: params
         })
             .then(res => {
-                setProps(res.data.records)
-                setTotal(res.data.total)
+                const data = res.data.data
+                setProps(data.records)
+                setTotal(data.total)
             })
             .catch(e => {
                 console.log(e)
@@ -80,7 +81,7 @@ const MyProposals = () => {
                         proposalId: propId
                     })
                 })
-                    .then(canEdit => setPropDetail({...res.data, canEdit, projectName}))
+                    .then(canEdit => setPropDetail({...res.data.data, ...canEdit.data.data, projectName}))
                     .catch(e => console.error(e))
             })
             .then(res => setPropOpen(true))

@@ -31,7 +31,6 @@ const ProjectProposals = () => {
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
 
-
     useEffect(async () => {
         // FIXME: add search key
         await axiosPrivate.get('/proposal/list_project_proposals', {
@@ -46,12 +45,14 @@ const ProjectProposals = () => {
             })
         })
             .then(res => {
-                console.log(res)
-                setPropCards(res.data.records)
-                setTotal(res.data.total)
+                const data = res.data.data
+                data.records.forEach((item, idx, arr) => arr[idx].status = 0) // FIXME this only for demo, hard code status to unviewed
+                setPropCards(data.records)
+                setTotal(data.total)
             })
             .catch(e => console.error(e))
     }, [])
+
 
     const getPropDetail = async (id) => {
         await axiosPrivate('/proposal/get_proposal_detail_info', {
@@ -60,11 +61,13 @@ const ProjectProposals = () => {
             })
         })
             .then(res => {
-                res.data.extraData = JSON.parse(res.data.extraData)
+                const data = res.data.data
+                data.extraData = JSON.parse(data.extraData)
+                console.log(propCards.find(e => e.id === id).status)
                 setPropDetail({
-                    ...res.data, 
+                    ...data, 
                     id,
-                    status: 0
+                    status: propCards.find(e => e.id === id).status 
                 })
             })
             .then(res => setPropDetailOpen(true))
@@ -76,8 +79,25 @@ const ProjectProposals = () => {
         navigate('/view-request-ranks/' + projectId)
     }
     
-    // TODO put proposal rank if status > approving
+    const shortlistItem = (id) => {
+        console.log(propCards)
+        const toShortlist = propCards.find(e => e.id === id);
+        console.log(id, toShortlist)
+        const idx = propCards.indexOf(toShortlist)
+        console.log(idx)
+        toShortlist.status = 2;
+        const newPropCards = [...propCards]
+        newPropCards[idx] = toShortlist
 
+        const newDetail = { ...propDetail }
+        newDetail.status = 2
+        setPropDetail(newDetail)
+        setPropCards(newPropCards);
+        // setIsPick(Number(!isPick))  //FIXME revert is pick status
+    }
+    // TODO put proposal rank if status > approving
+    
+    
 
     return (
         <BasicPageLayout 
@@ -96,12 +116,13 @@ const ProjectProposals = () => {
             {
                 propDetail &&
                     <ProposalDescriptionModal
+                        key={propDetail}
                         open={propDetailOpen}
                         setOpen={setPropDetailOpen}
                         value={{
                             id: propDetail.id,
                             title: propDetail.title,
-                            status: propDetail.status, // FIXME
+                            status: propDetail.status ,//propDetail.status, // FIXME
                             desc: propDetail.oneSentenceDescription,
                             prob: propDetail.extraData.problemStatement,
                             vStat: propDetail.extraData.visionStatement,
@@ -118,14 +139,14 @@ const ProjectProposals = () => {
                         actionButton={
                             <MKButton 
                                 variant="gradient" 
-                                color={isPick ? 'success' : "warning"}
+                                color={propDetail.status === 2 ? 'success' : "warning"}
                                 startIcon={
-                                    isPick
+                                    propDetail.status === 2
                                         ? <PlaylistAddCheckIcon />
                                         : <PlaylistAddIcon />
                                 }
                                 onClick={() => {
-                                    setIsPick(!isPick)  //FIXME revert is pick status
+                                    shortlistItem(propDetail.id)
                                     // alert('The proposal has been added to shortlist.')
                                 }}
                             >
@@ -146,8 +167,8 @@ const ProjectProposals = () => {
                                     description: p.oneSentenceDescription,
                                     authorId: p.authorId,
                                     aurhorName: p.authorName,
-                                    isPicked: isPick,
                                     rating: p.rating,
+                                    status: p.status,   // FIXME: hardcode status
                                     note: ''              // FIXME: 目前api没有返回公司的note
                                 }}
                                 openDetail={() => getPropDetail(p.id)}

@@ -33,12 +33,9 @@ const MyFollowingPage = () => {
     const [follow, setFollow] = useState(false);
     const [followChanged, setFollowChanged] = useState(false);
     const [currentClick, setCurrentClick] = useState('');
+    
     useEffect(async () =>  {
-        await axios.get(`${BASE_URL}/student_following/all`, {
-            headers: {
-              token: auth.accessToken
-            }
-        })
+        await axiosPrivate.get(`/student_following/all`)
         .then(res => {
             setFollowList(res.data.data)
         })

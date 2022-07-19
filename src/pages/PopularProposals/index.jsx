@@ -44,11 +44,8 @@ const PopularProposals = () => {
         if (searchKey !== '') {
             params = {...params, searchKey: searchKey}
         }
-        await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
-            params: new URLSearchParams(params),
-            headers:  {
-                token: auth.accessToken
-            }
+        await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {
+            params: new URLSearchParams(params)
         })
         .then(res => {
             console.log(res)

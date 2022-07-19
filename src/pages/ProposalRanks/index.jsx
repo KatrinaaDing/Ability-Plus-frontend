@@ -69,21 +69,18 @@ const ProposalRanks = () => {
         })
             .then(res =>
                 setReqDetail({
-                    ...res.data,
+                    ...res.data.data,
                     id: projectId,
                 })
             )
             .catch(e => console.error(e))
-        await axios.get(`${BASE_URL}/proposal/list_approved_project_proposals`, {
+        await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
             params: new URLSearchParams({
                 isAscendingOrder: true,
                 pageNo: 1,
                 pageSize: 20,
                 projectId: projectId
-            }),
-            headers: {
-                token: auth.accessToken
-            }
+            })
         })
             .then(res => {
                 if (res.data.data.status >= 400)
@@ -97,13 +94,10 @@ const ProposalRanks = () => {
     }, [])
 
     const getPropDetail = async (id) => {
-        await axios.get(`${BASE_URL}/proposal/get_proposal_detail_info`, {
+        await axiosPrivate.get(`/proposal/get_proposal_detail_info`, {
             params: new URLSearchParams({
                 proposalId: parseInt(id)
-            }),
-            headers: {
-                token: auth.accessToken
-            }
+            })
         })
             .then(res => {
                 console.log(res)

@@ -110,7 +110,7 @@ function SignInBasic() {
           
         // on failed
         .catch(e => {
-          setAlertStr(e)
+          setAlertStr(e.statusText)
         })
 
     } catch (err) {

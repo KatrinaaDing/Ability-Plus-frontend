@@ -78,7 +78,7 @@ function Profile() {
   useEffect (async () => {
     await axiosPrivate.get("/user/get_profile_info")
       .then (res => {
-        if(res.data.extraData === null){
+        if(res.data.data.extraData === null){
           setCEmail("sample@email.com");
           setUserEmail ('sample@email.com');
           setCDes("Please introduce yourself");
@@ -87,32 +87,31 @@ function Profile() {
           setCAge("?"); 
           return;
         }
-        if(res.data.fullName){
-
+        if(res.data.data.fullName){
           setAuth({
-            username:  res.data.fullName,
+            username:  res.data.data.fullName,
             isCompany: auth.isCompany,
             accessToken: auth.accessToken
           })
         }
-        if (JSON.parse(res.data.extraData).email === null || JSON.parse(res.data.extraData).email ==='') {
+        if (JSON.parse(res.data.data.extraData).email === null || JSON.parse(res.data.data.extraData).email ==='') {
           setCEmail("sample@email.com");
           setUserEmail ('sample@email.com');
         } else {
-          setCEmail(JSON.parse(res.data.extraData).email)
+          setCEmail(JSON.parse(res.data.data.extraData).email)
         }
-        if (JSON.parse(res.data.extraData).des === null || JSON.parse(res.data.extraData).des == '') {
+        if (JSON.parse(res.data.data.extraData).des === null || JSON.parse(res.data.data.extraData).des == '') {
           setCDes("Please introduce yourself");
           setDes("Please introduce yourself");
         } else {
-          setCDes(JSON.parse(res.data.extraData).des)
+          setCDes(JSON.parse(res.data.data.extraData).des)
         }
-        if (JSON.parse(res.data.extraData).age === null || JSON.parse(res.data.extraData).age == '') {
+        if (JSON.parse(res.data.data.extraData).age === null || JSON.parse(res.data.data.extraData).age == '') {
           setCAge("?")
           setAge("?"); 
         
         } else {
-          setCAge(JSON.parse(res.data.extraData).age)
+          setCAge(JSON.parse(res.data.data.extraData).age)
         }
 
       })
