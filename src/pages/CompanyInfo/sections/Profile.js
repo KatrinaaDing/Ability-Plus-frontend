@@ -51,16 +51,14 @@ function Profile({ companyInfo }) {
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
 
-  const [companyInfoId, setCompanyInfoId] = useState({
-    id: this.props.match.id,
-  })
-
+  const [search] = useSearchParams();
+  const id = search.get("id");
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("")
 
   /* Get companyInfo by id */
   useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info/${Number(companyInfoId.id)}`)
+    await axiosPrivate.get(`/user/get_profile_info/${Number(id)}`)
       .then(res => {
         setEmail(JSON.parse(res.data.extraData).email)
         setCompanyName(res.data.fullName)
