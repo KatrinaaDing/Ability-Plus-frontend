@@ -50,7 +50,7 @@ const PopularProposals = () => {
             pageSize: 20,
             searchKey: searchKey,
         }
-        
+        console.log(params)
         await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {
             params: new URLSearchParams(params)
         })
