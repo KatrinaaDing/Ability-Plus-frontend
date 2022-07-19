@@ -48,7 +48,7 @@ const PopularProposals = () => {
             isAscendingOrderTime: ascending,
             pageNo: 1,
             pageSize: 20,
-            searchKey: searchKey,
+            // searchKey: searchKey,
         }
         console.log(params)
         await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {

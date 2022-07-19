@@ -95,7 +95,7 @@ const MyProposals = () => {
         if (confirm("Do you really want to delete the proposal?")) {
             await axiosPrivate.post(`/proposal/delete_proposal?proposalId=${id}`)
                 .then(res => {
-                    alert(`Proposal ${id} has been deleted`);
+                    alert(`The proposal has been deleted`);
                     setPropOpen(false)
                     location.reload(); 
                 })

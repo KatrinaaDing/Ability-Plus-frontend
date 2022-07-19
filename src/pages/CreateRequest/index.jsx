@@ -258,7 +258,7 @@ const CreateRequest = () => {
         <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Request`}>
             <SaveDraftConfirm />
             <SubmitConfirm />
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;

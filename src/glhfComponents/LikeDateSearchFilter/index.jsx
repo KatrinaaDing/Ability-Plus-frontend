@@ -58,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   const [ascending, setAscending] = useState(true);
-  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState('');
+  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(true);
   useEffect(() => {
     handleDate(ascending)
     handleLike(isAscendingOrderLike)
