@@ -24,8 +24,7 @@ const ProposalRank = ({proposals, openDetail}) => {
   return (
     <Stack spacing={2} sx={{ width: '70vw', ml: '10%', mr: '10%' }}>
       {proposals.map((s,idx) =>
-        <Item key={idx}>
-          <Card>
+          <Card key={idx}>
             <CardActionArea onClick={() => openDetail(s.id)}>
               <CardContent sx={{ maxHeight: 75 }}>
                 <Grid container item xs={12} justifyContent="space-between" mx="auto">
@@ -57,7 +56,6 @@ const ProposalRank = ({proposals, openDetail}) => {
               </CardContent>
             </CardActionArea>
           </Card>
-        </Item>
       )}
 
     </Stack>

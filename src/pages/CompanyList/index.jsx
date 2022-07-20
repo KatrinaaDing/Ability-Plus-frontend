@@ -25,7 +25,7 @@ const CompanyList = () => {
     useEffect(() => {
         const getAllCompanies = async () => {
             try {
-                const response = await fetch(`${BASE_URL}user/list_company`, {
+                const response = await fetch(`${BASE_URL}/user/list_company`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -46,17 +46,21 @@ const CompanyList = () => {
         <BasicPageLayout title="View All Companies">
             <Stack spacing={2} sx={{ width: '70vw', ml: '10%', mr: '10%' }}>
                 {allCompanies.map((c,idx) =>
-                    <Item key={idx}>
-                        <Card>
-                            <CardActionArea>
+                    <Card key={idx}>
+                            <CardActionArea onClick={() =>  window.open(`/company-info/${c.id}`) }>
                                 <CardContent sx={{ maxHeight: 75 }}>
-                                    <Grid container item xs={12} justifyContent="center" mx="auto" onClick={ () => navigate(`/company-info/${c.id}`)}>
-                                        <Link to={`/company-info/${c.id}`}>{c.fullName}</Link>
+                                    <Grid 
+                                        container 
+                                        item xs={12} 
+                                        justifyContent="center" 
+                                        mx="auto" 
+                                        
+                                    >
+                                        {c.fullName}
                                     </Grid>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
-                    </Item>
                 )}
             </Stack>
         </BasicPageLayout>

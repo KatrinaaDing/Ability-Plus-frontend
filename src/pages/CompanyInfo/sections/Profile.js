@@ -60,7 +60,8 @@ function Profile({ companyInfo }) {
   useEffect( async () => {
     await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
       .then(res => {
-        setEmail(JSON.parse(res.data.data.extraData).email)
+        if (res.data.data.extraData)
+          setEmail(JSON.parse(res.data.data.extraData).email)
         setCompanyName(res.data.data.fullName)
       })
       .catch(e => console.error(e))
