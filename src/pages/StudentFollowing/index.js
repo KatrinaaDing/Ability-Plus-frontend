@@ -37,6 +37,7 @@ const MyFollowingPage = () => {
     useEffect(async () =>  {
         await axiosPrivate.get(`/student_following/all`)
         .then(res => {
+
             setFollowList(res.data.data)
         })
         .catch(e=>{
@@ -47,7 +48,7 @@ const MyFollowingPage = () => {
     const handleFollow = async (event) => {
         if (Object.is(event.target.name, "confirm")) {
             try {
-                const response = await fetch(`${BASE_URL}student_following/${currentClick}`, {
+                const response = await fetch(`${BASE_URL}/student_following/${currentClick}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -76,7 +77,9 @@ const MyFollowingPage = () => {
                     followList.map(f => (
                         <MKBox key={f.name}>
                             <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                {f.companyName}
+                                <Link to={`/company-info/${f.companyId}`} >
+                                    {f.companyName}
+                                </Link>
                             </MKTypography>
                             <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
                                 Unfollow

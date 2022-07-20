@@ -82,7 +82,7 @@ const MyProposals = () => {
                         proposalId: propId
                     })
                 })
-                    .then(canEdit => setPropDetail({...res.data.data, ...canEdit.data.data, projectName}))
+                    .then(canEdit => setPropDetail({...res.data.data, canEdit: canEdit.data.data, projectName}))
                     .catch(e => console.error(e))
             })
             .then(res => setPropOpen(true))
@@ -100,7 +100,6 @@ const MyProposals = () => {
                 .catch(e => console.error(e))
         }
     }
-        
 
     return (
         <BasicPageLayout title="My Proposals">

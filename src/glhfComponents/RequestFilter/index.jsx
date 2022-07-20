@@ -65,7 +65,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const handleChange = (e) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
-    handleStatus(getLabel('request', currStatus) || '');
+    handleStatus(getLabel('request', currStatus) || 'all');
   };
 
   useEffect(() => {

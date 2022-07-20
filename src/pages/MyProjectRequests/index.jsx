@@ -167,7 +167,7 @@ const MyProjectRequests = () => {
                 />
             }
 
-            <MKBox display='flex'>
+            {/* <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
                     status === 'all'
@@ -180,7 +180,7 @@ const MyProjectRequests = () => {
                         )
                 }
                 
-            </MKBox>
+            </MKBox> */}
             <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {

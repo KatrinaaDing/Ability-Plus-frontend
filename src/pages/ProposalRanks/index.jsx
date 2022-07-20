@@ -21,26 +21,7 @@ import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import LikeButton from "glhfComponents/LikeButton";
 import { BulletList } from 'react-content-loader'
-
-
-const sampleProps = [
-    {
-        id: 32,
-        rank: 1,
-        title: 'title1',
-        description: 'description1',
-        author: 'author1',
-        like: 100
-    },
-    {
-        id: 31,
-        rank: 2,
-        title: 'title2',
-        description: 'description2',
-        author: 'author2',
-        like: 10
-    }
-]
+import { approvedProposals } from "assets/data/proposals";
 
 
 const ProposalRanks = () => {
@@ -71,6 +52,7 @@ const ProposalRanks = () => {
                 setReqDetail({
                     ...res.data.data,
                     id: projectId,
+                    status: 'open_for_solution'
                 })
             )
             .catch(e => console.error(e))
@@ -86,7 +68,7 @@ const ProposalRanks = () => {
                 if (res.data.data.status >= 400)
                     return Promise.reject(res)
                 // setProposals(res.data.data.records)
-                setProposals(sampleProps) // FIXME
+                setProposals(approvedProposals) // FIXME
             })
             .catch(e => console.error(e))
 
@@ -105,6 +87,7 @@ const ProposalRanks = () => {
                 setPropDetail({
                     ...res.data.data, 
                     id,
+                    status: 'approved'
                     // status: 
                 })
             })
