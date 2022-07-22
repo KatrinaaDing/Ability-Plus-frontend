@@ -84,7 +84,7 @@ const RequestCard = ({ data, openDetail }) => {
                 </MKTypography> */}
                 <Grid>
                     <Grid item>
-                        <MKTypography variant="caption">Topic: &nbsp;{data.topic ?? getRandomCategory()}</MKTypography>
+                        <MKTypography variant="caption">Topic: &nbsp;{(data.topic ) ?? getRandomCategory()}</MKTypography> // FIXME calcel random categorys
                     </Grid>
                     {
                         page.indexOf('browse') >= 0 &&

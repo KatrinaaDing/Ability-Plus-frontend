@@ -41,7 +41,7 @@ const MyProjectRequests = () => {
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
-    const [ascending, setAscending] = useState(true);
+    const [ascending, setAscending] = useState(false);
     const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
@@ -51,7 +51,7 @@ const MyProjectRequests = () => {
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 20,
-            searchKey: searchKey
+            searchKey: searchKey,
         }
 
         await axiosPrivate.get(`/project/list_my_project_request`, {

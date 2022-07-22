@@ -61,7 +61,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const notPrivatepage = window.location.pathname.slice(1).indexOf('browse') >= 0
 
   const [status, setStatus] = useState(-1);
-  const [ascending, setAcending] = useState(true);
+  const [ascending, setAcending] = useState(false);
   const handleChange = (e) => {
     const currStatus = e.target.value;
     setStatus(currStatus)
