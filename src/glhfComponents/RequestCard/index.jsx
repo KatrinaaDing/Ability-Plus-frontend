@@ -71,7 +71,7 @@ const RequestCard = ({ data, openDetail }) => {
         </MKButton>
 
     return (
-        <Card sx={{ minWidth: 345, margin: '10px' }}>
+        <Card sx={{ width: 400, margin: '10px' }}>
             <CardContent>
                 <Grid container item justifyContent="flex-start" xs={10}>
                     <MKTypography gutterBottom variant="h5" sx={{ mt: 'auto', mb: 'auto', py: 1.5 }}>
@@ -84,7 +84,7 @@ const RequestCard = ({ data, openDetail }) => {
                 </MKTypography> */}
                 <Grid>
                     <Grid item>
-                        <MKTypography variant="caption">Topic: &nbsp;{data.topic ?? getRandomCategory()}</MKTypography>
+                        <MKTypography variant="caption">Topic: &nbsp;{(data.topic ) ?? getRandomCategory()}</MKTypography> // FIXME calcel random categorys
                     </Grid>
                     {
                         page.indexOf('browse') >= 0 &&

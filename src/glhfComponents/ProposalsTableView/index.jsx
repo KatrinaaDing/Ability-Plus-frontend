@@ -69,8 +69,10 @@ const ProposalsTableView = ({proposals, selectMode, selectedItem, setSelectedIte
                     console.log('new',newSelectionModel)
                     setSelectedItem(newSelectionModel);
                 }}
+                onRowClick={() => alert('no')}
                 selectionModel={selectedItem}
                 disableSelectionOnClick
+                
             />
         </div>
     );

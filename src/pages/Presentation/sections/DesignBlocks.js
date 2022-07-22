@@ -71,16 +71,15 @@ function DesignBlocks() {
           <MKBadge
             variant="contained"
             color="info"
-            badgeContent="Infinite combinations"
+            badgeContent="Infinite innovated ideas"
             container
             sx={{ mb: 2 }}
           />
           <MKTypography variant="h2" fontWeight="bold">
-            Huge collection of sections
+            Huge collection of project requests and proposals
           </MKTypography>
           <MKTypography variant="body1" color="text">
-            We have created multiple options for you to put together and customise into pixel
-            perfect pages.
+            We have created a integrated proposal management platform for companies to release their project requests and allow students to submit their brilliant proposals
           </MKTypography>
         </Grid>
       </Container>

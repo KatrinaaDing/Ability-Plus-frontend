@@ -14,12 +14,14 @@ import { statusBank } from 'utils/getStatus';
 import axios from 'axios';
 import { BASE_URL } from 'api/axios';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import { approvedProposals } from 'assets/data/proposals';
+import useAxiosBasic from 'hooks/useAxiosBasic';
 
 const PopularProposals = () => {
     //hooks
     const { auth } = useAuth();
     const navigate = useNavigate();
-    const axiosPrivate = useAxiosPrivate();
+    const axiosBasic = useAxiosBasic();
 
     // info display states
     const [detailOpen, setDetailOpen] = React.useState(false);
@@ -48,11 +50,14 @@ const PopularProposals = () => {
             isAscendingOrderTime: ascending,
             pageNo: 1,
             pageSize: 20,
-            // searchKey: searchKey,
+            searchKey: searchKey,
         }
-        console.log(params)
-        await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {
-            params: new URLSearchParams(params)
+        // FIXME: 等后端取消token验证
+        await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
+            params: new URLSearchParams(params),
+            headers: {
+                token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjkiLCJpc0NvbXBhbnkiOiJ0cnVlIiwiZXhwIjoxNjY2NjEzMjEwLCJhY2NvdW50Ijoia2F0Q0B0ZXN0LmNvbSJ9.XGNRo9Rdgvtq-Lpfxc5jGml5lYT9Q6iSdd1SaYDeJtc'
+            }
         })
         .then(res => {
             setPopularProps(res.data.data.records)
@@ -70,22 +75,24 @@ const PopularProposals = () => {
             // alert('please log in')
         
 
-        // if user logged in, open detail
+        // TODO if user logged in, open detail
         } else {
+            const prop = structuredClone(approvedProposals)[0];
+            prop.extra_data = JSON.parse(prop.extra_data)
             setDetailContent({
-                id: 5,
-                title: 'title 1',
-                status: statusBank.proposal.approved.label,
-                desc: "sample description",
-                prob: 'problem',
-                vStat: 'state',
-                goal: '1., 2.,..',
-                detail: 'detail haha',
+                id: prop.id,
+                title: prop.title,
+                status: prop.status,
+                desc: prop["one_sentence_description"],
+                prob: prop.extra_data.problemStatement,
+                vStat: prop.extra_data.visionStatement,
+                goal: prop.extra_data.goal,
+                detail: prop.extra_data.detail,
                 metaData: {
-                    lastModified: new Date().getTime()/1000,
-                    authorName: 'Student M',
-                    authorId: 9,
-                    topic: 'project topic'
+                    lastModified: prop.last_modified_time,
+                    authorName: 'ZIQI',
+                    authorId: prop.creator_id,
+                    topic: prop.title
                 }
             })
             setDetailOpen(true)

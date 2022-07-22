@@ -41,7 +41,7 @@ const MyProjectRequests = () => {
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
-    const [ascending, setAscending] = useState(true);
+    const [ascending, setAscending] = useState(false);
     const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
@@ -51,7 +51,7 @@ const MyProjectRequests = () => {
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 20,
-            searchKey: searchKey
+            searchKey: searchKey,
         }
 
         await axiosPrivate.get(`/project/list_my_project_request`, {
@@ -167,7 +167,7 @@ const MyProjectRequests = () => {
                 />
             }
 
-            <MKBox display='flex'>
+            {/* <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
                     status === 'all'
@@ -180,7 +180,7 @@ const MyProjectRequests = () => {
                         )
                 }
                 
-            </MKBox>
+            </MKBox> */}
             <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {

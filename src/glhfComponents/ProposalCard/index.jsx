@@ -56,9 +56,9 @@ const ProposalCard = ({ data, openDetail, secondary }) => {
     }
 
     return (
-        <Card sx={{ minWidth: 345, margin: '10px' }}>
+        <Card sx={{ width: 400, margin: '10px' }}>
             <CardContent>
-                <Grid container item justifyContent="flex-start" xs={10}>
+                <Grid container item justifyContent="flex-start" xs={10} sx={{display: 'flex', flexDirection: 'column'}}>
                     <MKTypography gutterBottom variant="h5" sx={{mt: 'auto', mb: 'auto', py: 1.5}}>
                         {data.title}
                     </MKTypography>

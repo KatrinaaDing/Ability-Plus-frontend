@@ -24,6 +24,75 @@ import ProposalsTableView from "glhfComponents/ProposalsTableView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import list from "assets/theme/components/list";
+import { propStatus } from "glhfComponents/ProcessStatusBadge";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+
+const columns = [
+    {
+        field: 'title',
+        headerName: 'Title',
+        width: 300
+    },
+    {
+        field: 'authorName',
+        headerName: 'Author',
+        width: 130
+    },
+    {
+        field: 'oneSentenceDescription',
+        headerName: 'Description',
+        width: 250,
+    },
+    {
+        field: 'rating',
+        headerName: 'Rating',
+        width: 130,
+    },
+    {
+        field: 'status',
+        headerName: 'status',
+        width: 130,
+    },
+    {
+        field: 'note',
+        headerName: 'My Note',
+        width: 250,
+    },
+];
+
+const getRating = (id) => {
+    switch (id) {
+        case 49:
+            return 4
+            break;
+
+        case 50:
+            return 3.5
+            break;
+
+        default:
+            return 3
+            break;
+    }
+}
+
+
+const getNotes = (id) => {
+    switch (id) {
+        case 49:
+            return 'Very good. I like the idea.'
+            break;
+
+        case 50:
+            return "Overall is good. The structure can be imporved"
+            break;
+
+        default:
+            return "OK but conventional"
+            break;
+    }
+}
+
 
 const ProjectProposals = () => {
     // hooks
@@ -45,6 +114,7 @@ const ProjectProposals = () => {
     const [selectedItem, setSelectedItem] = useState([]);
 
     const [view, setView] = useState("card");
+    const [rows, setRows] = useState([])
 
     const handleViewChange = (event, nextView) => {
         setView(nextView);
@@ -69,10 +139,8 @@ const ProjectProposals = () => {
                 // FIXME let everything unviewed. this only for demo, hard code status to unviewed
                 // const initialSelected = {}
                 data.records.forEach((item, idx, arr) => {
-                    arr[idx].status = 0
-                    arr[idx].rating = item.rating == null
-                        ? (Math.floor(Math.random() * 10) / 2)
-                        : item.rating // FIXME random generated rating
+                    arr[idx].status = 1
+                    arr[idx].rating = getRating(item.id) // FIXME random generated rating
                     // initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
                 })
                 // setSelectedItem(initialSelected)
@@ -84,7 +152,24 @@ const ProjectProposals = () => {
 
     }, [])
 
+    // data view hooks
+    useEffect(() => {
+        const dataRows = []
+        propCards.forEach(p =>
+            dataRows.push({
+                id: p.id,
+                title: p.title,
+                authorName: p.authorName,
+                oneSentenceDescription: p.oneSentenceDescription,
+                rating: p.rating === null ? 0 : p.rating,
+                status: propStatus[p.status].label,
+                note: getNotes(p.id)
+            })
+        )
+        setRows(dataRows)
+    }, [propCards])
 
+ 
     const getPropDetail = async (id) => {
         await axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
@@ -99,7 +184,8 @@ const ProjectProposals = () => {
                     ...data,
                     id,
                     status: propCards.find(e => e.id === id).status,
-                    rating: (Math.floor(Math.random() * 10) / 2), // FIXME: random generated rating
+                    rating: getRating(id), // FIXME: random generated rating
+                    note: getNotes(id),
                 })
             })
             .then(res => setPropDetailOpen(true))
@@ -293,6 +379,7 @@ const ProjectProposals = () => {
                         detail: propDetail.extraData.detail,
                         likeNum: propDetail.likeNum,
                         rating: propDetail.rating,
+                        note: propDetail.note,
                         metaData: {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
@@ -322,12 +409,24 @@ const ProjectProposals = () => {
             {
                 view === 'card'
                     ? <CardView />
-                    : <ProposalsTableView
-                        proposals={propCards}
-                        selectMode={selectMode}
-                        selectedItem={selectedItem}
-                        setSelectedItem={setSelectedItem}
-                    />
+                    : <div style={{ height: 400, width: '100%' }}>
+                        <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            checkboxSelection={selectMode}
+                            onSelectionModelChange={(newSelectionModel) => {
+                                console.log('new', newSelectionModel)
+                                setSelectedItem(newSelectionModel);
+                            }}
+                            onRowClick={(detail) => getPropDetail(detail.id)}
+                            selectionModel={selectedItem}
+                            components={{
+                                Toolbar: GridToolbar
+                            }}
+                            disableSelectionOnClick
+
+                        />
+                    </div>
             }
 
 

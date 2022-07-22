@@ -29,10 +29,9 @@ const sampleData = {
 const StudentInfoPage = () => {
 
     const {auth} = useAuth();
-    const title = auth.isCompany ? 'Company' : 'Student';
 
     return (
-      <BasicPageLayout title = {title + " Info "}>
+      <BasicPageLayout title = {"Profile"}>
         <MKBox bgColor="white">
           <MKBox
             minHeight="25rem"
