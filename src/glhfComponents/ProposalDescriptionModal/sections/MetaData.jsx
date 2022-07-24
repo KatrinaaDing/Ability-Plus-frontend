@@ -54,7 +54,9 @@ const MetaData = ({ data }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Project Topic: " + data.topic}
+                    secondary={
+                        "Project Name: " + data.project
+                    }
                 />
             </ListItem>
 

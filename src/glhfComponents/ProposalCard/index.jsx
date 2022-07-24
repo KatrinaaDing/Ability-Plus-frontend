@@ -121,7 +121,7 @@ const ProposalCard = ({ data, openDetail, secondary }) => {
                     {
                         (page.startsWith('popular') ||
                         page.startsWith('student-info') ||
-                        (page.startsWith('my-proposals') && getCode('proposal', data.status) > statusBank.proposal.approved.code)) &&
+                        (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
                             <MKBox display='flex' flexDirection='row' px={3} sx={{mt: 'auto', mb: 'auto'}}>
                                 <FcLike size={20} display='inline-block' />
                                 <MKTypography variant="body2"  display='inline-block'>

@@ -17,7 +17,6 @@ const RequireAuth = ({ roles }) => {
         if (auth.isCompany) roleCode = 'c';
         else if (!auth.isCompany) roleCode = 's'
         
-        console.log("Current user is Company: ", auth.isCompany, ", the page allow the user:", roles.includes(roleCode));
         return roles.includes(roleCode)
     }
 
