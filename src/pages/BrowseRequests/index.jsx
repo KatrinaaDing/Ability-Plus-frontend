@@ -82,25 +82,25 @@ const BrowseRequests = () => {
         
     const getReqDetail = async (reqId) =>
         await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
-<<<<<<< HEAD
-            .then(res => {
-                if (res.data.status >= 400)
-                    return Promise.reject(res.data.message)
-                setReqDetail({ ...res.data.data, id: reqId })
-=======
-            .then(async (res) => {
-                await axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
-                    .then(canProcess => 
-                        setReqDetail({ 
-                            ...res.data.data, 
-                            id: reqId,
-                            mySubmittedProposal: canProcess.data.data
-                        })
-                    )
-                    .then(res => setReqOpen(true))
-                    .catch(e => console.error(e))
+            .then((res) => {
+                if (!auth.isCompany)
+                    axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
+                        .then(canProcess => 
+                            setReqDetail({ 
+                                ...res.data.data, 
+                                id: reqId,
+                                mySubmittedProposal: canProcess.data.data
+                            })
+                        )
+                        .then(res => setReqOpen(true))
+                        .catch(e => console.error(e))
+                else
+                    setReqDetail({
+                        ...res.data.data,
+                        id: reqId,
+                    })
+                    setReqOpen(true)
                 
->>>>>>> main
             })
             
             .catch(e => console.error(e))
@@ -115,7 +115,6 @@ const BrowseRequests = () => {
         )
     }
 
-    console.log(reqDetail)
     return (
         <BasicPageLayout title="Browse All Project Requests">
             <MKBox display='flex'>

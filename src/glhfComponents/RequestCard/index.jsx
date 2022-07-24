@@ -87,11 +87,7 @@ const RequestCard = ({ data, openDetail }) => {
                         (data.topic || data.area) &&
                             <Grid item>
                                 <MKTypography variant="caption">
-<<<<<<< HEAD
-                                    Category: &nbsp;{data.topic}
-=======
                                     Category: &nbsp; {data.topic ?? data.area }
->>>>>>> main
                                 </MKTypography> 
                             </Grid>
 

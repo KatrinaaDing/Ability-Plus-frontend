@@ -70,12 +70,6 @@ import BrowseRequests from 'pages/BrowseRequests';
 
 // routes in navbar (company view)
 const companyRoutes = (username) => [
-  // {
-  //   name: "All Received Proposals",
-  //   route: "/company/personal-page",
-  //   icon: <HomeIcon />,
-  //   component: <PersonalPage />
-  // },
   {
     name: "Browse Requests",
     route: "/company/browse-requests",
