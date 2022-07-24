@@ -94,26 +94,32 @@ function Profile() {
               </MKBox>
               <Grid container spacing={3} mb={3}>
                 <Grid item>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
                     {email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
+                  </div>
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
                     Age&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
                     {age}
                   </MKTypography>
+                  </div>
                 </Grid>
               </Grid>
-              <MKTypography component="span" variant="body2" fontWeight="bold">
+              <div>
+                <MKTypography component="span" variant="body2" fontWeight="bold">
                 Description&nbsp;&nbsp;
-              </MKTypography>
+                </MKTypography>
               <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                {des}
+                {des === '' ? 'NA': des}
               </MKTypography>
+              </div>
             </Grid>
           </Grid>
         </Grid>   
