@@ -57,7 +57,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const notPrivatepage = window.location.pathname.slice(1).indexOf('browse') >= 0
-  console.log('60')
   const [status, setStatus] = useState(-1);
   const [ascending, setAcending] = useState(false);
   const handleChange = (e) => {
