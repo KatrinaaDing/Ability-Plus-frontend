@@ -61,7 +61,6 @@ function SignInBasic() {
   const [emailErr, setEmailErr] = useState(false);
   const [userPwd, setUserPwd] = useState("");
   const [pwdErr, setPwdErr] = useState(false);
-  console.log(location.state)
 
   useEffect(() => {
     // if user has logged in, redirect to personal page

@@ -59,41 +59,42 @@ function Profile({ companyInfo }) {
   console.log(companyName)
   console.log(email)
   /* Get companyInfo by id */
-  useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
-      .then(res => {
-        if (res.data.data.extraData) {
-          setEmail(JSON.parse(res.data.data.extraData).email)
-        } 
-        setCompanyName(res.data.data.fullName)
-        setEmail(res.data.data.account)
+  useEffect(() => {
+    const getProfile = async() =>
+      await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
+        .then(res => {
+          if (res.data.data.extraData)
+            setEmail(JSON.parse(res.data.data.extraData).email)
+          setCompanyName(res.data.data.fullName)
+        })
+        .catch(e => console.error(e))
 
-      })
-      .catch(e => console.error(e))
+    getProfile();
   })
 
 
-  useEffect(async () => {
-    setCompanyId(companyInfo.companyId)
-    if (auth.isCompany === false) {
+  useEffect(() => {
+    const getFollowing = async () =>
       await axios.get(`${BASE_URL}/student_following/all`, {
-        headers: {
-          token: auth.accessToken
-        }
-    })
-    .then(res => {
-      let follow = false
-      for (const { _, companyId, __} of res.data.data) {
-        if (companyId === parseInt(companyInfo.companyId)) {
-          follow = true
-        }
-      }
-      setFollowText(follow ? 'Unfollow': 'Follow')
-    })
-    .catch(e => {
-      console.error(e)
-    })
-    }
+          headers: {
+            token: auth.accessToken
+          }
+        })
+        .then(res => {
+          let follow = false
+          for (const { _, companyId, __} of res.data.data) {
+            if (companyId === parseInt(companyInfo.companyId)) {
+              follow = true
+            }
+          }
+          setFollowText(follow ? 'Unfollow': 'Follow')
+        })
+        .catch(e => {
+          console.error(e)
+        })
+
+    setCompanyId(companyInfo.companyId)
+    getFollowing()
   }, [companyInfo.companyId])
 
   const handleFollow = async () => {

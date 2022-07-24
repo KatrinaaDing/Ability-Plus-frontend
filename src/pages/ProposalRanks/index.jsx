@@ -45,33 +45,39 @@ const ProposalRanks = () => {
     //need to use request id to (requestname, status, a list of ranks)
 
 
-    useEffect(async () => {
-        await axiosPrivate.get('/project/get_project_info', {
-            params: new URLSearchParams({
-                id: parseInt(projectId)
-            })
-        })
-            .then(res =>
-                setReqDetail({
-                    ...res.data.data,
-                    id: projectId,
-                })
-            )
-            .catch(e => console.error(e))
-        await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
-            params: new URLSearchParams({
-                isAscendingOrder: true,
-                pageNo: 1,
-                pageSize: 20,
-                projectId: projectId,
-                searchKey: searchKey
-            })
-        })
-            .then(res => {
-                setProposals(res.data.data.records)
-            })
-            .catch(e => console.error(e))
+    useEffect( () => {
 
+        const getProjectInfo = async () =>
+            await axiosPrivate.get('/project/get_project_info', {
+                params: new URLSearchParams({
+                    id: parseInt(projectId)
+                })
+            })
+                .then(res =>
+                    setReqDetail({
+                        ...res.data.data,
+                        id: projectId,
+                    })
+                )
+                .catch(e => console.error(e))
+        
+        const listApprovedProposals = async() =>
+            await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
+                params: new URLSearchParams({
+                    isAscendingOrder: true,
+                    pageNo: 1,
+                    pageSize: 20,
+                    projectId: projectId,
+                    searchKey: searchKey
+                })
+            })
+                .then(res => {
+                    setProposals(res.data.data.records)
+                })
+                .catch(e => console.error(e))
+            
+        getProjectInfo()
+        listApprovedProposals()
         
     }, [])
 

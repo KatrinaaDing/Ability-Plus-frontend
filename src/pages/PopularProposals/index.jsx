@@ -74,28 +74,33 @@ const PopularProposals = () => {
         } else {
             await axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`,)
                 .then(res => {
-                    const prop = res.data.data
-                    prop.extraData = JSON.parse(prop.extraData)
-                    setDetailContent({
-                        id: prop.id,
-                        title: prop.title,
-                        status: prop.status,
-                        desc: prop.oneSentenceDescription,
-                        prob: prop.extraData.problemStatement,
-                        vStat: prop.extraData.visionStatement,
-                        goal: prop.extraData.goal,
-                        detail: prop.extraData.detail,
-                        likeNum: prop.likeNum,
-                        metaData: {
-                            lastModified: prop.lastModifiedTime,
-                            authorName: prop.creatorName,
-                            authorId: prop.creatorId,
-                            project: projectName
-                        }
-                    })
+                    axiosPrivate.get(`/user_proposal_like_record/already_like?proposalId=${id}`)
+                        .then(liked => {
+                            const prop = res.data.data
+                            prop.extraData = JSON.parse(prop.extraData)
+                            setDetailContent({
+                                id: prop.id,
+                                liked: liked.data.data,
+                                title: prop.title,
+                                status: prop.status,
+                                desc: prop.oneSentenceDescription,
+                                prob: prop.extraData.problemStatement,
+                                vStat: prop.extraData.visionStatement,
+                                goal: prop.extraData.goal,
+                                detail: prop.extraData.detail,
+                                likeNum: prop.likeNum,
+                                metaData: {
+                                    lastModified: prop.lastModifiedTime,
+                                    authorName: prop.creatorName,
+                                    authorId: prop.creatorId,
+                                    project: projectName
+                                }
+                            })
+                            setDetailOpen(true)
+                        })
+                        .catch(e => console.error(e))
                 })
                 .catch(e => console.error(e))
-            setDetailOpen(true)
         }
     }
 
@@ -110,8 +115,9 @@ const PopularProposals = () => {
                         value={detailContent}
                         actionButton={
                             <LikeButton 
-                                originLike={false}  // TODO need to fetch if the user has liked the proposal
+                                originLike={detailContent.liked}  // TODO need to fetch if the user has liked the proposal
                                 originNumLike={detailContent.likeNum} 
+                                propId={detailContent.id}
                             />
                         }
                     />
@@ -155,7 +161,7 @@ const PopularProposals = () => {
                                     projectName: p.projectName,
                                     authorId: p.authorId,
                                     authorName: p.authorName,
-                                    lastModified: p.lastModifiedTime,
+                   
                                     likes: p.likeNum
                                 }}
                                 openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}

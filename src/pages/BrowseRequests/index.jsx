@@ -58,7 +58,7 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-    useEffect(async () => {
+    useEffect(() => {
         const params = new URLSearchParams({
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
@@ -67,29 +67,39 @@ const BrowseRequests = () => {
             whatOrder: whatOrder,
             searchKey: searchKey
         })
-        await axiosPrivate.get(`/project/list_all_project_requests`, {
-            params: params,
-        })
-            .then(res => {
-                setCards(res.data.data.records)
-                setTotal(res.data.data.total)
+        const listAllRequest = async () =>
+            await axiosPrivate.get(`/project/list_all_project_requests`, {
+                params: params,
             })
-            .catch(e => console.error(e))
+                .then(res => {
+                    setCards(res.data.data.records)
+                    setTotal(res.data.data.total)
+                })
+                .catch(e => console.error(e))
+
+        listAllRequest()
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
         await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
-            .then(async (res) => {
-                await axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
-                    .then(canProcess => 
-                        setReqDetail({ 
-                            ...res.data.data, 
-                            id: reqId,
-                            mySubmittedProposal: canProcess.data.data
-                        })
-                    )
-                    .then(res => setReqOpen(true))
-                    .catch(e => console.error(e))
+            .then((res) => {
+                if (!auth.isCompany)
+                    axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
+                        .then(canProcess => 
+                            setReqDetail({ 
+                                ...res.data.data, 
+                                id: reqId,
+                                mySubmittedProposal: canProcess.data.data
+                            })
+                        )
+                        .then(res => setReqOpen(true))
+                        .catch(e => console.error(e))
+                else
+                    setReqDetail({
+                        ...res.data.data,
+                        id: reqId,
+                    })
+                    setReqOpen(true)
                 
             })
             
@@ -105,7 +115,6 @@ const BrowseRequests = () => {
         )
     }
 
-    console.log(reqDetail)
     return (
         <BasicPageLayout title="Browse All Project Requests">
             <MKBox display='flex'>

@@ -35,15 +35,18 @@ const MyFollowingPage = () => {
     const [followChanged, setFollowChanged] = useState(false);
     const [currentClick, setCurrentClick] = useState('');
     
-    useEffect(async () =>  {
-        await axiosPrivate.get(`/student_following/all`)
-        .then(res => {
+    useEffect( () =>  {
+        const listFollowing = async() =>
+            await axiosPrivate.get(`/student_following/all`)
+            .then(res => {
 
-            setFollowList(res.data.data)
-        })
-        .catch(e=>{
-            console.error(e)
-        })
+                setFollowList(res.data.data)
+            })
+            .catch(e=>{
+                console.error(e)
+            })
+        
+        listFollowing()
     }, [followChanged])
     
     const handleFollow = async (event) => {
