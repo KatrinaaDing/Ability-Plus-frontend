@@ -25,6 +25,7 @@ import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter'
 const BrowseRequests = () => {
     // hooks
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     // request states
@@ -63,16 +64,12 @@ const BrowseRequests = () => {
             whatOrder: whatOrder,
             searchKey: searchKey
         })
-        await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
+        await axiosPrivate.get(`/project/list_all_project_requests`, {
             params: params,
-            headers: {
-                token: auth.accessToken
-            }
         })
             .then(res => {
                 setCards(res.data.data.records)
                 setTotal(res.data.data.total)
-                console.log('get all request with status [', status, ']')
             })
             .catch(e => console.error(e))
     }, [ascending, status, whatOrder, searchKey])

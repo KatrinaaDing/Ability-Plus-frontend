@@ -26,6 +26,7 @@ import axios from "axios";
 import useAuth from "auth/useAuth";
 import axiosBasic from "api/axios";
 import { BASE_URL } from 'api/axios';
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 const MyFollowingPage = () => {
     const {auth, setAuth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
@@ -72,22 +73,40 @@ const MyFollowingPage = () => {
 
     return (
         <BasicPageLayout title="My Followings">
-            <Grid container item justifyContent="space-around" xs={10}>
+            <List sx={{ width: '100%' }}>
                 {
-                    followList.map(f => (
-                        <MKBox key={f.name}>
-                            <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                <Link to={`/company-info/${f.companyId}`} >
-                                    {f.companyName}
-                                </Link>
-                            </MKTypography>
-                            <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
-                                Unfollow
-                            </MKButton>
-                        </MKBox>
-                    ))
+                    followList.map(f => 
+                        <ListItem
+                            key={f.companyName}
+                            secondaryAction={
+                                <IconButton edge="end" aria-label="delete">
+                                    <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
+                                        Unfollow
+                                    </MKButton>
+                                </IconButton>
+                            }
+                            sx={{ my: 4 }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar alt={f.companyName} src="/src/assets/images/profile-avatars/company.png" />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Link to={`/company-info/${f.id}`} target="_blank">
+                                        {f.companyName}
+                                    </Link>
+                                }
+                                secondary={
+                                    <>
+                                        Followed At: {new Date(f.followTime*1000).toLocaleString()} <br/>
+                                        Opening Projects: {f.openingProjectNum}
+                                    </>
+                                }
+                            />
+                        </ListItem>
+                    )
                 }
-            </Grid>
+            </List>
             <Modal open={follow} onClose={()=> setFollow(!follow)} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={follow} timeout={500}>
                     <MKBox

@@ -38,12 +38,13 @@ import Box from '@mui/material/Box';
 
 //Other components
 import useAuth from "auth/useAuth";
-import profilePicture from "assets/images/bruce-mars.jpg";
+import profilePicture from "assets/images/profile-avatars/company.png";
 import { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "axios";
 import { BASE_URL } from 'api/axios';
+
 function Profile({ companyInfo }) {
   const {auth, setAuth} = useAuth();
   const axiosPrivate = useAxiosPrivate();

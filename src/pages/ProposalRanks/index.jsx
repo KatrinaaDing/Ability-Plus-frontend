@@ -39,6 +39,9 @@ const ProposalRanks = () => {
     const [reqDetail, setReqDetail] = useState();
     const [reqDetailOpen, setReqDetailOpen] = useState(false);
 
+    // filter bar states
+    const [searchKey, setSearchKey] = useState('')
+
     //need to use request id to (requestname, status, a list of ranks)
 
 
@@ -52,7 +55,6 @@ const ProposalRanks = () => {
                 setReqDetail({
                     ...res.data.data,
                     id: projectId,
-                    status: 'open_for_solution'
                 })
             )
             .catch(e => console.error(e))
@@ -61,14 +63,12 @@ const ProposalRanks = () => {
                 isAscendingOrder: true,
                 pageNo: 1,
                 pageSize: 20,
-                projectId: projectId
+                projectId: projectId,
+                searchKey: searchKey
             })
         })
             .then(res => {
-                if (res.data.data.status >= 400)
-                    return Promise.reject(res)
-                // setProposals(res.data.data.records)
-                setProposals(approvedProposals) // FIXME
+                setProposals(res.data.data.records)
             })
             .catch(e => console.error(e))
 
@@ -78,11 +78,10 @@ const ProposalRanks = () => {
     const getPropDetail = async (id) => {
         await axiosPrivate.get(`/proposal/get_proposal_detail_info`, {
             params: new URLSearchParams({
-                proposalId: parseInt(id)
+                proposalId: id
             })
         })
             .then(res => {
-                console.log(res)
                 res.data.data.extraData = JSON.parse(res.data.data.extraData)
                 setPropDetail({
                     ...res.data.data, 
@@ -104,7 +103,7 @@ const ProposalRanks = () => {
             </BasicPageLayout>
         )
     }
-    console.log(reqDetail)
+
     return (
         <BasicPageLayout 
             title={`View Request Ranking for project "${reqDetail.name}"`} 
@@ -136,11 +135,11 @@ const ProposalRanks = () => {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
                             authorId: propDetail.creatorId,
-                            topic: reqDetail.name
+                            project: reqDetail.name
                         }
                     }}
                     actionButton={
-                        <LikeButton originLike={false} originNumLike={23} />
+                        <LikeButton originLike={false} originNumLike={propDetail.likeNum} />
                     }
                 />
             }
@@ -166,9 +165,7 @@ const ProposalRanks = () => {
                             contactEmail: reqDetail.contactEmail,
                         }
                     }}
-                    actionButton={
-                        <></>
-                    }
+                    actionButton={<></>}
 
                 />
             }

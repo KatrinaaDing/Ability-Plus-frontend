@@ -47,7 +47,7 @@ value = {
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
     const navigate = useNavigate();
-
+    console.log(value)
     return (
         <Dialog
             open={open}

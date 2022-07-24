@@ -43,13 +43,13 @@ const ProposalRank = ({proposals, openDetail}) => {
                   </MKBox>
                   <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <MKTypography variant="body2" mb={1}>
-                      Author: {s.author}
+                      Author: {s.authorName}
                     </MKTypography>
                   </MKBox>
                   <div>
                     <FcLike size={40} />
                     <MKTypography variant="body2" mb={1}>
-                      {s.like}
+                      {s.likeNum}
                     </MKTypography>
                   </div>
                 </Grid>

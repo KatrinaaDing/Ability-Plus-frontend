@@ -121,7 +121,12 @@ function Presentation() {
                 color="info"
                 icon="apps"
                 title="Have an account?"
-                description="Browse today's new project request and deliver your ideas to them!"
+                description={
+                  <>
+                    Browse today's new project request and deliver your ideas to them!
+                    <br/><br/>
+                  </>
+                }
                 action={{
                   type: "internal",
                   route: "/authentication/sign-in",
@@ -134,7 +139,12 @@ function Presentation() {
                 color="info"
                 icon="precision_manufacturing"
                 title="Getting Started"
-                description="Register and start from today"
+                description={
+                  <>
+                    Register and start from today.
+                    <br/><br/><br/>
+                  </>
+                }
                 action={{
                   type: "internal",
                   route: "/authentication/sign-up",
