@@ -55,7 +55,19 @@ const MetaData = ({ data }) => {
                 <ListItemText
                     primary={null}
                     secondary={
-                        "Project Name: " + data.project
+                        <>
+                            Project Name: &nbsp;
+                            <a
+                                onClick={() => data.openProject()}
+                                style={{ 
+                                    cursor: 'pointer',
+                                    color: 'blue',
+                                    textDecoration: 'underlined'
+                                }}
+                            >
+                                 {data.project}
+                            </a>
+                        </>
                     }
                 />
             </ListItem>
