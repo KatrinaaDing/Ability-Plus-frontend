@@ -37,7 +37,7 @@ value = {
     title,
     status,
     description,
-    topic,
+    topic/area,
     authorName,
     authorId,
     lastModification,
@@ -84,10 +84,10 @@ const RequestCard = ({ data, openDetail }) => {
                 </MKTypography> */}
                 <Grid>
                     {
-                        data.topic &&
+                        (data.topic || data.area) &&
                             <Grid item>
                                 <MKTypography variant="caption">
-                                    Category: &nbsp;data.topic
+                                    Category: &nbsp; {data.topic ?? data.area }
                                 </MKTypography> 
                             </Grid>
 

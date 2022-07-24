@@ -73,7 +73,7 @@ const BrowseRequests = () => {
             })
         }
         console.log(params)
-        await axiosPrivate.get('/project/list_all_project_requests/', {
+        await axiosPrivate.get('/project/list_all_project_requests', {
             params: params
         })
             .then(res => {

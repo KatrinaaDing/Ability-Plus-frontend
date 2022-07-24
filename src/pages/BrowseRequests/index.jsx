@@ -22,6 +22,9 @@ import axios from 'axios';
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 const BrowseRequests = () => {
     // hooks
     const { auth } = useAuth();
@@ -75,17 +78,21 @@ const BrowseRequests = () => {
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
-        await axios.get(`${BASE_URL}/project/get_project_info?id=${reqId}`, {
-            headers: {
-                token: auth.accessToken
-            }
-        })
-            .then(res => {
-                if (res.data.status >= 400)
-                    return Promise.reject(res.data.message)
-                setReqDetail({ ...res.data.data, id: reqId })
+        await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
+            .then(async (res) => {
+                await axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
+                    .then(canProcess => 
+                        setReqDetail({ 
+                            ...res.data.data, 
+                            id: reqId,
+                            mySubmittedProposal: canProcess.data.data
+                        })
+                    )
+                    .then(res => setReqOpen(true))
+                    .catch(e => console.error(e))
+                
             })
-            .then(res => setReqOpen(true))
+            
             .catch(e => console.error(e))
 
     const renderRequestCards = () => {
@@ -98,7 +105,7 @@ const BrowseRequests = () => {
         )
     }
 
-
+    console.log(reqDetail)
     return (
         <BasicPageLayout title="Browse All Project Requests">
             <MKBox display='flex'>
@@ -139,17 +146,29 @@ const BrowseRequests = () => {
                         }
                     }}
                     actionButton={
-
                         // allow student submission when open for proposal
                         !auth.isCompany && 
                         reqDetail.status === statusBank.request.proposal.label &&
-                        <MKButton
-                            variant="gradient"
-                            color='success'
-                            onClick={() => navigate(`/create-proposal/${reqDetail.name}/${reqDetail.id}`)}
-                        >
-                            Create Proposal
-                        </MKButton>
+                        (
+                            reqDetail.mySubmittedProposal <= 0
+                                ? <MKButton
+                                    variant="gradient"
+                                    color='success'
+                                    onClick={() => window.open(`/create-proposal/${reqDetail.name}/${reqDetail.id}`)}
+                                >
+                                    Create Proposal
+                                </MKButton>
+                                : <MKButton
+                                    variant="gradient"
+                                    color="info"
+                                    startIcon={<EditIcon />}
+                                    onClick={() => window.open(`/edit-proposal/${reqDetail.name}/${reqDetail.mySubmittedProposal}`)}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Edit My Proposal
+                                </MKButton>
+
+                        )
                     }
                 />
             }

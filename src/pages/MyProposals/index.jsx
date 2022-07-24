@@ -15,13 +15,14 @@ import MKButton from "components/MKButton";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import LikeButton from "glhfComponents/LikeButton";
+import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 
 const MyProposals = () => {
     // hooks
     const navigate = useNavigate();
 
     // filter states
-    const [status, setStatus] = useState('draft');
+    const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
     const [ascending, setAcending] = useState(true);
     const [whatOrder, setWhatOrder] = useState('');
@@ -29,8 +30,13 @@ const MyProposals = () => {
     // proposal states
     const [total, setTotal] = useState(0);
     const [props, setProps] = useState([]);
-    const [propDetail, setPropDetail] = useState('')
+    const [propDetail, setPropDetail] = useState()
     const [propOpen, setPropOpen] = useState(false)
+
+    // request states
+    const [reqDetail, setReqDetail] = useState()
+    const [reqOpen, setReqOpen] = useState(false)
+
 
     const axiosPrivate = useAxiosPrivate();
     const handleDate = (ascending) => {
@@ -45,6 +51,7 @@ const MyProposals = () => {
     const handleWhatOrder = (whatOrder) => {
         setWhatOrder(whatOrder)
     }
+
     useEffect(async ()=> {
         const params = new URLSearchParams({
             status: status,
@@ -83,7 +90,11 @@ const MyProposals = () => {
                         proposalId: propId
                     })
                 })
-                    .then(canEdit => setPropDetail({...res.data.data, canEdit: canEdit.data.data, projectName}))
+                    .then(canEdit => setPropDetail({
+                        ...res.data.data, 
+                        canEdit: canEdit.data.data, 
+                        projectName,
+                    }))
                     .catch(e => console.error(e))
             })
             .then(res => setPropOpen(true))
@@ -101,6 +112,13 @@ const MyProposals = () => {
                 .catch(e => console.error(e))
         }
     }
+
+    const getReqDetail = async (projectId) => 
+        await axiosPrivate.get(`/project/get_project_info?id=${projectId}`)
+            .then(res => setReqDetail({ ...res.data.data, id: projectId }))
+            .then(res => setReqOpen(true))
+            .catch(e => console.error(e))
+    
 
     return (
         <BasicPageLayout title="My Proposals">
@@ -124,15 +142,21 @@ const MyProposals = () => {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
                             authorId: propDetail.creatorId,
-                            topic: propDetail.projectName
+                            project: propDetail.projectName,
+                            projectId: propDetail.projectId,
+                            openProject: () => getReqDetail(propDetail.projectId)
                         }
                     }}
                     actionButton={
                         <>
+                        {
+                            // if it's approved, allow like
+                            propDetail.status === statusBank.proposal.approved.label &&
                             <LikeButton
                                 originLike={false} // TODO need to fetch if the user liked the proposal
                                 originNumLike={propDetail.likeNum}
                             />
+                        }
                         {
                             // if is draft, allow deletion
                             propDetail.status === statusBank.proposal.draft.label &&
@@ -150,9 +174,46 @@ const MyProposals = () => {
                     }
                 />
             }
+            {
+                reqDetail &&
+                <RequestDescriptionModal
+                    open={reqOpen}
+                    setOpen={setReqOpen}
+                    value={{
+                        id: reqDetail.id,
+                        title: reqDetail.name,
+                        status: reqDetail.status,
+                        category: reqDetail.projectArea,
+                        propDdl: new Date(reqDetail.proposalDdl * 1000),
+                        soluDdl: new Date(reqDetail.solutionDdl * 1000),
+                        description: reqDetail.description,
+                        requirement: JSON.parse(reqDetail.extraData).requirement,
+                        rewards: JSON.parse(reqDetail.extraData).rewards,
+                        metaData: {
+                            lastModified: new Date(reqDetail.lastModifiedTime * 1000),
+                            authorName: reqDetail.creatorName,
+                            authorId: reqDetail.creatorId
+                        }
+                    }}
+                    actionButton={<></>}
+                />
+            }
             <MKBox display='flex'>
-                <p>There are {total} proposals with status </p>
-                <StatusBadge statusLabel={status} type='request' size='sm' />
+                <MKBox display='flex'>
+                    <p>There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''} with&nbsp;</p>
+                    {
+                        status === ''
+                            ? <p>all status</p>
+                            : (
+                                <>
+                                    status
+                                    <StatusBadge statusLabel={status} type='request' size='sm' />
+                                </>
+                            )
+                    }
+                </MKBox>
+                {/* <p>There are {total} proposals with status </p>
+                <StatusBadge statusLabel={status} type='request' size='sm' /> */}
             </MKBox>
             <br/>
             <Box sx={{ flexGrow: 1 }}>
