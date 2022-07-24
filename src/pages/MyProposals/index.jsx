@@ -156,7 +156,7 @@ const MyProposals = () => {
             </MKBox>
             <br/>
             <Box sx={{ flexGrow: 1 }}>
-                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch}></StatusDateDueSearchFilter>
+                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch} type='proposal'></StatusDateDueSearchFilter>
                 <br/>
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {

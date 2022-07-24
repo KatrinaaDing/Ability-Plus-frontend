@@ -15,7 +15,6 @@ import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
-import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 import { BASE_URL } from 'api/axios';
@@ -46,6 +45,7 @@ const BrowseRequests = () => {
         setAscending(ascending)
     }
     const handleStatus = (status) => {
+        console.log(status)
         setStatus(status)
     }
     const handleSearch = (key) => {
@@ -57,7 +57,7 @@ const BrowseRequests = () => {
     }
     useEffect(async () => {
         const params = new URLSearchParams({
-            status: status,
+            status: status.toLowerCase(),
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
@@ -104,7 +104,7 @@ const BrowseRequests = () => {
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
                 {
-                    status === ''
+                    status === 'All'
                         ? <p>all status</p>
                         : (
                             <>
@@ -115,6 +115,7 @@ const BrowseRequests = () => {
                 }
             </MKBox>
             <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
+            <br />
             {
                 // mount modal only when detail is loaded
                 reqDetail &&
