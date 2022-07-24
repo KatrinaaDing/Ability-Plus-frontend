@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 
 const MetaData = ({ metaData }) => {
     const listItemSx = { p: 0.5 }
+
     return (
         <List>
             <ListItem sx={listItemSx}>

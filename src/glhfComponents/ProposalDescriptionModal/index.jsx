@@ -39,7 +39,7 @@ value = {
         lastModified,
         authorName,
         authorId: undefined,
-        project
+        topic
     }
 }
 

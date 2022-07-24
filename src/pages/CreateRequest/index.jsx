@@ -30,7 +30,7 @@ import { BASE_URL } from 'api/axios'
 import { statusBank } from 'utils/getStatus';
 import { categories } from 'assets/data/categories';
 
-const TITLE_LIMIT = 32;
+
 
 const sampleContent = {
     title: "Quisque eget luctus nunc",
@@ -59,18 +59,17 @@ const CreateRequest = () => {
     const [description, setDescription] = React.useState('')
     const [requirement, setRequirement] = React.useState('')
     const [rewards, setRewards] = React.useState('')
-    const [status, setStatus] = React.useState('draft')
+    const [status, setStatus] = React.useState(
+        isEditing ? '' : statusBank.request.draft.label
+    )
     const [contactEmail, setContactEmail] = React.useState('');
     
-    // word count states
-    const [titleCount, setTitleCount] = React.useState(0);
-
     // error alert state
     const [error, setError] = React.useState('')
-    const [preview, setPreview] = React.useState(false)
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
-    const [alertOpenCancel, setAlertOpenCancel] = React.useState(false)
+
+    const [preview, setPreview] = React.useState(false)
 
 
     React.useEffect(async () => {   
@@ -108,7 +107,6 @@ const CreateRequest = () => {
     }
 
     const handlePreview = () => {
-        // check any empty sections
         const checkList = {
             Title: title,
             Category: category,
@@ -124,22 +122,17 @@ const CreateRequest = () => {
                 errorList.push(i)
         })
 
+        // check empty field
         if (errorList.length > 0) {
             setError(errorList.join(', ') + ' cannot be empty! Please check again.')
             return
         }
-        // check title length
-        if (titleCount > TITLE_LIMIT){
-            setError("Length of title exceeds limit.")
-            return
-        }
-        // check prop deadline must < solu deadline
+        // prop deadline must < solu deadline
         if (propDdl > soluDdl) {
             setError("Solution deadline cannot be before proposal deadline! Please check again.")
             return
         }
 
-        // all input valid
         setError('')
         setPreview(true)
     }
@@ -204,7 +197,7 @@ const CreateRequest = () => {
                 setError(e)
             })
 
-        // save new created request
+            // save new created request
         } else {
             await axiosPrivate.post('/project/create_project_request', body)
             .then(res => {
@@ -264,22 +257,12 @@ const CreateRequest = () => {
             title="Your proposal has been publised!"
             content="You'll be redirect to My Proposals page."
         />
-    
-    const CancelConfirm = () =>
-        <AlertModal
-            open={alertOpenCancel}
-            handleClose={() => setAlertOpenCancel(false)}
-            handleConfirm={() => window.close()}
-            title="Are you sure to cancel your edit?"
-            content="Your changes will be aborted."
-        />
 
     return (
         <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Request`}>
-            <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;
@@ -315,19 +298,7 @@ const CreateRequest = () => {
                         <MKTypography variant='h5' sx={titleSx}>
                             Title
                         </MKTypography>
-                        <MKInput 
-                            fullWidth 
-                            type='text' 
-                            required 
-                            value={title} 
-                            onChange={(e) => {
-                                setTitle(e.target.value)
-                                setTitleCount(e.target.value.length)
-                            }} 
-                            error={titleCount > TITLE_LIMIT}
-                            label={`Insert your title here (${titleCount}/${TITLE_LIMIT})`} 
-                            sx={{ mr: 5 }} 
-                        />
+                        <MKInput fullWidth type='text' required value={title} onChange={(e) => setTitle(e.target.value)} label="Insert your project topic here..." sx={{ mr: 5 }} />
                     </div>
                     <Grid container spacing={2} height='100%' display='column'>
                         <Grid item sx={12} md={4} display='flex' flexDirection='column'>
@@ -363,7 +334,7 @@ const CreateRequest = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }} >
-                    <ActionButton label='Cancel' color='secondary' onClick={() => setAlertOpenCancel(true)}/>
+                    <ActionButton label='Cancel' color='secondary' />
                     {
                         status === statusBank.request.draft.label && 
                         <ActionButton label='Save To Draft' color='info' onClick={handleSaveDraft} />

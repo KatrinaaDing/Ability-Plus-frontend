@@ -101,7 +101,7 @@ const ProjectProposals = () => {
     const navigate = useNavigate();
 
     // search bar states
-    const [isPick, setIsPick] = useState(2); // -1: rejected, 0: no label, 1: approved, 2: all
+    const [isPick, setIsPick] = useState(0);
 
     // display states
     const [propCards, setPropCards] = useState([]);
@@ -219,6 +219,7 @@ const ProjectProposals = () => {
         toShortlist.status = toShortList ? 2 : 1;
         const newPropCards = [...propCards]
         newPropCards[idx] = toShortlist
+
 
         const newDetail = { ...propDetail }
         newDetail.status = toShortList ? 2 : 1

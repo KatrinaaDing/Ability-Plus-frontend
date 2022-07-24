@@ -14,7 +14,6 @@ import { statusBank } from "utils/getStatus";
 import MKButton from "components/MKButton";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
-import LikeButton from "glhfComponents/LikeButton";
 
 const MyProposals = () => {
     // hooks
@@ -128,25 +127,16 @@ const MyProposals = () => {
                         }
                     }}
                     actionButton={
-                        <>
-                            <LikeButton
-                                originLike={false} // TODO need to fetch if the user liked the proposal
-                                originNumLike={propDetail.likeNum}
-                            />
-                        {
-                            // if is draft, allow deletion
-                            propDetail.status === statusBank.proposal.draft.label &&
-                                <MKButton
-                                    variant="gradient"
-                                    color="error"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={() => deleteProposal(propDetail.id)}
-                                    sx={{ ml: 2 }}
-                                >
-                                    Delete
-                                </MKButton>
-                        }
-                        </>
+                        propDetail.status === statusBank.proposal.draft.label &&
+                        <MKButton
+                            variant="gradient"
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => deleteProposal(propDetail.id)}
+                            sx={{ ml: 2 }}
+                        >
+                            Delete
+                        </MKButton>
                     }
                 />
             }

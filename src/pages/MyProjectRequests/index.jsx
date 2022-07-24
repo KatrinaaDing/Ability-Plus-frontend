@@ -58,17 +58,17 @@ const MyProjectRequests = () => {
             params:  new URLSearchParams(params)
         })
             .then(res => {
-                // res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
+                res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
                 // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
-                // if (status !== 'all'){
-                //     const filteredData = res.data.data.records.filter(e => e.status == status)
-                //     setReqs(filteredData)
-                //     setTotal(filteredData.length)
-                // } else {
+                if (status !== 'all'){
+                    const filteredData = res.data.data.records.filter(e => e.status == status)
+                    setReqs(filteredData)
+                    setTotal(filteredData.length)
+                } else {
                     setReqs(res.data.data.records)
                     setTotal(res.data.data.total)
 
-                // }
+                }
             })
             .catch(e => {
                 console.error(e)

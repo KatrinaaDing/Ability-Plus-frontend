@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, React, useEffect } from "react";
 
 // react-router-dom components
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -57,38 +57,22 @@ import AlertModal from "glhfComponents/AlertModal";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import md5 from "md5";
 
-
-const NAME_LIMIT = 16;
-const EMAIL_LIMIT = 40;
-const PWD_LIMIT = 50;
-
 function SignUpBasic() {
-  // hooks
   const { auth, setAuth } = useAuth();
   const axiosBasic = useAxiosBasic();
   const navigate = useNavigate();
 
-  // status state
   const [activeTab, setActiveTab] = useState(0);
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-
-  // input states
   const [alertStr, setAlertStr] = useState("");
   const [userEmail, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const [userConfirmPwd, setConfirmPwd] = useState("");
-
-  // error states
   const [emailErr, setEmailErr] = useState(false);
   const [nameErr, setNameErr] = useState(false);
   const [pwdErr, setPwdErr] = useState(false);
   const [confirmPwdErr, setConfirmPwdErr] = useState(false);
-
-  // word count states
-  const [emailCount, setEmailCount] = useState(0);
-  const [nameCount, setNameCount] = useState(0);
-  const [pwdCount, setPwdCount] = useState(0);
 
   useEffect(() => {
     // if user has logged in, redirect to personal page
@@ -98,17 +82,35 @@ function SignUpBasic() {
 
   }, [])
 
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <MKBox sx={{ p: 3 }}>
+            <MKTypography>{children}</MKTypography>
+          </MKBox>
+        )}
+      </div>
+    );
+  }
 
   const handleTabType = (event, newValue) => setActiveTab(newValue);
 
   const handleRegister = async (event) => {
-    event.preventDefault()
     // input validation
     if (!validateInput())
       return
 
     // wrap params
-    const hashedPwd = md5(userPwd); 
+    const hashedPwd = userPwd;//md5(userPwd); 
     const registerData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd,
@@ -127,17 +129,17 @@ function SignUpBasic() {
         .then(res => {
           axiosBasic.post('/user/login', loginData)
             .then(res => {
-              console.log('successful login', res)
+              console.log('successful login')
               setAuth({
                 username: res.data.userName,
                 isCompany: res.data.isCompany,
                 accessToken: res.data.accessToken
               })
-              navigate(res.data.isCompany
-                ? '/my-project-requests'
-                : '/student/browse-requests'
-              )
             })
+            .then(res => navigate(res.data.isCompany
+              ? '/my-project-requests'
+              : '/student/browse-requests'
+            ))
         })
         // on register failed
         .catch(e => {
@@ -179,7 +181,7 @@ function SignUpBasic() {
       setPwdErr(true);
       valid = false;
     }
-    if (userPwd.length < 8) {
+    if (userPwd.length <= 8) {
       setPwdErr(true);
       valid = false;
       pwdLen = false;
@@ -204,13 +206,7 @@ function SignUpBasic() {
         errStr += "Please enter email in correct format! ";
 
       setAlertStr(errStr)
-
-    // all other error are input length error
-    } else if (emailErr || nameErr || pwdErr || confirmPwdErr) {
-      setAlertStr("Please check your input length.")
-      valid = false
     }
-    
     return valid
   }
 
@@ -219,24 +215,21 @@ function SignUpBasic() {
     const userEmail = e.target.value;
     setEmail(userEmail);
     setAlertStr("");
-    setEmailCount(userEmail.length);
-    setEmailErr(userEmail.length > EMAIL_LIMIT)
+    setEmailErr(false);
   }
 
   const updateUserName = e => {
     const userName = e.target.value;
     setUserName(userName);
     setAlertStr("");
-    setNameCount(userName.length)
-    setNameErr(userName.length > NAME_LIMIT)
+    setNameErr(false);
   }
 
   const updatePwd = e => {
     const userPwd = e.target.value;
     setUserPwd(userPwd);
     setAlertStr("");
-    setPwdCount(userPwd.length)
-    setPwdErr(userPwd.length > PWD_LIMIT)
+    setPwdErr(false);
   }
 
   const updateConfirmPwd = e => {
@@ -320,21 +313,21 @@ function SignUpBasic() {
                   {
                     activeTab === 0 &&
                     <>
-                    <MKBox component="form" role="form" onSubmit={handleRegister}>
+                    <MKBox component="form" role="form">
                       <MKBox mb={2}>
-                        <MKInput error={emailErr} type="email" label={`Email (${emailCount} /${EMAIL_LIMIT})`} onChange={updateEmail} fullWidth />
+                        <MKInput error={emailErr} type="email" label="Email" onChange={updateEmail} fullWidth />
                       </MKBox>
                       <MKBox mb={2}>
-                        <MKInput error={nameErr} type="username" label={`Username (${nameCount} /${NAME_LIMIT})`} onChange={updateUserName} fullWidth />
+                        <MKInput error={nameErr} type="username" label="Username" onChange={updateUserName} fullWidth />
                       </MKBox>
                       <MKBox mb={2}>
-                        <MKInput error={pwdErr} type="password" label={`Password (${pwdCount} /${PWD_LIMIT})`} onChange={updatePwd} fullWidth />
+                        <MKInput error={pwdErr} type="password" label="Password" onChange={updatePwd} fullWidth />
                       </MKBox>
                       <MKBox mb={2}>
                         <MKInput error={confirmPwdErr} type="password" label="Confirm Password" onChange={updateConfirmPwd} fullWidth />
                       </MKBox>
                       <MKBox mt={4} mb={1}>
-                        <MKButton variant="gradient" color="info" name="signUp" type='submit' onClick={handleRegister} fullWidth>
+                        <MKButton variant="gradient" color="info" name="signUp" onClick={handleRegister} fullWidth>
                           sign up
                         </MKButton>
                       </MKBox>

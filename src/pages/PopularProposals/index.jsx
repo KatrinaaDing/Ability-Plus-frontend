@@ -7,27 +7,23 @@ import LikeButton from 'glhfComponents/LikeButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
 import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
+import axios from 'axios';
 import { BASE_URL } from 'api/axios';
-import useAxiosBasic from 'hooks/useAxiosBasic';
-import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
-import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import { approvedProposals } from 'assets/data/proposals';
+import useAxiosBasic from 'hooks/useAxiosBasic';
 
 const PopularProposals = () => {
     //hooks
     const { auth } = useAuth();
     const navigate = useNavigate();
     const axiosBasic = useAxiosBasic();
-    const axiosPrivate = useAxiosPrivate();
-    const location = useLocation();
 
     // info display states
-    const [reqOpen, setReqOpen] = React.useState(false);
-    const [reqContent, setReqContent] = React.useState();
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
@@ -56,45 +52,49 @@ const PopularProposals = () => {
             pageSize: 20,
             searchKey: searchKey,
         }
-        await axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
+        // FIXME: 等后端取消token验证
+        await axios.get(`${BASE_URL}/proposal/list_outstanding_proposal_request`, {
             params: new URLSearchParams(params),
+            headers: {
+                token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjkiLCJpc0NvbXBhbnkiOiJ0cnVlIiwiZXhwIjoxNjY2NjEzMjEwLCJhY2NvdW50Ijoia2F0Q0B0ZXN0LmNvbSJ9.XGNRo9Rdgvtq-Lpfxc5jGml5lYT9Q6iSdd1SaYDeJtc'
+            }
         })
         .then(res => {
-            setPopularProps(res.data.records)
+            setPopularProps(res.data.data.records)
         })
         .catch(e => console.error(e))
     
     }, [ascending, isAscendingOrderLike, searchKey])
     
-    const handleOpenDetail = async (id, projectName) => {
+    console.log(popularProps)
+
+    const handleOpenDetail = () => {
         // if no login info, navigate to login
         if (!auth || Object.keys(auth).length === 0) {
             setAlertOpen(true)
+            // alert('please log in')
         
+
+        // TODO if user logged in, open detail
         } else {
-            await axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`,)
-                .then(res => {
-                    const prop = res.data.data
-                    prop.extraData = JSON.parse(prop.extraData)
-                    setDetailContent({
-                        id: prop.id,
-                        title: prop.title,
-                        status: prop.status,
-                        desc: prop.oneSentenceDescription,
-                        prob: prop.extraData.problemStatement,
-                        vStat: prop.extraData.visionStatement,
-                        goal: prop.extraData.goal,
-                        detail: prop.extraData.detail,
-                        likeNum: prop.likeNum,
-                        metaData: {
-                            lastModified: prop.lastModifiedTime,
-                            authorName: prop.creatorName,
-                            authorId: prop.creatorId,
-                            project: projectName
-                        }
-                    })
-                })
-                .catch(e => console.error(e))
+            const prop = structuredClone(approvedProposals)[0];
+            prop.extra_data = JSON.parse(prop.extra_data)
+            setDetailContent({
+                id: prop.id,
+                title: prop.title,
+                status: prop.status,
+                desc: prop["one_sentence_description"],
+                prob: prop.extra_data.problemStatement,
+                vStat: prop.extra_data.visionStatement,
+                goal: prop.extra_data.goal,
+                detail: prop.extra_data.detail,
+                metaData: {
+                    lastModified: prop.last_modified_time,
+                    authorName: 'ZIQI',
+                    authorId: prop.creator_id,
+                    topic: prop.title
+                }
+            })
             setDetailOpen(true)
         }
     }
@@ -102,33 +102,12 @@ const PopularProposals = () => {
     return (
         <BasicPageLayout title='Popular Proposals'>
             {
-                // render proposal detail when it's fetched
                 detailContent &&
                     <ProposalDescriptionModal
                         open={detailOpen}
                         setOpen={setDetailOpen}
                         value={detailContent}
-                        actionButton={
-                            <LikeButton 
-                                originLike={false}  // TODO need to fetch if the user has liked the proposal
-                                originNumLike={detailContent.likeNum} 
-                            />
-                        }
-                    />
-
-            }
-            {   
-                // TODO render request detail when it's fetched
-                reqContent && 
-                    <RequestDescriptionModal    
-                        open={reqOpen}
-                        setOpen={setReqOpen}
-                        value={reqContent}
-                        actionButton={
-                            <MKButton>
-                                View Proposal Ranks
-                            </MKButton>
-                        }
+                        actionButton={<LikeButton originLike={false} originNumLike={23} />}
                     />
 
             }
@@ -137,7 +116,7 @@ const PopularProposals = () => {
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
-                handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true})}
+                handleConfirm={() => navigate('/authentication/sign-in')}
             />
             <Box sx={{ flexGrow: 1 }}>
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={ handleDate} handleSearch={ handleSearch}></LikeDateSearchFilter>
@@ -148,7 +127,6 @@ const PopularProposals = () => {
                             <ProposalCard
                                 key={p.title}       // FIXME 没给id，没法get details
                                 data={{
-                                    id: p.proposalId,
                                     title: p.title,
                                     description: p.oneSentenceDescription,
                                     topic: p.area,
@@ -158,7 +136,7 @@ const PopularProposals = () => {
                                     lastModified: p.lastModifiedTime,
                                     likes: p.likeNum
                                 }}
-                                openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
+                                openDetail={() => handleOpenDetail()}
                             />
                         )
                     }

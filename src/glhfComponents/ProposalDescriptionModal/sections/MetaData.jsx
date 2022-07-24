@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 const MetaData = ({ data }) => {
     const listItemSx = { p: 0.5 }
-    console.log(data)
+
     return (
         <List>
             <ListItem sx={listItemSx}>
@@ -54,9 +54,7 @@ const MetaData = ({ data }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={
-                        "Project Name: " + data.project
-                    }
+                    secondary={"Project Topic: " + data.topic}
                 />
             </ListItem>
 

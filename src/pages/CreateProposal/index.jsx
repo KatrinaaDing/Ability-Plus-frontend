@@ -25,8 +25,6 @@ import axios from 'axios';
 import { BASE_URL } from 'api/axios';
 import { statusBank } from 'utils/getStatus';
 
-const TITLE_LIMIT = 32;
-const DESC_LIMIT = 100;
 
 const sampleContent = {
     title: "Neque porro quisquam",
@@ -57,16 +55,11 @@ const CreateProposal = () => {
     const [detail, setDetail] = React.useState('');
     const [projectId, setProjectId] = React.useState(null)
 
-    // word count states
-    const [titleCount, setTitleCount] = React.useState(0);
-    const [descCount, setDescCount] = React.useState(0);
-
     // alert state
     const [error, setError] = React.useState('')
     const [preview, setPreview] = React.useState(false);
     const [alertOpenDraft, setAlertOpenDraft] = React.useState(false)
     const [alertOpenSubmit, setAlertOpenSubmit] = React.useState(false)
-    const [alertOpenCancel, setAlertOpenCancel] = React.useState(false);
     
 
     React.useEffect(async () => {
@@ -90,7 +83,6 @@ const CreateProposal = () => {
 
 
     const handlePreview = () => {
-        // check if anything is empty
         const checkList = {
             title: title,
             description: desc,
@@ -109,18 +101,6 @@ const CreateProposal = () => {
             setError(errorList.join(', ') + ' cannot be empty! Please check again.')
             return
         }
-
-        // check title and description length
-        if (titleCount > TITLE_LIMIT){
-            setError("Length of title exceeds limit!")
-            return
-        }
-        if (descCount > DESC_LIMIT) {
-            setError("Length of denscriptio exceeds limit!")
-            return
-        }
-
-        // no error
         setError('')
         setPreview(true)
     }
@@ -136,7 +116,7 @@ const CreateProposal = () => {
         setProjectId(35)
     }
 
-    // for saving draft: check if all inputs are empty
+
     const checkEmpty = () => {
         const checkList = [title, desc, prob, vStat, goal, detail]
         for (let input of checkList) {
@@ -239,22 +219,12 @@ const CreateProposal = () => {
             content="You'll be redirect to My Proposals page."
         />
 
-    const CancelConfirm = () =>
-        <AlertModal
-            open={alertOpenCancel}
-            handleClose={() => setAlertOpenCancel(false)}
-            handleConfirm={() => window.close()}
-            title="Are you sure to cancel your edit?"
-            content="Your changes will be aborted."
-        />
-
     return (
         <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Proposal`}>
-            <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;
@@ -271,7 +241,7 @@ const CreateProposal = () => {
                     vStat, 
                     goal, 
                     detail, 
-                    status: 'submitted', 
+                    status, 
                     metaData: {
                         lastModified: new Date().getTime()/1000,
                         authorName: auth.username,
@@ -294,41 +264,18 @@ const CreateProposal = () => {
                         <MKTypography variant='h5' sx={{ mb: 1, mt: 2 }}>
                             Title
                         </MKTypography>
-                        <MKInput 
-                            fullWidth 
-                            required
-                            value={title} 
-                            onChange={(e) => {
-                                setTitle(e.target.value)
-                                setTitleCount(e.target.value.length)
-                            }} 
-                            error={titleCount > TITLE_LIMIT}
-                            type='text' 
-                            label={`Insert your title here (${titleCount}/${TITLE_LIMIT})`} 
-                            sx={{ mr: 5 }} 
-                        />
+                        <MKInput fullWidth value={title} onChange={(e) => setTitle(e.target.value)} type='text' label="Insert title here..." sx={{ mr: 5 }} />
                     </div>
                     <div>
                         <MKTypography variant='h5' sx={{ mb: 1, mt: 2 }}>
                             One-line Description
                         </MKTypography>
-                        <MKInput 
-                            fullWidth 
-                            value={desc} 
-                            onChange={(e) => {
-                                setDesc(e.target.value)
-                                setDescCount(e.target.value.length)
-                            }}
-                            type='text' 
-                            label={`Please use one sentence to describe your proposal...(${descCount}/${DESC_LIMIT})`}
-                            error={descCount > DESC_LIMIT}
-                            sx={{ mr: 5 }} 
-                        />
+                        <MKInput fullWidth value={desc} onChange={(e) => setDesc(e.target.value)} type='text' label="Please use one sentence to describe your proposal..." sx={{ mr: 5 }} />
 
                     </div>
                 </Grid>
                 <Grid item xs={12} md={4} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                    <ActionButton label='Cancel' color='secondary' onClick={() => setAlertOpenCancel(true)}/>
+                    <ActionButton label='Cancel' color='secondary' />
                     {
                         (status === '' || 
                         status === statusBank.request.draft.label) && 

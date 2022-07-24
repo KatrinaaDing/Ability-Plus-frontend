@@ -1,8 +1,7 @@
 /**
  * Author: Ziqi Ding
  * Created At: 14 Jul 2022
- * Discription: A button that allow company to 
- * te project
+ * Discription: A button that allow company to create project
  */
 import MKButton from 'components/MKButton';
 import React from 'react';
@@ -12,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 const CreateProjectBtn = () => {
     const navigate = useNavigate();
     const handleCreate = () => {
-        window.open('/create-request')
+        navigate('/create-request')
     }
 
     return (

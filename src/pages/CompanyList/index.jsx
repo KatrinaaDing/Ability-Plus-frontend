@@ -5,15 +5,12 @@
  */
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import React from 'react';
-import { Stack, Card, CardActionArea, Grid, Paper, CardContent, List, ListItem, ListItemAvatar, Avatar, ListItemText} from '@mui/material';
+import { Stack, Card, CardActionArea, Grid, Paper, CardContent} from '@mui/material';
 import { BASE_URL } from 'api/axios';
 import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from 'auth/useAuth';
-import MKBox from 'components/MKBox';
-import MKButton from 'components/MKButton';
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -21,11 +18,10 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-
 const CompanyList = () => {
     const { auth } = useAuth();
     const navigate = useNavigate();
-    const [allCompanies, setAllCompanies] = useState([]);
+    const [allCompanies, setAllCompanies] = useState([{'id': 0, 'fullName':'name'}]);
     useEffect(() => {
         const getAllCompanies = async () => {
             try {
@@ -42,38 +38,32 @@ const CompanyList = () => {
                     setAllCompanies(data.data)
                 }
             } catch (e) {
-                console.error(e)
+                console.log(e)
             }
         }
     getAllCompanies();
     }, [])
     return (
         <BasicPageLayout title="View All Companies">
-            <List sx={{ width: '100%' }}>
-                {
-                    allCompanies.map((c, idx) =>
-                        <MKButton
-                            key={idx}
-                            onClick={() => window.open(`/company-info/${c.id}`)}
-                            fullWidth
-                            color='white'
-                            variant=''
-                            sx={{ my: 1 }}
-                        >
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar alt={c.fullName} src="/src/assets/images/profile-avatars/company.png" />
-                                </ListItemAvatar>
-                                <ListItemText 
-                                    primary={c.fullName}
-                                    secondary={`Released Projects: ${c.totalProjectNum}`}
-                                />
-                            </ListItem>
-                        </MKButton>
-                    )
-                }
-                
-            </List>
+            <Stack spacing={2} sx={{ width: '70vw', ml: '10%', mr: '10%' }}>
+                {allCompanies.map((c,idx) =>
+                    <Card key={idx}>
+                            <CardActionArea onClick={() =>  window.open(`/company-info/${c.id}`) }>
+                                <CardContent sx={{ maxHeight: 75 }}>
+                                    <Grid 
+                                        container 
+                                        item xs={12} 
+                                        justifyContent="center" 
+                                        mx="auto" 
+                                        
+                                >
+                                    <Link to={ `/company-info/${c.id}`} target="_blank">{c.fullName}</Link>
+                                    </Grid>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                )}
+            </Stack>
         </BasicPageLayout>
     );
 };

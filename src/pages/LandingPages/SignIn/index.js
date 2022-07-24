@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, React, useEffect } from "react";
 
 // react-router-dom components
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -24,6 +24,10 @@ import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
+// @mui icons
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -35,6 +39,7 @@ import MKAlert from "components/MKAlert";
 
 // Material Kit 2 React example components
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+import SimpleFooter from "examples/Footers/SimpleFooter";
 
 import getNavbarRoutes from "utils/getNavbarRoutes";
 
@@ -42,6 +47,10 @@ import getNavbarRoutes from "utils/getNavbarRoutes";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 // Tabs
+import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import useAuth from "auth/useAuth";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import AlertModal from "glhfComponents/AlertModal";
@@ -51,8 +60,6 @@ function SignInBasic() {
   const { auth, setAuth } = useAuth();
   const axiosBasic = useAxiosBasic();
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname;
 
   // const [rememberMe, setRememberMe] = useState(false);
   const [alertStr, setAlertStr] = useState("");
@@ -61,7 +68,6 @@ function SignInBasic() {
   const [emailErr, setEmailErr] = useState(false);
   const [userPwd, setUserPwd] = useState("");
   const [pwdErr, setPwdErr] = useState(false);
-  console.log(location.state)
 
   useEffect(() => {
     // if user has logged in, redirect to personal page
@@ -74,13 +80,12 @@ function SignInBasic() {
   // const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
     // validate form
     if (!validateInput(userEmail, userPwd))
       return
 
     // sign in user - use search params
-    const hashedPwd = md5(userPwd);
+    const hashedPwd = userPwd;//md5(userPwd) 
     const loginData = new URLSearchParams({
       email: userEmail,
       password: hashedPwd // md5 hashing
@@ -96,19 +101,15 @@ function SignInBasic() {
             isCompany: res.data.isCompany,
             accessToken: res.data.accessToken
           })
-          console.log('from', from)
-          if (from)
-            navigate(from, { replace: true });          // navigate back to where user came from
-          else
-            navigate(res.data.isCompany
-              ? '/my-project-requests'
-              : '/student/browse-requests'
-            )
+          navigate(res.data.isCompany
+            ? '/my-project-requests'
+            : '/student/browse-requests'
+          )
         })
+        
           
         // on failed
         .catch(e => {
-          console.error(e)
           setAlertStr(e.statusText)
         })
 
@@ -213,7 +214,7 @@ function SignInBasic() {
                 </MKTypography>
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
-                <MKBox component="form" role="form" onSubmit={handleSubmit}>
+                <MKBox component="form" role="form">
                   <MKBox mb={2}>
                     <MKInput type="email" error={emailErr} label="Email" onChange={updateUserEmail} fullWidth />
                   </MKBox>
@@ -221,7 +222,7 @@ function SignInBasic() {
                     <MKInput type="password" error={pwdErr} label="Password" onChange={updateUserPwd} fullWidth />
                   </MKBox>
                   <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" name="signIn" fullWidth type='submit' onClick={handleSubmit}>
+                    <MKButton variant="gradient" color="info" name="signIn" fullWidth onClick={handleSubmit}>
                       sign in
                     </MKButton>
                   </MKBox>
