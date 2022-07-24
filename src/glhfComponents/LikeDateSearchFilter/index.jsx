@@ -49,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {
-        width: '20ch',
+          width: '20ch',
       },
     },
   },
@@ -65,9 +65,9 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   }, [ascending, isAscendingOrderLike])
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} >
-      <Box sx={{minWidth: 120}}>
-        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)}>
+    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
+      <Box>
+        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} sx={{margin: '5px', height: '50px'}}>
           Sort By Like{' '}
           { isAscendingOrderLike && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
@@ -75,15 +75,15 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
         </MKButton>
       </Box>
       <Box>
-        <MKButton onClick={() => setAscending(!ascending)}>
-          Date{' '}
+        <MKButton sx={{margin: '5px', height: '50px'}} onClick={() => setAscending(!ascending)} >
+          Submission Date{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
         </MKButton>
       </Box>
       <Box>
-        <Search>
+        <Search sx={{margin: '5px', height: '50px'}}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>

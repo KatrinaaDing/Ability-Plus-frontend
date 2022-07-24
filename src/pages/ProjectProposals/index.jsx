@@ -26,7 +26,7 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import list from "assets/theme/components/list";
 import { propStatus } from "glhfComponents/ProcessStatusBadge";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
-
+import SelectProposalsFilter from 'glhfComponents/SelectProposalsFilter';
 const columns = [
     {
         field: 'title',
@@ -115,23 +115,38 @@ const ProjectProposals = () => {
 
     const [view, setView] = useState("card");
     const [rows, setRows] = useState([])
-
+    const [isPicked, setIsPicked] = useState(0);
+    const [ascending, setAscending] = useState(true);
+    const [whatOrder, setWhatOrder] = useState('LastModifiedTime')
+    const [searchKey, setSearchKey] = useState('');
+    const handleSearch = (key) => {
+        setSearchKey(key);
+    }
+    const handleWhatOrder = (whatOrder) => {
+        setWhatOrder(whatOrder)
+    }
+    const handleIsPicked = (picked) => {
+        setIsPicked(picked)
+    }
+    const handleDate = (order) => {
+        setAscending(order)
+    }
     const handleViewChange = (event, nextView) => {
         setView(nextView);
     };
 
-
     useEffect(async () => {
+        console.log('142')
         // FIXME: add search key
         await axiosPrivate.get('/proposal/list_project_proposals', {
             params: new URLSearchParams({
-                isAscendingOrder: true,
+                isAscendingOrder: ascending,
                 pageNo: 1,
                 pageSize: 20,
                 projectId: projectId,
-                whatOrder: 'LastModifiedTime',
-                isPick: isPick,
-                searchKey: ''
+                whatOrder: whatOrder,
+                isPick: isPicked === -1? 'all': isPicked,
+                searchKey: searchKey
             })
         })
             .then(res => {
@@ -150,7 +165,7 @@ const ProjectProposals = () => {
             .catch(e => console.error(e))
 
 
-    }, [])
+    }, [ascending, isPicked, searchKey, whatOrder])
 
     // data view hooks
     useEffect(() => {
@@ -270,7 +285,7 @@ const ProjectProposals = () => {
     // TODO put proposal rank if status > approving
 
     console.log(selectedItem)
-
+    
     const CardView = () => (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -362,6 +377,8 @@ const ProjectProposals = () => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </MKBox>
+            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={ handleIsPicked}  handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
+            <br />
             {
                 propDetail &&
                 <ProposalDescriptionModal

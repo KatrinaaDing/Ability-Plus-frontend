@@ -57,73 +57,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
+const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, handleSearch}) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
-    const [status, setStatus] = useState(userType == 'public' ? 1 : 0);
+    const [status, setStatus] = useState(-1);
     const [ascending, setAscending] = useState(true);
-    const [statusType, setStatusType] = useState('proposal')
     useEffect(() => {
         handleDate(ascending);
         handleWhatOrder(whatOrder);
     }, [whatOrder, ascending])
-    useEffect(() => {
-        if (type) {
-            setStatusType('request')
-        }
-    }, [])
     const handleChange = (e) => {
         const currStatus = e.target.value;
         setStatus(currStatus)
-        if (currStatus === -1) {
-            handleStatus('All')
-            return;
-        }
-        if (type != 'request') {
-            handleStatus(getLabel('proposal', currStatus));
-        } else {
-            handleStatus(getLabel('request', currStatus))
-        }
+        handleIsPicked(currStatus)
     };
     return (
         <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
             <Box sx={{minWidth: 120}}>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
                     <InputLabel id="select">Sort By Status</InputLabel>
-                        {statusType === 'proposal' ? 
-                            <Select
-                                labelId="Status"
-                                id="Proposal Status"
-                                value={status}
-                                label="Status"
-                                onChange={handleChange}
-                                style={{height: '40px'}}
-                        >
-                                <MenuItem value={-1}>All</MenuItem>
-                                <MenuItem value={0}>Draft</MenuItem>
-                                <MenuItem value={1}>Submitted</MenuItem>
-                                <MenuItem value={2}>Approving</MenuItem>
-                                <MenuItem value={3}>Approved</MenuItem>
-                                <MenuItem value={4}>Rejected</MenuItem>
-                            </Select>
-                         : <Select
-                                labelId="Status"
-                                id="Proposal Status"
-                                value={status}
-                                label="Status"
-                                onChange={handleChange}
-                                style={{height: '40px'}}
-                        >
+                        <Select
+                            labelId="Status"
+                            id="Proposal Status"
+                            value={status}
+                            label="Status"
+                            onChange={handleChange}
+                            style={{height: '40px'}}
+                    >   
                             <MenuItem value={-1}>All</MenuItem>
-                            {
-                                userType != 'public' &&
-                                <MenuItem value={0}>Draft</MenuItem>
-                            }
-                                <MenuItem value={1}>Open For Proposal</MenuItem>
-                                <MenuItem value={2}>Approving</MenuItem>
-                                <MenuItem value={3}>Open For Solution</MenuItem>
-                                <MenuItem value={4}>Closed</MenuItem>
-                            </Select>   
-                        }
+                            <MenuItem value={0}>Unpicked</MenuItem>
+                            <MenuItem value={1}>Picked</MenuItem>
+                        </Select>
                 </FormControl>
             </Box>
             <Box>
@@ -166,4 +129,4 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
         </Box>
     );
 }
-export default StatusDateDueSearchFilter;
+export default SelectProposalsFilter;
