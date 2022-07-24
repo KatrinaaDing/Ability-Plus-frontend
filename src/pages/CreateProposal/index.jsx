@@ -296,6 +296,7 @@ const CreateProposal = () => {
                         </MKTypography>
                         <MKInput 
                             fullWidth 
+                            required
                             value={title} 
                             onChange={(e) => {
                                 setTitle(e.target.value)
@@ -303,7 +304,7 @@ const CreateProposal = () => {
                             }} 
                             error={titleCount > TITLE_LIMIT}
                             type='text' 
-                            label={`${titleCount}/${TITLE_LIMIT}`} 
+                            label={`Insert your title here (${titleCount}/${TITLE_LIMIT})`} 
                             sx={{ mr: 5 }} 
                         />
                     </div>

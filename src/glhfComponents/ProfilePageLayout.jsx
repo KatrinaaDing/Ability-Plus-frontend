@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 24 Jul 2022
+ * Discription: The page layout for profile and user-info
+ */
 import MKBox from 'components/MKBox';
 import DefaultFooter from 'examples/Footers/DefaultFooter';
 import DefaultNavbar from 'examples/Navbars/DefaultNavbar';
