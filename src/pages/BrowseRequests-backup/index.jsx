@@ -51,7 +51,7 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-    useEffect(async () => {
+    useEffect( () => {
         let params;
         console.log(status)
         if (searchKey == '') {
@@ -72,18 +72,20 @@ const BrowseRequests = () => {
                 searchKey: searchKey
             })
         }
-        console.log(params)
-        await axiosPrivate.get('/project/list_all_project_requests/', {
-            params: params
-        })
-            .then(res => {
-                console.log(res)
-                setReqs(res.data.records)
-                setTotal(res.data.total)
+        const getAllRequest = async() =>
+            await axiosPrivate.get('/project/list_all_project_requests/', {
+                params: params
             })
-            .catch(e => {
-                console.error(e)
-            })
+                .then(res => {
+                    console.log(res)
+                    setReqs(res.data.records)
+                    setTotal(res.data.total)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+        getAllRequest()
     }, [ascending, status, whatOrder, searchKey])
 
   // what button to put in the proposal detail modal

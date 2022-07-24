@@ -69,8 +69,8 @@ const CreateProposal = () => {
     const [alertOpenCancel, setAlertOpenCancel] = React.useState(false);
     
 
-    React.useEffect(async () => {
-        if (isEditing) {
+    React.useEffect(() => {
+        const getEditDetail = async () =>
             await axiosPrivate.get(`/proposal/get_proposal_detail_info/?proposalId=${pathId}`)
                 .then(res => {
                     res.data.data.extraData = JSON.parse(res.data.data.extraData)
@@ -85,6 +85,9 @@ const CreateProposal = () => {
                     setProjectId(data.id)
                 })
                 .catch(e => console.error(e))
+                
+        if (isEditing) {
+            getEditDetail()
         }
     },[])
 

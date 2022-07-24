@@ -45,7 +45,7 @@ const MyProjectRequests = () => {
     const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
-    useEffect(async () => {
+    useEffect( () => {
         let params = {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
@@ -53,26 +53,28 @@ const MyProjectRequests = () => {
             pageSize: 20,
             searchKey: searchKey,
         }
-
-        await axiosPrivate.get(`/project/list_my_project_request`, {
-            params:  new URLSearchParams(params)
-        })
-            .then(res => {
-                // res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
-                // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
-                // if (status !== 'all'){
-                //     const filteredData = res.data.data.records.filter(e => e.status == status)
-                //     setReqs(filteredData)
-                //     setTotal(filteredData.length)
-                // } else {
-                    setReqs(res.data.data.records)
-                    setTotal(res.data.data.total)
-
-                // }
+        const getMyReqeusts = async () =>
+            await axiosPrivate.get(`/project/list_my_project_request`, {
+                params:  new URLSearchParams(params)
             })
-            .catch(e => {
-                console.error(e)
-            })
+                .then(res => {
+                    // res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
+                    // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
+                    // if (status !== 'all'){
+                    //     const filteredData = res.data.data.records.filter(e => e.status == status)
+                    //     setReqs(filteredData)
+                    //     setTotal(filteredData.length)
+                    // } else {
+                        setReqs(res.data.data.records)
+                        setTotal(res.data.data.total)
+
+                    // }
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+        getMyReqeusts();
 
     }, [ascending, status, searchKey])
 
@@ -195,6 +197,7 @@ const MyProjectRequests = () => {
                                 key={r.id}
                                 data={{
                                     ...r,
+                                    topic: r.area,
                                     lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
                                 }}
                                 openDetail={() => getProjectDetail(r.id)}

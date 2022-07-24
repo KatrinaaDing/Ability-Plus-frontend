@@ -55,7 +55,7 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-    useEffect(async () => {
+    useEffect(() => {
         const params = new URLSearchParams({
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
@@ -64,22 +64,21 @@ const BrowseRequests = () => {
             whatOrder: whatOrder,
             searchKey: searchKey
         })
-        await axiosPrivate.get(`/project/list_all_project_requests`, {
-            params: params,
-        })
-            .then(res => {
-                setCards(res.data.data.records)
-                setTotal(res.data.data.total)
+        const listAllRequest = async () =>
+            await axiosPrivate.get(`/project/list_all_project_requests`, {
+                params: params,
             })
-            .catch(e => console.error(e))
+                .then(res => {
+                    setCards(res.data.data.records)
+                    setTotal(res.data.data.total)
+                })
+                .catch(e => console.error(e))
+
+        listAllRequest()
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
-        await axios.get(`${BASE_URL}/project/get_project_info?id=${reqId}`, {
-            headers: {
-                token: auth.accessToken
-            }
-        })
+        await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
             .then(res => {
                 if (res.data.status >= 400)
                     return Promise.reject(res.data.message)

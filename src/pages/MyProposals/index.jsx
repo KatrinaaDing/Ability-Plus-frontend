@@ -45,7 +45,7 @@ const MyProposals = () => {
     const handleWhatOrder = (whatOrder) => {
         setWhatOrder(whatOrder)
     }
-    useEffect(async ()=> {
+    useEffect( ()=> {
         const params = new URLSearchParams({
             status: status,
             isAscendingOrder: ascending,
@@ -55,17 +55,20 @@ const MyProposals = () => {
             whatOrder: whatOrder
         })
         
-        await axiosPrivate.get('/proposal/list_my_proposal',{
-            params: params
-        })
-            .then(res => {
-                const data = res.data.data
-                setProps(data.records)
-                setTotal(data.total)
+        const listMyProposals = async () =>
+            await axiosPrivate.get('/proposal/list_my_proposal',{
+                params: params
             })
-            .catch(e => {
-                console.log(e)
-            })
+                .then(res => {
+                    const data = res.data.data
+                    setProps(data.records)
+                    setTotal(data.total)
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        
+        listMyProposals();
     }, [ascending, status, searchKey, whatOrder])
 
     const getPropDetail = async (propId, projectName) => {

@@ -87,7 +87,7 @@ const RequestCard = ({ data, openDetail }) => {
                         data.topic &&
                             <Grid item>
                                 <MKTypography variant="caption">
-                                    Category: &nbsp;data.topic
+                                    Category: &nbsp;{data.topic}
                                 </MKTypography> 
                             </Grid>
 

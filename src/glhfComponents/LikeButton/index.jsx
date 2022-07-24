@@ -7,10 +7,14 @@ import MKButton from 'components/MKButton';
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { axiosPrivate } from 'api/axios';
 
-const LikeButton = ({ originLike, originNumLike }) => {
+const LikeButton = ({ originLike, originNumLike, propId }) => {
     const [like, setLike] = React.useState(originLike);
     const [numLike, setNumLike] = React.useState(originNumLike);
+
+    const cancelLike = () => {
+    }
 
     const toggleLike = (e) => {
         // cancel like
@@ -23,6 +27,7 @@ const LikeButton = ({ originLike, originNumLike }) => {
             
         setLike(!like)
     }
+
 
     return (
         <MKButton 

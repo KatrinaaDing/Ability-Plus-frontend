@@ -73,15 +73,14 @@ const CreateRequest = () => {
     const [alertOpenCancel, setAlertOpenCancel] = React.useState(false)
 
 
-    React.useEffect(async () => {   
-        // load data if is to edit request
-        if (isEditing) {
+    React.useEffect(() => {   
+        const getEditDetail = async () =>
             await axiosPrivate.get(`/project/get_project_info?id=${requestId}`)
                 .then(res => {
                     // if return with error, return reject
-                    if (res.data.status >= 400) 
+                    if (res.data.status >= 400)
                         return Promise.reject(res.data.message)
-                    
+
                     // else
                     const data = res.data.data
                     const extraData = JSON.parse(data.extraData)
@@ -97,6 +96,10 @@ const CreateRequest = () => {
                 })
                 // .catch(e => setError(e))
                 .catch(e => console.log('err', e))
+
+        // load data if is to edit request
+        if (isEditing) {
+            getEditDetail();
         }
     },[])
 

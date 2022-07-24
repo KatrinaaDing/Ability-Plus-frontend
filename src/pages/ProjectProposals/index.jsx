@@ -135,36 +135,36 @@ const ProjectProposals = () => {
         setView(nextView);
     };
 
-    useEffect(async () => {
-        console.log('142')
-        // FIXME: add search key
-        await axiosPrivate.get('/proposal/list_project_proposals', {
-            params: new URLSearchParams({
-                isAscendingOrder: ascending,
-                pageNo: 1,
-                pageSize: 20,
-                projectId: projectId,
-                whatOrder: whatOrder,
-                isPick: isPicked === -1? 'all': isPicked,
-                searchKey: searchKey
-            })
-        })
-            .then(res => {
-                const data = res.data.data
-                // FIXME let everything unviewed. this only for demo, hard code status to unviewed
-                // const initialSelected = {}
-                data.records.forEach((item, idx, arr) => {
-                    arr[idx].status = 1
-                    arr[idx].rating = getRating(item.id) // FIXME random generated rating
-                    // initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
+    useEffect( () => {
+
+        const listProjectProposals = async () =>
+            await axiosPrivate.get('/proposal/list_project_proposals', {
+                params: new URLSearchParams({
+                    isAscendingOrder: ascending,
+                    pageNo: 1,
+                    pageSize: 20,
+                    projectId: projectId,
+                    whatOrder: whatOrder,
+                    isPick: isPicked === -1? 'all': isPicked,
+                    searchKey: searchKey
                 })
-                // setSelectedItem(initialSelected)
-                setPropCards(data.records)
-                setTotal(data.total)
             })
-            .catch(e => console.error(e))
-
-
+                .then(res => {
+                    const data = res.data.data
+                    // FIXME let everything unviewed. this only for demo, hard code status to unviewed
+                    // const initialSelected = {}
+                    data.records.forEach((item, idx, arr) => {
+                        arr[idx].status = 1
+                        arr[idx].rating = getRating(item.id) // FIXME random generated rating
+                        // initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
+                    })
+                    // setSelectedItem(initialSelected)
+                    setPropCards(data.records)
+                    setTotal(data.total)
+                })
+                .catch(e => console.error(e))
+        
+        listProjectProposals()
     }, [ascending, isPicked, searchKey, whatOrder])
 
     // data view hooks
