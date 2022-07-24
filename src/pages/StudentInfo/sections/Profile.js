@@ -68,6 +68,7 @@ function Profile() {
         setAge(JSON.parse(res.data.data.extraData).age)
         setEmail(JSON.parse(res.data.data.extraData).email)
         setStudentName(res.data.data.fullName)
+        console.log(des, age, email, studentName)
       })
       .catch(e => console.error(e))
   })

@@ -181,8 +181,10 @@ const MyProjectRequests = () => {
                 }
                 
             </MKBox> */}
-            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
-            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch} type='request'></FilterBar>
+            <br />
+            <br />
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                 {
                     reqs.length === 0
                         ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

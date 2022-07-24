@@ -34,6 +34,7 @@ const CompanyList = () => {
                 });
                 if (response.status === 200) {
                     const data = await response.json()
+                    console.log(data)
                     setAllCompanies(data.data)
                 }
             } catch (e) {
@@ -55,8 +56,8 @@ const CompanyList = () => {
                                         justifyContent="center" 
                                         mx="auto" 
                                         
-                                    >
-                                        {c.fullName}
+                                >
+                                    <Link to={ `/company-info/${c.id}`} target="_blank">{c.fullName}</Link>
                                     </Grid>
                                 </CardContent>
                             </CardActionArea>
