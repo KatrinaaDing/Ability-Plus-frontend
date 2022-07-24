@@ -40,6 +40,8 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
+  backgroundColor: 'white',
+  borderRadius: '5px',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -85,14 +87,12 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',  border: '3px solid rgb(42,151,236)', borderRadius: '5px'  }}>
       <Box sx={{minWidth: 120}}>
         <FormControl sx={{ m: 1, minWidth: 80 }}>
-          <InputLabel id="select">Sort By Status</InputLabel>
           <Select
-            labelId="Status"
             id="Request Status"
             value={status}
-            label="Status"
             onChange={handleChange}
-            style={{height: '40px'}}
+            sx={{ backgroundColor: 'white', height: '40px' }}
+            style={{backgroundColor:'white'}}
             >
               <MenuItem value={-1}>All</MenuItem>
               {
@@ -103,7 +103,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
         </FormControl>
       </Box>
       <Box>
-        <MKButton onClick={() => setAcending(!ascending)} sx={{margin: '5px', height: '50px'}}>
+        <MKButton onClick={() => setAcending(!ascending)} sx={{margin: '8px', height: '40px', border: '1px solid lightgray'}}>
           Solution Deadline{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
@@ -111,7 +111,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
         </MKButton>
       </Box>
       <Box>
-        <Search sx={{margin: '5px', height: '50px'}}>
+        <Search sx={{ margin: '5px', height: '50px', margin: '5px'}}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>

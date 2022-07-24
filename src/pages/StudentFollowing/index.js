@@ -76,14 +76,14 @@ const MyFollowingPage = () => {
 
     return (
         <BasicPageLayout title="My Followings">
-            <List sx={{ width: '100%' }}>
+            <List sx={{ width: '100%', px: 3 }}>
                 {
                     followList.map(f => 
                         <ListItem
                             key={f.companyName}
                             secondaryAction={
-                                <IconButton edge="end" aria-label="delete">
-                                    <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
+                                <IconButton edge="end" aria-label="delete" onClick={() => handleSetCurFollow(f)}>
+                                    <MKButton variant="outlined" color="info">
                                         Unfollow
                                     </MKButton>
                                 </IconButton>

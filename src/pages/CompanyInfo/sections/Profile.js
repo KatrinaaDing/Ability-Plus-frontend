@@ -56,8 +56,10 @@ function Profile({ companyInfo }) {
   const {id} = params;
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("")
-
+  console.log(companyName)
+  console.log(email)
   /* Get companyInfo by id */
+<<<<<<< HEAD
   useEffect( () => {
     const getProfile = async() =>
       await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
@@ -94,6 +96,43 @@ function Profile({ companyInfo }) {
 
     setCompanyId(companyInfo.companyId)
     getFollowing()
+=======
+  useEffect( async () => {
+    await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
+      .then(res => {
+        if (res.data.data.extraData) {
+          setEmail(JSON.parse(res.data.data.extraData).email)
+        } 
+        setCompanyName(res.data.data.fullName)
+        setEmail(res.data.data.account)
+
+      })
+      .catch(e => console.error(e))
+  })
+
+
+  useEffect(async () => {
+    setCompanyId(companyInfo.companyId)
+    if (auth.isCompany === false) {
+      await axios.get(`${BASE_URL}/student_following/all`, {
+        headers: {
+          token: auth.accessToken
+        }
+    })
+    .then(res => {
+      let follow = false
+      for (const { _, companyId, __} of res.data.data) {
+        if (companyId === parseInt(companyInfo.companyId)) {
+          follow = true
+        }
+      }
+      setFollowText(follow ? 'Unfollow': 'Follow')
+    })
+    .catch(e => {
+      console.error(e)
+    })
+    }
+>>>>>>> main
   }, [companyInfo.companyId])
 
   const handleFollow = async () => {
@@ -126,9 +165,11 @@ function Profile({ companyInfo }) {
                 <MKTypography variant="h3">
                   {companyName}
                 </MKTypography>
-                <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
+                {!auth.isCompany && 
+                  <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
                   { followText }
                 </MKButton> 
+                }
               </MKBox>
               <Grid container spacing={3} mb={3}>
                 <Grid item>

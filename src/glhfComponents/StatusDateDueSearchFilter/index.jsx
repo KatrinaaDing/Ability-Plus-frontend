@@ -13,6 +13,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
+import MenuIcon from '@mui/icons-material/Menu';
 import {getLabel} from "../../utils/getStatus";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -41,6 +42,9 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    border: '1px solid lightgray',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -59,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
-    const [status, setStatus] = useState(userType == 'public' ? 1 : 0);
+    const [status, setStatus] = useState(-1);
     const [ascending, setAscending] = useState(true);
     const [statusType, setStatusType] = useState('proposal')
     useEffect(() => {
@@ -75,7 +79,7 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
         const currStatus = e.target.value;
         setStatus(currStatus)
         if (currStatus === -1) {
-            handleStatus('All')
+            handleStatus('')
             return;
         }
         if (type != 'request') {
@@ -86,64 +90,64 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
     };
     return (
         <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
-            <Box sx={{minWidth: 120}}>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="select">Sort By Status</InputLabel>
-                        {statusType === 'proposal' ? 
-                            <Select
-                                labelId="Status"
-                                id="Proposal Status"
-                                value={status}
-                                label="Status"
-                                onChange={handleChange}
-                                style={{height: '40px'}}
-                        >
-                                <MenuItem value={-1}>All</MenuItem>
-                                <MenuItem value={0}>Draft</MenuItem>
-                                <MenuItem value={1}>Submitted</MenuItem>
-                                <MenuItem value={2}>Approving</MenuItem>
-                                <MenuItem value={3}>Approved</MenuItem>
-                                <MenuItem value={4}>Rejected</MenuItem>
-                            </Select>
-                         : <Select
-                                labelId="Status"
-                                id="Proposal Status"
-                                value={status}
-                                label="Status"
-                                onChange={handleChange}
-                                style={{height: '40px'}}
-                        >
+            <Box sx={{ minWidth: 120 }}>
+                <p style={{ textAlign: 'center'}}>Status:</p>
+                <FormControl sx={{ m: 1, minWidth: 80, display: 'flex' }}>
+                    {statusType === 'proposal' ?
+
+                        <Select
+                            id="Proposal Status"
+                            value={status}
+                            autoWidth
+                            onChange={handleChange}
+                            sx={{ backgroundColor: 'white', height: '40px' }}
+                            style={{backgroundColor:'white'}}
+                    >
                             <MenuItem value={-1}>All</MenuItem>
-                            {
-                                userType != 'public' &&
-                                <MenuItem value={0}>Draft</MenuItem>
-                            }
-                                <MenuItem value={1}>Open For Proposal</MenuItem>
-                                <MenuItem value={2}>Approving</MenuItem>
-                                <MenuItem value={3}>Open For Solution</MenuItem>
-                                <MenuItem value={4}>Closed</MenuItem>
-                            </Select>   
+                            <MenuItem value={0}>Draft</MenuItem>
+                            <MenuItem value={1}>Submitted</MenuItem>
+                            <MenuItem value={2}>Approving</MenuItem>
+                            <MenuItem value={3}>Approved</MenuItem>
+                            <MenuItem value={4}>Rejected</MenuItem>
+                        </Select>
+                        : <Select
+                            id="Proposal Status"
+                            value={status}
+                            onChange={handleChange}
+                            sx={{ backgroundColor: 'white', height: '40px' }}
+                            style={{backgroundColor:'white'}}
+                    >
+                        <MenuItem value={-1}>All</MenuItem>
+                        {
+                            userType != 'public' &&
+                            <MenuItem value={0}>Draft</MenuItem>
                         }
+                            <MenuItem value={1}>Open For Proposal</MenuItem>
+                            <MenuItem value={2}>Approving</MenuItem>
+                            <MenuItem value={3}>Open For Solution</MenuItem>
+                            <MenuItem value={4}>Closed</MenuItem>
+                        </Select>   
+                    }
                 </FormControl>
             </Box>
             <Box>
-                <MKButton sx={{margin: '5px', height: '50px'}} onClick={() => setAscending(!ascending)}>
+                <p style={{ textAlign: 'center'}}>Order by Date:</p>
+                <MKButton sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}} onClick={() => setAscending(!ascending)}>
                     Submission Date{' '}
                     { ascending && <KeyboardArrowDownIcon>
                     </KeyboardArrowDownIcon>}
                     { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
                 </MKButton>
             </Box>
-            <Box sx={{minWidth: 120}}>
+            <Box sx={{ minWidth: 120 }}>
+                <p style={{ textAlign: 'center'}}>Sort by Status</p>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="select">In Descending Order</InputLabel>
                     <Select
-                        labelId="Due"
                         id="Proposal Due"
                         value={whatOrder}
-                        label="Status"
+                        sx={{ backgroundColor: 'white', height: '40px' }}
                         onChange={(e) => setWhatOrder((e.target.value))}
-                        style={{height: '40px'}}
+                        style={{backgroundColor:'white'}}
                     >
                         <MenuItem value={'SolutionDue'}>Solution Deadline</MenuItem>
                         <MenuItem value={'ProposalDue'}>Proposal Deadline</MenuItem>
@@ -152,7 +156,8 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                 </FormControl>
             </Box>
             <Box>
-                <Search sx={{ margin: '5px', height: '50px' }}>
+                 <p style={{ textAlign: 'center'}}>Search:</p>
+                <Search sx={{ margin: '5px', height: '50px', margin: '5px'}}>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
