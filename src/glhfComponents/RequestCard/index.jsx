@@ -49,7 +49,6 @@ value = {
 
 const RequestCard = ({ data, openDetail, color}) => {
     const page = window.location.pathname.slice(1);
-    color = 'light'
 
     const ViewRankingBtn = () =>
         <MKButton
@@ -74,20 +73,26 @@ const RequestCard = ({ data, openDetail, color}) => {
 
     return (
         <Grid item xs={12} md={6} lg={6} xl={4}>
-            <StatusBadge type='request' statusLabel={data.status} size='sm' variant="contained" position='top-right' />
+            <StatusBadge 
+                type='request' 
+                statusLabel={data.status} 
+                size='sm' 
+                variant={ color && color === 'light' ? 'gradient' : "contained"}
+                position='top-right' 
+            />
             <MKBox
-                variant={color === "transparent" ? "contained" : "gradient"}
-                bgColor={color === 'light' ? 'white' : color}
+                variant='contained'//{color === "transparent" ? "contained" : "gradient"}
+                bgColor={color || 'white'}
                 borderRadius="xl"
                 shadow={color === "transparent" ? "none" : "md"}
                 px={3}
                 pt={3}
                 pb={1}
                 sx={{
-                    height: '310px',
+                    height: { 'lg': '310px', 'md': '400px', 'xs': '350px'},
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-evenly',
+                    justifyContent: 'space-around',
                 }}
             >
                 <MKBox lineHeight={1}>
@@ -95,7 +100,7 @@ const RequestCard = ({ data, openDetail, color}) => {
                         display="block"
                         variant="h5"
                         fontWeight="bold"
-                        color={color === "transparent" || color === "light" ? "dark" : "white"}
+                        color={!color || color === "transparent" || color === "light" ? "dark" : "white"}
                         mb={0.5}
                     >
                         {data.title}
@@ -104,7 +109,7 @@ const RequestCard = ({ data, openDetail, color}) => {
                         variant="caption"
                         fontWeight="regular"
                         lineHeight={1}
-                        color={color === "transparent" || color === "light" ? "text" : "white"}
+                        color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                         sx={{ display: "flex", alignItems: "center" }}
                     >
                         <Icon>schedule</Icon>&nbsp;
@@ -113,7 +118,7 @@ const RequestCard = ({ data, openDetail, color}) => {
                 </MKBox>
                 <MKTypography
                     variant="body2"
-                    color={color === "transparent" || color === "light" ? "text" : "white"}
+                    color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     my={2}
                     sx={{
                         height: '70px',

@@ -70,7 +70,7 @@ function Profile({ companyInfo }) {
         .catch(e => console.error(e))
 
     getProfile();
-  })
+  }, [])
 
 
   useEffect(() => {

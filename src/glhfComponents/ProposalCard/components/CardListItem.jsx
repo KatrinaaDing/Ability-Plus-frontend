@@ -6,12 +6,14 @@ import TopicIcon from '@mui/icons-material/Topic';
 import FolderIcon from '@mui/icons-material/Folder';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MKTypography from 'components/MKTypography';
+import CommentIcon from '@mui/icons-material/Comment';
 
 const CardListItem = ({title, value, link, color}) => {
     const icons = {
         'Category': <FolderIcon />,
         'Project': <AssignmentIcon />,
-        'Posted by': <PersonIcon />
+        'Posted by': <PersonIcon />,
+        'My Comment': <CommentIcon />
     }
 
     return (
@@ -23,7 +25,7 @@ const CardListItem = ({title, value, link, color}) => {
                 primary={
                     <MKTypography
                         variant="body2"
-                        color={color === "transparent" || color === "light" ? "text" : "white"}
+                        color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     >
                         {/* <b>{title}</b> &nbsp;&nbsp; */}
                         {

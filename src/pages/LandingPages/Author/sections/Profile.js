@@ -52,14 +52,14 @@ function Profile() {
 
   //Profile edit modal show or not
   const [show, setShow] = useState(false);
-  const toggleModal = () =>{
+  const toggleModal = () => {
     setShow(!show);
-  } 
+  }
   // Password change modal show or not
   const [pShow, setPShow] = useState(false);
-  const pwdChangeModal = () =>{
+  const pwdChangeModal = () => {
     setPShow(!pShow);
-  } 
+  }
   //Params of Profile edit
   const [userName, setUserName] = useState("");
   const [des, setDes] = useState("");
@@ -76,47 +76,50 @@ function Profile() {
   const [newPwd, setNewPwd] = useState("")
 
 
-  useEffect (async () => {
-    await axiosPrivate.get("/user/get_profile_info")
-      .then (res => {
-        if(res.data.data.extraData === null){
-          setCEmail("sample@email.com");
-          setUserEmail ('sample@email.com');
-          setCDes("Please introduce yourself");
-          setDes("?");
-          setAge("?"); 
-          setCAge("?"); 
-          return;
-        }
-        if(res.data.data.fullName){
-          setAuth({
-            username:  res.data.data.fullName,
-            isCompany: auth.isCompany,
-            accessToken: auth.accessToken
-          })
-        }
-        if (JSON.parse(res.data.data.extraData).email === null || JSON.parse(res.data.data.extraData).email ==='') {
-          setCEmail("sample@email.com");
-          setUserEmail ('sample@email.com');
-        } else {
-          setCEmail(JSON.parse(res.data.data.extraData).email)
-        }
-        if (JSON.parse(res.data.data.extraData).des === null || JSON.parse(res.data.data.extraData).des == '') {
-          setCDes("Please introduce yourself");
-          setDes("Please introduce yourself");
-        } else {
-          setCDes(JSON.parse(res.data.data.extraData).des)
-        }
-        if (JSON.parse(res.data.data.extraData).age === null || JSON.parse(res.data.data.extraData).age == '') {
-          setCAge("?")
-          setAge("?"); 
-        
-        } else {
-          setCAge(JSON.parse(res.data.data.extraData).age)
-        }
+  useEffect(() => {
+    const getInfo = async () =>
+      await axiosPrivate.get("/user/get_profile_info")
+        .then(res => {
+          if (res.data.data.extraData === null) {
+            setCEmail("sample@email.com");
+            setUserEmail('sample@email.com');
+            setCDes("Please introduce yourself");
+            setDes("?");
+            setAge("?");
+            setCAge("?");
+            return;
+          }
+          if (res.data.data.fullName) {
+            setAuth({
+              username: res.data.data.fullName,
+              isCompany: auth.isCompany,
+              accessToken: auth.accessToken
+            })
+          }
+          if (JSON.parse(res.data.data.extraData).email === null || JSON.parse(res.data.data.extraData).email === '') {
+            setCEmail("sample@email.com");
+            setUserEmail('sample@email.com');
+          } else {
+            setCEmail(JSON.parse(res.data.data.extraData).email)
+          }
+          if (JSON.parse(res.data.data.extraData).des === null || JSON.parse(res.data.data.extraData).des == '') {
+            setCDes("Please introduce yourself");
+            setDes("Please introduce yourself");
+          } else {
+            setCDes(JSON.parse(res.data.data.extraData).des)
+          }
+          if (JSON.parse(res.data.data.extraData).age === null || JSON.parse(res.data.data.extraData).age == '') {
+            setCAge("?")
+            setAge("?");
 
-      })
-      .catch(e => console.error(e))
+          } else {
+            setCAge(JSON.parse(res.data.data.extraData).age)
+          }
+
+        })
+        .catch(e => console.error(e))
+
+    getInfo()
   }, [])
 
   //Profile edit func
@@ -124,26 +127,26 @@ function Profile() {
 
     const body = {
       "extraData": {
-        "des": des.des == '' ? '': des.des || cDes,
-        "age": age.age == ''? '' : age.age || cAge,
-        "email": userEmail.userEmail == ''? '': userEmail.userEmail || cEmail,
+        "des": des.des == '' ? '' : des.des || cDes,
+        "age": age.age == '' ? '' : age.age || cAge,
+        "email": userEmail.userEmail == '' ? '' : userEmail.userEmail || cEmail,
       },
       "userName": userName.userName || auth.username
     }
-/*     console.log(body)
-    console.log(JSON.stringify(body))
-    console.log(userName.userName)
-    console.log(auth.username)
-    console.log(cAge)
-    console.log(cDes)
-    console.log(cEmail) */
+    /*     console.log(body)
+        console.log(JSON.stringify(body))
+        console.log(userName.userName)
+        console.log(auth.username)
+        console.log(cAge)
+        console.log(cDes)
+        console.log(cEmail) */
     if (Object.is(event.target.name, "save")) {
       axiosPrivate.post("/user/edit_own_profile_info", body)
         .then(function (res) {
           console.log("response:", res);
-          if(userName.userName === ''){
+          if (userName.userName === '') {
             return setAlertStr("Username is empty")
-          }      
+          }
 
           if (res.code == 201) {
             return setAlertStr(res.data.message)
@@ -151,16 +154,16 @@ function Profile() {
           localStorage.setItem("cDes", body.extraData.des)
           localStorage.setItem("cAge", body.extraData.des)
           localStorage.setItem("cEmail", body.extraData.email)
-          localStorage.setItem("userName",  userName.userName)
+          localStorage.setItem("userName", userName.userName)
 
           setAuth({
-            username:  userName.userName,
+            username: userName.userName,
             isCompany: auth.isCompany,
             accessToken: auth.accessToken
           })
           setAlertStr("Success!")
         })
-        .catch (err => {
+        .catch(err => {
           if (err !== undefined && err.response !== undefined && err.response.data !== undefined) {
             return setAlertStr(err.res.data.error);
           }
@@ -188,7 +191,7 @@ function Profile() {
     }
     else if (Object.keys(newPwd).length === 0) {
       return setAlertStr("New password is empty!")
-    }      
+    }
     else if (Object.is(oldPwd.oldPwd, newPwd.newPwd)) {
       return setAlertStr("There is no change of password!")
     }
@@ -197,9 +200,9 @@ function Profile() {
         .then(res => {
           if (res.status == 200) {
             return setAlertStr("Success!")
-          } 
+          }
         })
-        .catch (err => {
+        .catch(err => {
           if (err !== undefined && err.res !== undefined && err.res.data !== undefined) {
             return setAlertStr(err.res.data.error);
           }
@@ -216,45 +219,45 @@ function Profile() {
 
 
   //Profile edit related params onChange 
-  const updateUserName = e => { 
+  const updateUserName = e => {
     const userName = e.target.value
-    setUserName({userName})
+    setUserName({ userName })
     localStorage.setItem("userName", userName)
   }
 
   const updateUserEmail = e => {
     const userEmail = e.target.value
-    setUserEmail ({userEmail})
+    setUserEmail({ userEmail })
     localStorage.setItem("cEmail", userEmail)
   }
 
   const updateUserDes = e => {
     const des = e.target.value
-    setDes({des});
+    setDes({ des });
     localStorage.setItem("cDes", des)
   }
 
   const updateUserAge = e => {
     const age = e.target.value
-    setAge({age});
+    setAge({ age });
     localStorage.setItem("cAge", age)
-  } 
+  }
 
   //Password change related params onChange
   const updateOldPwd = e => {
     const oldPwd = e.target.value
-    setOldPwd({oldPwd})
+    setOldPwd({ oldPwd })
   }
   const updateNewPwd = e => {
     const newPwd = e.target.value
-    setNewPwd({newPwd})
+    setNewPwd({ newPwd })
   }
 
 
 
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>
-      <Container>    
+      <Container>
         <Grid container item xs={12} justifyContent="center" mx="auto">
           <MKBox mt={{ xs: -16, md: -20 }} textAlign="center">
             <MKAvatar src={auth.isCompany ? companyProfilePicture : studentProfilePicture} alt="Burce Mars" size="xxl" shadow="xl" />
@@ -300,98 +303,98 @@ function Profile() {
             </Grid>
           </Grid>
         </Grid>
-{/* Profile edit modal */}
-        <Modal open={show} onClose={toggleModal} sx={{display:"grid", placeItems:"center"}}>
-            <Slide direction="down" in={show} timeout={500}>
-                <MKBox
-                    position="relative"
-                    width="30%"
-                    display="flex"
-                    flexDirection="column"
-                    borderRadius="xl"
-                    bgColor="white"
-                    shadow="xl"    
-                >
-                <Collapse in={alertStr != ""}>
-                  <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
-                </Collapse>   
-                    <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-                        <MKTypography variant="h5">Profile Edit</MKTypography>
-                        <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={toggleModal} />
-                    </MKBox>
-                    <Divider sx={{my: 0}} />
-                    <MKBox component="form" role="form" p={2} py={12}>                            
-                        <Grid container item xs={12}>
-                            <MKInput label="Username" fullWidth defaultValue={auth.username} onChange={updateUserName} />
-                        </Grid>      
-                        <br />
-                        <Grid container item xs={12}>
-                            <MKInput type="email" label="Contact Email" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
-                        </Grid> 
-                        <br />
-                        <Grid container item xs={12}>
-                            <MKInput label="Age" fullWidth defaultValue={cAge} onChange={updateUserAge} />
-                        </Grid>    
-                        <br />
-                        <Grid container item xs={12}>
-                            <MKInput label="Description" multiline fullWidth onChange={updateUserDes} defaultValue={cDes} rows={6} />
-                        </Grid>                                                           
-                    </MKBox>
-                    <Divider sx={{my: 0}} />
-                    <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                        <MKButton variant="gradient" color="light" onClick={toggleModal}>
-                        Cancel
-                        </MKButton>
-                        <MKButton variant="gradient" color="info" name="save" onClick={changeProfile}>
-                        Save
-                        </MKButton>
-                    </MKBox>                            
-                </MKBox>
-            </Slide>
+        {/* Profile edit modal */}
+        <Modal open={show} onClose={toggleModal} sx={{ display: "grid", placeItems: "center" }}>
+          <Slide direction="down" in={show} timeout={500}>
+            <MKBox
+              position="relative"
+              width="30%"
+              display="flex"
+              flexDirection="column"
+              borderRadius="xl"
+              bgColor="white"
+              shadow="xl"
+            >
+              <Collapse in={alertStr != ""}>
+                <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
+              </Collapse>
+              <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
+                <MKTypography variant="h5">Profile Edit</MKTypography>
+                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={toggleModal} />
+              </MKBox>
+              <Divider sx={{ my: 0 }} />
+              <MKBox component="form" role="form" p={2} py={12}>
+                <Grid container item xs={12}>
+                  <MKInput label="Username" fullWidth defaultValue={auth.username} onChange={updateUserName} />
+                </Grid>
+                <br />
+                <Grid container item xs={12}>
+                  <MKInput type="email" label="Contact Email" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
+                </Grid>
+                <br />
+                <Grid container item xs={12}>
+                  <MKInput label="Age" fullWidth defaultValue={cAge} onChange={updateUserAge} />
+                </Grid>
+                <br />
+                <Grid container item xs={12}>
+                  <MKInput label="Description" multiline fullWidth onChange={updateUserDes} defaultValue={cDes} rows={6} />
+                </Grid>
+              </MKBox>
+              <Divider sx={{ my: 0 }} />
+              <MKBox display="flex" justifyContent="space-between" p={1.5}>
+                <MKButton variant="gradient" color="light" onClick={toggleModal}>
+                  Cancel
+                </MKButton>
+                <MKButton variant="gradient" color="info" name="save" onClick={changeProfile}>
+                  Save
+                </MKButton>
+              </MKBox>
+            </MKBox>
+          </Slide>
         </Modal>
 
-{/* Password change modal */}
-        <Modal open={pShow} onClose={pwdChangeModal} sx={{display:"grid", placeItems:"center"}}>
- 
-            <Slide direction="down" in={pShow} timeout={500}>
-                <MKBox
-                    position="relative"
-                    width="30%"
-                    display="flex"
-                    flexDirection="column"
-                    borderRadius="xl"
-                    bgColor="white"
-                    shadow="xl"    
-                >
-                <Collapse in={alertStr != ""}>
-                  <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>                     
-                </Collapse>   
-                    <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-                        <MKTypography variant="h5">Password Change</MKTypography>
-                        <CloseIcon fontSize="medium" sx={{ cursor:"pointer" }} onClick={pwdChangeModal} />
-                    </MKBox>
-                    <Divider sx={{my: 0}} />
-                    <MKBox component="form" role="form" p={2} py={12}>                            
-                        <Grid container item xs={12}>
-                            <MKInput type= "password" label="Old Password" onChange={updateOldPwd} fullWidth />
-                        </Grid> 
-                        <br />
-                        <Grid container item xs={12}>
-                            <MKInput type="password" label="New Password" onChange={updateNewPwd} fullWidth />
-                        </Grid>                                                          
-                    </MKBox>
-                    <Divider sx={{my: 0}} />
-                    <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                        <MKButton variant="gradient" color="light" onClick={pwdChangeModal}>
-                        Cancel
-                        </MKButton>
-                        <MKButton variant="gradient" color="info" name="changePwd" onClick={pwdChange}>
-                        Submit
-                        </MKButton>
-                    </MKBox>                            
-                </MKBox>
-            </Slide>
-        </Modal>             
+        {/* Password change modal */}
+        <Modal open={pShow} onClose={pwdChangeModal} sx={{ display: "grid", placeItems: "center" }}>
+
+          <Slide direction="down" in={pShow} timeout={500}>
+            <MKBox
+              position="relative"
+              width="30%"
+              display="flex"
+              flexDirection="column"
+              borderRadius="xl"
+              bgColor="white"
+              shadow="xl"
+            >
+              <Collapse in={alertStr != ""}>
+                <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
+              </Collapse>
+              <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
+                <MKTypography variant="h5">Password Change</MKTypography>
+                <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={pwdChangeModal} />
+              </MKBox>
+              <Divider sx={{ my: 0 }} />
+              <MKBox component="form" role="form" p={2} py={12}>
+                <Grid container item xs={12}>
+                  <MKInput type="password" label="Old Password" onChange={updateOldPwd} fullWidth />
+                </Grid>
+                <br />
+                <Grid container item xs={12}>
+                  <MKInput type="password" label="New Password" onChange={updateNewPwd} fullWidth />
+                </Grid>
+              </MKBox>
+              <Divider sx={{ my: 0 }} />
+              <MKBox display="flex" justifyContent="space-between" p={1.5}>
+                <MKButton variant="gradient" color="light" onClick={pwdChangeModal}>
+                  Cancel
+                </MKButton>
+                <MKButton variant="gradient" color="info" name="changePwd" onClick={pwdChange}>
+                  Submit
+                </MKButton>
+              </MKBox>
+            </MKBox>
+          </Slide>
+        </Modal>
       </Container>
     </MKBox>
   );

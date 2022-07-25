@@ -3,7 +3,7 @@
  * Created At: 13 Jul 2022
  * Discription: A card to demo proposal
  */
-import { Checkbox, Icon, List } from '@mui/material';
+import { Checkbox, Icon, List, Rating } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -20,6 +20,8 @@ import { statusBank } from 'utils/getStatus';
 import { getCode } from 'utils/getStatus';
 import CardListItem from './components/CardListItem';
 import LikeIcon from './components/LikeIcon';
+import StarIcon from '@mui/icons-material/Star';
+
 
 
 /**
@@ -48,7 +50,8 @@ value = {
 
 const ProposalCard = ({ data, openDetail, secondary, color }) => {
     const page = window.location.pathname.slice(1)
-    color = 'light'
+    if (color === undefined)
+        color = 'light'
 
     const getProcessStatus = () => {
         // has notes or rating => viewed
@@ -82,7 +85,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                 pt={3}
                 pb={1}
                 sx={{
-                    height: '310px',
+                    height: { 'lg': '310px', 'md': '400px', 'xs': '350px' },
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
@@ -130,13 +133,16 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color} />}
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
+                    {data.comment && <CardListItem title='My Comment' value={data.comment.length > 45 ? data.comment.split(' ').slice(0, 7).join(' ') + '...' : data.comment } link={null} color={color} />}
                 </List>
 
-                {
-                    data.rating &&
-                    <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
-
-                }
+                {/* {
+                    data.comment &&
+                    <MKTypography variant='subtitle2' pl={4}>
+                        {data.comment}
+                    </MKTypography>
+                } */}
+                
 
                 <MKBox sx={{
                     display: 'flex',
@@ -145,6 +151,19 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     width: '-webkit-fill-available'
 
                 }}>
+                {
+                    data.rating &&
+                    <Rating
+                        name="rating"
+                        defaultValue={data.rating}
+                        max={5}
+                        precision={0.5}
+                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                        size="medium"
+                        readOnly
+                    />
+
+                }
 
                     <MKBox sx={{
                         display: 'flex',

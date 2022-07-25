@@ -67,7 +67,7 @@ const CompanyRating = ({rating}) => {
                 }}
             >
                 <Rating
-                    name="customized-10"
+                    name="rating"
                     defaultValue={value}
                     max={5}
                     getLabelText={getLabelText}
