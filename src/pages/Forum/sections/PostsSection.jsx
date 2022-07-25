@@ -3,20 +3,21 @@ import MKButton from 'components/MKButton';
 import React from 'react';
 import Post from '../components/Post';
 
-const PostsSection = ({posts}) => {
-    console.log(posts)
+const PostsSection = ({posts, reqCreator}) => {
     return (
-        <List sx={{ width: '90%' }}>
+        <List sx={{ width: '95%' }}>
             {
                 posts.map(p => 
-                    <Post           // TODO not decided yet
+                    <Post           // TODO feel free to change
                         key={p.postId}
+                        isProjectOwner={reqCreator == p.authId}
                         id={p.postId}
                         authorId={p.authId}
                         authorName={p.authName}
                         content={p.data}
                         postDate={p.postTime}
                         numReply={p.numReply}
+                        isPin={p.pin}
                     />
                 )                                    
             }

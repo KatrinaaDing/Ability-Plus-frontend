@@ -8,7 +8,7 @@ import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import React from 'react';
 
-const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName }) => {
+const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator }) => {
     const axiosPrivate = useAxiosPrivate();
     const [reqDetail, setReqDetail] = React.useState();
 
@@ -25,6 +25,9 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName }) => {
                         id: projectId,
                     })
                     setReqName(res.data.data.name)
+                    if (setReqCreator !== undefined)
+                        setReqCreator(res.data.data.creatorId)
+
                 })
                 .catch(e => console.error(e))
 
@@ -35,6 +38,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName }) => {
     return (
         <>
             <MKButton
+                variant='outlined'
                 color='info'
                 onClick={() => setOpen(true)}
             >
