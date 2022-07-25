@@ -101,7 +101,7 @@ function DefaultReviewCard({ color, image, name, date, review, rating }) {
   return (
     <MKBox
       variant={color === "transparent" ? "contained" : "gradient"}
-      bgColor={'white'}
+      bgColor={color}
       borderRadius="xl"
       shadow={color === "transparent" ? "none" : "md"}
       p={3}

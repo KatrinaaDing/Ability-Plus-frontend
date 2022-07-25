@@ -156,8 +156,8 @@ const PopularProposals = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         popularProps.map(p =>
-                            <Grid item key={p.proposalId} xs={12} md={6} lg={4} xl={4}>
                                 <ProposalCard
+                                    key={p.proposalId}
                                     data={{
                                         id: p.proposalId,
                                         title: p.title,
@@ -171,17 +171,16 @@ const PopularProposals = () => {
                                     }}
                                     openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
                                 />
-                            </Grid>
                         )
                     }
                     
-                <DefaultReviewCard
+                {/* <DefaultReviewCard
                     color="light"
                     name="Nick Willever"
                     date="1 day ago"
                     review="This is an excellent product, the documentation is excellent and helped me get things done more efficiently."
                     rating={4}
-                />
+                /> */}
                 </Grid>
             </Box>
         </BasicPageLayout>

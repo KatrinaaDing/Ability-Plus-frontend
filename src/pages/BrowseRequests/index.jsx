@@ -39,7 +39,7 @@ const BrowseRequests = () => {
 
     // filter states
     const [ascending, setAscending] = useState(true);
-    const [status, setStatus] = useState('open_for_proposal');
+    const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
     const [whatOrder, setWhatOrder] = useState('ProposalDue');
     const type = 'request';
@@ -120,12 +120,12 @@ const BrowseRequests = () => {
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
                 {
-                    status === 'All'
+                    status === ''
                         ? <p>all status</p>
                         : (
                             <>
                                 status
-                                <StatusBadge statusLabel={status} type='request' size='sm' />
+                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
                             </>
                         )
                 }

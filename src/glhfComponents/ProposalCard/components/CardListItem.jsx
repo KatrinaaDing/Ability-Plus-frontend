@@ -3,45 +3,38 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import TopicIcon from '@mui/icons-material/Topic';
+import FolderIcon from '@mui/icons-material/Folder';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MKTypography from 'components/MKTypography';
 
 const CardListItem = ({title, value, link, color}) => {
     const icons = {
-        'Category': <TopicIcon />,
+        'Category': <FolderIcon />,
         'Project': <AssignmentIcon />,
         'Posted by': <PersonIcon />
     }
 
     return (
-        <ListItem dense alignItems='flex-start'>
-            {/* <ListItemIcon sx={{minWidth: '30px'}}>
+        <ListItem>
+            <ListItemIcon sx={{minWidth: '30px'}}>
                 {icons[title]}
-            </ListItemIcon> */}
+            </ListItemIcon>
             <ListItemText
-            
-                primary={<MKTypography
-                    variant="body2"
-                    color={color === "transparent" || color === "light" ? "text" : "white"}
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        ml: 0.375,
-
-                        "& .material-icons-round": {
-                            ml: -0.375,
-                        },
-                    }}
-                >
-                    {title}: &nbsp;
-                    {
-                        link
-                            ? <Link to={link} target="_blank">
-                                {value}
-                            </Link>
-                            : value
-                    }
-                </MKTypography>}
+                primary={
+                    <MKTypography
+                        variant="body2"
+                        color={color === "transparent" || color === "light" ? "text" : "white"}
+                    >
+                        {/* <b>{title}</b> &nbsp;&nbsp; */}
+                        {
+                            link
+                                ? <Link to={link} target="_blank">
+                                    {value}
+                                </Link>
+                                : value
+                        }
+                    </MKTypography>
+                }
                 
             />
         </ListItem>

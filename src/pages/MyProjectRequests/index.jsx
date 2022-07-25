@@ -177,7 +177,7 @@ const MyProjectRequests = () => {
                         : (
                             <>
                                 status
-                                <StatusBadge statusLabel={status} type='request' size='sm' />
+                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
                             </>
                         )
                 }

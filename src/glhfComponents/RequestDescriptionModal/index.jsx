@@ -58,7 +58,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
                     <MKTypography variant="h5">{value?.title}</MKTypography>
-                    <StatusBadge statusLabel={value.status} type='request' />
+                    <StatusBadge statusLabel={value.status} type='request' position='normal'/>
                 </MKBox>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setOpen(false)} />
             </MKBox>
@@ -93,7 +93,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                <MKButton variant="gradient" color="dark" onClick={() => setOpen(false)}>
+                <MKButton variant="gradient" color="light" onClick={() => setOpen(false)}>
                     Close
                 </MKButton>
                 <MKBox>

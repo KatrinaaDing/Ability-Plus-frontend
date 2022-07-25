@@ -15,11 +15,12 @@ import MKTypography from 'components/MKTypography';
 import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
-import { FcLike } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { statusBank } from 'utils/getStatus';
 import { getCode } from 'utils/getStatus';
 import CardListItem from './components/CardListItem';
+import LikeIcon from './components/LikeIcon';
+
 
 /**
  * 
@@ -47,148 +48,130 @@ value = {
 
 const ProposalCard = ({ data, openDetail, secondary, color }) => {
     const page = window.location.pathname.slice(1)
-    color='light'
-    
+    color = 'light'
+
     const getProcessStatus = () => {
         // has notes or rating => viewed
         if (data.status !== undefined)
             return data.status
-        else if (data.rating > 0 || data.note !== '') 
+        else if (data.rating > 0 || data.note !== '')
             return 1
     }
 
+    const renderStatus = () => {
+        if (!page.startsWith('view-proposals') && data.status)
+            return <StatusBadge type='proposal' statusLabel={data.status} position='top-right' />
+
+        else if (page.startsWith('view-proposals'))
+            return <ProcessStatusBadge status={getProcessStatus()} position='top-right' />
+
+        else
+            return <></>
+    }
 
 
     return (
-        <MKBox
-            variant="contained"
-            bgColor={color === 'light' ? 'white' : color}
-            borderRadius="xl"
-            shadow={color === "transparent" ? "none" : "md"}
-            p={3}
-            sx={{
-                height: '320px'
-            }}
-        >
-            <MKBox lineHeight={1}>
-                <MKTypography
-                    display="block"
-                    variant="h6"
-                    fontWeight="bold"
-                    color={color === "transparent" || color === "light" ? "dark" : "white"}
-                    mb={0.5}
-                >
-                    {data.title}
-                </MKTypography>
-                {
-                    data.lastModified &&
-                    <MKTypography
-                        variant="caption"
-                        fontWeight="regular"
-                        lineHeight={1}
-                        color={color === "transparent" || color === "light" ? "text" : "white"}
-                        sx={{ display: "flex", alignItems: "center" }}
-                    >
-                        <Icon>schedule</Icon>&nbsp;
-                        {new Date(data.lastModified * 1000).toLocaleString()}
-                    </MKTypography>
-
-                }
-            </MKBox>
-            <MKTypography
-                variant="body1"
-                color={color === "transparent" || color === "light" ? "text" : "white"}
-                my={3}
+        <Grid item xs={12} md={6} lg={6} xl={4}>
+            {renderStatus()}
+            <MKBox
+                variant={color === "transparent" ? "contained" : "gradient"}
+                bgColor={color === 'light' ? 'white' : color}
+                borderRadius="xl"
+                shadow={color === "transparent" ? "none" : "md"}
+                px={3}
+                pt={3}
+                pb={1}
                 sx={{
-                    height: '70px'
+                    height: '310px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-evenly',
                 }}
             >
-                &quot;{ data.description } &quot;
-            </MKTypography>
-{/*                     
+
+                <MKBox lineHeight={1}>
+                    <MKTypography
+                        display="block"
+                        variant="h5"
+                        fontWeight="bold"
+                        color={color === "transparent" || color === "light" ? "dark" : "white"}
+                        mb={0.5}
+                    >
+                        {data.title}
+                    </MKTypography>
                     {
-                        // student info/popular page does not show status
-                        // (page.startsWith('student-info') || page.startsWith('popular')) ||
-                        !page.startsWith('view-proposals') && data.status &&
-                            <StatusBadge type='proposal' statusLabel={data.status} size='sm'  />
+                        data.lastModified &&
+                        <MKTypography
+                            variant="caption"
+                            fontWeight="regular"
+                            lineHeight={1}
+                            color={color === "transparent" || color === "light" ? "text" : "white"}
+                            sx={{ display: "flex", alignItems: "center" }}
+                        >
+                            <Icon>schedule</Icon>&nbsp;
+                            {new Date(data.lastModified * 1000).toLocaleString()}
+                        </MKTypography>
+
                     }
-                    {
-                        page.startsWith('view-proposals') &&
-                            <ProcessStatusBadge 
-                                status={getProcessStatus()} 
-                            />
-                    } */}
-                {/* <MKTypography
+                </MKBox>
+                <MKTypography
                     variant="body2"
                     color={color === "transparent" || color === "light" ? "text" : "white"}
+                    my={2}
                     sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        ml: 0.375,
+                        height: '70px',
+                        fontWeight: '500'
 
-                        "& .material-icons-round": {
-                            ml: -0.375,
-                        },
                     }}
                 >
-                    {data.authorName}
-                </MKTypography> */}
+                    &quot; {data.description} &quot;
+                </MKTypography>
                 <List>
-                    {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color}  /> }
-                    {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color}  />}
+                    {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color} />}
+                    {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
                 </List>
-                    {/* {
-                        data.topic &&
-                            <MKTypography variant="caption">Category: {data.topic}</MKTypography>
-                    }
-                    <br/>
-                    {
-                        data.projectName &&
-                        <MKTypography variant="caption">Project: {data.projectName}</MKTypography>
-                    }
-                    {
-                        ((page.startsWith('popular')) || page.startsWith('company/personal') || page.startsWith('view')) &&
-                        <Grid item>
-                            <MKTypography variant="caption">Posted by:
-                                <Link to={`/student-info/${data.authorId}`} target="_blank">
-                                    {data.authorName}
-                                </Link>
-                            </MKTypography>
-                        </Grid>
-                    } */}
-                    {
-                        data.rating &&
-                        <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
 
-                    }
-                    
-            <CardActions>
+                {
+                    data.rating &&
+                    <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
+
+                }
+
                 <MKBox sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'flex-between',
                     width: '-webkit-fill-available'
+
                 }}>
-                    {
-                        (page.startsWith('popular') ||
-                        page.startsWith('student-info') ||
-                        (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
-                            <MKBox display='flex' flexDirection='row' px={3} sx={{mt: 'auto', mb: 'auto'}}>
-                                <FcLike size={20} display='inline-block' />
-                                <MKTypography variant="body2"  display='inline-block'>
-                                    {data.likes}
-                                </MKTypography>
+
+                    <MKBox sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        width: '-webkit-fill-available'
+                    }}>
+
+                        {
+                            (page.startsWith('popular') ||
+                                page.startsWith('student-info') ||
+                                (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
+                            <MKBox display='flex' flexDirection='row' px={3} sx={{ mt: 'auto', mb: 'auto' }}>
+                                <LikeIcon number={data.likes} direction='row' />
                             </MKBox>
-                    }
-                    {
-                        secondary !== undefined
-                            ? secondary
-                            : <MKButton variant="gradient" color="info" size="small" onClick={openDetail}>View Details</MKButton>
-                    }
+                        }
+                        {
+                            secondary !== undefined
+                                ? secondary
+                                : <MKButton variant="outlined" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                        }
+                    </MKBox>
                 </MKBox>
-            </CardActions>
-        </MKBox>
+
+            </MKBox>
+        </Grid>
+
     );
 };
 
