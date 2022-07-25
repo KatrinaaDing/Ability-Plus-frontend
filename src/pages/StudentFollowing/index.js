@@ -129,12 +129,9 @@ const MyFollowingPage = () => {
                             <MKTypography variant="h6">Unfollow Confirm</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setFollow(!follow)} />
                         </MKBox>
-
-                        {/* <Divider sx={{ my: 0 }} /> */}
                         <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center" sx={{py:2}}>
                             Surely Unfollowing?
                         </MKTypography>
-                        {/* <Divider sx={{ my: 0 }} /> */}
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
                             <MKButton variant="gradient" color="light" onClick={ ()=> setFollow(!follow)}>
                                 No
