@@ -126,7 +126,6 @@ const PopularProposals = () => {
                             />
                         }
                     />
-
             }
             {   
                 // TODO render request detail when it's fetched
@@ -141,7 +140,6 @@ const PopularProposals = () => {
                             </MKButton>
                         }
                     />
-
             }
             <AlertModal 
                 open={alertOpen}

@@ -50,8 +50,6 @@ value = {
 
 const ProposalCard = ({ data, openDetail, secondary, color }) => {
     const page = window.location.pathname.slice(1)
-    if (color === undefined)
-        color = 'light'
 
     const getProcessStatus = () => {
         // has notes or rating => viewed
@@ -77,8 +75,8 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
         <Grid item xs={12} md={6} lg={6} xl={4}>
             {renderStatus()}
             <MKBox
-                variant={color === "transparent" ? "contained" : "gradient"}
-                bgColor={color === 'light' ? 'white' : color}
+                variant='contained'//{color === "transparent" ? "contained" : "gradient"}
+                bgColor={color || 'white'}
                 borderRadius="xl"
                 shadow={color === "transparent" ? "none" : "md"}
                 px={3}
@@ -97,7 +95,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                         display="block"
                         variant="h5"
                         fontWeight="bold"
-                        color={color === "transparent" || color === "light" ? "dark" : "white"}
+                        color={!color || color === "transparent" || color === "light" ? "dark" : "white"}
                         mb={0.5}
                     >
                         {data.title}
@@ -108,7 +106,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                             variant="caption"
                             fontWeight="regular"
                             lineHeight={1}
-                            color={color === "transparent" || color === "light" ? "text" : "white"}
+                                color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                             sx={{ display: "flex", alignItems: "center" }}
                         >
                             <Icon>schedule</Icon>&nbsp;
@@ -119,7 +117,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                 </MKBox>
                 <MKTypography
                     variant="body2"
-                    color={color === "transparent" || color === "light" ? "text" : "white"}
+                    color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     my={2}
                     sx={{
                         height: '70px',
