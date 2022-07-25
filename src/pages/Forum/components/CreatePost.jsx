@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 25 Jul 2022
+ * Discription: A button for creating new post
+ */
 import MKButton from 'components/MKButton';
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';

@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 25 Jul 2022
+ * Discription: Posts section in button
+ */
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import MKButton from 'components/MKButton';
 import React from 'react';

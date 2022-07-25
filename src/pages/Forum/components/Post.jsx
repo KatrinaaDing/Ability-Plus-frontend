@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 25 Jul 2022
+ * Discription: A Post item displayed in forum
+ */
 import React from 'react';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Avatar, Divider, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
