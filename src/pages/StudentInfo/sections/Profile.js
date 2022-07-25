@@ -61,17 +61,19 @@ function Profile() {
   const [studentName, setStudentName] = useState("")
 
   /* Get studentInfo by id */
-  useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info?id=${id}`)
-      .then(res => {
-        setDes(JSON.parse(res.data.data.extraData)?.des || '')
-        setAge(JSON.parse(res.data.data.extraData)?.age || '')
-        setEmail(JSON.parse(res.data.data.extraData)?.email || '')
-        setStudentName(res.data.data.fullName)
-        console.log(des, age, email, studentName)
-      })
-      .catch(e => console.error(e))
-  })
+  useEffect(() => {
+    const getInfo = async () => 
+      await axiosPrivate.get(`/user/get_profile_info?id=${id}`)
+        .then(res => {
+          setDes(JSON.parse(res.data.data.extraData)?.des || '')
+          setAge(JSON.parse(res.data.data.extraData)?.age || '')
+          setEmail(JSON.parse(res.data.data.extraData)?.email || '')
+          setStudentName(res.data.data.fullName)
+          console.log(des, age, email, studentName)
+        })
+        .catch(e => console.error(e))
+    getInfo()
+  }, [])
 
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>

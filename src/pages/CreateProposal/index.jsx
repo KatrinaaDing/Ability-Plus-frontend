@@ -26,7 +26,7 @@ import { BASE_URL } from 'api/axios';
 import { statusBank } from 'utils/getStatus';
 
 const TITLE_LIMIT = 32;
-const DESC_LIMIT = 100;
+const DESC_LIMIT = 140;
 
 const sampleContent = {
     title: "Neque porro quisquam",

@@ -70,7 +70,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                             ? <ProcessStatusBadge
                                 status={value.status}  //FIXME 要根据有没有notes和rating判断
                             />
-                            : <StatusBadge statusLabel={value.status} type='proposal' />
+                            : <StatusBadge statusLabel={value.status} type='proposal' position='normal'/>
                         
                     }
                     
@@ -136,7 +136,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                <MKButton variant="gradient" color="dark" onClick={() => setOpen(false)}>
+                <MKButton variant="gradient" color="light" onClick={() => setOpen(false)}>
                     Close
                 </MKButton>
                 <MKBox>

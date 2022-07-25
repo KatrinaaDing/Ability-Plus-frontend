@@ -16,6 +16,7 @@ import useAxiosBasic from 'hooks/useAxiosBasic';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import DefaultReviewCard from 'examples/Cards/ReviewCards/DefaultReviewCard';
 
 const PopularProposals = () => {
     //hooks
@@ -119,13 +120,12 @@ const PopularProposals = () => {
                         value={detailContent}
                         actionButton={
                             <LikeButton 
-                                originLike={detailContent.liked}  // TODO need to fetch if the user has liked the proposal
+                                originLike={detailContent.liked} 
                                 originNumLike={detailContent.likeNum} 
                                 propId={detailContent.id}
                             />
                         }
                     />
-
             }
             {   
                 // TODO render request detail when it's fetched
@@ -140,7 +140,6 @@ const PopularProposals = () => {
                             </MKButton>
                         }
                     />
-
             }
             <AlertModal 
                 open={alertOpen}
@@ -155,24 +154,31 @@ const PopularProposals = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         popularProps.map(p =>
-                            <ProposalCard
-                                key={p.title}       // FIXME 没给id，没法get details
-                                data={{
-                                    id: p.proposalId,
-                                    title: p.title,
-                                    description: p.oneSentenceDescription,
-                                    topic: p.area,
-                                    projectName: p.projectName,
-                                    authorId: p.authorId,
-                                    authorName: p.authorName,
-                   
-                                    likes: p.likeNum
-                                }}
-                                openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
-                            />
+                                <ProposalCard
+                                    key={p.proposalId}
+                                    data={{
+                                        id: p.proposalId,
+                                        title: p.title,
+                                        description: p.oneSentenceDescription,
+                                        topic: p.area,
+                                        projectName: p.projectName,
+                                        authorId: p.authorId,
+                                        authorName: p.authorName,
+                                        lastModified: p.lastModifiedTime,
+                                        likes: p.likeNum
+                                    }}
+                                    openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
+                                />
                         )
                     }
                     
+                {/* <DefaultReviewCard
+                    color="light"
+                    name="Nick Willever"
+                    date="1 day ago"
+                    review="This is an excellent product, the documentation is excellent and helped me get things done more efficiently."
+                    rating={4}
+                /> */}
                 </Grid>
             </Box>
         </BasicPageLayout>

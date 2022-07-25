@@ -177,15 +177,13 @@ const MyProjectRequests = () => {
                         : (
                             <>
                                 status
-                                <StatusBadge statusLabel={status} type='request' size='sm' />
+                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
                             </>
                         )
                 }
                 
             </MKBox> */}
             <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch} type='request'></FilterBar>
-            <br />
-            <br />
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                 {
                     reqs.length === 0
@@ -198,7 +196,6 @@ const MyProjectRequests = () => {
                                 data={{
                                     ...r,
                                     topic: r.area,
-                                    lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
                                 }}
                                 openDetail={() => getProjectDetail(r.id)}
                             />

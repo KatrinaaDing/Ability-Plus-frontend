@@ -209,13 +209,12 @@ const MyProposals = () => {
                             : (
                                 <>
                                     status
-                                    <StatusBadge statusLabel={status} type='request' size='sm' />
+                                    <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
                                 </>
                             )
                     }
                 </MKBox>
-                {/* <p>There are {total} proposals with status </p>
-                <StatusBadge statusLabel={status} type='request' size='sm' /> */}
+       
             </MKBox>
             <br/>
             <Box sx={{ flexGrow: 1 }}>
@@ -224,22 +223,22 @@ const MyProposals = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         props.map(p => 
-                            <ProposalCard
-                                key={p.proposalId}
-                                data={{
-                                    title: p.title,
-                                    status: p.status,
-                                    description: p.oneSentenceDescription,
-                                    topic: p.area,
-                                    authorId: p.authorId,
-                                    authorName: p.authorName,
-                                    lastModified: p.lastModifiedTime,
-                                    likes: p.likeNum,
-                                    id: p.proposalId,
-                                    projectName: p.projectName,
-                                }}
-                                openDetail={() => getPropDetail(p.proposalId, p.projectName)}
-                            />
+                                <ProposalCard
+                                    key={p.proposalId}
+                                    data={{
+                                        title: p.title,
+                                        status: p.status,
+                                        description: p.oneSentenceDescription,
+                                        topic: p.area,
+                                        authorId: p.authorId,
+                                        authorName: p.authorName,
+                                        lastModified: p.lastModifiedTime,
+                                        likes: p.likeNum,
+                                        id: p.proposalId,
+                                        projectName: p.projectName,
+                                    }}
+                                    openDetail={() => getPropDetail(p.proposalId, p.projectName)}
+                                />
                         )
                     }
                 </Grid>

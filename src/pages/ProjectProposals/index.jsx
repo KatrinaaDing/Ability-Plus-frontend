@@ -84,7 +84,7 @@ const getNotes = (id) => {
             break;
 
         case 50:
-            return "Overall is good. The structure can be imporved"
+            return "Overall is good. The structure can be better. Overall is good. Thimporved Overall is good. The structure can be imporved"
             break;
 
         default:
@@ -299,7 +299,7 @@ const ProjectProposals = () => {
                                 authorName: p.authorName,
                                 rating: p.rating,
                                 status: p.status,   // FIXME: hardcode status
-                                note: ''              // FIXME: 目前api没有返回公司的note
+                                comment: getNotes(p.id)              // FIXME: 目前api没有返回公司的note
                             }}
                             openDetail={() => getPropDetail(p.id)}
                             secondary={

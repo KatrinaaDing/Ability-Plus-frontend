@@ -40,9 +40,9 @@ const ProcessStatusBadge = props => {
             container
             variant='contained'
             sx={{
-                ml: 2,
                 mt: 'auto',
-                mb: 'auto',
+                ml: props.position === 'top-right' ? 3 : 4,
+                mb: props.position === 'top-right' ? -4 : 'auto', 
             }}
         />
     );
@@ -50,6 +50,7 @@ const ProcessStatusBadge = props => {
 
 ProcessStatusBadge.propTypes = {
     status: PropTypes.oneOf([...Array(5).keys()]),
+    position: PropTypes.oneOf(['top-right', 'normal']),
     
 }
 

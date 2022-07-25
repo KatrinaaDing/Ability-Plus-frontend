@@ -37,9 +37,10 @@ const StatusBadge = props => {
             container
             variant={props.variant || 'contained'}
             sx={{ 
-                ml: 2, 
-                mt: 'auto', 
-                mb: 'auto', 
+                // mt: props.position === 'top-right' ? 8 : 'auto', 
+                mt: 'auto',
+                ml: props.position === 'top-right' ? 1 : 2,
+                mb: props.position === 'top-right' ? -5 : 'auto', 
             }}
         />
     );
@@ -49,6 +50,7 @@ StatusBadge.propTypes = {
     statusLabel: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['proposal', 'request']).isRequired,
     size: PropTypes.string,
+    position: PropTypes.oneOf(['top-right', 'normal']),
     variant: PropTypes.oneOf(['gradient', 'contained'])
 };
 
