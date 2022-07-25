@@ -48,7 +48,7 @@ const PopularProposals = () => {
         setIsAcendingOrderLike(like)
     }
 
-    useEffect(async () => {
+    useEffect( () => {
         let params = {
             isAscendingOrderLike: isAscendingOrderLike,
             isAscendingOrderTime: ascending,
@@ -56,13 +56,17 @@ const PopularProposals = () => {
             pageSize: 20,
             searchKey: searchKey,
         }
-        await axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
-            params: new URLSearchParams(params),
-        })
-        .then(res => {
-            setPopularProps(res.data.records)
-        })
-        .catch(e => console.error(e))
+
+        const listOutstandingProposal = async () =>
+            await axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
+                params: new URLSearchParams(params),
+            })
+            .then(res => {
+                setPopularProps(res.data.records)
+            })
+            .catch(e => console.error(e))
+        
+        listOutstandingProposal();
     
     }, [ascending, isAscendingOrderLike, searchKey])
     

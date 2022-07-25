@@ -88,6 +88,7 @@ const MyFollowingPage = () => {
                                     </MKButton>
                                 </IconButton>
                             }
+                            alignItems="flex-start"
                             sx={{ my: 4 }}
                         >
                             <ListItemAvatar>
