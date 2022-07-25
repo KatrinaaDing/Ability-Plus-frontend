@@ -72,23 +72,9 @@ const BrowseRequests = () => {
                 searchKey: searchKey
             })
         }
-<<<<<<< HEAD
         const getAllRequest = async() =>
             await axiosPrivate.get('/project/list_all_project_requests/', {
                 params: params
-=======
-        console.log(params)
-        await axiosPrivate.get('/project/list_all_project_requests', {
-            params: params
-        })
-            .then(res => {
-                console.log(res)
-                setReqs(res.data.records)
-                setTotal(res.data.total)
-            })
-            .catch(e => {
-                console.error(e)
->>>>>>> main
             })
                 .then(res => {
                     console.log(res)

@@ -3,7 +3,7 @@
  * Created At: 13 Jul 2022
  * Discription: A card to demo proposal
  */
-import { Checkbox, Icon, List } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -19,7 +19,6 @@ import { FcLike } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { statusBank } from 'utils/getStatus';
 import { getCode } from 'utils/getStatus';
-import CardListItem from './components/CardListItem';
 
 /**
  * 
@@ -45,10 +44,9 @@ value = {
  */
 
 
-const ProposalCard = ({ data, openDetail, secondary, color }) => {
+const ProposalCard = ({ data, openDetail, secondary }) => {
     const page = window.location.pathname.slice(1)
-    color='light'
-    
+
     const getProcessStatus = () => {
         // has notes or rating => viewed
         if (data.status !== undefined)
@@ -57,55 +55,13 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
             return 1
     }
 
-
-
     return (
-        <MKBox
-            variant="contained"
-            bgColor={color === 'light' ? 'white' : color}
-            borderRadius="xl"
-            shadow={color === "transparent" ? "none" : "md"}
-            p={3}
-            sx={{
-                height: '320px'
-            }}
-        >
-            <MKBox lineHeight={1}>
-                <MKTypography
-                    display="block"
-                    variant="h6"
-                    fontWeight="bold"
-                    color={color === "transparent" || color === "light" ? "dark" : "white"}
-                    mb={0.5}
-                >
-                    {data.title}
-                </MKTypography>
-                {
-                    data.lastModified &&
-                    <MKTypography
-                        variant="caption"
-                        fontWeight="regular"
-                        lineHeight={1}
-                        color={color === "transparent" || color === "light" ? "text" : "white"}
-                        sx={{ display: "flex", alignItems: "center" }}
-                    >
-                        <Icon>schedule</Icon>&nbsp;
-                        {new Date(data.lastModified * 1000).toLocaleString()}
+        <Card sx={{ width: 400, margin: '10px' }}>
+            <CardContent>
+                <Grid container item justifyContent="flex-start" xs={10} sx={{display: 'flex', flexDirection: 'column'}}>
+                    <MKTypography gutterBottom variant="h5" sx={{mt: 'auto', mb: 'auto', py: 1.5}}>
+                        {data.title}
                     </MKTypography>
-
-                }
-            </MKBox>
-            <MKTypography
-                variant="body1"
-                color={color === "transparent" || color === "light" ? "text" : "white"}
-                my={3}
-                sx={{
-                    height: '70px'
-                }}
-            >
-                &quot;{ data.description } &quot;
-            </MKTypography>
-{/*                     
                     {
                         // student info/popular page does not show status
                         // (page.startsWith('student-info') || page.startsWith('popular')) ||
@@ -117,28 +73,13 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                             <ProcessStatusBadge 
                                 status={getProcessStatus()} 
                             />
-                    } */}
-                {/* <MKTypography
-                    variant="body2"
-                    color={color === "transparent" || color === "light" ? "text" : "white"}
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        ml: 0.375,
-
-                        "& .material-icons-round": {
-                            ml: -0.375,
-                        },
-                    }}
-                >
-                    {data.authorName}
-                </MKTypography> */}
-                <List>
-                    {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color}  /> }
-                    {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color}  />}
-                    {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
-                </List>
-                    {/* {
+                    }
+                </Grid>
+                <MKTypography variant="body2" color="secondary" >
+                    {data.description}
+                </MKTypography>
+                <Grid>
+                    {
                         data.topic &&
                             <MKTypography variant="caption">Category: {data.topic}</MKTypography>
                     }
@@ -156,13 +97,20 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                                 </Link>
                             </MKTypography>
                         </Grid>
-                    } */}
+                    }
                     {
                         data.rating &&
                         <MKTypography variant="caption">Rating: {data.rating}</MKTypography>
 
                     }
-                    
+                    {
+                        data.lastModified &&
+                        <Grid item>
+                            <MKTypography variant="caption">Last Modification Date: {new Date(data.lastModified*1000).toLocaleString()}</MKTypography>
+                        </Grid>
+                    }
+                </Grid>
+            </CardContent>
             <CardActions>
                 <MKBox sx={{
                     display: 'flex',
@@ -188,7 +136,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     }
                 </MKBox>
             </CardActions>
-        </MKBox>
+        </Card>
     );
 };
 

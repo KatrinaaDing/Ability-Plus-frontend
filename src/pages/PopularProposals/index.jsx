@@ -16,6 +16,7 @@ import useAxiosBasic from 'hooks/useAxiosBasic';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import DefaultReviewCard from 'examples/Cards/ReviewCards/DefaultReviewCard';
 
 const PopularProposals = () => {
     //hooks
@@ -155,24 +156,32 @@ const PopularProposals = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         popularProps.map(p =>
-                            <ProposalCard
-                                key={p.title}       // FIXME 没给id，没法get details
-                                data={{
-                                    id: p.proposalId,
-                                    title: p.title,
-                                    description: p.oneSentenceDescription,
-                                    topic: p.area,
-                                    projectName: p.projectName,
-                                    authorId: p.authorId,
-                                    authorName: p.authorName,
-                   
-                                    likes: p.likeNum
-                                }}
-                                openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
-                            />
+                            <Grid item key={p.proposalId} xs={12} md={6} lg={4} xl={4}>
+                                <ProposalCard
+                                    data={{
+                                        id: p.proposalId,
+                                        title: p.title,
+                                        description: p.oneSentenceDescription,
+                                        topic: p.area,
+                                        projectName: p.projectName,
+                                        authorId: p.authorId,
+                                        authorName: p.authorName,
+                                        lastModified: p.lastModifiedTime,
+                                        likes: p.likeNum
+                                    }}
+                                    openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
+                                />
+                            </Grid>
                         )
                     }
                     
+                <DefaultReviewCard
+                    color="light"
+                    name="Nick Willever"
+                    date="1 day ago"
+                    review="This is an excellent product, the documentation is excellent and helped me get things done more efficiently."
+                    rating={4}
+                />
                 </Grid>
             </Box>
         </BasicPageLayout>
