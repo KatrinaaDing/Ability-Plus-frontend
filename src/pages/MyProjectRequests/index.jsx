@@ -41,38 +41,40 @@ const MyProjectRequests = () => {
     const [reqDetail, setReqDetail] = useState({})
 
     // searching state
-    const [ascending, setAscending] = useState(true);
+    const [ascending, setAscending] = useState(false);
     const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
-    useEffect(async () => {
+    useEffect( () => {
         let params = {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 20,
-            searchKey: searchKey
+            searchKey: searchKey,
         }
-
-        await axiosPrivate.get(`/project/list_my_project_request`, {
-            params:  new URLSearchParams(params)
-        })
-            .then(res => {
-                res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
-                // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
-                if (status !== 'all'){
-                    const filteredData = res.data.data.records.filter(e => e.status == status)
-                    setReqs(filteredData)
-                    setTotal(filteredData.length)
-                } else {
-                    setReqs(res.data.data.records)
-                    setTotal(res.data.data.total)
-
-                }
+        const getMyReqeusts = async () =>
+            await axiosPrivate.get(`/project/list_my_project_request`, {
+                params:  new URLSearchParams(params)
             })
-            .catch(e => {
-                console.error(e)
-            })
+                .then(res => {
+                    // res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
+                    // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
+                    // if (status !== 'all'){
+                    //     const filteredData = res.data.data.records.filter(e => e.status == status)
+                    //     setReqs(filteredData)
+                    //     setTotal(filteredData.length)
+                    // } else {
+                        setReqs(res.data.data.records)
+                        setTotal(res.data.data.total)
+
+                    // }
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
+        getMyReqeusts();
 
     }, [ascending, status, searchKey])
 
@@ -167,7 +169,7 @@ const MyProjectRequests = () => {
                 />
             }
 
-            <MKBox display='flex'>
+            {/* <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
                 {
                     status === 'all'
@@ -180,9 +182,11 @@ const MyProjectRequests = () => {
                         )
                 }
                 
-            </MKBox>
-            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch}></FilterBar>
-            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            </MKBox> */}
+            <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch} type='request'></FilterBar>
+            <br />
+            <br />
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                 {
                     reqs.length === 0
                         ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -193,6 +197,7 @@ const MyProjectRequests = () => {
                                 key={r.id}
                                 data={{
                                     ...r,
+                                    topic: r.area,
                                     lastModification: new Date(reqDetail.lastModifiedTime * 1000).toLocaleString()
                                 }}
                                 openDetail={() => getProjectDetail(r.id)}

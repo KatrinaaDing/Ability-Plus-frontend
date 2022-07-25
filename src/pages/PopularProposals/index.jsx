@@ -7,21 +7,27 @@ import LikeButton from 'glhfComponents/LikeButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
 import { useState, useEffect } from 'react';
 import { statusBank } from 'utils/getStatus';
-import axios from 'axios';
 import { BASE_URL } from 'api/axios';
+import useAxiosBasic from 'hooks/useAxiosBasic';
+import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
+import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 const PopularProposals = () => {
     //hooks
     const { auth } = useAuth();
     const navigate = useNavigate();
+    const axiosBasic = useAxiosBasic();
     const axiosPrivate = useAxiosPrivate();
+    const location = useLocation();
 
     // info display states
+    const [reqOpen, setReqOpen] = React.useState(false);
+    const [reqContent, setReqContent] = React.useState();
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
@@ -42,65 +48,97 @@ const PopularProposals = () => {
         setIsAcendingOrderLike(like)
     }
 
-    useEffect(async () => {
+    useEffect( () => {
         let params = {
             isAscendingOrderLike: isAscendingOrderLike,
             isAscendingOrderTime: ascending,
             pageNo: 1,
             pageSize: 20,
-            // searchKey: searchKey,
+            searchKey: searchKey,
         }
-        console.log(params)
-        await axiosPrivate.get(`/proposal/list_outstanding_proposal_request`, {
-            params: new URLSearchParams(params)
-        })
-        .then(res => {
-            setPopularProps(res.data.data.records)
-        })
-        .catch(e => console.error(e))
+
+        const listOutstandingProposal = async () =>
+            await axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
+                params: new URLSearchParams(params),
+            })
+            .then(res => {
+                setPopularProps(res.data.records)
+            })
+            .catch(e => console.error(e))
+        
+        listOutstandingProposal();
     
     }, [ascending, isAscendingOrderLike, searchKey])
     
-    console.log(popularProps)
-
-    const handleOpenDetail = () => {
+    const handleOpenDetail = async (id, projectName) => {
         // if no login info, navigate to login
         if (!auth || Object.keys(auth).length === 0) {
             setAlertOpen(true)
-            // alert('please log in')
         
-
-        // if user logged in, open detail
         } else {
-            setDetailContent({
-                id: 5,
-                title: 'title 1',
-                status: statusBank.proposal.approved.label,
-                desc: "sample description",
-                prob: 'problem',
-                vStat: 'state',
-                goal: '1., 2.,..',
-                detail: 'detail haha',
-                metaData: {
-                    lastModified: new Date().getTime()/1000,
-                    authorName: 'Student M',
-                    authorId: 9,
-                    topic: 'project topic'
-                }
-            })
-            setDetailOpen(true)
+            await axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`,)
+                .then(res => {
+                    axiosPrivate.get(`/user_proposal_like_record/already_like?proposalId=${id}`)
+                        .then(liked => {
+                            const prop = res.data.data
+                            prop.extraData = JSON.parse(prop.extraData)
+                            setDetailContent({
+                                id: prop.id,
+                                liked: liked.data.data,
+                                title: prop.title,
+                                status: prop.status,
+                                desc: prop.oneSentenceDescription,
+                                prob: prop.extraData.problemStatement,
+                                vStat: prop.extraData.visionStatement,
+                                goal: prop.extraData.goal,
+                                detail: prop.extraData.detail,
+                                likeNum: prop.likeNum,
+                                metaData: {
+                                    lastModified: prop.lastModifiedTime,
+                                    authorName: prop.creatorName,
+                                    authorId: prop.creatorId,
+                                    project: projectName
+                                }
+                            })
+                            setDetailOpen(true)
+                        })
+                        .catch(e => console.error(e))
+                })
+                .catch(e => console.error(e))
         }
     }
 
     return (
         <BasicPageLayout title='Popular Proposals'>
             {
+                // render proposal detail when it's fetched
                 detailContent &&
                     <ProposalDescriptionModal
                         open={detailOpen}
                         setOpen={setDetailOpen}
                         value={detailContent}
-                        actionButton={<LikeButton originLike={false} originNumLike={23} />}
+                        actionButton={
+                            <LikeButton 
+                                originLike={detailContent.liked}  // TODO need to fetch if the user has liked the proposal
+                                originNumLike={detailContent.likeNum} 
+                                propId={detailContent.id}
+                            />
+                        }
+                    />
+
+            }
+            {   
+                // TODO render request detail when it's fetched
+                reqContent && 
+                    <RequestDescriptionModal    
+                        open={reqOpen}
+                        setOpen={setReqOpen}
+                        value={reqContent}
+                        actionButton={
+                            <MKButton>
+                                View Proposal Ranks
+                            </MKButton>
+                        }
                     />
 
             }
@@ -109,7 +147,7 @@ const PopularProposals = () => {
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
-                handleConfirm={() => navigate('/authentication/sign-in')}
+                handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true})}
             />
             <Box sx={{ flexGrow: 1 }}>
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={ handleDate} handleSearch={ handleSearch}></LikeDateSearchFilter>
@@ -120,16 +158,17 @@ const PopularProposals = () => {
                             <ProposalCard
                                 key={p.title}       // FIXME 没给id，没法get details
                                 data={{
+                                    id: p.proposalId,
                                     title: p.title,
                                     description: p.oneSentenceDescription,
                                     topic: p.area,
                                     projectName: p.projectName,
                                     authorId: p.authorId,
                                     authorName: p.authorName,
-                                    lastModified: p.lastModifiedTime,
+                   
                                     likes: p.likeNum
                                 }}
-                                openDetail={() => handleOpenDetail()}
+                                openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
                             />
                         )
                     }

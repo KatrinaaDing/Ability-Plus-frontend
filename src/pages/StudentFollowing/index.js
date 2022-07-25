@@ -26,6 +26,7 @@ import axios from "axios";
 import useAuth from "auth/useAuth";
 import axiosBasic from "api/axios";
 import { BASE_URL } from 'api/axios';
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 const MyFollowingPage = () => {
     const {auth, setAuth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
@@ -34,20 +35,24 @@ const MyFollowingPage = () => {
     const [followChanged, setFollowChanged] = useState(false);
     const [currentClick, setCurrentClick] = useState('');
     
-    useEffect(async () =>  {
-        await axiosPrivate.get(`/student_following/all`)
-        .then(res => {
-            setFollowList(res.data.data)
-        })
-        .catch(e=>{
-            console.error(e)
-        })
+    useEffect( () =>  {
+        const listFollowing = async() =>
+            await axiosPrivate.get(`/student_following/all`)
+            .then(res => {
+
+                setFollowList(res.data.data)
+            })
+            .catch(e=>{
+                console.error(e)
+            })
+        
+        listFollowing()
     }, [followChanged])
     
     const handleFollow = async (event) => {
         if (Object.is(event.target.name, "confirm")) {
             try {
-                const response = await fetch(`${BASE_URL}student_following/${currentClick}`, {
+                const response = await fetch(`${BASE_URL}/student_following/${currentClick}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -71,20 +76,41 @@ const MyFollowingPage = () => {
 
     return (
         <BasicPageLayout title="My Followings">
-            <Grid container item justifyContent="space-around" xs={10}>
+            <List sx={{ width: '100%', px: 3 }}>
                 {
-                    followList.map(f => (
-                        <MKBox key={f.name}>
-                            <MKTypography variant="h5" color="text" fontWeight="bold" textTransform="uppercase">
-                                {f.companyName}
-                            </MKTypography>
-                            <MKButton variant="outlined" color="info" size="small" onClick={() => handleSetCurFollow(f)}>
-                                Unfollow
-                            </MKButton>
-                        </MKBox>
-                    ))
+                    followList.map(f => 
+                        <ListItem
+                            key={f.companyName}
+                            secondaryAction={
+                                <IconButton edge="end" aria-label="delete" onClick={() => handleSetCurFollow(f)}>
+                                    <MKButton variant="outlined" color="info">
+                                        Unfollow
+                                    </MKButton>
+                                </IconButton>
+                            }
+                            alignItems="flex-start"
+                            sx={{ my: 4 }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar alt={f.companyName} src="/src/assets/images/profile-avatars/company.png" />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Link to={`/company-info/${f.id}`} target="_blank">
+                                        {f.companyName}
+                                    </Link>
+                                }
+                                secondary={
+                                    <>
+                                        Followed At: {new Date(f.followTime*1000).toLocaleString()} <br/>
+                                        Opening Projects: {f.openingProjectNum}
+                                    </>
+                                }
+                            />
+                        </ListItem>
+                    )
                 }
-            </Grid>
+            </List>
             <Modal open={follow} onClose={()=> setFollow(!follow)} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={follow} timeout={500}>
                     <MKBox

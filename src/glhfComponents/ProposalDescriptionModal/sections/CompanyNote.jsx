@@ -3,16 +3,19 @@
  * Created At: 05 Jul 2022
  * Discription: Section for company to take note for a proposal
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKInput from 'components/MKInput';
 import SavingLoader from 'glhfComponents/SavingLoader';
 
-const CompanyNote = () => {
+const CompanyNote = ({content}) => {
     let [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success, 2: fail
     let [note, setNote] = React.useState('');
 
+    useEffect(() => {
+        setNote(content)
+    }, [])
 
     const setValue = (e) => {
         setNote(e.target.value)

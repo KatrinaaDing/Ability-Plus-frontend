@@ -37,7 +37,7 @@ value = {
     title,
     status,
     description,
-    topic,
+    topic/area,
     authorName,
     authorId,
     lastModification,
@@ -71,7 +71,7 @@ const RequestCard = ({ data, openDetail }) => {
         </MKButton>
 
     return (
-        <Card sx={{ minWidth: 345, margin: '10px' }}>
+        <Card sx={{ width: 400, margin: '10px' }}>
             <CardContent>
                 <Grid container item justifyContent="flex-start" xs={10}>
                     <MKTypography gutterBottom variant="h5" sx={{ mt: 'auto', mb: 'auto', py: 1.5 }}>
@@ -83,9 +83,15 @@ const RequestCard = ({ data, openDetail }) => {
                     {data.description.substring(0, 50)}
                 </MKTypography> */}
                 <Grid>
-                    <Grid item>
-                        <MKTypography variant="caption">Topic: &nbsp;{data.topic ?? getRandomCategory()}</MKTypography>
-                    </Grid>
+                    {
+                        (data.topic || data.area) &&
+                            <Grid item>
+                                <MKTypography variant="caption">
+                                    Category: &nbsp; {data.topic ?? data.area }
+                                </MKTypography> 
+                            </Grid>
+
+                    }
                     {
                         page.indexOf('browse') >= 0 &&
                         <Grid item>

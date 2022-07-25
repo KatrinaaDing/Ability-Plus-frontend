@@ -38,7 +38,7 @@ import Box from '@mui/material/Box';
 
 //Other components
 import useAuth from "auth/useAuth";
-import profilePicture from "assets/images/bruce-mars.jpg";
+import profilePicture from "assets/images/profile-avatars/student.png";
 import { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -62,12 +62,13 @@ function Profile() {
 
   /* Get studentInfo by id */
   useEffect( async () => {
-    await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
+    await axiosPrivate.get(`/user/get_profile_info?id=${id}`)
       .then(res => {
-        setDes(JSON.parse(res.data.data.extraData).des)
-        setAge(JSON.parse(res.data.data.extraData).age)
-        setEmail(JSON.parse(res.data.data.extraData).email)
+        setDes(JSON.parse(res.data.data.extraData)?.des || '')
+        setAge(JSON.parse(res.data.data.extraData)?.age || '')
+        setEmail(JSON.parse(res.data.data.extraData)?.email || '')
         setStudentName(res.data.data.fullName)
+        console.log(des, age, email, studentName)
       })
       .catch(e => console.error(e))
   })
@@ -93,26 +94,32 @@ function Profile() {
               </MKBox>
               <Grid container spacing={3} mb={3}>
                 <Grid item>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
                     {email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
+                  </div>
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
                     Age&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
                     {age}
                   </MKTypography>
+                  </div>
                 </Grid>
               </Grid>
-              <MKTypography component="span" variant="body2" fontWeight="bold">
+              <div>
+                <MKTypography component="span" variant="body2" fontWeight="bold">
                 Description&nbsp;&nbsp;
-              </MKTypography>
+                </MKTypography>
               <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                {des}
+                {des === '' ? 'NA': des}
               </MKTypography>
+              </div>
             </Grid>
           </Grid>
         </Grid>   

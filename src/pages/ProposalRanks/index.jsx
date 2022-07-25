@@ -1,46 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultFooter from "examples/Footers/DefaultFooter";
-import footerRoutes from "footer.routes";
-import MKBox from "components/MKBox";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import MKTypography from "components/MKTypography";
 import Box from '@mui/material/Box';
 import { useParams } from "react-router-dom";
 import ProposalRank from "glhfComponents/ProposalRank";
-import StatusBadge from "glhfComponents/StatusBadge";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
-import axios from "axios";
 import useAuth from "auth/useAuth";
-import { BASE_URL } from "api/axios";
-import MKButton from "components/MKButton";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
-import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import LikeButton from "glhfComponents/LikeButton";
-import { BulletList } from 'react-content-loader'
-
-
-const sampleProps = [
-    {
-        id: 32,
-        rank: 1,
-        title: 'title1',
-        description: 'description1',
-        author: 'author1',
-        like: 100
-    },
-    {
-        id: 31,
-        rank: 2,
-        title: 'title2',
-        description: 'description2',
-        author: 'author2',
-        like: 10
-    }
-]
+import ProjectDetailBtn from "glhfComponents/ProjectDetailBtn";
 
 
 const ProposalRanks = () => {
@@ -52,59 +21,51 @@ const ProposalRanks = () => {
     const [statusCode, setStatusCode] = useState(0);
     const [proposals, setProposals] = useState([])
     
-    // detail modal states
+    // proposal and request state
     const [propDetail, setPropDetail] = useState();
     const [propDetailOpen, setPropDetailOpen] = useState(false);
-    const [reqDetail, setReqDetail] = useState();
+    const [reqName, setReqName] = useState('');
     const [reqDetailOpen, setReqDetailOpen] = useState(false);
+
+    // filter bar states
+    const [searchKey, setSearchKey] = useState('')
 
     //need to use request id to (requestname, status, a list of ranks)
 
 
-    useEffect(async () => {
-        await axiosPrivate.get('/project/get_project_info', {
-            params: new URLSearchParams({
-                id: parseInt(projectId)
-            })
-        })
-            .then(res =>
-                setReqDetail({
-                    ...res.data.data,
-                    id: projectId,
+    useEffect( () => {
+        const listApprovedProposals = async() =>
+            await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
+                params: new URLSearchParams({
+                    isAscendingOrder: true,
+                    pageNo: 1,
+                    pageSize: 20,
+                    projectId: projectId,
+                    searchKey: searchKey
                 })
-            )
-            .catch(e => console.error(e))
-        await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
-            params: new URLSearchParams({
-                isAscendingOrder: true,
-                pageNo: 1,
-                pageSize: 20,
-                projectId: projectId
             })
-        })
-            .then(res => {
-                if (res.data.data.status >= 400)
-                    return Promise.reject(res)
-                // setProposals(res.data.data.records)
-                setProposals(sampleProps) // FIXME
-            })
-            .catch(e => console.error(e))
+                .then(res => {
+                    setProposals(res.data.data.records)
+                })
+                .catch(e => console.error(e))
+            
 
+        listApprovedProposals()
         
     }, [])
 
     const getPropDetail = async (id) => {
         await axiosPrivate.get(`/proposal/get_proposal_detail_info`, {
             params: new URLSearchParams({
-                proposalId: parseInt(id)
+                proposalId: id
             })
         })
             .then(res => {
-                console.log(res)
                 res.data.data.extraData = JSON.parse(res.data.data.extraData)
                 setPropDetail({
                     ...res.data.data, 
                     id,
+                    status: 'approved'
                     // status: 
                 })
             })
@@ -112,26 +73,16 @@ const ProposalRanks = () => {
             .catch(e => console.error(e))
     }
 
-    if (reqDetail === undefined) {
-        return (
-            <BasicPageLayout
-                title="Loading content. Please wait..."
-            >
-                <BulletList />
-            </BasicPageLayout>
-        )
-    }
-    console.log(reqDetail)
     return (
         <BasicPageLayout 
-            title={`View Request Ranking for project "${reqDetail.name}"`} 
+            title={`View Request Ranking for project "${reqName}"`} 
             secondaryContent={
-                <MKButton
-                    color='info'
-                    onClick={() => setReqDetailOpen(true)}
-                >
-                    View Request Detail
-                </MKButton>
+                <ProjectDetailBtn
+                    setReqName={setReqName}
+                    projectId={projectId}
+                    open={reqDetailOpen}
+                    setOpen={setReqDetailOpen}
+                />
             }
         >
             {
@@ -153,40 +104,12 @@ const ProposalRanks = () => {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
                             authorId: propDetail.creatorId,
-                            topic: reqDetail.name
+                            project: reqName
                         }
                     }}
                     actionButton={
-                        <LikeButton originLike={false} originNumLike={23} />
+                        <LikeButton originLike={false} originNumLike={propDetail.likeNum} />
                     }
-                />
-            }
-            {
-                reqDetailOpen &&
-                <RequestDescriptionModal
-                    open={reqDetailOpen}
-                    setOpen={setReqDetailOpen}
-                    value={{
-                        id: reqDetail.id,
-                        title: reqDetail.name,
-                        status: reqDetail.status,
-                        category: reqDetail.projectArea,
-                        propDdl: reqDetail.proposalDdl * 1000,
-                        soluDdl: reqDetail.solutionDdl * 1000,
-                        description: reqDetail.description,
-                        requirement: JSON.parse(reqDetail.extraData).requirement,
-                        rewards: JSON.parse(reqDetail.extraData).rewards,
-                        metaData: {
-                            lastModified: reqDetail.lastModifiedTime * 1000,
-                            authorName: reqDetail.creatorName,
-                            authorId: reqDetail.creatorId,
-                            contactEmail: reqDetail.contactEmail,
-                        }
-                    }}
-                    actionButton={
-                        <></>
-                    }
-
                 />
             }
             <Container>

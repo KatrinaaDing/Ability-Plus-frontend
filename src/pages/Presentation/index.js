@@ -107,24 +107,11 @@ function Presentation() {
                 variant="gradient"
                 color="info"
                 icon="flag"
-                title="Getting Started"
-                description="Check the possible ways of working with our product and the necessary files for building your own project."
+                title="Popular Proposals"
+                description="Get inspiration and have an overview about the proposals that submitted by talent students."
                 action={{
-                  type: "external",
-                  route: "https://www.creative-tim.com/learning-lab/react/overview/material-kit/",
-                  label: "Let's start",
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <FilledInfoCard
-                color="info"
-                icon="precision_manufacturing"
-                title="Plugins"
-                description="Get inspiration and have an overview about the plugins that we used to create the Material Kit."
-                action={{
-                  type: "external",
-                  route: "https://www.creative-tim.com/learning-lab/react/overview/datepicker/",
+                  type: "internal",
+                  route: "/popular-proposals",
                   label: "Read more",
                 }}
               />
@@ -133,15 +120,39 @@ function Presentation() {
               <FilledInfoCard
                 color="info"
                 icon="apps"
-                title="Components"
-                description="Material Kit is giving you a lot of pre-made components, that will help you to build UI's faster."
+                title="Have an account?"
+                description={
+                  <>
+                    Browse today's new project request and deliver your ideas to them!
+                    <br/><br/>
+                  </>
+                }
                 action={{
-                  type: "external",
-                  route: "https://www.creative-tim.com/learning-lab/react/alerts/material-kit/",
-                  label: "Read more",
+                  type: "internal",
+                  route: "/authentication/sign-in",
+                  label: "Sign In",
                 }}
               />
             </Grid>
+            <Grid item xs={12} lg={4}>
+              <FilledInfoCard
+                color="info"
+                icon="precision_manufacturing"
+                title="Getting Started"
+                description={
+                  <>
+                    Register and start from today.
+                    <br/><br/><br/>
+                  </>
+                }
+                action={{
+                  type: "internal",
+                  route: "/authentication/sign-up",
+                  label: "Register",
+                }}
+              />
+            </Grid>
+            
           </Grid>
         </Container>
         

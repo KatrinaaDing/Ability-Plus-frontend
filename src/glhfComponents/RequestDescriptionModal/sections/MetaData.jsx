@@ -12,11 +12,11 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import EmailIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
+import MKButton from 'components/MKButton';
 
 
-const MetaData = ({ metaData }) => {
+const MetaData = ({ metaData, id }) => {
     const listItemSx = { p: 0.5 }
-
     return (
         <List>
             <ListItem sx={listItemSx}>
@@ -67,6 +67,17 @@ const MetaData = ({ metaData }) => {
                         />
                 </ListItem>
             }
+            <ListItem sx={listItemSx}>
+                <MKButton 
+                    variant='outlined' 
+                    color='info' 
+                    size='small' 
+                    sx={{ my: 1, width: '89%' }}
+                    onClick={() => window.open(`/forum/${id}`)}
+                >
+                    View Forum
+                </MKButton>
+            </ListItem>
         </List>
     );
 };

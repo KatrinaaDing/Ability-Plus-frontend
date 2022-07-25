@@ -15,7 +15,6 @@ import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
-import RequestFilter from "glhfComponents/RequestFilter";
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 import { BASE_URL } from 'api/axios';
@@ -23,9 +22,13 @@ import axios from 'axios';
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 const BrowseRequests = () => {
     // hooks
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     // request states
@@ -45,6 +48,7 @@ const BrowseRequests = () => {
         setAscending(ascending)
     }
     const handleStatus = (status) => {
+        console.log(status)
         setStatus(status)
     }
     const handleSearch = (key) => {
@@ -54,41 +58,51 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-    useEffect(async () => {
+    useEffect(() => {
         const params = new URLSearchParams({
-            status: status,
+            status: status.toLowerCase(),
             isAscendingOrder: ascending,
             pageNo: 1,
             pageSize: 10,
             whatOrder: whatOrder,
             searchKey: searchKey
         })
-        await axios.get(`${BASE_URL}/project/list_all_project_requests`, {
-            params: params,
-            headers: {
-                token: auth.accessToken
-            }
-        })
-            .then(res => {
-                setCards(res.data.data.records)
-                setTotal(res.data.data.total)
-                console.log('get all request with status [', status, ']')
+        const listAllRequest = async () =>
+            await axiosPrivate.get(`/project/list_all_project_requests`, {
+                params: params,
             })
-            .catch(e => console.error(e))
+                .then(res => {
+                    setCards(res.data.data.records)
+                    setTotal(res.data.data.total)
+                })
+                .catch(e => console.error(e))
+
+        listAllRequest()
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
-        await axios.get(`${BASE_URL}/project/get_project_info?id=${reqId}`, {
-            headers: {
-                token: auth.accessToken
-            }
-        })
-            .then(res => {
-                if (res.data.status >= 400)
-                    return Promise.reject(res.data.message)
-                setReqDetail({ ...res.data.data, id: reqId })
+        await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
+            .then((res) => {
+                if (!auth.isCompany)
+                    axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
+                        .then(canProcess => 
+                            setReqDetail({ 
+                                ...res.data.data, 
+                                id: reqId,
+                                mySubmittedProposal: canProcess.data.data
+                            })
+                        )
+                        .then(res => setReqOpen(true))
+                        .catch(e => console.error(e))
+                else
+                    setReqDetail({
+                        ...res.data.data,
+                        id: reqId,
+                    })
+                    setReqOpen(true)
+                
             })
-            .then(res => setReqOpen(true))
+            
             .catch(e => console.error(e))
 
     const renderRequestCards = () => {
@@ -101,13 +115,12 @@ const BrowseRequests = () => {
         )
     }
 
-
     return (
         <BasicPageLayout title="Browse All Project Requests">
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
                 {
-                    status === ''
+                    status === 'All'
                         ? <p>all status</p>
                         : (
                             <>
@@ -118,6 +131,7 @@ const BrowseRequests = () => {
                 }
             </MKBox>
             <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
+            <br />
             {
                 // mount modal only when detail is loaded
                 reqDetail &&
@@ -141,17 +155,29 @@ const BrowseRequests = () => {
                         }
                     }}
                     actionButton={
-
                         // allow student submission when open for proposal
                         !auth.isCompany && 
                         reqDetail.status === statusBank.request.proposal.label &&
-                        <MKButton
-                            variant="gradient"
-                            color='success'
-                            onClick={() => navigate(`/create-proposal/${reqDetail.name}/${reqDetail.id}`)}
-                        >
-                            Create Proposal
-                        </MKButton>
+                        (
+                            reqDetail.mySubmittedProposal <= 0
+                                ? <MKButton
+                                    variant="gradient"
+                                    color='success'
+                                    onClick={() => window.open(`/create-proposal/${reqDetail.name}/${reqDetail.id}`)}
+                                >
+                                    Create Proposal
+                                </MKButton>
+                                : <MKButton
+                                    variant="gradient"
+                                    color="info"
+                                    startIcon={<EditIcon />}
+                                    onClick={() => window.open(`/edit-proposal/${reqDetail.name}/${reqDetail.mySubmittedProposal}`)}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Edit My Proposal
+                                </MKButton>
+
+                        )
                     }
                 />
             }

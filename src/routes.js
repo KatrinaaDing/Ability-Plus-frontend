@@ -66,16 +66,11 @@ import Logout from "pages/Logout";
 import CompanyList from 'pages/CompanyList';
 import ProjectProposals from 'pages/ProjectProposals';
 import BrowseRequests from 'pages/BrowseRequests';
+import Forum from 'pages/Forum';
 
 
 // routes in navbar (company view)
 const companyRoutes = (username) => [
-  // {
-  //   name: "All Received Proposals",
-  //   route: "/company/personal-page",
-  //   icon: <HomeIcon />,
-  //   component: <PersonalPage />
-  // },
   {
     name: "Browse Requests",
     route: "/company/browse-requests",
@@ -197,7 +192,6 @@ const otherRoutes = {
     },
   ],
   common: [
-    
     {
       name: "Browse Requests",
       route: "/browse-requests",
@@ -219,6 +213,11 @@ const otherRoutes = {
       route: "/view-request-ranks/:id",
       component: <ProposalRanks />,
     },
+    {
+      name: "Project Forum",
+      route: "/forum/:projectId",
+      component: <Forum />,
+    }
   ]
 }
 
