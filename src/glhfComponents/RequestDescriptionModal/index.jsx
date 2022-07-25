@@ -71,7 +71,7 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         <ShortInfo title="Solution Deadline" content={new Date(value.soluDdl).toLocaleString()} />
                     </Grid>
                     <Grid item xs={12} md={5} display='flex' flexDirection='column' order={{ xs: 1, md: 2 }}>
-                        <MetaData metaData={value.metaData} />
+                        <MetaData metaData={value.metaData} id={value.id}/>
                     </Grid>
                     <DetailSection
                         order={3}

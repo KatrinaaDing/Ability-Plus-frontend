@@ -60,13 +60,13 @@ const CompanyList = () => {
                             variant=''
                             sx={{ my: 1 }}
                         >
-                            <ListItem>
+                            <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar alt={c.fullName} src="/src/assets/images/profile-avatars/company.png" />
                                 </ListItemAvatar>
                                 <ListItemText 
                                     primary={c.fullName}
-                                    secondary={`Released  ${c.totalProjectNum} Projects`}
+                                    secondary={`Released ${c.totalProjectNum} Projects`}
                                 />
                             </ListItem>
                         </MKButton>
