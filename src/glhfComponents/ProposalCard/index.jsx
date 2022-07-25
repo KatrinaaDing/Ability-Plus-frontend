@@ -81,12 +81,12 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                 shadow={color === "transparent" ? "none" : "md"}
                 px={3}
                 pt={3}
-                pb={1}
+                pb={2}
                 sx={{
                     height: { 'lg': '310px', 'md': '400px', 'xs': '350px' },
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-evenly',
+                    justifyContent: 'space-between',
                 }}
             >
 
@@ -120,7 +120,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     my={2}
                     sx={{
-                        height: '70px',
+                        height: '100px',
                         fontWeight: '500'
 
                     }}

@@ -120,7 +120,7 @@ const PopularProposals = () => {
                         value={detailContent}
                         actionButton={
                             <LikeButton 
-                                originLike={detailContent.liked}  // TODO need to fetch if the user has liked the proposal
+                                originLike={detailContent.liked} 
                                 originNumLike={detailContent.likeNum} 
                                 propId={detailContent.id}
                             />

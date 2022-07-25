@@ -87,12 +87,12 @@ const RequestCard = ({ data, openDetail, color}) => {
                 shadow={color === "transparent" ? "none" : "md"}
                 px={3}
                 pt={3}
-                pb={1}
+                pb={2}
                 sx={{
                     height: { 'lg': '310px', 'md': '400px', 'xs': '350px'},
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-around',
+                    justifyContent: 'space-between',
                 }}
             >
                 <MKBox lineHeight={1}>
@@ -119,11 +119,9 @@ const RequestCard = ({ data, openDetail, color}) => {
                 <MKTypography
                     variant="body2"
                     color={!color || color === "transparent" || color === "light" ? "text" : "white"}
-                    my={2}
                     sx={{
-                        height: '70px',
+                        height: '100px',
                         fontWeight: '500'
-
                     }}
                 >
                     &quot; {data.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 140)}... &quot;
