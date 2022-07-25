@@ -8,7 +8,7 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 import MKBox from 'components/MKBox';
 
 const Post = ({ id, isProjectOwner, authorId, authorName, content, postDate, numReply, isPin}) => {
-    const {auth } = useAuth();
+    const { auth } = useAuth();
     return (
         <ListItem
             alignItems="flex-start"
@@ -54,29 +54,7 @@ const Post = ({ id, isProjectOwner, authorId, authorName, content, postDate, num
                     mr: 10,
                 }}
             />
-            
-            {/* <PushPinIcon color='warning' size='large' opacity={Number(isPin)} />
-            <ListItemAvatar>
-                <Avatar alt={authorName} src="/src/assets/images/profile-avatars/company.png" />
-            </ListItemAvatar>
-            <ListItemText
-                primary={
-                    isProjectOwner
-                        ? <MKTypography color='primary'>{authorName} (Project Owner)</MKTypography>
-                        : authorName === auth.username
-                            ? authorName + ' (Me)'
-                            : authorName
-                }
-                secondary={
-                    <>
-                        <MKTypography variant='caption'>{new Date(postDate * 1000).toLocaleString()}</MKTypography><br />
-                        <MKTypography variant='body'>{content}</MKTypography>
-                    </>
-                }
-                sx={{
-                    mr: 10,
-                }}
-            /> */}
+           
         </ListItem>
     );
 };
