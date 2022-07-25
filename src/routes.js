@@ -46,6 +46,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';;
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import MessageIcon from '@mui/icons-material/Message';
 
 // Pages
 import SignIn from "layouts/pages/authentication/sign-in";
@@ -67,10 +68,17 @@ import CompanyList from 'pages/CompanyList';
 import ProjectProposals from 'pages/ProjectProposals';
 import BrowseRequests from 'pages/BrowseRequests';
 import Forum from 'pages/Forum';
+import MyPosts from 'pages/MyPosts';
 
 
 // routes in navbar (company view)
 const companyRoutes = (username) => [
+  {
+    name: "My Posts",
+    route: "/company/my-posts",
+    icon: <MessageIcon />,
+    component: <MyPosts />
+  },
   {
     name: "Browse Requests",
     route: "/company/browse-requests",
@@ -101,6 +109,12 @@ const companyRoutes = (username) => [
 
 // routes in navbar (student view)
 const studentRoutes = (username) => [
+  {
+    name: "My Posts",
+    route: "/student/my-posts",
+    icon: <MessageIcon />,
+    component: <MyPosts />
+  },
   {
     name: "Browse Requests",
     route: "/student/browse-requests",

@@ -26,7 +26,7 @@ import axios from "axios";
 import useAuth from "auth/useAuth";
 import axiosBasic from "api/axios";
 import { BASE_URL } from 'api/axios';
-import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 const MyFollowingPage = () => {
     const {auth, setAuth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
@@ -82,31 +82,34 @@ const MyFollowingPage = () => {
                         <ListItem
                             key={f.companyName}
                             secondaryAction={
-                                <IconButton edge="end" aria-label="delete" onClick={() => handleSetCurFollow(f)}>
-                                    <MKButton variant="outlined" color="info">
-                                        Unfollow
-                                    </MKButton>
-                                </IconButton>
+                                <MKButton variant="outlined" color="info" sx={{ mr: 10 }} onClick={() => handleSetCurFollow(f)}>
+                                    Unfollow
+                                </MKButton>
                             }
                             alignItems="flex-start"
                             sx={{ my: 4 }}
                         >
-                            <ListItemAvatar>
-                                <Avatar alt={f.companyName} src="/src/assets/images/profile-avatars/company.png" />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={
-                                    <Link to={`/company-info/${f.id}`} target="_blank">
-                                        {f.companyName}
-                                    </Link>
-                                }
-                                secondary={
-                                    <>
-                                        Followed At: {new Date(f.followTime*1000).toLocaleString()} <br/>
-                                        Opening Projects: {f.openingProjectNum}
-                                    </>
-                                }
-                            />
+                            <ListItemButton
+                                role={undefined}
+                                onClick={() => window.open(`/company-info/${f.id}`)}
+                                alignItems="flex-start"
+                                sx={{
+                                    borderRadius: '10px',
+                                }}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar alt={f.companyName} src="/src/assets/images/profile-avatars/company.png" />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={f.companyName}
+                                    secondary={
+                                        <>
+                                            Followed At: {new Date(f.followTime*1000).toLocaleString()} <br/>
+                                            Opening Projects: {f.openingProjectNum}
+                                        </>
+                                    }
+                                />
+                            </ListItemButton>
                         </ListItem>
                     )
                 }
@@ -126,12 +129,9 @@ const MyFollowingPage = () => {
                             <MKTypography variant="h6">Unfollow Confirm</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setFollow(!follow)} />
                         </MKBox>
-
-                        <Divider sx={{ my: 0 }} />
-                        <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center">
+                        <MKTypography variant="body2" color="secondary" fontWeight="regular" textAlign="center" sx={{py:2}}>
                             Surely Unfollowing?
                         </MKTypography>
-                        <Divider sx={{ my: 0 }} />
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
                             <MKButton variant="gradient" color="light" onClick={ ()=> setFollow(!follow)}>
                                 No
