@@ -14,6 +14,7 @@ import { statusBank } from 'utils/getStatus';
 import { getRandomCategory } from 'assets/data/categories';
 import MKBox from 'components/MKBox';
 import CardListItem from 'glhfComponents/ProposalCard/components/CardListItem';
+import ViewRankingBtn from './components/ViewRankingBtn';
 // 1.title
 // 2.description
 // 3.author
@@ -49,16 +50,6 @@ value = {
 
 const RequestCard = ({ data, openDetail, color}) => {
     const page = window.location.pathname.slice(1);
-
-    const ViewRankingBtn = () =>
-        <MKButton
-            variant="outlined"
-            color="primary"
-            size="small"
-            onClick={() => window.open(`/view-request-ranks/${data.id}`)}
-        >
-            View Ranking
-        </MKButton>
 
 
     const ViewDetailBtn = () =>
@@ -138,7 +129,7 @@ const RequestCard = ({ data, openDetail, color}) => {
                 }}>
                     {
                         getCode('request', data.status) > statusBank.request.approving.code
-                            ? <ViewRankingBtn />
+                            ? <ViewRankingBtn id={data.id} />
                             : <ViewDetailBtn />
                     }
                 </MKBox>

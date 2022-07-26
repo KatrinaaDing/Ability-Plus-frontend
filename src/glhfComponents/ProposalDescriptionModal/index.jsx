@@ -24,6 +24,8 @@ import { getCode } from 'utils/getStatus';
 import { statusBank } from 'utils/getStatus';
 import { useNavigate } from 'react-router-dom';
 import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@emotion/react';
 
 /*
 value = {
@@ -47,13 +49,10 @@ value = {
 const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
     const navigate = useNavigate();
-    const page = window.location.pathname.slice(1)
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    // is student &&  is author && status < approving
-    // const canEdit =
-    //     !auth.isCompany &&
-    //     auth.id == value.metaData.authorId &&
-    //     getCode('proposal', value.status) < statusBank.proposal.approving
+    const page = window.location.pathname.slice(1)
 
     return (
         <Dialog
@@ -61,6 +60,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
             fullWidth={true}
             maxWidth='xl'
             onClose={() => setOpen(false)}
+            fullScreen={fullScreen}
         >
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
@@ -71,9 +71,7 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                                 status={value.status}  //FIXME 要根据有没有notes和rating判断
                             />
                             : <StatusBadge statusLabel={value.status} type='proposal' position='normal'/>
-                        
                     }
-                    
                 </MKBox>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={() => setOpen(false)} />
             </MKBox>

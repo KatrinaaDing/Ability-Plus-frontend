@@ -78,7 +78,6 @@ const MyProposals = () => {
     }, [ascending, status, searchKey, whatOrder])
 
     const getPropDetail = async (propId, projectName) => {
-        console.log(propId)
         await axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
                 proposalId: propId

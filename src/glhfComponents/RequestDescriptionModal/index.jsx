@@ -21,9 +21,11 @@ import ShortInfo from './sections/ShortInfo';
 import DetailSection from 'glhfComponents/ProposalDescriptionModal/sections/DetailSection';
 import useAuth from 'auth/useAuth';
 import { useNavigate } from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@emotion/react';
 import { getCode } from 'utils/getStatus';
 import { statusBank } from 'utils/getStatus';
-import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import ViewRankingBtn from 'glhfComponents/RequestCard/components/ViewRankingBtn';
 
 /**
 value = {
@@ -47,13 +49,16 @@ value = {
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const { auth } = useAuth();
     const navigate = useNavigate();
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     return (
         <Dialog
             open={open}
             fullWidth={true}
             maxWidth='xl'
             onClose={() => setOpen(false)}
-
+            fullScreen={fullScreen}
         >
             <MKBox display="flex" justifyContent="space-between" p={3}>
                 <MKBox display='flex' justifyContent='flex-start'>
@@ -109,6 +114,10 @@ const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                         >
                             Edit
                         </MKButton>
+                    }
+                    {
+                        getCode('request', value.status) > statusBank.request.approving.code &&
+                        <ViewRankingBtn id={value.id} />
                     }
                 </MKBox>
             </MKBox>
