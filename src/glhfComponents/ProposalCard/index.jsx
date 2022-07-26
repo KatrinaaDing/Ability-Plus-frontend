@@ -98,7 +98,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                         color={!color || color === "transparent" || color === "light" ? "dark" : "white"}
                         mb={0.5}
                     >
-                        {data.id}.{data.title}
+                        {data.title}
                     </MKTypography>
                     {
                         data.lastModified &&

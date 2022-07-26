@@ -170,6 +170,7 @@ function SignInBasic() {
         }
         title="You have logged in."
         content="You'll be redirected."
+        disableClose={true}
       />
       <Collapse in={alertStr != ""}>
         <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>

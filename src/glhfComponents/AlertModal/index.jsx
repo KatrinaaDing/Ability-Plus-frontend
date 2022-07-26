@@ -10,8 +10,11 @@ import MKButton from 'components/MKButton';
 import MKTypography from 'components/MKTypography';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
+import CloseIcon from '@mui/icons-material/Close';
+import MKBox from 'components/MKBox';
+import { IconButton } from '@mui/material';
 
-const AlertModal = ({ open, handleClose, handleConfirm, title, content }) => {
+const AlertModal = ({ open, handleClose, handleConfirm, title, content, disableClose }) => {
 
     const style = {
         position: 'absolute',
@@ -20,20 +23,23 @@ const AlertModal = ({ open, handleClose, handleConfirm, title, content }) => {
         transform: 'translate(-50%, -50%)',
         width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        border: '2px double black',
         boxShadow: 24,
+        textAlign: 'center',
         pt: 2,
         px: 4,
         pb: 3,
     };
-
     return (
         <Modal
             open={open}
             onClose={(_, reason) => {
-                if (reason !== "backdropClick") {
+                if (!disableClose) {
+                    handleClose()
+                } else if (disableClose && reason !== "backdropClick") {
                     handleClose();
-                }
+
+                } 
             }}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
@@ -44,9 +50,18 @@ const AlertModal = ({ open, handleClose, handleConfirm, title, content }) => {
             }}
         >
             <Fade in={open}>
-            <Box sx={{ ...style, width: 400 }}>
+            <Box sx={{ ...style}}>
+                <MKBox sx={{width: '100%', display: 'flex', flexDirection: 'row-reverse'}}>
+                    {
+                        !disableClose && 
+                        <IconButton color="dark" component="label" onClick={() => handleClose()}>
+                            <CloseIcon fontSize='medium'/>
+                        </IconButton>
+
+                    }
+                </MKBox>
                 <Box sx={{ p: 2 }}>
-                    <MKTypography variant='h3' sx={{ pb: 4 }}>{title}</MKTypography>
+                    <MKTypography variant='h4' sx={{ pb: 4 }}>{title}</MKTypography>
                     <MKTypography variant='body'> {content} </MKTypography>
                 </Box>
                 <Box display='flex' justifyContent='center' sx={{p: 2}}>

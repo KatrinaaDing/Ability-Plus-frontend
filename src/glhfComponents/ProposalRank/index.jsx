@@ -19,15 +19,7 @@ import { useTheme } from '@emotion/react';
 const ProposalRank = ({ proposals, openDetail }) => {
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  /*
-authorId: 68
-authorName: "ZIQI"
-id: 53
-likeNum: 1
-oneSentenceDescription: "To build web that for wellbeing online services"
 
-title: "Web for wellbeing service"
-  */
   return (
     <Stack
       spacing={2}

@@ -169,6 +169,7 @@ const PopularProposals = () => {
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
+                disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true})}
             />
             <Box sx={{ flexGrow: 1 }}>

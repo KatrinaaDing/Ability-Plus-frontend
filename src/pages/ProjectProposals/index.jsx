@@ -30,6 +30,8 @@ import SelectProposalsFilter from 'glhfComponents/SelectProposalsFilter';
 import { makeStyles } from "@material-ui/styles";
 import { statusBank } from "utils/getStatus";
 import StatusBadge from "glhfComponents/StatusBadge";
+import AlertModal from "glhfComponents/AlertModal";
+import { approvedProposals } from "assets/data/proposals";
 
 const useStyles = makeStyles({
     root: {
@@ -101,6 +103,10 @@ const ProjectProposals = () => {
     const [ascending, setAscending] = useState(true);
     const [whatOrder, setWhatOrder] = useState('LastModifiedTime')
     const [searchKey, setSearchKey] = useState('');
+
+    // alert modal
+    const [approveOpen, setApproveOpen] = useState(false);
+
 
     // search bar handler
     const handleSearch = (key) => {
@@ -222,8 +228,9 @@ const ProjectProposals = () => {
     }
 
     const approveProposals = () => {
-        alert('All shorlisted proposals has been approved!')
-        navigate('/view-request-ranks/' + projectId)
+        axiosPrivate.post(`/proposal/commit_approved_proposal?projectId=${projectId}`)
+            .then(res => navigate(`/view-request-ranks/${projectId}`))
+            .catch(e => console.error(e))
     }
 
     // update status badge on proposal detail modall
@@ -367,13 +374,20 @@ const ProjectProposals = () => {
                 <MKButton
                     vairnat='gradient'
                     color='success'
-                    onClick={approveProposals}
+                    onClick={() => setApproveOpen(true)}
                 >
                     Approve all shortlisted proposal
                 </MKButton>
 
             }
         >
+            <AlertModal
+                open={approveOpen}
+                handleClose={() => setApproveOpen(false)}
+                handleConfirm={() => approveProposals()}
+                title="Approve all shortlisted"
+                content="This process cannot be reversed. Do you wish to continue?"
+            />
             <MKBox
                 sx={{
                     display: 'flex',
