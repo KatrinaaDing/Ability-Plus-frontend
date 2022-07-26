@@ -46,12 +46,10 @@ value = {
 }
 
 */
-const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
+const ProposalDescriptionModal = ({ open, setOpen, value, actionButton, rateItem, commentItem }) => {
     const { auth } = useAuth();
-    const navigate = useNavigate();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
     const page = window.location.pathname.slice(1)
 
     return (
@@ -119,12 +117,12 @@ const ProposalDescriptionModal = ({ open, setOpen, value, actionButton }) => {
                                 <DetailSection
                                     order={7}
                                     title='Rate'
-                                    content={<CompanyRating rating={value.rating}/>}
+                                    content={<CompanyRating rating={value.rating/2} id={value.id} updateCard={(id, rating) => rateItem(id, rating)}/>}
                                 />
                                 <DetailSection
                                     order={8}
                                     title='Note'
-                                    content={<CompanyNote content={value.note}/>}
+                                    content={<CompanyNote content={value.comment} id={value.id} updateCard={(id, comment) => commentItem(id, comment)}/>}
                                 />
                             </>
                             : <></>

@@ -8,24 +8,29 @@ import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKInput from 'components/MKInput';
 import SavingLoader from 'glhfComponents/SavingLoader';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
-const CompanyNote = ({content}) => {
+const CompanyNote = ({ content, id, updateCard }) => {
     let [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success, 2: fail
-    let [note, setNote] = React.useState('');
-
-    useEffect(() => {
-        setNote(content)
-    }, [])
+    let [note, setNote] = React.useState(content);
+    let axiosPrivate = useAxiosPrivate();
 
     const setValue = (e) => {
         setNote(e.target.value)
+        
     }
 
     const handleSave = (e) => {
         setLoading(0)
-        setTimeout(() => {
-            setLoading(1)
-        }, 800);
+        axiosPrivate.post(`/proposal/company_process_proposal?proposalId=${id}&comment=${note}`)
+            .then(res => {
+                setLoading(1)
+                updateCard(id, note)
+            })
+            .catch(e => {
+                setLoading(2)
+                console.error(e)
+            })
     }
 
     return (

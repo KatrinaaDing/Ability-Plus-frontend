@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 
 const MetaData = ({ data }) => {
     const listItemSx = { p: 0.5 }
+    const page = window.location.pathname.slice(1)
     return (
         <List>
             <ListItem sx={listItemSx}>
@@ -24,7 +25,7 @@ const MetaData = ({ data }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={null}
-                    secondary={"Last Modified At: " + new Date(data.lastModified*1000).toLocaleString()}
+                    secondary={"Last Modified At: " + new Date(data.lastModified * 1000).toLocaleString()}
                 />
             </ListItem>
             <ListItem sx={listItemSx}>
@@ -47,29 +48,32 @@ const MetaData = ({ data }) => {
                     }
                 />
             </ListItem>
-            <ListItem sx={listItemSx}>
-                <ListItemIcon>
-                    <DescriptionIcon fontSize='medium' />
-                </ListItemIcon>
-                <ListItemText
-                    primary={null}
-                    secondary={
-                        <>
-                            Project Name: &nbsp;
-                            <a
-                                onClick={() => data.openProject()}
-                                style={{ 
-                                    cursor: 'pointer',
-                                    color: 'blue',
-                                    textDecoration: 'underlined'
-                                }}
-                            >
-                                 {data.project}
-                            </a>
-                        </>
-                    }
-                />
-            </ListItem>
+            {
+                !page.startsWith('view') &&
+                <ListItem sx={listItemSx}>
+                    <ListItemIcon>
+                        <DescriptionIcon fontSize='medium' />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={null}
+                        secondary={
+                            <>
+                                Project Name: &nbsp;
+                                <a
+                                    onClick={() => data.openProject()}
+                                    style={{
+                                        cursor: 'pointer',
+                                        color: 'blue',
+                                        textDecoration: 'underlined'
+                                    }}
+                                >
+                                    {data.project}
+                                </a>
+                            </>
+                        }
+                    />
+                </ListItem>
+            }
 
         </List>
     );

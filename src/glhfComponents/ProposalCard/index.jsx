@@ -98,7 +98,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                         color={!color || color === "transparent" || color === "light" ? "dark" : "white"}
                         mb={0.5}
                     >
-                        {data.title}
+                        {data.id}.{data.title}
                     </MKTypography>
                     {
                         data.lastModified &&
@@ -131,7 +131,19 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color} />}
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
-                    {data.comment && <CardListItem title='My Comment' value={data.comment.length > 45 ? data.comment.split(' ').slice(0, 7).join(' ') + '...' : data.comment } link={null} color={color} />}
+                    {
+                        data.comment !== null &&
+                        <CardListItem 
+                            title='My Comment' v
+                            value={data.comment.length === 0
+                                ? "No comment."
+                                : data.comment.length > 45
+                                    ? data.comment.split(' ').slice(0, 7).join(' ') + '...'
+                                    : data.comment} 
+                            link={null} 
+                            color={color} 
+                            />
+                    }
                 </List>
 
                 {/* {
@@ -150,10 +162,10 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
 
                 }}>
                 {
-                    data.rating &&
+                    data.rating != null &&
                     <Rating
                         name="rating"
-                        defaultValue={data.rating}
+                        defaultValue={data.rating/2}
                         max={5}
                         precision={0.5}
                         emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
