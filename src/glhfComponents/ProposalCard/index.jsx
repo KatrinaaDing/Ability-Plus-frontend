@@ -160,16 +160,13 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                         size="medium"
                         readOnly
                     />
-
                 }
-
                     <MKBox sx={{
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
                         width: '-webkit-fill-available'
                     }}>
-
                         {
                             (page.startsWith('popular') ||
                                 page.startsWith('student-info') ||

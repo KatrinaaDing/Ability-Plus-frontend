@@ -108,7 +108,11 @@ const ProposalRanks = () => {
                         }
                     }}
                     actionButton={
-                        <LikeButton originLike={false} originNumLike={propDetail.likeNum} />
+                        <LikeButton 
+                            originLike={false} 
+                            originNumLike={propDetail.likeNum} 
+                            propId={propDetail.id}
+                        />
                     }
                 />
             }

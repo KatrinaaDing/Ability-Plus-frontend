@@ -157,6 +157,7 @@ const MyProposals = () => {
                             <LikeButton
                                 originLike={false} // TODO need to fetch if the user liked the proposal
                                 originNumLike={propDetail.likeNum}
+                                propId={propDetail.id}
                             />
                         }
                         {

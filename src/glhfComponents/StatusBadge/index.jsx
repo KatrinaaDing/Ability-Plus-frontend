@@ -39,7 +39,7 @@ const StatusBadge = props => {
             sx={{ 
                 // mt: props.position === 'top-right' ? 8 : 'auto', 
                 mt: 'auto',
-                ml: props.position === 'top-right' ? 1 : 2,
+                ml: props.position === 'top-right' ? 2 : 2,
                 mb: props.position === 'top-right' ? -5 : 'auto', 
             }}
         />
