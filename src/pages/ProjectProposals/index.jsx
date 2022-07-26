@@ -100,9 +100,7 @@ const ProjectProposals = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
-    // search bar states
-    const [isPick, setIsPick] = useState(2); // -1: rejected, 0: no label, 1: approved, 2: all
-
+  
     // display states
     const [propCards, setPropCards] = useState([]);
     const [total, setTotal] = useState(0);
@@ -115,10 +113,14 @@ const ProjectProposals = () => {
 
     const [view, setView] = useState("card");
     const [rows, setRows] = useState([])
-    const [isPicked, setIsPicked] = useState(0);
+
+    // search bar states
+    const [isPick, setIsPick] = useState(2); // -1: rejected, 0: no label, 1: approved, 2: all
+    const [isPicked, setIsPicked] = useState(2);
     const [ascending, setAscending] = useState(true);
     const [whatOrder, setWhatOrder] = useState('LastModifiedTime')
     const [searchKey, setSearchKey] = useState('');
+
     const handleSearch = (key) => {
         setSearchKey(key);
     }
@@ -145,7 +147,7 @@ const ProjectProposals = () => {
                     pageSize: 20,
                     projectId: projectId,
                     whatOrder: whatOrder,
-                    isPick: isPicked === -1? 'all': isPicked,
+                    isPick: isPicked,
                     searchKey: searchKey
                 })
             })
@@ -283,8 +285,6 @@ const ProjectProposals = () => {
 
     // TODO put proposal rank if status > approving
 
-    console.log(selectedItem)
-    
     const CardView = () => (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -425,7 +425,7 @@ const ProjectProposals = () => {
             {
                 view === 'card'
                     ? <CardView />
-                    : <div style={{ height: 400, width: '100%' }}>
+                    : <div style={{ height: '60vh', width: '100%' }}>
                         <DataGrid
                             rows={rows}
                             columns={columns}
