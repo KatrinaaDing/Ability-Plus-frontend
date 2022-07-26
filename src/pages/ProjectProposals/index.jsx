@@ -28,6 +28,8 @@ import { propStatus } from "glhfComponents/ProcessStatusBadge";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import SelectProposalsFilter from 'glhfComponents/SelectProposalsFilter';
 import { makeStyles } from "@material-ui/styles";
+import { statusBank } from "utils/getStatus";
+import StatusBadge from "glhfComponents/StatusBadge";
 
 const useStyles = makeStyles({
     root: {
@@ -73,33 +75,34 @@ const columns = [
 
 
 const ProjectProposals = () => {
-    const classes = useStyles();
     // hooks
+    const classes = useStyles();
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
-  
     // display states
     const [propCards, setPropCards] = useState([]);
     const [total, setTotal] = useState(0);
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
+    const [projectStatus, setProjectStatus] = useState();
 
     // select states
     const [selectMode, setSelectMode] = useState(false);
     const [selectedItem, setSelectedItem] = useState([]);
 
+    // view states
     const [view, setView] = useState("card");
     const [rows, setRows] = useState([])
 
     // search bar states
-    const [isPick, setIsPick] = useState(2); // -1: rejected, 0: no label, 1: approved, 2: all
-    const [isPicked, setIsPicked] = useState(2);
+    const [isPicked, setIsPicked] = useState(2);    // -1: rejected, 0: no label, 1: approved, 2: all
     const [ascending, setAscending] = useState(true);
     const [whatOrder, setWhatOrder] = useState('LastModifiedTime')
     const [searchKey, setSearchKey] = useState('');
 
+    // search bar handler
     const handleSearch = (key) => {
         setSearchKey(key);
     }
@@ -117,11 +120,11 @@ const ProjectProposals = () => {
     };
 
     // check if is empty comment
-    const emptyComment = (comment) => 
+    const emptyComment = (comment) =>
         comment === null || comment == ''
 
     // check if is empty rating
-    const emptyRating = (rating) => 
+    const emptyRating = (rating) =>
         rating === null || rating === 0
 
     // get status of the proposal
@@ -132,7 +135,17 @@ const ProjectProposals = () => {
                 ? 0 // empty comment and rating => unviewed
                 : 1 // viewed
 
-    useEffect( () => {
+    // get project status (determine if the project can process)
+    useEffect(() => {
+        const getStatus = () =>
+            axiosPrivate.get(`/project/getProjectStatus?projectId=${projectId}`)
+                .then(res => setProjectStatus(res.data.data))
+                .catch(e => console.error(e))
+
+        getStatus()
+    }, [])
+
+    useEffect(() => {
         const listProjectProposals = async () =>
             await axiosPrivate.get('/proposal/list_project_proposals', {
                 params: new URLSearchParams({
@@ -160,7 +173,7 @@ const ProjectProposals = () => {
                     setTotal(data.total)
                 })
                 .catch(e => console.error(e))
-        
+
         listProjectProposals()
     }, [ascending, isPicked, searchKey, whatOrder])
 
@@ -183,8 +196,7 @@ const ProjectProposals = () => {
         setRows(dataRows)
     }, [propCards])
 
- 
-    const getPropDetail =  (id) => {
+    const getPropDetail = (id) => {
         axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
                 proposalId: parseInt(id)
@@ -218,7 +230,7 @@ const ProjectProposals = () => {
     const updateDetailBadge = (status) => {
         const newDetail = { ...propDetail }
         newDetail.status = status
-        if (status === 2) 
+        if (status === 2)
             newDetail.isPick = 1
         else
             newDetail.isPick = 0
@@ -243,7 +255,7 @@ const ProjectProposals = () => {
         const newStatus = updateItem(id, 'rating', rating * 2)
         updateDetailBadge(newStatus)
     }
-    
+
     // update comments on a card item
     const commentItem = (id, comment) => {
         const newStatus = updateItem(id, 'comment', comment)
@@ -265,7 +277,7 @@ const ProjectProposals = () => {
                 setSelectedItem(newSelect)
             })
             .catch(e => console.error(e))
-        
+
     }
 
     const handleSelect = (e) => {
@@ -274,7 +286,7 @@ const ProjectProposals = () => {
         if (e.target.checked) {
             setSelectedItem([...selectedItem, id])
 
-        // to uncheck
+            // to uncheck
         } else {
             const newSel = [...selectedItem]
             newSel.splice(selectedItem.indexOf(id), 1)
@@ -300,7 +312,7 @@ const ProjectProposals = () => {
     const commitSelect = (e) => {
         // get unpicked items
         const unPickItem = propCards.map(e => e.id).filter(e => !selectedItem.includes(e));
-        console.log('yes',selectedItem,'no',unPickItem)
+        console.log('yes', selectedItem, 'no', unPickItem)
         shortlistMultiItem(selectedItem, 1);
         shortlistMultiItem(unPickItem, 0);
         setSelectMode(false);
@@ -321,8 +333,8 @@ const ProjectProposals = () => {
                                 authorId: p.authorId,
                                 authorName: p.authorName,
                                 rating: p.rating,
-                                status: p.status,   
-                                comment: p.comment            
+                                status: p.status,
+                                comment: p.comment
                             }}
                             openDetail={() => getPropDetail(p.id)}
                             secondary={
@@ -351,6 +363,7 @@ const ProjectProposals = () => {
         <BasicPageLayout
             title={`All Proposals for project "${projectName}"`}
             secondaryContent={
+                projectStatus === statusBank.request.approving.label &&
                 <MKButton
                     vairnat='gradient'
                     color='success'
@@ -358,6 +371,7 @@ const ProjectProposals = () => {
                 >
                     Approve all shortlisted proposal
                 </MKButton>
+
             }
         >
             <MKBox
@@ -370,6 +384,7 @@ const ProjectProposals = () => {
             >
                 <MKTypography variant='subtitle1'>
                     There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}
+                    {projectStatus && <StatusBadge type='request' statusLabel={projectStatus} />}
                 </MKTypography>
                 {
                     !selectMode
@@ -399,7 +414,7 @@ const ProjectProposals = () => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </MKBox>
-            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={ handleIsPicked}  handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
+            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={handleIsPicked} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
             <br />
             {
                 propDetail &&

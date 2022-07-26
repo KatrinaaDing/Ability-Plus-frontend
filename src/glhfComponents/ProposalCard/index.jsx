@@ -132,7 +132,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
                     {
-                        data.comment !== null &&
+                        data.comment && data.comment !== null &&
                         <CardListItem 
                             title='My Comment' v
                             value={data.comment.length === 0
