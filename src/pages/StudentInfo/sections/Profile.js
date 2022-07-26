@@ -109,7 +109,7 @@ function Profile() {
                     Age&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {age}
+                    {age === ''? 'NA':age}
                   </MKTypography>
                   </div>
                 </Grid>

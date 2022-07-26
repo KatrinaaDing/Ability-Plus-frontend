@@ -10,9 +10,7 @@ import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import LikeButton from "glhfComponents/LikeButton";
 import ProjectDetailBtn from "glhfComponents/ProjectDetailBtn";
-import { BASE_URL } from "api/axios";
-import axios from "axios";
-
+import DateSearchFilter from 'glhfComponents/DateSearchFilter';
 
 const ProposalRanks = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -31,9 +29,17 @@ const ProposalRanks = () => {
 
     // filter bar states
     const [searchKey, setSearchKey] = useState('')
+    const [ascending, setAscending] = useState(false);
+    //need to use request id to (requestname, status, a list of ranks)
 
-    useEffect(() => {
-        const listApprovedProposals = async () =>
+    const handleDate = (ascending) => {
+        setAscending(ascending)
+    }
+    const handleSearch = (key) => {
+        setSearchKey(key);
+    }
+    useEffect( () => {
+        const listApprovedProposals = async() =>
             await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
                 params: new URLSearchParams({
                     isAscendingOrder: true,
@@ -51,7 +57,7 @@ const ProposalRanks = () => {
 
         listApprovedProposals()
         
-    }, [])
+    }, [searchKey, ascending])
 
     const getPropDetail = async (id) => {
         await axiosPrivate.get(`/proposal/get_proposal_detail_info`, {
@@ -116,6 +122,7 @@ const ProposalRanks = () => {
                 />
             }
             <Container>
+                <DateSearchFilter handleDate={handleDate} handleSearch={handleSearch}></DateSearchFilter>
                 <br />  
                 <Box sx={{ flexGrow: 1 }}>
                     <ProposalRank proposals={proposals} openDetail={getPropDetail}/>

@@ -42,6 +42,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   backgroundColor: 'white',
   borderRadius: '5px',
+  fontSize: '13px',
+  height: '40px',
   border: '1px solid lightgray',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
@@ -70,7 +72,8 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
       <Box>
-        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} sx={{margin: '5px', height: '50px'}}>
+        <p style={{ textAlign: 'center'}}>Sort by Likes</p>
+        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}>
           Sort By Like{' '}
           { isAscendingOrderLike && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
@@ -78,7 +81,8 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
         </MKButton>
       </Box>
       <Box>
-        <MKButton sx={{margin: '5px', height: '50px'}} onClick={() => setAscending(!ascending)} >
+        <p style={{ textAlign: 'center'}}>Sort by Date</p>
+        <MKButton sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}} onClick={() => setAscending(!ascending)} >
           Submission Date{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
@@ -86,6 +90,7 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
         </MKButton>
       </Box>
       <Box>
+        <p style={{ textAlign: 'center'}}>Search:</p>
         <Search sx={{margin: '5px', height: '50px'}}>
           <SearchIconWrapper>
             <SearchIcon />

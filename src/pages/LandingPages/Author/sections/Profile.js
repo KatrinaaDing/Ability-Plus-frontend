@@ -75,7 +75,7 @@ function Profile() {
   const [oldPwd, setOldPwd] = useState("")
   const [newPwd, setNewPwd] = useState("")
 
-
+  console.log(cAge)
   useEffect(() => {
     const getInfo = async () =>
       await axiosPrivate.get("/user/get_profile_info")
@@ -254,7 +254,6 @@ function Profile() {
   }
 
 
-
   return (
     <MKBox component="section" py={{ xs: 6, sm: 12 }}>
       <Container>
@@ -278,14 +277,18 @@ function Profile() {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {cEmail}&nbsp;&nbsp;&nbsp;
+                    {cEmail!== null? cEmail: 'NA'}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
-                  <MKTypography component="span" variant="body2" fontWeight="bold">
-                    Age&nbsp;&nbsp;
-                  </MKTypography>
-                  <MKTypography component="span" variant="body2" color="text">
-                    {cAge}
-                  </MKTypography>
+                  {!auth.isCompany && 
+                    <>
+                     <MKTypography component="span" variant="body2" fontWeight="bold">
+                      Age&nbsp;&nbsp;
+                    </MKTypography>
+                    <MKTypography component="span" variant="body2" color="text">
+                      {cAge === null? 'NA': cAge}
+                    </MKTypography>
+                    </>
+                  }
                 </Grid>
               </Grid>
               <Grid item>
@@ -293,7 +296,7 @@ function Profile() {
                   Description&nbsp;&nbsp;
                 </MKTypography>
                 <MKTypography variant="body2" component="span" fontWeight="light" color="text">
-                  {cDes}
+                  {cDes !== null ? cDes: 'NA'}
                 </MKTypography>
               </Grid>
               <br />
@@ -332,10 +335,15 @@ function Profile() {
                   <MKInput type="email" label="Contact Email" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
                 </Grid>
                 <br />
-                <Grid container item xs={12}>
-                  <MKInput label="Age" fullWidth defaultValue={cAge} onChange={updateUserAge} />
-                </Grid>
-                <br />
+                {!auth.isCompany && 
+                  <>
+                  <Grid container item xs={12}>
+                    <MKInput label="Age" fullWidth defaultValue={cAge} onChange={updateUserAge} />
+                  </Grid>
+                  <br />
+                  </>
+                } 
+                
                 <Grid container item xs={12}>
                   <MKInput label="Description" multiline fullWidth onChange={updateUserDes} defaultValue={cDes} rows={6} />
                 </Grid>

@@ -13,6 +13,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
+import MenuIcon from '@mui/icons-material/Menu';
 import {getLabel} from "../../utils/getStatus";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -62,65 +63,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, handleSearch}) => {
-    const [whatOrder, setWhatOrder] = useState('SolutionDue')
-    const [status, setStatus] = useState(2);
+const StatusDateDueSearchFilter = ({ handleDate, handleSearch}) => {
     const [ascending, setAscending] = useState(true);
     useEffect(() => {
         handleDate(ascending);
-        handleWhatOrder(whatOrder);
-    }, [whatOrder, ascending])
-    const handleChange = (e) => {
-        const currStatus = e.target.value;
-        setStatus(currStatus)
-        handleIsPicked(currStatus)
-    };
+    }, [ascending])
     return (
         <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
-            <Box sx={{ minWidth: 120 }}>
-                <p style={{ textAlign: 'center'}}>Status:</p>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <Select
-                            id="Proposal Status"
-                            value={status}
-                            onChange={handleChange}
-                            sx={{ backgroundColor: 'white', height: '40px' }}
-                            style={{backgroundColor:'white'}}
-                    >   
-                            <MenuItem value={2}>All</MenuItem>
-                            <MenuItem value={0}>Unpicked</MenuItem>
-                            <MenuItem value={1}>Picked</MenuItem>
-                        </Select>
-                </FormControl>
-            </Box>
             <Box>
                 <p style={{ textAlign: 'center'}}>Order by Date:</p>
-                <MKButton  sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}  onClick={() => setAscending(!ascending)}>
+                <MKButton sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}} onClick={() => setAscending(!ascending)}>
                     Submission Date{' '}
                     { ascending && <KeyboardArrowDownIcon>
                     </KeyboardArrowDownIcon>}
                     { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
                 </MKButton>
             </Box>
-            <Box sx={{minWidth: 120}}>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <p style={{ textAlign: 'center'}}>Order By:</p>
-                    <Select
-                        id="Proposal Due"
-                        value={whatOrder}
-                        onChange={(e) => setWhatOrder((e.target.value))}
-                        sx={{ backgroundColor: 'white', height: '40px' }}
-                        style={{backgroundColor:'white'}}
-                    >
-                        <MenuItem value={'SolutionDue'}>Solution Deadline</MenuItem>
-                        <MenuItem value={'ProposalDue'}>Proposal Deadline</MenuItem>
-                        <MenuItem value={'LastModifiedTime'}>Last Modified Time</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
             <Box>
                 <p style={{ textAlign: 'center'}}>Search:</p>
-                <Search sx={{ margin: '6px', height: '50px' }}>
+                <Search sx={{ margin: '6px', height: '50px'}}>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
@@ -134,4 +95,4 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
         </Box>
     );
 }
-export default SelectProposalsFilter;
+export default StatusDateDueSearchFilter;

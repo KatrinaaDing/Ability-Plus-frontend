@@ -42,6 +42,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   backgroundColor: 'white',
   borderRadius: '5px',
+  fontSize: '13px',
+  height: '40px',
+  border: '1px solid lightgray',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -85,7 +88,8 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',  border: '3px solid rgb(42,151,236)', borderRadius: '5px'  }}>
-      <Box sx={{minWidth: 120}}>
+      <Box sx={{ minWidth: 120 }}>
+        <p style={{ textAlign: 'center'}}>Status:</p>
         <FormControl sx={{ m: 1, minWidth: 80 }}>
           <Select
             id="Request Status"
@@ -103,15 +107,17 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
         </FormControl>
       </Box>
       <Box>
-        <MKButton onClick={() => setAcending(!ascending)} sx={{margin: '8px', height: '40px', border: '1px solid lightgray'}}>
-          Solution Deadline{' '}
+        <p style={{ textAlign: 'center'}}>Sort By:</p>
+        <MKButton onClick={() => setAcending(!ascending)}sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}>
+          Crate Time{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
         </MKButton>
       </Box>
       <Box>
-        <Search sx={{ margin: '5px', height: '50px', margin: '5px'}}>
+        <p style={{ textAlign: 'center'}}>Search:</p>
+        <Search sx={{ margin: '6px', height: '50px'}}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>

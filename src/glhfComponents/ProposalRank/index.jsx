@@ -52,7 +52,7 @@ const ProposalRank = ({ proposals, openDetail }) => {
                 </Grid>
                 <Grid item xs={12} md={1.4} lg={1.4} xl={1.4} display='flex' justifyContent='end'>
                   <MKBox sx={{ height: '100%',display: 'flex', flexDirection: 'column', justifyContent: 'end', alignItems: 'end', flexWrap: 'wrap' }}>
-                      <MKTypography variant="body1">
+                      <MKTypography variant="body2">
                         Author: {s.authorName}
                       </MKTypography>
                       <MKBox sx={{width: 'min-content'}}>
@@ -67,7 +67,7 @@ const ProposalRank = ({ proposals, openDetail }) => {
         </Card>
       )}
 
-    </Stack>
+      </Stack>
   );
 }
 export default ProposalRank;
