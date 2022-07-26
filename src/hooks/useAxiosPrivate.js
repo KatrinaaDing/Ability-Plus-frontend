@@ -14,16 +14,9 @@ const useAxiosPrivate = () => {
     const navigate = useNavigate();
     const logout = useLogout();
 
-
-
+    
     useEffect(() => {
-        // avoid multiple handlers mount
-        if (axiosPrivate.interceptors.request.handlers.length > 0) {
-            axiosPrivate.interceptors.request.handlers = [];
-        }
-        if (axiosPrivate.interceptors.response.handlers.length > 0) {
-            axiosPrivate.interceptors.response.handlers = [];
-        }
+        
         const requestIntercept = axiosPrivate.interceptors.request.use(                     // interceptor are execute before .then and .catch
             config => {
                 if (!config.headers['token']) {                                     // check the header, if there's no access token inside,

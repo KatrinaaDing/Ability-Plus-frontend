@@ -33,8 +33,8 @@ const ProposalRanks = () => {
     const [searchKey, setSearchKey] = useState('')
 
     useEffect(() => {
-        const listApprovedProposals = () =>
-            axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
+        const listApprovedProposals = async () =>
+            await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
                 params: new URLSearchParams({
                     isAscendingOrder: true,
                     pageNo: 1,
@@ -48,7 +48,6 @@ const ProposalRanks = () => {
                     setProposals(res.data.data.records)
                 })
                 .catch(e => console.error(e))
-            
 
         listApprovedProposals()
         
@@ -119,9 +118,7 @@ const ProposalRanks = () => {
             <Container>
                 <br />  
                 <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                        <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
-                    </Grid>
+                    <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
                 </Box>              
             </Container>
  
