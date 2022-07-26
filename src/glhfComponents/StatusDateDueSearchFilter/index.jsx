@@ -44,6 +44,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     backgroundColor: 'white',
     borderRadius: '5px',
+    fontSize: '13px',
+    height: '40px',
     border: '1px solid lightgray',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
@@ -156,8 +158,8 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                 </FormControl>
             </Box>
             <Box>
-                 <p style={{ textAlign: 'center'}}>Search:</p>
-                <Search sx={{ margin: '5px', height: '50px', margin: '5px'}}>
+                <p style={{ textAlign: 'center'}}>Search:</p>
+                <Search sx={{ margin: '6px', height: '50px'}}>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
