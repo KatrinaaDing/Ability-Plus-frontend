@@ -109,7 +109,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
       <Box>
         <p style={{ textAlign: 'center'}}>Sort By:</p>
         <MKButton onClick={() => setAcending(!ascending)}sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}>
-          Solution Deadline{' '}
+          Crate Time{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}

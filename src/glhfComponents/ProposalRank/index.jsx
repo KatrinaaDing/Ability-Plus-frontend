@@ -22,7 +22,9 @@ const Item = styled(Paper)(({ theme }) => ({
 const ProposalRank = ({proposals, openDetail}) => {
 
   return (
-    <Stack spacing={2} sx={{ width: '70vw', ml: '10%', mr: '10%' }}>
+    
+    
+    <Stack spacing={2} sx={{ width: '100%' }}>
       {proposals.map((s,idx) =>
           <Card key={idx}>
             <CardActionArea onClick={() => openDetail(s.id)}>
@@ -30,11 +32,11 @@ const ProposalRank = ({proposals, openDetail}) => {
                 <Grid container item xs={12} justifyContent="space-between" mx="auto">
                   <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <MKTypography variant="h4" mb={1}>
-                      {s.rank}
+                      {idx + 1}
                     </MKTypography>
                   </MKBox>
                   <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3}>
-                    <MKTypography variant="h5" mb={1}>
+                    <MKTypography variant="h5" mb={1} sx={{marginTop: '10px'}}>
                       {s.title}
                     </MKTypography>
                     <MKTypography variant="body2" mb={1}>
@@ -46,9 +48,9 @@ const ProposalRank = ({proposals, openDetail}) => {
                       Author: {s.authorName}
                     </MKTypography>
                   </MKBox>
-                  <div>
+                <div>
                     <FcLike size={40} />
-                    <MKTypography variant="body2" mb={1}>
+                    <MKTypography variant="body2" mb={1} sx={{textAlign: 'center'}}>
                       {s.likeNum}
                     </MKTypography>
                   </div>
@@ -58,7 +60,7 @@ const ProposalRank = ({proposals, openDetail}) => {
           </Card>
       )}
 
-    </Stack>
+      </Stack>
   );
 }
 export default ProposalRank;

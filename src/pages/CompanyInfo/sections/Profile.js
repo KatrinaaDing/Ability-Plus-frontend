@@ -66,6 +66,7 @@ function Profile({ companyInfo }) {
           if (res.data.data.extraData)
             setEmail(JSON.parse(res.data.data.extraData).email)
           setCompanyName(res.data.data.fullName)
+          setEmail(res.data.data.account)
         })
         .catch(e => console.error(e))
 
