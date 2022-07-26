@@ -64,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, handleSearch}) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
-    const [status, setStatus] = useState(-1);
+    const [status, setStatus] = useState(2);
     const [ascending, setAscending] = useState(true);
     useEffect(() => {
         handleDate(ascending);
@@ -87,7 +87,7 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
                             sx={{ backgroundColor: 'white', height: '40px' }}
                             style={{backgroundColor:'white'}}
                     >   
-                            <MenuItem value={-1}>All</MenuItem>
+                            <MenuItem value={2}>All</MenuItem>
                             <MenuItem value={0}>Unpicked</MenuItem>
                             <MenuItem value={1}>Picked</MenuItem>
                         </Select>

@@ -30,7 +30,8 @@ const LikeIcon = ({number, direction}) => {
                     color: color,
                     my: 'auto',
                     mx: 'auto',
-                    ml: direction === 'row' ? 0.5 : 0
+                    ml: direction === 'row' ? 0.5 : 0,
+                    mr: 0
                 }}
             >
                 {number}

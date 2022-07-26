@@ -38,6 +38,7 @@ import ProposalCard from "glhfComponents/ProposalCard";
 import useAuth from "auth/useAuth";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import LikeButton from "glhfComponents/LikeButton";
+import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 
 const Posts = () => {
   // hooks
@@ -49,6 +50,9 @@ const Posts = () => {
   const [props, setProps] = React.useState([])
   const [detailOpen, setDetailOpen] = React.useState(false);
   const [detailContent, setDetailContent] = React.useState()
+  // request states
+  const [reqDetail, setReqDetail] = React.useState()
+  const [reqOpen, setReqOpen] = React.useState(false)
 
   React.useEffect(() => {
     const params = new URLSearchParams({
@@ -56,14 +60,14 @@ const Posts = () => {
       pageNo: 1,
       pageSize: 30
     })
-    const getReqeusts = async () =>
+    const getProposals = async () =>
       await axiosPrivate.get('/proposal/list_student_profile_proposals', {
         params: params
       })
         .then(res => setProps(res.data.data.records))
         .catch(e => console.error(e))
 
-    getReqeusts();
+    getProposals();
   }, [])
 
   const handleOpenDetail = async (id, projectName) => {
@@ -93,7 +97,8 @@ const Posts = () => {
                   lastModified: prop.lastModifiedTime,
                   authorName: prop.creatorName,
                   authorId: prop.creatorId,
-                  project: projectName
+                  project: projectName,
+                  openProject: () => getReqDetail(prop.projectId)
                 }
               })
               setDetailOpen(true)
@@ -103,6 +108,13 @@ const Posts = () => {
         .catch(e => console.error(e))
     }
   }
+
+  const getReqDetail = async (projectId) =>
+    await axiosPrivate.get(`/project/get_project_info?id=${projectId}`)
+      .then(res => setReqDetail({ ...res.data.data, id: projectId }))
+      .then(res => setReqOpen(true))
+      .catch(e => console.error(e))
+
 
   return (
     <MKBox component="section" py={2}>
@@ -121,7 +133,30 @@ const Posts = () => {
             />
           }
         />
-
+      }
+      {
+        reqDetail &&
+        <RequestDescriptionModal
+          open={reqOpen}
+          setOpen={setReqOpen}
+          value={{
+            id: reqDetail.id,
+            title: reqDetail.name,
+            status: reqDetail.status,
+            category: reqDetail.projectArea,
+            propDdl: new Date(reqDetail.proposalDdl * 1000),
+            soluDdl: new Date(reqDetail.solutionDdl * 1000),
+            description: reqDetail.description,
+            requirement: JSON.parse(reqDetail.extraData).requirement,
+            rewards: JSON.parse(reqDetail.extraData).rewards,
+            metaData: {
+              lastModified: new Date(reqDetail.lastModifiedTime * 1000),
+              authorName: reqDetail.creatorName,
+              authorId: reqDetail.creatorId
+            }
+          }}
+          actionButton={<></>}
+        />
       }
       <Container>
         <Grid container item xs={12} lg={7} justifyContent="flex-start">

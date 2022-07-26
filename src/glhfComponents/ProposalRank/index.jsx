@@ -10,54 +10,61 @@ import MKTypography from "components/MKTypography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { FcLike } from 'react-icons/fc';
+import RankBadge from "./components/RankBadge";
+import LikeIcon from "glhfComponents/ProposalCard/components/LikeIcon";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@emotion/react';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
-const ProposalRank = ({proposals, openDetail}) => {
+const ProposalRank = ({ proposals, openDetail }) => {
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    
-    
-    <Stack spacing={2} sx={{ width: '100%' }}>
-      {proposals.map((s,idx) =>
-          <Card key={idx}>
-            <CardActionArea onClick={() => openDetail(s.id)}>
-              <CardContent sx={{ maxHeight: 75 }}>
-                <Grid container item xs={12} justifyContent="space-between" mx="auto">
-                  <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <MKTypography variant="h4" mb={1}>
-                      {idx + 1}
-                    </MKTypography>
-                  </MKBox>
-                  <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3}>
-                    <MKTypography variant="h5" mb={1} sx={{marginTop: '10px'}}>
-                      {s.title}
-                    </MKTypography>
-                    <MKTypography variant="body2" mb={1}>
-                      {s.description}
-                    </MKTypography>
-                  </MKBox>
-                  <MKBox width={{ xs: "100%", md: "50%", lg: "25%" }} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <MKTypography variant="body2" mb={1}>
-                      Author: {s.authorName}
-                    </MKTypography>
-                  </MKBox>
-                <div>
-                    <FcLike size={40} />
-                    <MKTypography variant="body2" mb={1} sx={{textAlign: 'center'}}>
-                      {s.likeNum}
-                    </MKTypography>
-                  </div>
+    <Stack
+      spacing={2}
+      direction="column"
+      justifyContent="center"
+      alignItems="stretch"
+    // sx={{ width: '70vw', ml: '10%', mr: '10%' }} 
+    >
+      {proposals.map((s, idx) =>
+        <Card key={idx}>
+          <CardActionArea onClick={() => openDetail(s.id)}>
+            <CardContent sx={{ py: 2 }}>
+              <Grid container direction='row'>
+                <Grid item xs={12} md={0.1}>
+                  <RankBadge rank={idx + 1} position={smallScreen ? 'top' : 'left'}/>
                 </Grid>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+                <Grid item xs={12} md={10.5} lg={10.5} xl={10.5}>
+                  <Grid container direction='column'>
+                    <Grid item>
+                      <MKTypography variant="h4" sx={{ mb: 1 }}>
+                        {s.title}
+                      </MKTypography>
+                    </Grid>
+                    <Grid item>
+                      <MKTypography variant="subtitle1">
+                        {s.oneSentenceDescription}
+                      </MKTypography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} md={1.4} lg={1.4} xl={1.4} display='flex' justifyContent='end'>
+                  <MKBox sx={{ height: '100%',display: 'flex', flexDirection: 'column', justifyContent: 'end', alignItems: 'end', flexWrap: 'wrap' }}>
+                      <MKTypography variant="body2">
+                        Author: {s.authorName}
+                      </MKTypography>
+                      <MKBox sx={{width: 'min-content'}}>
+                        <LikeIcon number={s.likeNum} direction='row' />
+                      </MKBox>
+
+                  </MKBox>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       )}
 
       </Stack>

@@ -48,12 +48,12 @@ const ProposalRanks = () => {
                     projectId: projectId,
                     searchKey: searchKey
                 })
+
             })
                 .then(res => {
                     setProposals(res.data.data.records)
                 })
                 .catch(e => console.error(e))
-            
 
         listApprovedProposals()
         
@@ -113,7 +113,11 @@ const ProposalRanks = () => {
                         }
                     }}
                     actionButton={
-                        <LikeButton originLike={false} originNumLike={propDetail.likeNum} />
+                        <LikeButton 
+                            originLike={false} 
+                            originNumLike={propDetail.likeNum} 
+                            propId={propDetail.id}
+                        />
                     }
                 />
             }
@@ -121,9 +125,7 @@ const ProposalRanks = () => {
                 <DateSearchFilter handleDate={handleDate} handleSearch={handleSearch}></DateSearchFilter>
                 <br />  
                 <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} sx={{display:'flex', flexWrap: 'wrap'}}>
-                        <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
-                    </Grid>
+                    <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
                 </Box>              
             </Container>
  

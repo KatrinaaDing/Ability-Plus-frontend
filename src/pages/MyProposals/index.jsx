@@ -78,7 +78,6 @@ const MyProposals = () => {
     }, [ascending, status, searchKey, whatOrder])
 
     const getPropDetail = async (propId, projectName) => {
-        console.log(propId)
         await axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
                 proposalId: propId
@@ -157,6 +156,7 @@ const MyProposals = () => {
                             <LikeButton
                                 originLike={false} // TODO need to fetch if the user liked the proposal
                                 originNumLike={propDetail.likeNum}
+                                propId={propDetail.id}
                             />
                         }
                         {

@@ -254,9 +254,10 @@ const CreateRequest = () => {
         <AlertModal
             open={alertOpenDraft}
             handleClose={() => setAlertOpenDraft(false)}
-            handleConfirm={() => setAlertOpenDraft(false)}
+            handleConfirm={() => navigate('/my-project-requests')}
             title="Successfully Saved"
             content="Your proposal has been saved to draft!"
+            disableClose={true}
         />
 
     const SubmitConfirm = () =>
@@ -266,6 +267,7 @@ const CreateRequest = () => {
             handleConfirm={() => navigate('/my-project-requests')}
             title="Your proposal has been publised!"
             content="You'll be redirect to My Proposals page."
+            disableClose={true}
         />
     
     const CancelConfirm = () =>

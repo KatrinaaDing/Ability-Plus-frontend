@@ -27,6 +27,21 @@ import list from "assets/theme/components/list";
 import { propStatus } from "glhfComponents/ProcessStatusBadge";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import SelectProposalsFilter from 'glhfComponents/SelectProposalsFilter';
+import { makeStyles } from "@material-ui/styles";
+import { statusBank } from "utils/getStatus";
+import StatusBadge from "glhfComponents/StatusBadge";
+import AlertModal from "glhfComponents/AlertModal";
+import { approvedProposals } from "assets/data/proposals";
+
+const useStyles = makeStyles({
+    root: {
+        "& .MuiDataGrid-row": {
+            cursor: "pointer"
+        }
+    }
+});
+
+
 const columns = [
     {
         field: 'title',
@@ -49,7 +64,7 @@ const columns = [
         width: 130,
     },
     {
-        field: 'status',
+        field: 'statusLabel',
         headerName: 'status',
         width: 130,
     },
@@ -60,65 +75,40 @@ const columns = [
     },
 ];
 
-const getRating = (id) => {
-    switch (id) {
-        case 49:
-            return 4
-            break;
-
-        case 50:
-            return 3.5
-            break;
-
-        default:
-            return 3
-            break;
-    }
-}
-
-
-const getNotes = (id) => {
-    switch (id) {
-        case 49:
-            return 'Very good. I like the idea.'
-            break;
-
-        case 50:
-            return "Overall is good. The structure can be better. Overall is good. Thimporved Overall is good. The structure can be imporved"
-            break;
-
-        default:
-            return "OK but conventional"
-            break;
-    }
-}
-
 
 const ProjectProposals = () => {
     // hooks
+    const classes = useStyles();
     const { reqName: projectName, reqId: projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-
-    // search bar states
-    const [isPick, setIsPick] = useState(2); // -1: rejected, 0: no label, 1: approved, 2: all
 
     // display states
     const [propCards, setPropCards] = useState([]);
     const [total, setTotal] = useState(0);
     const [propDetail, setPropDetail] = useState(null);
     const [propDetailOpen, setPropDetailOpen] = useState(false);
+    const [projectStatus, setProjectStatus] = useState();
 
     // select states
     const [selectMode, setSelectMode] = useState(false);
     const [selectedItem, setSelectedItem] = useState([]);
 
+    // view states
     const [view, setView] = useState("card");
     const [rows, setRows] = useState([])
-    const [isPicked, setIsPicked] = useState(0);
+
+    // search bar states
+    const [isPicked, setIsPicked] = useState(2);    // -1: rejected, 0: no label, 1: approved, 2: all
     const [ascending, setAscending] = useState(true);
     const [whatOrder, setWhatOrder] = useState('LastModifiedTime')
     const [searchKey, setSearchKey] = useState('');
+
+    // alert modal
+    const [approveOpen, setApproveOpen] = useState(false);
+
+
+    // search bar handler
     const handleSearch = (key) => {
         setSearchKey(key);
     }
@@ -135,8 +125,33 @@ const ProjectProposals = () => {
         setView(nextView);
     };
 
-    useEffect( () => {
+    // check if is empty comment
+    const emptyComment = (comment) =>
+        comment === null || comment == ''
 
+    // check if is empty rating
+    const emptyRating = (rating) =>
+        rating === null || rating === 0
+
+    // get status of the proposal
+    const getStatus = (comment, rating, isPick) =>
+        isPick
+            ? 2 // shorlisted
+            : emptyComment(comment) && emptyRating(rating)
+                ? 0 // empty comment and rating => unviewed
+                : 1 // viewed
+
+    // get project status (determine if the project can process)
+    useEffect(() => {
+        const getStatus = () =>
+            axiosPrivate.get(`/project/getProjectStatus?projectId=${projectId}`)
+                .then(res => setProjectStatus(res.data.data))
+                .catch(e => console.error(e))
+
+        getStatus()
+    }, [])
+
+    useEffect(() => {
         const listProjectProposals = async () =>
             await axiosPrivate.get('/proposal/list_project_proposals', {
                 params: new URLSearchParams({
@@ -145,29 +160,30 @@ const ProjectProposals = () => {
                     pageSize: 20,
                     projectId: projectId,
                     whatOrder: whatOrder,
-                    isPick: isPicked === -1? 'all': isPicked,
+                    isPick: isPicked,
                     searchKey: searchKey
                 })
             })
                 .then(res => {
                     const data = res.data.data
-                    // FIXME let everything unviewed. this only for demo, hard code status to unviewed
-                    // const initialSelected = {}
+                    const initialSelected = []
                     data.records.forEach((item, idx, arr) => {
-                        arr[idx].status = 1
-                        arr[idx].rating = getRating(item.id) // FIXME random generated rating
-                        // initialSelected['select-'+arr[idx].id] = Boolean(arr[idx].status)
+                        arr[idx].status = getStatus(item.comment, item.rating, item.isPick)
+                        arr[idx].rating = item.rating === null ? 0 : item.rating
+                        arr[idx].comment = item.comment === null ? '' : item.comment
+                        if (item.isPick)
+                            initialSelected.push(item.id)
                     })
-                    // setSelectedItem(initialSelected)
+                    setSelectedItem(initialSelected)
                     setPropCards(data.records)
                     setTotal(data.total)
                 })
                 .catch(e => console.error(e))
-        
+
         listProjectProposals()
     }, [ascending, isPicked, searchKey, whatOrder])
 
-    // data view hooks
+    // data table view hooks
     useEffect(() => {
         const dataRows = []
         propCards.forEach(p =>
@@ -176,31 +192,35 @@ const ProjectProposals = () => {
                 title: p.title,
                 authorName: p.authorName,
                 oneSentenceDescription: p.oneSentenceDescription,
-                rating: p.rating === null ? 0 : p.rating,
-                status: propStatus[p.status].label,
-                note: getNotes(p.id)
+                rating: p.rating,
+                statusLabel: propStatus[p.status].label,
+                status: p.status,
+                note: p.comment,
+                isPick: p.isPick,
             })
         )
         setRows(dataRows)
     }, [propCards])
 
- 
-    const getPropDetail = async (id) => {
-        await axiosPrivate('/proposal/get_proposal_detail_info', {
+    const getPropDetail = (id) => {
+        axiosPrivate('/proposal/get_proposal_detail_info', {
             params: new URLSearchParams({
                 proposalId: parseInt(id)
             })
         })
             .then(res => {
                 const data = res.data.data
+                const item = propCards.filter(e => e.id === id)[0]
+                console.log(item)
+                console.log(data)
                 data.extraData = JSON.parse(data.extraData)
-                console.log(propCards.find(e => e.id === id).status)
                 setPropDetail({
                     ...data,
                     id,
-                    status: propCards.find(e => e.id === id).status,
-                    rating: getRating(id), // FIXME: random generated rating
-                    note: getNotes(id),
+                    status: item.status,
+                    rating: item.rating,
+                    comment: item.comment,
+                    isPick: item.isPick
                 })
             })
             .then(res => setPropDetailOpen(true))
@@ -208,32 +228,66 @@ const ProjectProposals = () => {
     }
 
     const approveProposals = () => {
-        alert('All shorlisted proposals has been approved!')
-        navigate('/view-request-ranks/' + projectId)
+        axiosPrivate.post(`/proposal/commit_approved_proposal?projectId=${projectId}`)
+            .then(res => navigate(`/view-request-ranks/${projectId}`))
+            .catch(e => console.error(e))
     }
 
-    const shortlistItem = (id, toShortList) => {
-        // change propcards and details
-        const toShortlist = propCards.find(e => e.id === id);
-        const idx = propCards.indexOf(toShortlist)
-        toShortlist.status = toShortList ? 2 : 1;
-        const newPropCards = [...propCards]
-        newPropCards[idx] = toShortlist
-
+    // update status badge on proposal detail modall
+    const updateDetailBadge = (status) => {
         const newDetail = { ...propDetail }
-        newDetail.status = toShortList ? 2 : 1
+        newDetail.status = status
+        if (status === 2)
+            newDetail.isPick = 1
+        else
+            newDetail.isPick = 0
         setPropDetail(newDetail)
-        setPropCards(newPropCards);
-        // setIsPick(Number(!isPick))  //FIXME revert is pick status
+    }
 
-        // change selectedItem
-        // setSelectedItem({ ...selectedItem, [`select-${id}`]: toShortList })
-        setSelectedItem([...selectedItem, id])
+    // update card display info
+    const updateItem = (id, key, value) => {
+        const toUpdate = propCards.find(e => e.id === id);
+        const idx = propCards.indexOf(toUpdate)
+        toUpdate[key] = value
+        toUpdate.status = getStatus(toUpdate.comment, toUpdate.rating, toUpdate.isPick)
+        const newCards = [...propCards]
+        newCards[idx] = toUpdate
+        setPropCards(newCards);
+
+        return toUpdate.status
+    }
+
+    // update rating on a card item
+    const rateItem = (id, rating) => {
+        const newStatus = updateItem(id, 'rating', rating * 2)
+        updateDetailBadge(newStatus)
+    }
+
+    // update comments on a card item
+    const commentItem = (id, comment) => {
+        const newStatus = updateItem(id, 'comment', comment)
+        updateDetailBadge(newStatus)
+    }
+
+    // shortlist an item
+    const shortlistItem = (id, toShortlist) => {
+        axiosPrivate.post(`/proposal/company_process_proposal?proposalId=${id}&isPick=${toShortlist}`)
+            .then(res => {
+                const newStatus = updateItem(id, 'isPick', toShortlist)
+                updateDetailBadge(newStatus)
+                const newSelect = [...selectedItem]
+                if (toShortlist)
+                    newSelect.push(id)
+                else
+                    newSelect.splice(selectedItem.indexOf(id), 1)
+
+                setSelectedItem(newSelect)
+            })
+            .catch(e => console.error(e))
 
     }
 
     const handleSelect = (e) => {
-        // setSelectedItem({ ...selectedItem, [e.target.name]: e.target.checked })
         const id = parseInt(e.target.name.split('-')[1])
         // to check
         if (e.target.checked) {
@@ -241,50 +295,37 @@ const ProjectProposals = () => {
 
             // to uncheck
         } else {
-            const newSel = selectedItem.splice(selectedItem.indexOf(id), 1)
+            const newSel = [...selectedItem]
+            newSel.splice(selectedItem.indexOf(id), 1)
             setSelectedItem(newSel)
-
         }
     }
 
+    const shortlistMultiItem = (list, newIsPick) => {
+        console.log(newIsPick, list)
+        const body = {
+            ids: list,
+            isPick: newIsPick,
+            projectId: projectId
+        }
+        // shortlist items
+        axiosPrivate.post('/proposal/batch_process_proposals', body)
+            .then(res => {
+                list.forEach(i => updateItem(i, 'isPick', newIsPick))
+            })
+            .catch(e => console.error(e))
+    }
+
     const commitSelect = (e) => {
-        const newPropCards = [...propCards]
-
-        // Object.keys(selectedItem).forEach(key => {
-        //     if (selectedItem[key]) {
-        //         const id = parseInt(key.split('-')[1]);
-        //         const toShortlist = propCards.find(e => e.id === id);
-        //         const idx = propCards.indexOf(toShortlist)
-        //         toShortlist.status = 2;
-        //         newPropCards[idx] = toShortlist
-        //     }
-        //     else {
-        //         const id = parseInt(key.split('-')[1]);
-        //         const toShortlist = propCards.find(e => e.id === id);
-        //         const idx = propCards.indexOf(toShortlist)
-        //         toShortlist.status = 0;
-        //         newPropCards[idx] = toShortlist
-        //     }
-        // })
-
-        newPropCards.forEach(p => {
-            // if the card is selected to commit
-            if (selectedItem.indexOf(p.id) >= 0) {
-                p.status = 2;
-            } else {
-                p.status = 0;
-            }
-        })
-
-
-        setPropCards(newPropCards)
+        // get unpicked items
+        const unPickItem = propCards.map(e => e.id).filter(e => !selectedItem.includes(e));
+        console.log('yes', selectedItem, 'no', unPickItem)
+        shortlistMultiItem(selectedItem, 1);
+        shortlistMultiItem(unPickItem, 0);
         setSelectMode(false);
     }
 
-    // TODO put proposal rank if status > approving
 
-    console.log(selectedItem)
-    
     const CardView = () => (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -293,13 +334,14 @@ const ProjectProposals = () => {
                         <ProposalCard
                             key={p.id}
                             data={{
+                                id: p.id,
                                 title: p.title,
                                 description: p.oneSentenceDescription,
                                 authorId: p.authorId,
                                 authorName: p.authorName,
                                 rating: p.rating,
-                                status: p.status,   // FIXME: hardcode status
-                                comment: getNotes(p.id)              // FIXME: 目前api没有返回公司的note
+                                status: p.status,
+                                comment: p.comment
                             }}
                             openDetail={() => getPropDetail(p.id)}
                             secondary={
@@ -328,15 +370,24 @@ const ProjectProposals = () => {
         <BasicPageLayout
             title={`All Proposals for project "${projectName}"`}
             secondaryContent={
+                projectStatus === statusBank.request.approving.label &&
                 <MKButton
                     vairnat='gradient'
                     color='success'
-                    onClick={approveProposals}
+                    onClick={() => setApproveOpen(true)}
                 >
                     Approve all shortlisted proposal
                 </MKButton>
+
             }
         >
+            <AlertModal
+                open={approveOpen}
+                handleClose={() => setApproveOpen(false)}
+                handleConfirm={() => approveProposals()}
+                title="Approve all shortlisted"
+                content="This process cannot be reversed. Do you wish to continue?"
+            />
             <MKBox
                 sx={{
                     display: 'flex',
@@ -347,6 +398,7 @@ const ProjectProposals = () => {
             >
                 <MKTypography variant='subtitle1'>
                     There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''}
+                    {projectStatus && <StatusBadge type='request' statusLabel={projectStatus} />}
                 </MKTypography>
                 {
                     !selectMode
@@ -376,7 +428,7 @@ const ProjectProposals = () => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </MKBox>
-            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={ handleIsPicked}  handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
+            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={handleIsPicked} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
             <br />
             {
                 propDetail &&
@@ -384,10 +436,12 @@ const ProjectProposals = () => {
                     key={propDetail}
                     open={propDetailOpen}
                     setOpen={setPropDetailOpen}
+                    rateItem={rateItem}
+                    commentItem={commentItem}
                     value={{
                         id: propDetail.id,
                         title: propDetail.title,
-                        status: propDetail.status,//propDetail.status, // FIXME
+                        status: propDetail.status,
                         desc: propDetail.oneSentenceDescription,
                         prob: propDetail.extraData.problemStatement,
                         vStat: propDetail.extraData.visionStatement,
@@ -395,25 +449,26 @@ const ProjectProposals = () => {
                         detail: propDetail.extraData.detail,
                         likeNum: propDetail.likeNum,
                         rating: propDetail.rating,
-                        note: propDetail.note,
+                        comment: propDetail.comment,
                         metaData: {
                             lastModified: propDetail.lastModifiedTime,
                             authorName: propDetail.creatorName ?? "No Name",
                             authorId: propDetail.creatorId,
+                            projectName: propDetail.projectName,
                             topic: projectName
                         }
                     }}
                     actionButton={
                         <MKButton
                             variant="gradient"
-                            color={propDetail.status === 2 ? 'success' : "warning"}
+                            color={propDetail.isPick ? 'success' : "warning"}
                             startIcon={
-                                propDetail.status === 2
+                                propDetail.isPick
                                     ? <PlaylistAddCheckIcon />
                                     : <PlaylistAddIcon />
                             }
                             onClick={() => {
-                                shortlistItem(propDetail.id, propDetail.status === 2 ? false : true)
+                                shortlistItem(propDetail.id, Number(!!!propDetail.isPick))
                                 // alert('The proposal has been added to shortlist.')
                             }}
                         >
@@ -425,13 +480,12 @@ const ProjectProposals = () => {
             {
                 view === 'card'
                     ? <CardView />
-                    : <div style={{ height: 400, width: '100%' }}>
+                    : <div style={{ height: '60vh', width: '100%' }}>
                         <DataGrid
                             rows={rows}
                             columns={columns}
                             checkboxSelection={selectMode}
                             onSelectionModelChange={(newSelectionModel) => {
-                                console.log('new', newSelectionModel)
                                 setSelectedItem(newSelectionModel);
                             }}
                             onRowClick={(detail) => getPropDetail(detail.id)}
@@ -440,7 +494,7 @@ const ProjectProposals = () => {
                                 Toolbar: GridToolbar
                             }}
                             disableSelectionOnClick
-
+                            className={classes.root}
                         />
                     </div>
             }

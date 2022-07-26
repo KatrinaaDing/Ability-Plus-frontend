@@ -27,12 +27,13 @@ const PopularProposals = () => {
     const location = useLocation();
 
     // info display states
-    const [reqOpen, setReqOpen] = React.useState(false);
-    const [reqContent, setReqContent] = React.useState();
     const [detailOpen, setDetailOpen] = React.useState(false);
     const [detailContent, setDetailContent] = React.useState()
     const [alertOpen, setAlertOpen] = React.useState(false);
     const [popularProps, setPopularProps] = React.useState([]);
+    // request states
+    const [reqDetail, setReqDetail] = useState()
+    const [reqOpen, setReqOpen] = useState(false)
 
     // search bar states
     const [searchKey, setSearchKey] = useState('');
@@ -49,7 +50,7 @@ const PopularProposals = () => {
         setIsAcendingOrderLike(like)
     }
 
-    useEffect( () => {
+    useEffect(() => {
         let params = {
             isAscendingOrderLike: isAscendingOrderLike,
             isAscendingOrderTime: ascending,
@@ -70,14 +71,16 @@ const PopularProposals = () => {
         listOutstandingProposal();
     
     }, [ascending, isAscendingOrderLike, searchKey])
+
     
-    const handleOpenDetail = async (id, projectName) => {
+    // handle open proposal detail
+    const handleOpenDetail =  (id, projectName) => {
         // if no login info, navigate to login
         if (!auth || Object.keys(auth).length === 0) {
             setAlertOpen(true)
         
         } else {
-            await axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`,)
+            axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`)
                 .then(res => {
                     axiosPrivate.get(`/user_proposal_like_record/already_like?proposalId=${id}`)
                         .then(liked => {
@@ -98,16 +101,25 @@ const PopularProposals = () => {
                                     lastModified: prop.lastModifiedTime,
                                     authorName: prop.creatorName,
                                     authorId: prop.creatorId,
-                                    project: projectName
+                                    project: projectName,
+                                    openProject: () => getReqDetail(prop.projectId)
                                 }
                             })
-                            setDetailOpen(true)
+                            
                         })
+                        .then(res => setDetailOpen(true))
                         .catch(e => console.error(e))
                 })
                 .catch(e => console.error(e))
         }
     }
+
+    const getReqDetail = (projectId) =>
+        axiosPrivate.get(`/project/get_project_info?id=${projectId}`)
+            .then(res => setReqDetail({ ...res.data.data, id: projectId }))
+            .then(res => setReqOpen(true))
+            .catch(e => console.error(e))
+
 
     return (
         <BasicPageLayout title='Popular Proposals'>
@@ -127,25 +139,37 @@ const PopularProposals = () => {
                         }
                     />
             }
-            {   
-                // TODO render request detail when it's fetched
-                reqContent && 
-                    <RequestDescriptionModal    
-                        open={reqOpen}
-                        setOpen={setReqOpen}
-                        value={reqContent}
-                        actionButton={
-                            <MKButton>
-                                View Proposal Ranks
-                            </MKButton>
+            {
+                reqDetail &&
+                <RequestDescriptionModal
+                    open={reqOpen}
+                    setOpen={setReqOpen}
+                    value={{
+                        id: reqDetail.id,
+                        title: reqDetail.name,
+                        status: reqDetail.status,
+                        category: reqDetail.projectArea,
+                        propDdl: new Date(reqDetail.proposalDdl * 1000),
+                        soluDdl: new Date(reqDetail.solutionDdl * 1000),
+                        description: reqDetail.description,
+                        requirement: JSON.parse(reqDetail.extraData).requirement,
+                        rewards: JSON.parse(reqDetail.extraData).rewards,
+                        metaData: {
+                            lastModified: new Date(reqDetail.lastModifiedTime * 1000),
+                            authorName: reqDetail.creatorName,
+                            authorId: reqDetail.creatorId
                         }
-                    />
+                    }}
+                    actionButton={<></>}
+                />
             }
+            
             <AlertModal 
                 open={alertOpen}
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
+                disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true})}
             />
             <Box sx={{ flexGrow: 1 }}>
@@ -171,14 +195,6 @@ const PopularProposals = () => {
                                 />
                         )
                     }
-                    
-                {/* <DefaultReviewCard
-                    color="light"
-                    name="Nick Willever"
-                    date="1 day ago"
-                    review="This is an excellent product, the documentation is excellent and helped me get things done more efficiently."
-                    rating={4}
-                /> */}
                 </Grid>
             </Box>
         </BasicPageLayout>

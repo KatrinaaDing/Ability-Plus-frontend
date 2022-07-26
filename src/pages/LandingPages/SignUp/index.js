@@ -268,6 +268,7 @@ function SignUpBasic() {
         }
         title="You have logged in."
         content="You'll be redirected."
+        disableClose={true}
       />
       <MKBox
         position="absolute"

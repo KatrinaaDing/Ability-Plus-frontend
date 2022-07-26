@@ -7,11 +7,13 @@ import FolderIcon from '@mui/icons-material/Folder';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MKTypography from 'components/MKTypography';
 import CommentIcon from '@mui/icons-material/Comment';
+import DescriptionIcon from '@mui/icons-material/Description';
+
 
 const CardListItem = ({title, value, link, color}) => {
     const icons = {
         'Category': <FolderIcon />,
-        'Project': <AssignmentIcon />,
+        'Project': <DescriptionIcon />,
         'Posted by': <PersonIcon />,
         'My Comment': <CommentIcon />
     }

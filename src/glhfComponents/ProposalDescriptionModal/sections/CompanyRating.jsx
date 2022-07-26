@@ -9,6 +9,7 @@ import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import MKTypography from 'components/MKTypography';
 import SavingLoader from 'glhfComponents/SavingLoader';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 const labels = {
     0.5: 'Useless',
@@ -24,25 +25,34 @@ const labels = {
 };
 
 
-const CompanyRating = ({rating}) => {
+const CompanyRating = ({rating, id, updateCard}) => {
+    
+    const axiosPrivate = useAxiosPrivate();
+
     const [value, setValue] = React.useState(rating);
     const [hover, setHover] = React.useState(-1);
     const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success， 2: fail
 
-
-    useEffect(() => {
-        setValue(rating)
-    }, [rating])
+    // useEffect(() => {
+    //     setValue(rating)
+    // }, [])
 
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
     const handleSave = (newValue) => {
+        console.log(id)
         setLoading(0)
-        setTimeout(() => {
-            setLoading(1)
-        }, 800);
+        axiosPrivate.post(`/proposal/company_process_proposal?proposalId=${id}&rating=${newValue*2}`)
+            .then(res => {
+                setLoading(1)
+                updateCard(id, newValue)
+            })
+            .catch(e => {
+                setLoading(2)
+                console.error(e)
+            })
     }
 
     return (
@@ -68,8 +78,8 @@ const CompanyRating = ({rating}) => {
             >
                 <Rating
                     name="rating"
-                    defaultValue={value}
                     max={5}
+                    value={value}
                     getLabelText={getLabelText}
                     precision={0.5}
                     emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}

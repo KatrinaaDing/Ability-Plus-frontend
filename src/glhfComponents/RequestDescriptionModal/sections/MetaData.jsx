@@ -55,23 +55,23 @@ const MetaData = ({ metaData, id }) => {
                     <ListItemIcon>
                         <EmailIcon fontSize='medium' />
                     </ListItemIcon>
-                        <ListItemText
-                            primary={null}
-                            secondary={
-                                <>
-                                    Contact Email: &nbsp;
-                                    <a href={`mailto:${metaData.contactEmail}`}>{metaData.contactEmail}</a>
-                                </>
-                                
-                            }
-                        />
+                    <ListItemText
+                        primary={null}
+                        secondary={
+                            <>
+                                Contact Email: &nbsp;
+                                <a href={`mailto:${metaData.contactEmail}`}>{metaData.contactEmail}</a>
+                            </>
+
+                        }
+                    />
                 </ListItem>
             }
             <ListItem sx={listItemSx}>
-                <MKButton 
-                    variant='outlined' 
-                    color='info' 
-                    size='small' 
+                <MKButton
+                    variant='outlined'
+                    color='info'
+                    size='small'
                     sx={{ my: 1, width: '89%' }}
                     onClick={() => window.open(`/forum/${id}`)}
                 >

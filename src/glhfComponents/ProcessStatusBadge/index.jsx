@@ -41,8 +41,8 @@ const ProcessStatusBadge = props => {
             variant='contained'
             sx={{
                 mt: 'auto',
-                ml: props.position === 'top-right' ? 3 : 4,
-                mb: props.position === 'top-right' ? -4 : 'auto', 
+                ml: props.position === 'top-right' ? 2 : 2,
+                mb: props.position === 'top-right' ? -5 : 'auto', 
             }}
         />
     );
