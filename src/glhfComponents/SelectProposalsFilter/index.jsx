@@ -41,6 +41,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    fontSize: '13px',
+    height: '40px',
+    border: '1px solid lightgray',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -72,16 +77,15 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
     };
     return (
         <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
-            <Box sx={{minWidth: 120}}>
+            <Box sx={{ minWidth: 120 }}>
+                <p style={{ textAlign: 'center'}}>Status:</p>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="select">Sort By Status</InputLabel>
                         <Select
-                            labelId="Status"
                             id="Proposal Status"
                             value={status}
-                            label="Status"
                             onChange={handleChange}
-                            style={{height: '40px'}}
+                            sx={{ backgroundColor: 'white', height: '40px' }}
+                            style={{backgroundColor:'white'}}
                     >   
                             <MenuItem value={-1}>All</MenuItem>
                             <MenuItem value={0}>Unpicked</MenuItem>
@@ -90,7 +94,8 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
                 </FormControl>
             </Box>
             <Box>
-                <MKButton sx={{margin: '5px', height: '50px'}} onClick={() => setAscending(!ascending)}>
+                <p style={{ textAlign: 'center'}}>Order by Date:</p>
+                <MKButton  sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}  onClick={() => setAscending(!ascending)}>
                     Submission Date{' '}
                     { ascending && <KeyboardArrowDownIcon>
                     </KeyboardArrowDownIcon>}
@@ -99,14 +104,13 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
             </Box>
             <Box sx={{minWidth: 120}}>
                 <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="select">In Descending Order</InputLabel>
+                    <p style={{ textAlign: 'center'}}>Order By:</p>
                     <Select
-                        labelId="Due"
                         id="Proposal Due"
                         value={whatOrder}
-                        label="Status"
                         onChange={(e) => setWhatOrder((e.target.value))}
-                        style={{height: '40px'}}
+                        sx={{ backgroundColor: 'white', height: '40px' }}
+                        style={{backgroundColor:'white'}}
                     >
                         <MenuItem value={'SolutionDue'}>Solution Deadline</MenuItem>
                         <MenuItem value={'ProposalDue'}>Proposal Deadline</MenuItem>
@@ -115,7 +119,8 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
                 </FormControl>
             </Box>
             <Box>
-                <Search sx={{ margin: '5px', height: '50px' }}>
+                <p style={{ textAlign: 'center'}}>Search:</p>
+                <Search sx={{ margin: '6px', height: '50px' }}>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
