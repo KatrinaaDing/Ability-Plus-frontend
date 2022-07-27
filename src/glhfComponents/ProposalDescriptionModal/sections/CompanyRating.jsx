@@ -33,16 +33,11 @@ const CompanyRating = ({rating, id, updateCard}) => {
     const [hover, setHover] = React.useState(-1);
     const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success， 2: fail
 
-    // useEffect(() => {
-    //     setValue(rating)
-    // }, [])
-
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
     const handleSave = (newValue) => {
-        console.log(id)
         setLoading(0)
         axiosPrivate.post(`/proposal/company_process_proposal?proposalId=${id}&rating=${newValue*2}`)
             .then(res => {
