@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 24 Jul 2022
+ * Discription: An icon showing like number
+ */
 import MKBox from 'components/MKBox';
 import React from 'react';
 import { pink } from '@mui/material/colors';
@@ -30,8 +35,7 @@ const LikeIcon = ({number, direction}) => {
                     color: color,
                     my: 'auto',
                     mx: 'auto',
-                    ml: direction === 'row' ? 0.5 : 0,
-                    mr: 0
+                    ml: direction === 'row' ? 0.5 : 0
                 }}
             >
                 {number}
