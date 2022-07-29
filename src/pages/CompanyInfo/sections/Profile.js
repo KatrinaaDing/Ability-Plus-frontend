@@ -44,6 +44,7 @@ import useAxiosBasic from "hooks/useAxiosBasic";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "axios";
 import { BASE_URL } from 'api/axios';
+import StatusDateDueSearchFilter from "glhfComponents/DateSearchFilter";
 
 function Profile({ companyInfo }) {
   const {auth, setAuth} = useAuth();
@@ -54,7 +55,8 @@ function Profile({ companyInfo }) {
 
   const params = useParams();
   const {id} = params;
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("")
+  const [des, setDes] = useState("")
   const [companyName, setCompanyName] = useState("")
   console.log(companyName)
   console.log(email)
@@ -65,6 +67,7 @@ function Profile({ companyInfo }) {
         .then(res => {
           if (res.data.data.extraData)
             setEmail(JSON.parse(res.data.data.extraData).email)
+            setDes(JSON.parse(res.data.data.extraData).des)
           setCompanyName(res.data.data.fullName)
           setEmail(res.data.data.account)
         })
@@ -144,6 +147,14 @@ function Profile({ companyInfo }) {
                   </MKTypography>
                 </Grid>
               </Grid>
+              <Grid item>
+                  <MKTypography component="span" variant="body2" fontWeight="bold">
+                    Description&nbsp;&nbsp;
+                  </MKTypography>
+                  <MKTypography component="span" variant="body2" color="text">
+                    {des}&nbsp;&nbsp;&nbsp;
+                  </MKTypography>
+                </Grid>
             </Grid>
           </Grid>
         </Grid>   

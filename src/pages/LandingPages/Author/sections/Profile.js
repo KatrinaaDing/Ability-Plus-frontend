@@ -78,7 +78,7 @@ function Profile() {
   console.log(cAge)
   useEffect(() => {
     const getInfo = async () =>
-      await axiosPrivate.get("/user/get_profile_info")
+      await axiosPrivate.get("/user/view_own_profile_info")
         .then(res => {
           if (res.data.data.extraData === null) {
             setCEmail("sample@email.com");
@@ -271,25 +271,27 @@ function Profile() {
                   Edit Profile
                 </MKButton>
               </MKBox>
-              <Grid container spacing={3} mb={3}>
-                <Grid item>
+
+              <Grid item>
+                <MKTypography component="span" variant="body2" fontWeight="bold">
+                  Contact Email&nbsp;&nbsp;
+                </MKTypography>
+                <MKTypography component="span" variant="body2" color="text">
+                  {cEmail!== null? cEmail: 'NA'}&nbsp;&nbsp;&nbsp;
+                </MKTypography>
+              </Grid>
+
+              <Grid item>
+              {!auth.isCompany && 
+                <>
                   <MKTypography component="span" variant="body2" fontWeight="bold">
-                    Contact Email&nbsp;&nbsp;
-                  </MKTypography>
-                  <MKTypography component="span" variant="body2" color="text">
-                    {cEmail!== null? cEmail: 'NA'}&nbsp;&nbsp;&nbsp;
-                  </MKTypography>
-                  {!auth.isCompany && 
-                    <>
-                     <MKTypography component="span" variant="body2" fontWeight="bold">
-                      Age&nbsp;&nbsp;
-                    </MKTypography>
-                    <MKTypography component="span" variant="body2" color="text">
-                      {cAge === null? 'NA': cAge}
-                    </MKTypography>
-                    </>
-                  }
-                </Grid>
+                  Age&nbsp;&nbsp;
+                </MKTypography>
+                <MKTypography component="span" variant="body2" color="text">
+                  {cAge === null? 'NA': cAge}
+                </MKTypography>
+                </>
+              }
               </Grid>
               <Grid item>
                 <MKTypography component="span" variant="body2" fontWeight="bold">
