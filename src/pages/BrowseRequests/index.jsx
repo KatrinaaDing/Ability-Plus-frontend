@@ -23,8 +23,8 @@ import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 import EditIcon from '@mui/icons-material/Edit';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import AlertModal from 'glhfComponents/AlertModal';
+import EndlessScroll from 'glhfComponents/EndlessScroll';
 
 
 const BrowseRequests = () => {
@@ -85,9 +85,9 @@ const BrowseRequests = () => {
             .then(res => {
                 if (!newList)
                     setCards(cards.concat(res.data.data.records))
-                else 
+                else
                     setCards(res.data.data.records)
-                
+
                 if (pageNo * 18 >= res.data.data.total)
                     setHasMore(false)
                 else
@@ -100,20 +100,20 @@ const BrowseRequests = () => {
 
     useEffect(() => {
         // if no login info, navigate to login
-        if (!auth || Object.keys(auth).length === 0) 
+        if (!auth || Object.keys(auth).length === 0)
             setAlertOpen(true)
         else
             fetchData(1, true)
     }, [ascending, status, whatOrder, searchKey])
-        
+
     const getReqDetail = async (reqId) =>
         await axiosPrivate.get(`/project/get_project_info?id=${reqId}`)
             .then((res) => {
                 if (!auth.isCompany)
                     axiosPrivate.get(`/proposal/can_submit_proposal?projectId=${reqId}`)
-                        .then(canProcess => 
-                            setReqDetail({ 
-                                ...res.data.data, 
+                        .then(canProcess =>
+                            setReqDetail({
+                                ...res.data.data,
                                 id: reqId,
                                 mySubmittedProposal: canProcess.data.data
                             })
@@ -125,14 +125,14 @@ const BrowseRequests = () => {
                         ...res.data.data,
                         id: reqId,
                     })
-                    setReqOpen(true)
-                
+                setReqOpen(true)
+
             })
-            
+
             .catch(e => console.error(e))
 
     const renderRequestCards = () => {
-        return cards.map(content => 
+        return cards.map(content =>
             <RequestCard
                 key={content.id}
                 data={content}
@@ -159,7 +159,7 @@ const BrowseRequests = () => {
                         : (
                             <>
                                 status
-                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
+                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal' />
                             </>
                         )
                 }
@@ -177,20 +177,20 @@ const BrowseRequests = () => {
                         title: reqDetail.name,
                         status: reqDetail.status,
                         category: reqDetail.projectArea,
-                        propDdl: new Date(reqDetail.proposalDdl*1000),
-                        soluDdl: new Date(reqDetail.solutionDdl*1000),
+                        propDdl: new Date(reqDetail.proposalDdl * 1000),
+                        soluDdl: new Date(reqDetail.solutionDdl * 1000),
                         description: reqDetail.description,
                         requirement: JSON.parse(reqDetail.extraData).requirement,
                         rewards: JSON.parse(reqDetail.extraData).rewards,
                         metaData: {
-                            lastModified: new Date(reqDetail.lastModifiedTime*1000),
+                            lastModified: new Date(reqDetail.lastModifiedTime * 1000),
                             authorName: reqDetail.creatorName,
                             authorId: reqDetail.creatorId
                         }
                     }}
                     actionButton={
                         // allow student submission when open for proposal
-                        !auth.isCompany && 
+                        !auth.isCompany &&
                         reqDetail.status === statusBank.request.proposal.label &&
                         (
                             reqDetail.mySubmittedProposal <= 0
@@ -215,23 +215,15 @@ const BrowseRequests = () => {
                     }
                 />
             }
-
-                <InfiniteScroll
-                    dataLength={cards.length}
-                    next={() => fetchData(numPage+1, false)}
-                    hasMore={hasMore}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                        <MKTypography varaint='subtitle1' sx={{ textAlign: 'center', pt: 3}}>
-                            Yay! You have seen all.
-                        </MKTypography>
-                    }
-                    
-                >
-            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+            <EndlessScroll
+                dataLength={cards.length}
+                next={() => fetchData(numPage + 1, false)}
+                hasMore={hasMore}
+            >
+                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
                     {renderRequestCards()}
-            </Grid>
-                </InfiniteScroll>
+                </Grid>
+            </EndlessScroll>
         </BasicPageLayout>
     );
 };

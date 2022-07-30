@@ -17,6 +17,7 @@ import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import DefaultReviewCard from 'examples/Cards/ReviewCards/DefaultReviewCard';
+import EndlessScroll from 'glhfComponents/EndlessScroll';
 
 const PopularProposals = () => {
     //hooks
@@ -40,6 +41,11 @@ const PopularProposals = () => {
     const [ascending, setAscending] = useState(true);
     const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(true);
 
+    // pagination states
+    const [pageNum, setPageNum] = useState(1)
+    const [hasMore, setHasMore] = useState(false);
+    const [total, setTotal] = useState(0);
+
     const handleDate = (ascending) => {
         setAscending(ascending)
     }
@@ -50,35 +56,49 @@ const PopularProposals = () => {
         setIsAcendingOrderLike(like)
     }
 
-    useEffect(() => {
+    /**
+     * Fetching a list of proposal card
+     * @param {integer} pageNo page number to fetch
+     * @param {boolean} newList determine if is to fetch a new card list (like changing status)
+     */
+    const fetchData = (pageNo, newList) => {
         let params = {
             isAscendingOrderLike: isAscendingOrderLike,
             isAscendingOrderTime: ascending,
-            pageNo: 1,
-            pageSize: 20,
+            pageNo: pageNo,
+            pageSize: 18,
             searchKey: searchKey,
         }
 
-        const listOutstandingProposal = async () =>
-            await axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
-                params: new URLSearchParams(params),
-            })
+        axiosBasic.get(`/proposal/pass/list_outstanding_proposal_request`, {
+            params: new URLSearchParams(params),
+        })
             .then(res => {
-                setPopularProps(res.data.records)
+                if(newList)
+                    setPopularProps(res.data.records)
+                else
+                    setPopularProps(popularProps.concat(res.data.records))
+                if (pageNo * 18 >= res.data.total)
+                    setHasMore(false)
+                else    
+                    setHasMore(true)
+                setPageNum(pageNo)
+                setTotal(res.data.total)
             })
             .catch(e => console.error(e))
-        
-        listOutstandingProposal();
-    
+    }
+
+    useEffect(() => {
+        fetchData(1, true)
     }, [ascending, isAscendingOrderLike, searchKey])
 
-    
+
     // handle open proposal detail
-    const handleOpenDetail =  (id, projectName) => {
+    const handleOpenDetail = (id, projectName) => {
         // if no login info, navigate to login
         if (!auth || Object.keys(auth).length === 0) {
             setAlertOpen(true)
-        
+
         } else {
             axiosPrivate.get(`/proposal/get_proposal_detail_info?proposalId=${id}`)
                 .then(res => {
@@ -105,7 +125,7 @@ const PopularProposals = () => {
                                     openProject: () => getReqDetail(prop.projectId)
                                 }
                             })
-                            
+
                         })
                         .then(res => setDetailOpen(true))
                         .catch(e => console.error(e))
@@ -126,18 +146,18 @@ const PopularProposals = () => {
             {
                 // render proposal detail when it's fetched
                 detailContent &&
-                    <ProposalDescriptionModal
-                        open={detailOpen}
-                        setOpen={setDetailOpen}
-                        value={detailContent}
-                        actionButton={
-                            <LikeButton 
-                                originLike={detailContent.liked} 
-                                originNumLike={detailContent.likeNum} 
-                                propId={detailContent.id}
-                            />
-                        }
-                    />
+                <ProposalDescriptionModal
+                    open={detailOpen}
+                    setOpen={setDetailOpen}
+                    value={detailContent}
+                    actionButton={
+                        <LikeButton
+                            originLike={detailContent.liked}
+                            originNumLike={detailContent.likeNum}
+                            propId={detailContent.id}
+                        />
+                    }
+                />
             }
             {
                 reqDetail &&
@@ -163,21 +183,26 @@ const PopularProposals = () => {
                     actionButton={<></>}
                 />
             }
-            
-            <AlertModal 
+
+            <AlertModal
                 open={alertOpen}
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
                 disableClose={true}
-                handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true})}
+                handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
             />
             <Box sx={{ flexGrow: 1 }}>
-                <LikeDateSearchFilter handleLike={handleLike} handleDate={ handleDate} handleSearch={ handleSearch}></LikeDateSearchFilter>
-                <br/>
-                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {
-                        popularProps.map(p =>
+                <LikeDateSearchFilter handleLike={handleLike} handleDate={handleDate} handleSearch={handleSearch}></LikeDateSearchFilter>
+                <br />
+                <EndlessScroll
+                    dataLength={popularProps.length}
+                    next={() => fetchData(pageNum + 1, false)}
+                    hasMore={hasMore}
+                >
+                    <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {
+                            popularProps.map(p =>
                                 <ProposalCard
                                     key={p.proposalId}
                                     data={{
@@ -193,9 +218,11 @@ const PopularProposals = () => {
                                     }}
                                     openDetail={() => handleOpenDetail(p.proposalId, p.projectName)}
                                 />
-                        )
-                    }
-                </Grid>
+                            )
+                        }
+
+                    </Grid>
+                </EndlessScroll>
             </Box>
         </BasicPageLayout>
     );
