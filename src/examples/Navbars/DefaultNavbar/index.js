@@ -15,6 +15,8 @@ Coded by www.creative-tim.com
 */
 
 import { Fragment, useState, useEffect } from "react";
+import HomeIcon from '@mui/icons-material/Home';
+
 
 // react-router components
 import { Link } from "react-router-dom";
@@ -264,7 +266,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 </MKTypography>
               </MKBox>
             ) : (
-                item.name
+              item.name
             )}
             {item.collapse && (
               <Icon
@@ -453,7 +455,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
   );
 
   return (
-    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null}>
+    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null} >
       <MKBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
@@ -465,11 +467,13 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         color={light ? "white" : "dark"}
         position={relative ? "relative" : "absolute"}
         left={0}
+        
         zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
+        
       >
         <MKBox display="flex" justifyContent="space-between" alignItems="center">
           <MKBox
@@ -483,13 +487,25 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               {brand}
             </MKTypography>
           </MKBox>
-          <DefaultNavbarDropdown
-            name="Popular Proposals"
-            icon={<TipsAndUpdatesIcon /> }
-            route="/popular-proposals"
-            collapse={false}
-            light={light}
-          />
+          {
+            !mobileView &&
+            <>
+              <DefaultNavbarDropdown
+                name="Popular Proposals"
+                icon={<TipsAndUpdatesIcon />}
+                route="/popular-proposals"
+                collapse={false}
+                light={light}
+              />
+              <DefaultNavbarDropdown
+                name="Browse All Challenges"
+                icon={<HomeIcon />}
+                route={`/browse-requests`}
+                collapse={false}
+                light={light}
+              />
+            </>
+          }
           <MKBox
             color="inherit"
             display={{ xs: "none", lg: "flex" }}
@@ -550,7 +566,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           borderRadius="xl"
           px={transparent ? 2 : 0}
         >
-          {mobileView && <DefaultNavbarMobile routes={getNavbarRoutes()} open={mobileNavbar} />}
+          {mobileView && <DefaultNavbarMobile routes={getNavbarRoutes(true)} open={mobileNavbar} />}
         </MKBox>
       </MKBox>
       {dropdownMenu}

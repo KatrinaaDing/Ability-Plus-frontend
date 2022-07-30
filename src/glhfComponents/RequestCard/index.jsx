@@ -63,7 +63,7 @@ const RequestCard = ({ data, openDetail, color}) => {
         </MKButton>
 
     return (
-        <Grid item xs={12} md={6} lg={6} xl={4}>
+        <Grid item xs={12} md={6} lg={6} xl={4} >
             <StatusBadge 
                 type='request' 
                 statusLabel={data.status} 
@@ -80,7 +80,10 @@ const RequestCard = ({ data, openDetail, color}) => {
                 pt={3}
                 pb={2}
                 sx={{
-                    height: { 'lg': '310px', 'md': '400px', 'xs': '350px'},
+                    height: 
+                        page.indexOf('info') >= 0
+                        ?   '320px'
+                        :   { xl:'370px', 'lg': '310px', 'md': '400px', 'xs': '350px'},
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -111,8 +114,13 @@ const RequestCard = ({ data, openDetail, color}) => {
                     variant="body2"
                     color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     sx={{
-                        height: '100px',
-                        fontWeight: '500'
+                        height: 
+                            page.indexOf('info') >= 0
+                                ? '70px'
+                                : { xl: '170px', 'lg': '100px', 'md': '100px', 'xs': '100px' }
+                        ,
+                        fontWeight: '500',
+                        pt: 3
                     }}
                 >
                     &quot; {data.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 140)}... &quot;

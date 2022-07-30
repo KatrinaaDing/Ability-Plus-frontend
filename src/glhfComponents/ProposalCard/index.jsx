@@ -72,7 +72,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
 
 
     return (
-        <Grid item xs={12} md={6} lg={6} xl={4}>
+        <Grid item xs={12} md={6} lg={6} xl={4} xxl={3}>
             {renderStatus()}
             <MKBox
                 variant='contained'//{color === "transparent" ? "contained" : "gradient"}
@@ -83,7 +83,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                 pt={3}
                 pb={2}
                 sx={{
-                    height: { 'lg': '310px', 'md': '400px', 'xs': '350px' },
+                    height: { 'lg': '330px', 'md': '330px', 'sm': '330px', 'xs': '300px' },
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',

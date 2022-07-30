@@ -35,7 +35,7 @@ const BasicPageLayout = ({ title, secondaryContent, children }) => {
                 </Container>
 
             </MKBox>
-            <MKBox pt={6} px={1} mt={6}>
+            <MKBox pt={4} px={1}>
                 <DefaultFooter content={footerRoutes} />
             </MKBox>
         </>

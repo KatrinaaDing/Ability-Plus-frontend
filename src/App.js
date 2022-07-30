@@ -33,6 +33,7 @@ import RequireAuth from "auth/RequireAuth";
 // routes
 import { companyRoutes, studentRoutes, guestRoutes, otherRoutes } from "routes";
 import Logout from "pages/Logout";
+import BrowseRequests from "pages/BrowseRequests";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -68,6 +69,7 @@ export default function App() {
         {/* public access */}
         <Route path="" element={<PresentationPage />} />
         <Route path="/popular-proposals" element={<PopularProposals />} />
+        <Route path="/browse-requests" element={<BrowseRequests />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/logout" element={<Logout />} />
         {getRoutes(guestRoutes)}
