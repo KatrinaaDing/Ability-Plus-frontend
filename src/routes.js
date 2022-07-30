@@ -79,14 +79,9 @@ const companyRoutes = (username) => [
     icon: <MessageIcon />,
     component: <MyPosts />
   },
+ 
   {
-    name: "Browse Requests",
-    route: "/company/browse-requests",
-    icon: <HomeIcon />,
-    component: <BrowseRequests />,
-  },
-  {
-    name: "My Project Requests",
+    name: "My Project Challenges",
     route: "/my-project-requests",
     icon: <DashboardIcon />,
     component: <MyProjectRequests />,
@@ -115,12 +110,12 @@ const studentRoutes = (username) => [
     icon: <MessageIcon />,
     component: <MyPosts />
   },
-  {
-    name: "Browse Requests",
-    route: "/student/browse-requests",
-    icon: <HomeIcon />,
-    component: <BrowseRequests />,
-  },
+  // {
+  //   name: "Browse All Challenges",
+  //   route: "/student/browse-requests",
+  //   icon: <HomeIcon />,
+  //   component: <BrowseRequests />,
+  // },
   {
     name: "My Proposals",
     route: "/my-proposals",
@@ -171,7 +166,7 @@ const guestRoutes = [
     icon: <AppRegistrationIcon />,
     component: <SignUp />,
   },
- 
+
 ]
 
 // routes that not listed in navbar
@@ -183,12 +178,12 @@ const otherRoutes = {
       component: <ProjectProposals />,
     },
     {
-      name: "create request",
+      name: "create challenge",
       route: "/create-request",
       component: <CreateRequest />,
     },
     {
-      name: "create request",
+      name: "edit challenge",
       route: "/edit-request/:id",
       component: <CreateRequest />,
     },
@@ -206,12 +201,7 @@ const otherRoutes = {
     },
   ],
   common: [
-    {
-      name: "Browse Requests",
-      route: "/browse-requests",
-      icon: <HomeIcon />,
-      component: <BrowseRequests />,
-    },
+    
     {
       name: "Company Information",
       route: "/company-info/:id",
@@ -228,7 +218,7 @@ const otherRoutes = {
       component: <ProposalRanks />,
     },
     {
-      name: "Project Forum",
+      name: "Forum",
       route: "/forum/:projectId",
       component: <Forum />,
     }

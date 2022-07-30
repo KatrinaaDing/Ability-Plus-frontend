@@ -15,6 +15,8 @@ Coded by www.creative-tim.com
 */
 
 import { Fragment, useState, useEffect } from "react";
+import HomeIcon from '@mui/icons-material/Home';
+
 
 // react-router components
 import { Link } from "react-router-dom";
@@ -264,7 +266,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 </MKTypography>
               </MKBox>
             ) : (
-                item.name
+              item.name
             )}
             {item.collapse && (
               <Icon
@@ -483,13 +485,25 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               {brand}
             </MKTypography>
           </MKBox>
-          <DefaultNavbarDropdown
-            name="Popular Proposals"
-            icon={<TipsAndUpdatesIcon /> }
-            route="/popular-proposals"
-            collapse={false}
-            light={light}
-          />
+          {
+            !mobileView &&
+            <>
+              <DefaultNavbarDropdown
+                name="Popular Proposals"
+                icon={<TipsAndUpdatesIcon />}
+                route="/popular-proposals"
+                collapse={false}
+                light={light}
+              />
+              <DefaultNavbarDropdown
+                name="Browse All Challenges"
+                icon={<HomeIcon />}
+                route={`/browse-requests`}
+                collapse={false}
+                light={light}
+              />
+            </>
+          }
           <MKBox
             color="inherit"
             display={{ xs: "none", lg: "flex" }}
@@ -550,7 +564,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           borderRadius="xl"
           px={transparent ? 2 : 0}
         >
-          {mobileView && <DefaultNavbarMobile routes={getNavbarRoutes()} open={mobileNavbar} />}
+          {mobileView && <DefaultNavbarMobile routes={getNavbarRoutes(true)} open={mobileNavbar} />}
         </MKBox>
       </MKBox>
       {dropdownMenu}

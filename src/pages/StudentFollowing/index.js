@@ -91,7 +91,7 @@ const MyFollowingPage = () => {
                         >
                             <ListItemButton
                                 role={undefined}
-                                onClick={() => window.open(`/company-info/${f.id}`)}
+                                onClick={() => window.open(`/company-info/${f.companyId}`)}
                                 alignItems="flex-start"
                                 sx={{
                                     borderRadius: '10px',

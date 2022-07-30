@@ -14,7 +14,7 @@ import { statusBank } from 'utils/getStatus';
 import MKButton from 'components/MKButton';
 import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
 import { BASE_URL } from 'api/axios';
@@ -24,6 +24,7 @@ import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 import EditIcon from '@mui/icons-material/Edit';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import AlertModal from 'glhfComponents/AlertModal';
 
 
 const BrowseRequests = () => {
@@ -45,6 +46,9 @@ const BrowseRequests = () => {
     const [whatOrder, setWhatOrder] = useState('ProposalDue');
     const [numPage, setNumPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
+
+    const [alertOpen, setAlertOpen] = React.useState(false);
+    const location = useLocation();
 
     const handleDate = (ascending) => {
         setAscending(ascending)
@@ -95,7 +99,11 @@ const BrowseRequests = () => {
     }
 
     useEffect(() => {
-        fetchData(1, true)
+        // if no login info, navigate to login
+        if (!auth || Object.keys(auth).length === 0) 
+            setAlertOpen(true)
+        else
+            fetchData(1, true)
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
@@ -135,7 +143,15 @@ const BrowseRequests = () => {
 
     return (
         <BasicPageLayout title="Browse All Project Requests">
-            <MKBox display='flex'>
+            <AlertModal
+                open={alertOpen}
+                handleClose={() => setAlertOpen(false)}
+                title="Looking for project challenges?"
+                content="Please login to browse challenges :)"
+                disableClose={true}
+                handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
+            />
+            <MKBox display='flex' flexWrap="wrap">
                 <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
                 {
                     status === ''
