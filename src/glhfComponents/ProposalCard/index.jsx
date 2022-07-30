@@ -72,7 +72,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
 
 
     return (
-        <Grid item xs={12} md={6} lg={6} xl={4}>
+        <Grid item xs={12} md={6} lg={6} xl={4} xxl={3}>
             {renderStatus()}
             <MKBox
                 variant='contained'//{color === "transparent" ? "contained" : "gradient"}

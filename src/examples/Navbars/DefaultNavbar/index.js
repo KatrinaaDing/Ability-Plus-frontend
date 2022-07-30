@@ -455,7 +455,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
   );
 
   return (
-    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null}>
+    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null} >
       <MKBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
@@ -467,11 +467,13 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         color={light ? "white" : "dark"}
         position={relative ? "relative" : "absolute"}
         left={0}
+        
         zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
+        
       >
         <MKBox display="flex" justifyContent="space-between" alignItems="center">
           <MKBox
