@@ -23,6 +23,7 @@ import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';
 import EditIcon from '@mui/icons-material/Edit';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 const BrowseRequests = () => {
@@ -42,7 +43,8 @@ const BrowseRequests = () => {
     const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
     const [whatOrder, setWhatOrder] = useState('ProposalDue');
-    const type = 'request';
+    const [numPage, setNumPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
 
     const handleDate = (ascending) => {
         setAscending(ascending)
@@ -58,26 +60,42 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-    useEffect(() => {
+
+    /**
+     * Fetching a list of request card
+     * @param {integer} pageNo page number to fetch
+     * @param {boolean} newList determine if is to fetch a new card list (like changing status)
+     */
+    const fetchData = (pageNo, newList) => {
         const params = new URLSearchParams({
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
-            pageNo: 1,
-            pageSize: 10,
+            pageNo: pageNo,
+            pageSize: 18,
             whatOrder: whatOrder,
             searchKey: searchKey
         })
-        const listAllRequest = async () =>
-            await axiosPrivate.get(`/project/list_all_project_requests`, {
-                params: params,
-            })
-                .then(res => {
+        axiosPrivate.get(`/project/list_all_project_requests`, {
+            params: params,
+        })
+            .then(res => {
+                if (!newList)
+                    setCards(cards.concat(res.data.data.records))
+                else 
                     setCards(res.data.data.records)
-                    setTotal(res.data.data.total)
-                })
-                .catch(e => console.error(e))
+                
+                if (pageNo * 18 >= res.data.data.total)
+                    setHasMore(false)
+                else
+                    setHasMore(true)
+                setNumPage(pageNo)
+                setTotal(res.data.data.total)
+            })
+            .catch(e => console.error(e))
+    }
 
-        listAllRequest()
+    useEffect(() => {
+        fetchData(1, true)
     }, [ascending, status, whatOrder, searchKey])
         
     const getReqDetail = async (reqId) =>
@@ -182,9 +200,22 @@ const BrowseRequests = () => {
                 />
             }
 
-            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {renderRequestCards()}
+                <InfiniteScroll
+                    dataLength={cards.length}
+                    next={() => fetchData(numPage+1, false)}
+                    hasMore={hasMore}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <MKTypography varaint='subtitle1' sx={{ textAlign: 'center', pt: 3}}>
+                            Yay! You have seen all.
+                        </MKTypography>
+                    }
+                    
+                >
+            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+                    {renderRequestCards()}
             </Grid>
+                </InfiniteScroll>
         </BasicPageLayout>
     );
 };

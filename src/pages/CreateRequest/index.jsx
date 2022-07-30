@@ -256,7 +256,7 @@ const CreateRequest = () => {
             handleClose={() => setAlertOpenDraft(false)}
             handleConfirm={() => navigate('/my-project-requests')}
             title="Successfully Saved"
-            content="Your proposal has been saved to draft!"
+            content="Your challenge has been saved to draft!"
             disableClose={true}
         />
 
@@ -265,8 +265,8 @@ const CreateRequest = () => {
             open={alertOpenSubmit}
             handleClose={() => setAlertOpenSubmit(false)}
             handleConfirm={() => navigate('/my-project-requests')}
-            title="Your proposal has been publised!"
-            content="You'll be redirect to My Proposals page."
+            title="Your challenge has been publised!"
+            content="You'll be redirect to My Project Challenges page."
             disableClose={true}
         />
     
@@ -280,7 +280,7 @@ const CreateRequest = () => {
         />
 
     return (
-        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Request`}>
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Challenge`}>
             <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />
