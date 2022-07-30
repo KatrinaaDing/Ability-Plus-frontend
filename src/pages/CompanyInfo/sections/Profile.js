@@ -154,7 +154,7 @@ function Profile({ companyInfo }) {
                   <MKTypography component="span" variant="body2" color="text">
                     {des}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
-                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>   
