@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import LikeButton from "glhfComponents/LikeButton";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
+import CardCounters from "glhfComponents/CardCounter";
+import EndlessScroll from "glhfComponents/EndlessScroll";
 
 const MyProposals = () => {
     // hooks
@@ -37,6 +39,9 @@ const MyProposals = () => {
     const [reqDetail, setReqDetail] = useState()
     const [reqOpen, setReqOpen] = useState(false)
 
+    // pagination state
+    const [numPage, setNumPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
 
     const axiosPrivate = useAxiosPrivate();
     const handleDate = (ascending) => {
@@ -51,30 +56,46 @@ const MyProposals = () => {
     const handleWhatOrder = (whatOrder) => {
         setWhatOrder(whatOrder)
     }
-    useEffect(()=> {
+
+    /**
+     * Fetching a list of request card
+     * @param {integer} pageNo page number to fetch
+     * @param {boolean} newList determine if is to fetch a new card list (like changing status)
+     */
+    const fetchData = (pageNo, newList) => {
         const params = new URLSearchParams({
             status: status,
             isAscendingOrder: ascending,
-            pageNo: 1,
-            pageSize: 10,
+            pageNo: pageNo,
+            pageSize: 18,
             searchKey: searchKey,
             whatOrder: whatOrder
         })
-        
-        const listMyProposals = async () =>
-            await axiosPrivate.get('/proposal/list_my_proposal',{
-                params: params
-            })
-                .then(res => {
-                    const data = res.data.data
+
+        axiosPrivate.get('/proposal/list_my_proposal', {
+            params: params
+        })
+            .then(res => {
+                const data = res.data.data
+                if (newList)
                     setProps(data.records)
-                    setTotal(data.total)
-                })
-                .catch(e => {
-                    console.log(e)
-                })
-        
-        listMyProposals();
+                else
+                    setProps(props.concat(data.records))
+                    
+                if (pageNo * 18 >= data.total)
+                    setHasMore(false)
+                else
+                    setHasMore(true)
+
+                setNumPage(pageNo)
+                setTotal(data.total)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    }
+    useEffect(() => {
+        fetchData(1, true)
     }, [ascending, status, searchKey, whatOrder])
 
     const getPropDetail = async (propId, projectName) => {
@@ -84,7 +105,6 @@ const MyProposals = () => {
             })
         })
             .then(async res => {
-                // TODO handle data
                 res.data.data.extraData = JSON.parse(res.data.data.extraData)
                 await axiosPrivate('/proposal/can_edit_proposal', {
                     params: new URLSearchParams({
@@ -92,8 +112,8 @@ const MyProposals = () => {
                     })
                 })
                     .then(canEdit => setPropDetail({
-                        ...res.data.data, 
-                        canEdit: canEdit.data.data, 
+                        ...res.data.data,
+                        canEdit: canEdit.data.data,
                         projectName,
                     }))
                     .catch(e => console.error(e))
@@ -102,24 +122,24 @@ const MyProposals = () => {
             .catch(e => console.error(e))
     }
 
-    const deleteProposal = async(id) => {
+    const deleteProposal = async (id) => {
         if (confirm("Do you really want to delete the proposal?")) {
             await axiosPrivate.post(`/proposal/delete_proposal?proposalId=${id}`)
                 .then(res => {
                     alert(`The proposal has been deleted`);
                     setPropOpen(false)
-                    location.reload(); 
+                    location.reload();
                 })
                 .catch(e => console.error(e))
         }
     }
 
-    const getReqDetail = async (projectId) => 
+    const getReqDetail = async (projectId) =>
         await axiosPrivate.get(`/project/get_project_info?id=${projectId}`)
             .then(res => setReqDetail({ ...res.data.data, id: projectId }))
             .then(res => setReqOpen(true))
             .catch(e => console.error(e))
-    
+
 
     return (
         <BasicPageLayout title="My Proposals">
@@ -150,18 +170,18 @@ const MyProposals = () => {
                     }}
                     actionButton={
                         <>
-                        {
-                            // if it's approved, allow like
-                            propDetail.status === statusBank.proposal.approved.label &&
-                            <LikeButton
-                                originLike={false} // TODO need to fetch if the user liked the proposal
-                                originNumLike={propDetail.likeNum}
-                                propId={propDetail.id}
-                            />
-                        }
-                        {
-                            // if is draft, allow deletion
-                            propDetail.status === statusBank.proposal.draft.label &&
+                            {
+                                // if it's approved, allow like
+                                propDetail.status === statusBank.proposal.approved.label &&
+                                <LikeButton
+                                    originLike={false} // TODO need to fetch if the user liked the proposal
+                                    originNumLike={propDetail.likeNum}
+                                    propId={propDetail.id}
+                                />
+                            }
+                            {
+                                // if is draft, allow deletion
+                                propDetail.status === statusBank.proposal.draft.label &&
                                 <MKButton
                                     variant="gradient"
                                     color="error"
@@ -171,7 +191,7 @@ const MyProposals = () => {
                                 >
                                     Delete
                                 </MKButton>
-                        }
+                            }
                         </>
                     }
                 />
@@ -200,49 +220,36 @@ const MyProposals = () => {
                     actionButton={<></>}
                 />
             }
-            <MKBox display='flex'>
-                <MKBox display='flex'>
-                    <p>There {total <= 1 ? 'is' : 'are'} {total} proposal{total > 1 ? 's' : ''} with&nbsp;</p>
-                    {
-                        status === ''
-                            ? <p>all status</p>
-                            : (
-                                <>
-                                    status
-                                    <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
-                                </>
-                            )
-                    }
-                </MKBox>
-       
-            </MKBox>
-            <br/>
-            <Box sx={{ flexGrow: 1 }}>
-                <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={ handleWhatOrder} handleSearch={handleSearch} type='proposal'></StatusDateDueSearchFilter>
-                <br/>
+            <CardCounters total={total} status={status} type='proposal' />
+            <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='proposal' />
+            <EndlessScroll
+                dataLength={props.length}
+                next={() => fetchData(pageNum + 1, false)}
+                hasMore={hasMore}
+            >
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
-                        props.map(p => 
-                                <ProposalCard
-                                    key={p.proposalId}
-                                    data={{
-                                        title: p.title,
-                                        status: p.status,
-                                        description: p.oneSentenceDescription,
-                                        topic: p.area,
-                                        authorId: p.authorId,
-                                        authorName: p.authorName,
-                                        lastModified: p.lastModifiedTime,
-                                        likes: p.likeNum,
-                                        id: p.proposalId,
-                                        projectName: p.projectName,
-                                    }}
-                                    openDetail={() => getPropDetail(p.proposalId, p.projectName)}
-                                />
+                        props.map(p =>
+                            <ProposalCard
+                                key={p.proposalId}
+                                data={{
+                                    title: p.title,
+                                    status: p.status,
+                                    description: p.oneSentenceDescription,
+                                    topic: p.area,
+                                    authorId: p.authorId,
+                                    authorName: p.authorName,
+                                    lastModified: p.lastModifiedTime,
+                                    likes: p.likeNum,
+                                    id: p.proposalId,
+                                    projectName: p.projectName,
+                                }}
+                                openDetail={() => getPropDetail(p.proposalId, p.projectName)}
+                            />
                         )
                     }
                 </Grid>
-            </Box>
+            </EndlessScroll>
         </BasicPageLayout>
     );
 };

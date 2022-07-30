@@ -74,7 +74,7 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
     }, [whatOrder, ascending])
     useEffect(() => {
         if (type) {
-            setStatusType('request')
+            setStatusType(type)
         }
     }, [])
     const handleChange = (e) => {
