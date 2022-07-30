@@ -58,7 +58,7 @@ const MyProposals = () => {
     }
 
     /**
-     * Fetching a list of request card
+     * Fetching a list of proposals card
      * @param {integer} pageNo page number to fetch
      * @param {boolean} newList determine if is to fetch a new card list (like changing status)
      */
@@ -224,7 +224,7 @@ const MyProposals = () => {
             <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='proposal' />
             <EndlessScroll
                 dataLength={props.length}
-                next={() => fetchData(pageNum + 1, false)}
+                next={() => fetchData(numPage + 1, false)}
                 hasMore={hasMore}
             >
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>

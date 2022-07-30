@@ -28,11 +28,13 @@ import CreateProjectBtn from "./components/CreateProjectBtn";
 import { BASE_URL } from "api/axios";
 import useAuth from "auth/useAuth";
 import axios from "axios";
+import CardCounters from "glhfComponents/CardCounter";
+import EndlessScroll from "glhfComponents/EndlessScroll";
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-    const {auth} = useAuth();
+    const { auth } = useAuth();
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
 
@@ -45,37 +47,47 @@ const MyProjectRequests = () => {
     const [status, setStatus] = useState('all');
     const [searchKey, setSearchKey] = useState('');
 
-    useEffect( () => {
+    // pagination state
+    const [numPage, setNumPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
+
+    /**
+     * Fetching a list of request card
+     * @param {integer} pageNo page number to fetch
+     * @param {boolean} newList determine if is to fetch a new card list (like changing status)
+     */
+    const fetchData = (pageNo, newList) => {
         let params = {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
-            pageNo: 1,
-            pageSize: 20,
+            pageNo: pageNo,
+            pageSize: 18,
             searchKey: searchKey,
         }
-        const getMyReqeusts = async () =>
-            await axiosPrivate.get(`/project/list_my_project_request`, {
-                params:  new URLSearchParams(params)
+        axiosPrivate.get(`/project/list_my_project_request`, {
+            params: new URLSearchParams(params)
+        })
+            .then(res => {
+                if (newList)
+                    setReqs(res.data.data.records)
+                else
+                    setReqs([...reqs].concat(res.data.data.records))
+
+                if (pageNo * 18 >= res.data.data.total)
+                    setHasMore(false)
+                else
+                    setHasMore(true)
+                setNumPage(pageNo)
+                setTotal(res.data.data.total)
+
             })
-                .then(res => {
-                    // res.data.data.records = res.data.data.records.filter (e => e.authorName === auth.username)
-                    // FIXME 目前后端会返回全部status的request，因此在这里filter，等后端修复后应删除
-                    // if (status !== 'all'){
-                    //     const filteredData = res.data.data.records.filter(e => e.status == status)
-                    //     setReqs(filteredData)
-                    //     setTotal(filteredData.length)
-                    // } else {
-                        setReqs(res.data.data.records)
-                        setTotal(res.data.data.total)
+            .catch(e => {
+                console.error(e)
+            })
+    }
 
-                    // }
-                })
-                .catch(e => {
-                    console.error(e)
-                })
-
-        getMyReqeusts();
-
+    useEffect(() => {
+        fetchData(1, true)
     }, [ascending, status, searchKey])
 
     const handleDate = (ascending) => {
@@ -154,8 +166,8 @@ const MyProjectRequests = () => {
                     actionButton={
                         // if status is not draft, can view proposal.
                         // if is draft, can delete
-                        reqDetail.status !== statusBank.request.draft.label 
-                            ? <ViewProposalsBtn reqName={reqDetail.name} reqId={reqDetail.id}/>
+                        reqDetail.status !== statusBank.request.draft.label
+                            ? <ViewProposalsBtn reqName={reqDetail.name} reqId={reqDetail.id} />
                             : <MKButton
                                 variant="gradient"
                                 color="error"
@@ -169,39 +181,34 @@ const MyProjectRequests = () => {
                 />
             }
 
-            {/* <MKBox display='flex'>
-                <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with &nbsp;</p>
-                {
-                    status === 'all'
-                        ? <p>all status</p>
-                        : (
-                            <>
-                                status
-                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal'/>
-                            </>
-                        )
-                }
-                
-            </MKBox> */}
+            <CardCounters total={total} status={status} type='request' />
             <FilterBar handleDate={handleDate} handleStatus={handleStatus} handleSearch={handleSearch} type='request'></FilterBar>
-            <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
-                {
-                    reqs.length === 0
-                        ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            No Project Request match your criteria
-                        </MKTypography>
-                        : reqs.map(r =>
-                            <RequestCard
-                                key={r.id}
-                                data={{
-                                    ...r,
-                                    topic: r.area,
-                                }}
-                                openDetail={() => getProjectDetail(r.id)}
-                            />
-                        )
-                }
-            </Grid>
+            <EndlessScroll
+                dataLength={reqs.length}
+                next={() => fetchData(numPage + 1, false)}
+                hasMore={hasMore}
+            >
+
+                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
+                    {
+                        reqs.length === 0
+                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                No Project Request match your criteria
+                            </MKTypography>
+                            : reqs.map(r =>
+                                <RequestCard
+                                    key={r.id}
+                                    data={{
+                                        ...r,
+                                        topic: r.area,
+                                    }}
+                                    openDetail={() => getProjectDetail(r.id)}
+                                />
+                            )
+                    }
+                </Grid>
+            </EndlessScroll>
+
         </BasicPageLayout>
     );
 }

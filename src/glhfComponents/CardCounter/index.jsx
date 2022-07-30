@@ -8,7 +8,7 @@ const CardCounters = ({status, total, type}) => {
             <MKBox display='flex'>
                 <p>There {total <= 1 ? 'is' : 'are'} {total} {type}{total > 1 ? 's' : ''} with&nbsp;</p>
                 {
-                    status === ''
+                    status === '' || status ==='all'
                         ? <p>all status</p>
                         : (
                             <>
