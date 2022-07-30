@@ -10,14 +10,11 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LikeDateSearchFilter from 'glhfComponents/LikeDateSearchFilter';
 import { useState, useEffect } from 'react';
-import { statusBank } from 'utils/getStatus';
-import { BASE_URL } from 'api/axios';
 import useAxiosBasic from 'hooks/useAxiosBasic';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
-import MKButton from 'components/MKButton';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
-import DefaultReviewCard from 'examples/Cards/ReviewCards/DefaultReviewCard';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
+import CardCounters from 'glhfComponents/CardCounter';
 
 const PopularProposals = () => {
     //hooks
@@ -143,6 +140,8 @@ const PopularProposals = () => {
 
     return (
         <BasicPageLayout title='Popular Proposals'>
+            <CardCounters total={total} status='approved' type='proposal' />
+
             {
                 // render proposal detail when it's fetched
                 detailContent &&

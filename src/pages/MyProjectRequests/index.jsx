@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultFooter from "examples/Footers/DefaultFooter";
-import footerRoutes from "footer.routes";
-import MKBox from "components/MKBox";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
-import routes from "routes";
-import Box from '@mui/material/Box';
 import RequestCard from "glhfComponents/RequestCard";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -24,10 +17,7 @@ import { statusBank } from "utils/getStatus";
 import ViewProposalsBtn from "./components/ViewProposalsBtn";
 import CreateProjectBtn from "./components/CreateProjectBtn";
 
-// FIXME fake data, testing purpose only
-import { BASE_URL } from "api/axios";
 import useAuth from "auth/useAuth";
-import axios from "axios";
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
 

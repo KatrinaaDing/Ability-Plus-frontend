@@ -101,7 +101,7 @@ function SignInBasic() {
           else
             navigate(res.data.isCompany
               ? '/my-project-requests'
-              : '/student/browse-requests'
+              : '/browse-requests'
             )
         })
           
@@ -165,7 +165,7 @@ function SignInBasic() {
         handleConfirm={() =>
           navigate(auth.isCompany
             ? '/my-project-requests'
-            : '/student/browse-requests'
+            : '/browse-requests'
           )
         }
         title="You have logged in."

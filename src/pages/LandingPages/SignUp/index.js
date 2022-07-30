@@ -135,7 +135,7 @@ function SignUpBasic() {
               })
               navigate(res.data.isCompany
                 ? '/my-project-requests'
-                : '/student/browse-requests'
+                : '/browse-requests'
               )
             })
         })

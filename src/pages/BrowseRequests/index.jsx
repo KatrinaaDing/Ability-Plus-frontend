@@ -1,24 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import MKTypography from "components/MKTypography";
-import Box from '@mui/material/Box';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import RequestCard from 'glhfComponents/RequestCard';
 import useAuth from "auth/useAuth";
 
-import ProposalDescriptionModal from 'glhfComponents/ProposalDescriptionModal';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import { statusBank } from 'utils/getStatus';
 import MKButton from 'components/MKButton';
-import ProposalCard from 'glhfComponents/ProposalCard';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useLocation, useNavigate } from 'react-router-dom';
-import StatusProposalSolutionFilter from 'glhfComponents/StatusProposalSolutionFilter';
 
-import { BASE_URL } from 'api/axios';
-import axios from 'axios';
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter';

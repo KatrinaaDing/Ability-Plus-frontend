@@ -1,34 +1,23 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Slide from "@mui/material/Slide";
-import Divider from "@mui/material/Divider";
 
 import CloseIcon from "@mui/icons-material/Close";
 
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 
 
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultFooter from "examples/Footers/DefaultFooter";
-import footerRoutes from "footer.routes";
 import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import axios from "axios";
 import useAuth from "auth/useAuth";
-import axiosBasic from "api/axios";
 import { BASE_URL } from 'api/axios';
 import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
+
 const MyFollowingPage = () => {
-    const {auth, setAuth} = useAuth();
+    const {auth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [followList, setFollowList] = useState([]);
     const [follow, setFollow] = useState(false);
