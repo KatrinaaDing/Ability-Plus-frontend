@@ -25,10 +25,10 @@ const samplePosts = [
         numReply: 5
     },
     {
-        postId: 0,
+        postId: 4,
         authId: 37,
         authName: 'ZIQI',
-        data: 'I am so confusing!',
+        data: 'I am so confusing as well! Sed tempus nisi quis ipsum ullamcorper tincidunt. Maecenas elementum ac mi nec fermentum. Maecenas et scelerisque nunc. Fusce rutrum nunc lacus, eget tristique justo iaculis facilisis. Aenean ornare suscipit quam, in viverra lorem convallis at. Aliquam fringilla maximus sapien, non semper odio tincidunt vitae. Sed semper ante quam, in viverra erat accumsan sit amet. Sed vitae ligula nibh.',
         postTime: new Date().getTime()/1000,
         pin: false,
         numReply: 5
@@ -43,7 +43,7 @@ const samplePosts = [
         numReply: 0
     },
     {
-        postId: 0,
+        postId: 3,
         authId: 65,
         authName: 'Google',
         data: 'Project detail updated',
