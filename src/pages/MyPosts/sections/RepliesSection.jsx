@@ -3,11 +3,11 @@ import MKButton from 'components/MKButton';
 import React from 'react';
 import Post from '../components/Post';
 
-const PostsSection = ({posts, reqCreator}) => {
+const RepliesSection = ({replies, reqCreator}) => {
     return (
         <List sx={{ width: '95%' }}>
             {
-                posts.map(p => 
+                replies.map(r => 
                     <Post           // TODO feel free to change
                         key={p.postId}
                         isProjectOwner={reqCreator == p.authId}
@@ -24,4 +24,4 @@ const PostsSection = ({posts, reqCreator}) => {
     );
 };
 
-export default PostsSection;
+export default RepliesSection;
