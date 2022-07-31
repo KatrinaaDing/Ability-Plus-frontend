@@ -8,14 +8,21 @@ const RepliesSection = ({replies, reqCreator}) => {
         <List sx={{ width: '95%' }}>
             {
                 replies.map(r => 
-                    <Post           // TODO feel free to change
-                        key={p.postId}
-                        isProjectOwner={reqCreator == p.authId}
-                        place={p.place}
-                        id={p.postId}
-                        authorId={p.authId}
-                        authorName={p.authName}
-                        content={p.data}
+                    <Reply           // TODO feel free to change
+                        key={r.data.records.id}
+                        current={r.data.current}
+                        hitCount={r.data.hitCount}
+                        pages={r.data.pages}
+/*                         isProjectOwner={reqCreator == r.data.records.replierId} */
+                        time={r.data.records.replyTime}
+                        id={r.id}
+                        postId={r.data.records.postId}
+                        replierId={r.replierId}
+                        replierName={r.data.records.replierName} //Need a userName from get backend
+                        content={r.data.records.data}
+                        searchCount={r.data.searchCount}
+                        size={r.data.size}
+                        total={r.data.total}
                     />
                 )                                    
             }
