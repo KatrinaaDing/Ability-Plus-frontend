@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 31 Jul 2022
+ * Discription: A modal for editing post
+ */
 import React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { Divider, Grid, IconButton, Modal, Slide, Switch } from '@mui/material';
