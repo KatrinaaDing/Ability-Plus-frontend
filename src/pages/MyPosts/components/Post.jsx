@@ -16,7 +16,7 @@ import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui
 import {useState} from "react";
 import Reply from "./Reply";
 
-const Post = () => {
+const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
     const { auth } = useAuth();
 
     const [show, setShow] = useState(false)
@@ -31,35 +31,30 @@ const Post = () => {
 
     return (
         <ListItem
-            alginItems="flex-start"
             secondaryAction={
-                <IconButton 
-                    edge="end"
-                    aria-label="comments"
-                    sx={{mr: 2, opacity: 1, fontSize: 'lg'}}
-                >
-                    <MKButton variant="outlined" color="info" size="small" onClick={toggleModal}>
+                <MKButton variant="outlined" color="info" size="small" onClick={toggleModal}>
                     View
-                    </MKButton>                     
-                </IconButton>
+                </MKButton>                     
             }
             sx={{
                 p: 2,
+                py: 3,
                 borderBottom: 'solid 0.3px gray'
             }}
         >
             <ListItemText
                 primary={
                     <MKBox display='flex' flexDirection='row'>
-                        <MKTypography component="div" variant="body2">
-                        Posted at:&nbsp;&nbsp;xxxx xxxx&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;&nbsp;xxxx xxxx
+                        <MKTypography variant="subtitle1">
+                            {/* &nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;&nbsp;xxxx xxxx */}
+                            Posted at &nbsp;&nbsp;{new Date(lastModifiedTime * 1000).toLocaleString()}
                         </MKTypography>
                     </MKBox>
                 }
             secondary={
                 <>
-                    <MKTypography component="div" variant="body2">
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    <MKTypography variant="body2">
+                        {data}
                     </MKTypography>
                 </>
             }
@@ -87,7 +82,7 @@ const Post = () => {
                         <MKBox component="section">
                             <Container>
                                 <Grid container spacing={2} mb={3} justifyContent="space-between">
-                                    <MKTypography component="div" variant="body1" fontWeight="bold" >
+                                    <MKTypography variant="body1" fontWeight="bold" >
                                     Main Post
                                     </MKTypography>
                                     <MKButton variant="gradient" color="light" size="small">
@@ -98,7 +93,7 @@ const Post = () => {
                                 <br />
 {/*                                 <Divider sx={{ my: 0 }} />    */}
                                 <Grid container spacing={2} mb={3} justifyContent="space-between">
-                                    <MKTypography component="div" variant="body1" fontWeight="bold" >
+                                    <MKTypography variant="body1" fontWeight="bold" >
                                     Replies
                                     </MKTypography>
                                     <MKButton variant="gradient" color="info" size="small" onClick={replyModal}>

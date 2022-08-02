@@ -10,6 +10,7 @@ const EndlessScroll = ({ children, hasMore, next, dataLength }) => {
             hasMore={hasMore}
             loader={<h4>Loading...</h4>}
             endMessage={
+                dataLength > 0 &&
                 <MKTypography varaint='subtitle1' sx={{ textAlign: 'center', pt: 3 }}>
                     Yay! You have seen all.
                 </MKTypography>

@@ -22,7 +22,7 @@ const Forum = () => {
 
     // project request states
     const [reqName, setReqName] = React.useState('');
-    const [reqCreator, setReqCreator] = React.useState(-1);
+    const [reqCreator, setReqCreator] = React.useState('');
     const [reqDetailOpen, setReqDetailOpen] = React.useState(false);
 
     // posts states
@@ -70,7 +70,7 @@ const Forum = () => {
                 justifyContent='space-between'
             >
                 <MKTypography variant='subtitle1'>Project: {reqName}</MKTypography>    
-                <CreatePost />
+                <CreatePost reqCreator={reqCreator}/>
             </MKBox>
             <MKBox sx={{ pt: 10}}>
                 <EndlessScroll

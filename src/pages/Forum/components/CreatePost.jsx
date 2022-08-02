@@ -15,17 +15,23 @@ import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import { useParams } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
 
-
-const CreatePost = () => {
+/**
+ * 
+ * @param {string} reqCreator: string of request creator's name
+ */
+const CreatePost = ({ reqCreator }) => {
+    
     // hooks
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const { projectId: projectId } = useParams();
-
+    
     // states
     const [open, setOpen] = React.useState(false)
     const [pin, setPin] = React.useState(false)
-
+    
+    const isAuthor = auth.uesrname === reqCreator 
+    
     // handlers
     const handleClose = () => setOpen(false)
 
@@ -39,7 +45,7 @@ const CreatePost = () => {
                 data: e.target.post.value, // TODO: 字段名未知
                 projectId: projectId
             })
-            if (auth.isCompany)
+            if (isAuthor)
                 params.append('isPin', e.target.pin.checked)
             axiosPrivate.post('/forum/post/new_post?' + params.toString())
                 .then(res => {
@@ -85,7 +91,7 @@ const CreatePost = () => {
                                     <MKInput variant="standard" label="Say something..." name='post' multiline fullWidth rows={6} />
                                 </Grid>
                                 {
-                                    auth.isCompany &&
+                                    isAuthor && 
                                     <Grid item xs={12} alignItems="center" ml={-1}>
                                         <Switch checked={pin} name='pin' onChange={handlePin} />
                                         <MKTypography

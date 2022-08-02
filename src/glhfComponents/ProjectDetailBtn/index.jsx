@@ -27,7 +27,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
                     })
                     setReqName(res.data.data.name)
                     if (setReqCreator !== undefined)
-                        setReqCreator(res.data.data.creatorId)
+                        setReqCreator(res.data.data.creatorName)
 
                 })
                 .catch(e => console.error(e))
