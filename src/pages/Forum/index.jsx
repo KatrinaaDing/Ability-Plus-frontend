@@ -65,10 +65,22 @@ const samplePosts = [
 const Forum = () => {
     const axiosPrivate = useAxiosPrivate();
     const { projectId: projectId } = useParams();
+
+    // project request states
     const [reqName, setReqName] = React.useState('');
     const [reqCreator, setReqCreator] = React.useState(-1);
     const [reqDetailOpen, setReqDetailOpen] = React.useState(false);
+
+    // posts states
+    const [posts, setPosts] = React.useState([])
     
+    React.useEffect(() => {
+        const getPosts = () =>
+            axiosPrivate.get('/forum/post/list_all_post?projectId=' + projectId)
+                .then(res => setPosts(res.data.data))
+                .catch(e => console.error(e))
+        getPosts()
+    }, [])
 
     return (
         <BasicPageLayout 
@@ -92,7 +104,7 @@ const Forum = () => {
                 <CreatePost />
             </MKBox>
             <MKBox sx={{ pt: 10}}>
-                <PostsSection posts={samplePosts} reqCreator={reqCreator}/>
+                <PostsSection posts={posts} reqCreator={reqCreator}/>
             </MKBox>        
         </BasicPageLayout>
     );
