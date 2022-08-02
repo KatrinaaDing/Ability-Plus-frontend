@@ -18,6 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AlertModal from 'glhfComponents/AlertModal';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
 
+const PAGE_SIZE = 18 
 
 const BrowseRequests = () => {
     // hooks
@@ -67,7 +68,7 @@ const BrowseRequests = () => {
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
             pageNo: pageNo,
-            pageSize: 18,
+            pageSize: PAGE_SIZE,
             whatOrder: whatOrder,
             searchKey: searchKey
         })
@@ -80,7 +81,7 @@ const BrowseRequests = () => {
                 else
                     setCards(res.data.data.records)
 
-                if (pageNo * 18 >= res.data.data.total)
+                if (pageNo * PAGE_SIZE >= res.data.data.total)
                     setHasMore(false)
                 else
                     setHasMore(true)

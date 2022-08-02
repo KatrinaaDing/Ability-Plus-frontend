@@ -12,7 +12,7 @@ import Post from '../components/Post';
 /**
  * 
  * @param {array} posts a list of posts
- * @param {integer} reqCreator the creator of project request of this forum
+ * @param {string} reqCreator the creator of project request of this forum
  * @returns 
  */
 const PostsSection = ({ posts, reqCreator }) => {
@@ -32,7 +32,7 @@ const PostsSection = ({ posts, reqCreator }) => {
                     : posts.map(p =>
                         <Post           // TODO feel free to change
                             key={p.postId}
-                            isProjectOwner={reqCreator == p.authId}
+                            isProjectOwner={reqCreator === p.authorName}
                             id={p.postId}
                             authorId={p.authId}
                             authorName={p.authName}

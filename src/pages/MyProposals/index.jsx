@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import React from 'react';
-import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import StatusDateDueSearchFilter from "glhfComponents/StatusDateDueSearchFilter";
@@ -9,17 +8,15 @@ import ProposalCard from "glhfComponents/ProposalCard";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import { statusBank } from "utils/getStatus";
 import MKButton from "components/MKButton";
-import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import LikeButton from "glhfComponents/LikeButton";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
 
-const MyProposals = () => {
-    // hooks
-    const navigate = useNavigate();
+const PAGE_SIZE = 18
 
+const MyProposals = () => {
     // filter states
     const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
@@ -64,7 +61,7 @@ const MyProposals = () => {
             status: status,
             isAscendingOrder: ascending,
             pageNo: pageNo,
-            pageSize: 18,
+            pageSize: PAGE_SIZE,
             searchKey: searchKey,
             whatOrder: whatOrder
         })
@@ -79,7 +76,7 @@ const MyProposals = () => {
                 else
                     setProps(props.concat(data.records))
                     
-                if (pageNo * 18 >= data.total)
+                if (pageNo * PAGE_SIZE >= data.total)
                     setHasMore(false)
                 else
                     setHasMore(true)
