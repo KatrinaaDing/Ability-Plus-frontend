@@ -40,7 +40,10 @@ const EditModal = ({ postId, content }) => {
         
         // append query string after url if using POST
         axiosPrivate.post('/forum/post/edit_my_post?' + params.toString())
-            .then(res => setOpen(false))
+            .then(res => {
+                setOpen(false)
+                location.reload()
+            })
             .catch(e => console.error(e))
     }
 
