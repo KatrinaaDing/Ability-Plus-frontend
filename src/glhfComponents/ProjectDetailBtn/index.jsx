@@ -12,6 +12,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
     const axiosPrivate = useAxiosPrivate();
     const [reqDetail, setReqDetail] = React.useState();
 
+    // get the project detail info on load
     React.useEffect(() => {
         const getProjectInfo = async () =>
             await axiosPrivate.get('/project/get_project_info', {

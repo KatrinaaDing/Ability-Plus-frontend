@@ -1,32 +1,23 @@
 /**
  * Author: Ziqi Ding
  * Created At: 13 Jul 2022
- * Discription: A card to demo proposal
+ * Discription: A card to display proposal
  */
-import { Checkbox, Icon, List, Rating } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+import { Icon, List, Rating } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import useAuth from 'auth/useAuth';
 import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
 import MKTypography from 'components/MKTypography';
 import ProcessStatusBadge from 'glhfComponents/ProcessStatusBadge';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { statusBank } from 'utils/getStatus';
-import { getCode } from 'utils/getStatus';
 import CardListItem from './components/CardListItem';
 import LikeIcon from './components/LikeIcon';
 import StarIcon from '@mui/icons-material/Star';
 
-
-
-/**
- * 
-
+/*
+the cases for displaying various infomation on proposal card:
 | page                  | role | title | desc | topic | status | author | last-modi | like                  | action |
 | --------------------- | ---- | ----- | ---- | ----- | ------ | ------ | --------- | --------------------- | ------ |
 | popular proposal      | c,s  | 1     | 1    | 1     | 0      | 1      | 1         | 1                     | view   |
@@ -34,7 +25,8 @@ import StarIcon from '@mui/icons-material/Star';
 | my proposals          | s    | 1     | 1    | 1     | 1      | 0      | 1         | ==approved: 1, else 0 | view   |
 | student info          | c,s  | 1     | 1    | 1     | 0      | 0      | 1         | 1                     | view   |
 
-value = {
+data structure:
+data = {
     title,
     status,
     description,
@@ -44,9 +36,8 @@ value = {
     lastModified,
     likes,
 }
- * 
- */
 
+*/
 
 const ProposalCard = ({ data, openDetail, secondary, color }) => {
     const page = window.location.pathname.slice(1)

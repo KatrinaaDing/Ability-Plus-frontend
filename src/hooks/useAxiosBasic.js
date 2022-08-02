@@ -5,13 +5,8 @@
  */
 import axiosBasic from "../api/axios";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useAuth from "auth/useAuth";
 
 const useAxiosBasic = () => {
-    const { auth } = useAuth();             // get auth detail
-    const { navigate } = useNavigate();
-
     useEffect(() => {
 
         const requestIntercept = axiosBasic.interceptors.request.use(        // interceptor are execute before .then and .catch

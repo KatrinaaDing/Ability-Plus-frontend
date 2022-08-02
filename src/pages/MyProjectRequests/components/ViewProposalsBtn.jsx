@@ -5,7 +5,6 @@
  */
 import MKButton from 'components/MKButton';
 import React from 'react';
-import FileOpenIcon from '@mui/icons-material/FileOpen';
 
 const ViewProposalsBtn = ({reqName, reqId}) => {
     return (

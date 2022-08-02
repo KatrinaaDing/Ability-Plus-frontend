@@ -16,6 +16,7 @@ const Logout = () => {
 
     React.useEffect(() => {
         logout();
+        // redirect to welcome page
         setTimeout(() => navigate('/'), 1000);
     }, [])
 

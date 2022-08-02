@@ -50,6 +50,7 @@ const statusBank = {
     }
 }
 
+// get the code for any status label
 const getCode = (type, statString) => {
     if (type === 'proposal') {
         for (let sKey of Object.keys(statusBank.proposal)) {
@@ -66,6 +67,7 @@ const getCode = (type, statString) => {
     return null // not found
 }
 
+// get the label of any status code
 const getLabel = (type, statCode) => {
     if (type === 'proposal') {
         for (let sKey of Object.keys(statusBank.proposal)) {
@@ -82,6 +84,7 @@ const getLabel = (type, statCode) => {
     return null // not found
 }
 
+// format any label
 const formatLabel = (label) => {
     if (label === 'all') return ''
     return label = label.split('_').join(' ')

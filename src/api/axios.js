@@ -1,7 +1,7 @@
 /**
  * Author: Ziqi Ding
  * Created At: 08 Jul 2022
- * Discription: axois instance creation
+ * Discription: axois instance initialization
  */
 import axios from 'axios';
 // export const BASE_URL = 'http://localhost:8080';  

@@ -250,6 +250,8 @@ const CreateRequest = () => {
                 })
         }
     }
+
+    // confirm modal TODO: allow stay on page when editing
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}

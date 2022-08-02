@@ -5,26 +5,14 @@
  */
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import React from 'react';
-import { Stack, Card, CardActionArea, Grid, Paper, CardContent, List, ListItem, ListItemAvatar, Avatar, ListItemText} from '@mui/material';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText} from '@mui/material';
 import { BASE_URL } from 'api/axios';
 import { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Link, useNavigate } from 'react-router-dom'
 import useAuth from 'auth/useAuth';
-import MKBox from 'components/MKBox';
 import MKButton from 'components/MKButton';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 const CompanyList = () => {
     const { auth } = useAuth();
-    const navigate = useNavigate();
     const [allCompanies, setAllCompanies] = useState([]);
     useEffect(() => {
         const getAllCompanies = async () => {
@@ -47,6 +35,7 @@ const CompanyList = () => {
         }
     getAllCompanies();
     }, [])
+
     return (
         <BasicPageLayout title="View All Companies">
             <List sx={{ width: '100%' }}>

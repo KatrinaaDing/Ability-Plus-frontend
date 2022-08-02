@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     // global auth information
     const [auth, setAuth] = React.useState(JSON.parse(localStorage.getItem("user")));
 
-    // FIXME: will be set to true if "remember me", but might be deleted in the future 
+    // TODO: will be set to true if "remember me", but might be deleted in the future 
     const [persist, setPersist] = React.useState(JSON.parse(localStorage.getItem("persist")) || false);
 
     /* auth data = 
