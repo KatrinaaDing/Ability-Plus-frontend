@@ -1,7 +1,7 @@
 /**
  * Author: Ziqi Ding
  * Created At: 03 Jul 2022
- * Discription: A component to display short information in detail modal
+ * Discription: A component to display short information in request detail modal
  */
 import MKBox from 'components/MKBox';
 import MKTypography from 'components/MKTypography';

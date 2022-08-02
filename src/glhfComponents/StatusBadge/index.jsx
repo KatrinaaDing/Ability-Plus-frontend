@@ -26,7 +26,6 @@ const StatusBadge = props => {
             3: 'info',
             4: 'dark',
         }
-        
     }
 
     return (

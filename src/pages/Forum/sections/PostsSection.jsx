@@ -9,8 +9,12 @@ import MKTypography from 'components/MKTypography';
 import React from 'react';
 import Post from '../components/Post';
 
-// posts: a list of posts
-// reqCreator (integer): the creator of project request of this forum
+/**
+ * 
+ * @param {array} posts a list of posts
+ * @param {integer} reqCreator the creator of project request of this forum
+ * @returns 
+ */
 const PostsSection = ({ posts, reqCreator }) => {
     /*
         posts: [{
@@ -35,7 +39,7 @@ const PostsSection = ({ posts, reqCreator }) => {
                             content={p.data}
                             postDate={p.postTime}
                             numReply={p.numReply}
-                            isPin={p.pin}
+                            isPin={p.isPin}
                         />
                     )
             }

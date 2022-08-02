@@ -26,14 +26,14 @@ const CreatePost = () => {
     const [open, setOpen] = React.useState(false)
     const [pin, setPin] = React.useState(false)
 
-
+    // handlers
     const handleClose = () => setOpen(false)
 
     const handlePin = () => setPin(!pin)
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
+        
         const createNewPost = () => {     
             const params = new URLSearchParams({
                 data: e.target.post.value, // TODO: 字段名未知

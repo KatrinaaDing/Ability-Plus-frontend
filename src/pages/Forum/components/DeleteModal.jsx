@@ -17,12 +17,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const DeleteModal = ({postId}) => {
     // hooks
-    const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
 
     // states
     const [open, setOpen] = React.useState(false)
-    const [pin, setPin] = React.useState(false)
 
     // handlers
     const handleClose = () => setOpen(false)

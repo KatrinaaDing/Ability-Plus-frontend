@@ -10,7 +10,7 @@ import useAuth from "auth/useAuth";
 import useLogout from "./useLogout";
 
 const useAxiosPrivate = () => {
-    const { auth } = useAuth();             // get auth detail
+    const { auth } = useAuth();  // get auth detail
     const navigate = useNavigate();
     const logout = useLogout();
 

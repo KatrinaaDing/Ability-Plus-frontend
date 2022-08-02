@@ -3,7 +3,7 @@
  * Created At: 05 Jul 2022
  * Discription: Section for company to rate a proposal
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
@@ -26,17 +26,21 @@ const labels = {
 
 
 const CompanyRating = ({rating, id, updateCard}) => {
-    
+    // hooks
     const axiosPrivate = useAxiosPrivate();
 
+    // states
     const [value, setValue] = React.useState(rating);
     const [hover, setHover] = React.useState(-1);
-    const [loading, setLoading] = React.useState(-1); // -1: empty, 0: saving, 1: success， 2: fail
+    // loading status -1: empty, 0: saving, 1: success， 2: fail
+    const [loading, setLoading] = React.useState(-1); 
 
+    // helper functions
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
+    // handlers
     const handleSave = (newValue) => {
         setLoading(0)
         axiosPrivate.post(`/proposal/company_process_proposal?proposalId=${id}&rating=${newValue*2}`)

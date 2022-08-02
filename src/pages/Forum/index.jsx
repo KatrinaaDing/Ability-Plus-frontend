@@ -14,54 +14,6 @@ import CreatePost from './components/CreatePost';
 import PostsSection from './sections/PostsSection';
 
 
-const samplePosts = [
-    {
-        postId: 0,
-        authId: 65,
-        authName: 'Google',
-        data: 'Anoucement: Deadline extend to Sep 2022',
-        postTime: new Date().getTime() / 1000,
-        pin: true,
-        numReply: 5
-    },
-    {
-        postId: 4,
-        authId: 37,
-        authName: 'ZIQI',
-        data: 'I am so confusing as well! Sed tempus nisi quis ipsum ullamcorper tincidunt. Maecenas elementum ac mi nec fermentum. Maecenas et scelerisque nunc. Fusce rutrum nunc lacus, eget tristique justo iaculis facilisis. Aenean ornare suscipit quam, in viverra lorem convallis at. Aliquam fringilla maximus sapien, non semper odio tincidunt vitae. Sed semper ante quam, in viverra erat accumsan sit amet. Sed vitae ligula nibh.',
-        postTime: new Date().getTime()/1000,
-        pin: false,
-        numReply: 5
-    },
-    {
-        postId: 1,
-        authId: 56,
-        authName: 'Tom Wong',
-        data: 'I am so confusing too!',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 0
-    },
-    {
-        postId: 3,
-        authId: 65,
-        authName: 'Google',
-        data: 'Project detail updated',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 5
-    },
-    {
-        postId: 2,
-        authId: 89,
-        authName: 'Jack Wong',
-        data: 'I am so confusing as well! Sed tempus nisi quis ipsum ullamcorper tincidunt. Maecenas elementum ac mi nec fermentum. Maecenas et scelerisque nunc. Fusce rutrum nunc lacus, eget tristique justo iaculis facilisis. Aenean ornare suscipit quam, in viverra lorem convallis at. Aliquam fringilla maximus sapien, non semper odio tincidunt vitae. Sed semper ante quam, in viverra erat accumsan sit amet. Sed vitae ligula nibh.',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 4
-    }
-]
-
 const Forum = () => {
     const axiosPrivate = useAxiosPrivate();
     const { projectId: projectId } = useParams();
@@ -74,6 +26,7 @@ const Forum = () => {
     // posts states
     const [posts, setPosts] = React.useState([])
     
+    // get all posts on load
     React.useEffect(() => {
         const getPosts = () =>
             axiosPrivate.get('/forum/post/list_all_post?projectId=' + projectId)

@@ -6,11 +6,9 @@
  */
 import MKButton from 'components/MKButton';
 import React from 'react';
-import { useNavigate} from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add';
 
 const CreateProjectBtn = () => {
-    const navigate = useNavigate();
     const handleCreate = () => {
         window.open('/create-request')
     }

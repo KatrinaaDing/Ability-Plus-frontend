@@ -40,7 +40,6 @@ const sampleContent = {
 
 const CreateProposal = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
-    console.log(isEditing)
     // hooks
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
@@ -224,6 +223,7 @@ const CreateProposal = () => {
         }
     }
 
+    // confirmation modals TODO: allow stay on page if is editing
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}

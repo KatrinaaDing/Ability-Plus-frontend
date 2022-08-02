@@ -39,7 +39,6 @@ const SavingLoader = props => {
         transition: 'opacity 300ms ease-in-out',
     }
 
-    // console.log(props.hidden, props.loading, props.success, props.fail, props.hidden || props.loading || props.fail)
     return (
         <>
             <ClipLoader 

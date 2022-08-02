@@ -10,13 +10,6 @@ import footerRoutes from 'footer.routes';
 import React from 'react';
 import getNavbarRoutes from 'utils/getNavbarRoutes';
 import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import Slide from "@mui/material/Slide";
-import Divider from "@mui/material/Divider";
-import Box from '@mui/material/Box';
 import bgImage from "assets/images/city-profile.jpg";
 
 
