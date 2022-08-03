@@ -37,7 +37,7 @@ const PostsSection = ({ posts, reqCreator }) => {
                             authorId={p.authId}
                             authorName={p.authName}
                             content={p.data}
-                            postDate={p.postTime}
+                            postDate={p.lastModifiedTime}
                             numReply={p.numReply}
                             isPin={p.isPin}
                         />

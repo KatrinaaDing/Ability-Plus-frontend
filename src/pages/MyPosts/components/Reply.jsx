@@ -6,9 +6,17 @@ import { Link } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import MKBox from 'components/MKBox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
-const Reply = ({ id, isProjectOwner, authorId, authorName, content}) => {
+const Reply = (props) => {
+    const { id, isProjectOwner, authorId, authorName, post={}, handleDelete, handleEdit} = props;
+    console.log(post,'post')
+    const {data, replyTime, replierName, main} = post
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
+    
     return (
         <ListItem
             alignItems="flex-start"
@@ -32,18 +40,27 @@ const Reply = ({ id, isProjectOwner, authorId, authorName, content}) => {
                                     : authorName
 
                         } */}
-                        <MKTypography variant='body'>name</MKTypography>
+                        <MKTypography variant='body' color={replierName == auth.username && !main?'error':''}>{replierName}</MKTypography>
                     </MKBox>
                 }
                 secondary={
                     <>
                         <Grid container justifyContent="space-between" alignItems="center">
                             <MKTypography variant='body'>
-                            xxxxxxxxxxxxxxxxxxxxxxx
+                            {data}
                             </MKTypography> 
-                            <MKTypography variant="body">
-                            Posted at:&nbsp;&nbsp;xxxx xxxx
-                            </MKTypography>
+                            <div>
+                                <MKTypography variant="body">
+                                Posted at:&nbsp;&nbsp;{replyTime}
+
+                                </MKTypography>
+                                {
+                                    main?null:<><EditIcon onClick={() => handleEdit&&handleEdit(post)}/>
+                                    <DeleteIcon onClick={() => handleDelete&&handleDelete(post.id)}/></>
+                                }
+                                
+
+                            </div>
                         </Grid>
                     </>
                 }
