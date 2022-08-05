@@ -9,6 +9,7 @@ import MKBox from 'components/MKBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import moment from 'moment';
 
 const Reply = (props) => {
     const { id, isProjectOwner, authorId, authorName, post={}, handleDelete, handleEdit} = props;
@@ -51,7 +52,7 @@ const Reply = (props) => {
                             </MKTypography> 
                             <div>
                                 <MKTypography variant="body">
-                                Posted at:&nbsp;&nbsp;{replyTime}
+                                Posted at:&nbsp;&nbsp;{moment(replyTime*1000).format('YYYY/MM/DD hh:mm:ss')}
 
                                 </MKTypography>
                                 {

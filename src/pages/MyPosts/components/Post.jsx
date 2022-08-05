@@ -79,6 +79,7 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
               data: replyVal,
             })
         }
+
         axiosPrivate.post(`${url}?${params.toString()}`)
           .then((res) => {
             alert('success' )
