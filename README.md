@@ -134,6 +134,13 @@ src
 └── routes.js
 ```
 
+## References
+
+The frontend of this project is built using free UI kit [Material Kit 2](https://github.com/creativetimofficial/material-kit-react)
+
+Version: 2.0.0
+
+Accessed Date: 29 Jun 2022
 
 ## Technical Support or Questions
 
