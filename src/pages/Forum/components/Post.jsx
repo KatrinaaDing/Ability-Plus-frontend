@@ -86,7 +86,6 @@ const Post = ({
             data: replyVal,
           })
       }
-      
       axiosPrivate.post(`${url}?${params.toString()}`)
         .then((res) => {
             alert('success' )
@@ -212,7 +211,7 @@ const handleEdit = (post) => {
                   <MKTypography component="div" variant="body1" fontWeight="bold">
                     Main Post
                   </MKTypography>
-                  <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${id}`}>
+                  <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${projectId}`}>
                     Go To Forum
                   </MKButton>
                   <Reply post={{ replierName: authorName, data: content, replyTime: postDate, main: true }} />

@@ -12,37 +12,37 @@ const NewReply = () => {
     const [count, setCount] = useState([])
     const axiosPrivate = useAxiosPrivate();
     useEffect(() => {
-            axiosPrivate.get('/forum/post/new_reply_post' )
-                .then(res => {
-                    console.log('cc', res.data.data)
-                    setCount(res.data.data)
-                })
-                .catch(e => console.error(e))
-      
+        axiosPrivate.get('/forum/post/new_reply_post')
+            .then(res => {
+                console.log('cc', res.data.data)
+                setCount(res.data.data)
+            })
+            .catch(e => console.error(e))
+
     }, [])
     return (
-        <MKBox component="section">
-            <Container>
-                <br />
-                {
-                    count?.length>0?<Grid container spacing={3} mb={3}>
-                    <Grid>
-                        <MKTypography component="div" variant="body1" fontWeight="bold" >
-                        You Have New Reply!&nbsp;&nbsp;
-                        </MKTypography>
+        count?.length > 0 ?
+            <MKBox component="section">
+                <Container>
+                    <br />
+                    <Grid container spacing={3} mb={3}>
+                        <Grid>
+                            <MKTypography component="div" variant="body1" fontWeight="bold" >
+                                You Have New Reply!&nbsp;&nbsp;
+                            </MKTypography>
+                        </Grid>
                     </Grid>
-                </Grid>:null
+
+                </Container>
+                {
+                    count.map(p =>
+                        <Post
+                            key={p}
+                            postId={p}
+                        />)
                 }
-                
-            </Container>
-            {
-                count.map(p =>
-                    <Post 
-                        key={p}
-                        postId={p}
-                    />)
-            }
-        </MKBox>
+            </MKBox>
+            : <></>
     );
 };
 

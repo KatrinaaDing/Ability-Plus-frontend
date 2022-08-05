@@ -79,10 +79,9 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
               data: replyVal,
             })
         }
-
         axiosPrivate.post(`${url}?${params.toString()}`)
           .then((res) => {
-            alert('success' )
+            alert('success ' )
               replyCancel()
               getReplyList()
           })
@@ -170,7 +169,7 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
                                     <MKTypography variant="body1" fontWeight="bold" >
                                     Main Post
                                     </MKTypography>
-                                    <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${postId}`}>
+                                    <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${projectId}`}>
                                     Go To Forum
                                     </MKButton>
                                     <Reply post={{ replierName:authName,data, replyTime:lastModifiedTime, main:true }} />
