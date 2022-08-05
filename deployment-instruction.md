@@ -1,4 +1,16 @@
-[TOC]
+- [Glhf‘s Frontend Deployment Instruction](#glhf-s-frontend-deployment-instruction)
+  * [1. Environment](#1-environment)
+  * [2. Install `npx`](#2-install--npx-)
+      - [2.1 Check if `npm` has been installed](#21-check-if--npm--has-been-installed)
+      - [2.2 Check if  `node` has been installed](#22-check-if---node--has-been-installed)
+      - [2.3 Uninstall `node`](#23-uninstall--node-)
+      - [<a name="reinstall-node">2.4 Install/Reinstall `node`</a>](#-a-name--reinstall-node--24-install-reinstall--node---a-)
+      - [2.5 Check if `node` and `npm` are successfully installed](#25-check-if--node--and--npm--are-successfully-installed)
+      - [<a name='install-npx'>2.6 Install `npx`</a>](#-a-name--install-npx--26-install--npx---a-)
+  * [<a name="serving">3. Serve the Frontend</a>](#-a-name--serving--3-serve-the-frontend--a-)
+      - [3.1 Extract the `.tar.gz` file](#31-extract-the--targz--file)
+      - [3.2 Serving the frontend](#32-serving-the-frontend)
+
 
 # Glhf‘s Frontend Deployment Instruction
 
@@ -36,9 +48,9 @@ You can check that with following command:
    1.22.19
    ```
 
-If the output doesn't match with the possible output above (e.g.`command not found: npx` or error occurs), please follow [this instruction](####2. Install npx) to install `npx`.
+If the output doesn't match with the possible output above (e.g.`command not found: npx` or error occurs), please follow [this instruction](#2-install-npx) to install `npx`.
 
-Otherwise, you can serve the frontend in localhost.
+Otherwise, you can [serve the frontend in localhost](#serving).
 
 
 
@@ -56,7 +68,7 @@ In terminal, execute
 npm --version
 ```
 
-If terminal says `command not found: npm`, please follow the following instruction to install `npm`. Otherwise, you skip the installation and head to [Install `npx`](#2.6-install-npx).
+If terminal says `command not found: npm`, please follow the following instruction to install `npm`. Otherwise, you skip the installation and head to [2.6 Install npx](#install-npx).
 
 
 
@@ -68,7 +80,7 @@ In terminal, execute
 node --version
 ```
 
-If terminal **does not** print out the version of `node`, that means `node` has not be installed. You can skip to [Install/Re-install `node`](####2.4 Install/Re-install `node`) section below.
+If terminal **does not** print out the version of `node`, that means `node` has not be installed. You can skip to [2.4 Install/Reinstall node](#reinstall-node) section below.
 
 Otherwise, you have to uninstall `node` before re-installing it.
 
@@ -94,7 +106,7 @@ Otherwise, you have to uninstall `node` before re-installing it.
 
  
 
-#### 2.4 Install/Re-install `node`
+#### <a name="reinstall-node">2.4 Install/Reinstall `node`</a>
 
 * If you're using `brew`:
 
@@ -104,7 +116,7 @@ Otherwise, you have to uninstall `node` before re-installing it.
     brew install node
     ```
 
-       You'll see something like
+    You'll see something like
 
     ```shell
     ==> Downloading https://mirrors.aliyun.com/homebrew/homebrew-bottles/node-17.7.2.monterey.bottle.tar.gz
@@ -141,7 +153,7 @@ Which means `npm` has been successfully installed.
 
 
 
-#### 2.6 Install `npx`
+####  <a name='install-npx'>2.6 Install `npx`</a>
 
 Simply execute this command in your terminal:
 
@@ -155,7 +167,7 @@ Now you can [check environment](####1. Environment) agian.
 
 
 
-## 3. Serve the Frontend
+## <a name="serving">3. Serve the Frontend</a>
 
 The frontend is served with `yarn` or `npx`.
 
