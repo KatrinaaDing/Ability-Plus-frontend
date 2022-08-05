@@ -1,5 +1,9 @@
 
-# Table of Contents
+# Glhf‘s Frontend Deployment Instruction
+
+Please follow the instruction to run the project locally. This instruction is for MacOS system.
+
+## Table of Contents
   * [1. Environment](#1-environment)
   * [2. Install `npx`](#1install-npx)
       - [2.1 Check if `npm` has been installed](#check-npx)
@@ -12,10 +16,6 @@
       - [3.1 Extract the `.tar.gz` file](#extract)
       - [3.2 Serving the frontend](#serve-frontend)
 
-
-# Glhf‘s Frontend Deployment Instruction
-
-Please follow the instruction to run the project locally. This instruction is for MacOS system.
 
 
 
