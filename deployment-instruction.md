@@ -1,15 +1,16 @@
-- [Glhf‘s Frontend Deployment Instruction](#glhf-s-frontend-deployment-instruction)
+
+# Table of Contents
   * [1. Environment](#1-environment)
-  * [2. Install `npx`](#2-install--npx-)
-      - [2.1 Check if `npm` has been installed](#21-check-if--npm--has-been-installed)
-      - [2.2 Check if  `node` has been installed](#22-check-if---node--has-been-installed)
-      - [2.3 Uninstall `node`](#23-uninstall--node-)
-      - [<a name="reinstall-node">2.4 Install/Reinstall `node`</a>](#-a-name--reinstall-node--24-install-reinstall--node---a-)
-      - [2.5 Check if `node` and `npm` are successfully installed](#25-check-if--node--and--npm--are-successfully-installed)
-      - [<a name='install-npx'>2.6 Install `npx`</a>](#-a-name--install-npx--26-install--npx---a-)
-  * [<a name="serving">3. Serve the Frontend</a>](#-a-name--serving--3-serve-the-frontend--a-)
-      - [3.1 Extract the `.tar.gz` file](#31-extract-the--targz--file)
-      - [3.2 Serving the frontend](#32-serving-the-frontend)
+  * [2. Install `npx`](#1install-npx)
+      - [2.1 Check if `npm` has been installed](#check-npx)
+      - [2.2 Check if  `node` has been installed](#check-node)
+      - [2.3 Uninstall `node`](#uninstall-node)
+      - [2.4 Install/Reinstall `node`](#reinstall-node)
+      - [2.5 Check if `node` and `npm` are successfully installed](#check-all)
+      - [2.6 Install `npx`](#install-npx)
+  * [3. Serve the Frontend](#serving)
+      - [3.1 Extract the `.tar.gz` file](#extract)
+      - [3.2 Serving the frontend](#serve-frontend)
 
 
 # Glhf‘s Frontend Deployment Instruction
@@ -54,13 +55,13 @@ Otherwise, you can [serve the frontend in localhost](#serving).
 
 
 
-## 2. Install `npx`
+## <a name='1install-npx'>2. Install `npx`</a>
 
 `npx` is installed with `npm`, so you could start with check if `npm` has been installed.
 
 
 
-#### 2.1 Check if `npm` has been installed
+#### <a name='check-npx'>2.1 Check if `npm` has been installed</a>
 
 In terminal, execute
 
@@ -72,7 +73,7 @@ If terminal says `command not found: npm`, please follow the following instructi
 
 
 
-#### 2.2 Check if  `node` has been installed
+#### <a name='check-node'>2.2 Check if  `node` has been installed</a>
 
 In terminal, execute
 
@@ -86,7 +87,7 @@ Otherwise, you have to uninstall `node` before re-installing it.
 
 
 
-#### 2.3 Uninstall `node`
+#### <a name='uninstall-node'>2.3 Uninstall `node`</a>
 
 * If you are using `brew`:
 
@@ -134,7 +135,7 @@ Otherwise, you have to uninstall `node` before re-installing it.
 
 
 
-#### 2.5 Check if `node` and `npm` are successfully installed
+#### <a name='check-all'>2.5 Check if `node` and `npm` are successfully installed</a>
 
 In the terminal, execute
 
@@ -163,7 +164,7 @@ npm install -g npx
 
 This command uses NPM to install `npx` globally.
 
-Now you can [check environment](####1. Environment) agian.
+Now you can [check environment](#1-environment) agian.
 
 
 
@@ -173,7 +174,7 @@ The frontend is served with `yarn` or `npx`.
 
 **<u>Before running the frontend, please have the backend running at the same time!</u>**
 
-#### 3.1 Extract the `.tar.gz` file
+#### 3.1 <a name='extract'>Extract the `.tar.gz` file</a>
 
 In the folder where `glhf-frontend.tar.gz` is located, execute:
 
@@ -183,7 +184,7 @@ tar -xf glhf-frontend.tar.gz
 
 There'll be a `glhf-frontend` directory in the folder.
 
-#### 3.2 Serving the frontend
+#### <a name='serve-frontend'>3.2 Serving the frontend</a>
 
 * If you would like to use `npx`:
 
