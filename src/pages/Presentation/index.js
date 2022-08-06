@@ -123,7 +123,7 @@ function Presentation() {
                 title="Have an account?"
                 description={
                   <>
-                    Browse today's new project request and deliver your ideas to them!
+                    Browse today's new industry challenges and deliver your ideas to them!
                     <br/><br/>
                   </>
                 }

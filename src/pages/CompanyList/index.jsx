@@ -55,7 +55,7 @@ const CompanyList = () => {
                                 </ListItemAvatar>
                                 <ListItemText 
                                     primary={c.fullName}
-                                    secondary={`Released ${c.totalProjectNum} Projects`}
+                                    secondary={`Released ${c.totalProjectNum} Challenges`}
                                 />
                             </ListItem>
                         </MKButton>

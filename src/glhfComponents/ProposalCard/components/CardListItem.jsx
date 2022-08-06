@@ -16,7 +16,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 const CardListItem = ({title, value, link, color}) => {
     const icons = {
         'Category': <FolderIcon />,
-        'Project': <DescriptionIcon />,
+        'Challenge': <DescriptionIcon />,
         'Posted by': <PersonIcon />,
         'My Comment': <CommentIcon />
     }

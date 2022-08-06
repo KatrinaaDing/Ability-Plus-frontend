@@ -118,7 +118,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     &quot; {data.description} &quot;
                 </MKTypography>
                 <List>
-                    {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color} />}
+                    {data.projectName && <CardListItem title='Challenge' value={data.projectName} link={null} color={color} />}
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
                     {

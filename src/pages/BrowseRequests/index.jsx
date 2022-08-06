@@ -144,7 +144,7 @@ const BrowseRequests = () => {
             <AlertModal
                 open={alertOpen}
                 handleClose={() => setAlertOpen(false)}
-                title="Looking for project challenges?"
+                title="Looking for industry challenges?"
                 content="Please login to browse challenges :)"
                 disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}

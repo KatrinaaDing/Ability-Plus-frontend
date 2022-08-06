@@ -43,6 +43,8 @@ const Post = ({
   const [posts, setPosts] = React.useState([]);
   const [replyVal, setReplyVal] = useState('Say Something...');
 
+  const isAuthor = auth.username === authorName 
+
   const toggleModal = () => {
     setShow(!show);
   };
@@ -72,53 +74,53 @@ const Post = ({
       .catch((e) => console.error(e));
   };
   const postReply = () => {
-      console.log(curPost, 'curPost')
+    console.log(curPost, 'curPost')
     let params = new URLSearchParams({
-        postId:id,
+      postId: id,
+      data: replyVal,
+      isPin,
+    });
+    let url = '/forum/reply/new_reply'
+    if (Object.values(curPost).length) {
+      url = '/forum/reply/edit_my_reply'
+      params = new URLSearchParams({
+        replyId: curPost.id,
         data: replyVal,
-        isPin,
+      })
+    }
+    axiosPrivate.post(`${url}?${params.toString()}`)
+      .then((res) => {
+        alert('success')
+        replyCancel()
+        getReplyList()
+      })
+      .catch((e) => console.error(e));
+  }
+  const handleDelete = (replyId) => {
+    if (confirm("Do you really want to delete?")) {
+      const params = new URLSearchParams({
+        replyId,
       });
-      let url = '/forum/reply/new_reply'
-      if(Object.values(curPost).length){
-          url = '/forum/reply/edit_my_reply'
-          params = new URLSearchParams({
-            replyId:curPost.id,
-            data: replyVal,
-          })
-      }
-      axiosPrivate.post(`${url}?${params.toString()}`)
+      axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
         .then((res) => {
-            alert('success' )
-            replyCancel()
-            getReplyList()
+          alert('success')
+          getReplyList()
         })
         .catch((e) => console.error(e));
- }
- const handleDelete = (replyId) => {
-    if (confirm("Do you really want to delete?")) {
-        const params = new URLSearchParams({
-            replyId,
-          });
-          axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
-            .then((res) => {
-              alert('success')
-              getReplyList()
-            })
-            .catch((e) => console.error(e));
     }
-    
-}
-const handleEdit = (post) => {
+
+  }
+  const handleEdit = (post) => {
     setCurPost(post)
     setRShow(true)
     setReplyVal(post.data)
-}
+  }
 
- const replyCancel = () => {
+  const replyCancel = () => {
     setRShow(false)
     setReplyVal('Say Something...')
     setCurPost({})
-}   
+  }
 
   return (
     <ListItem
@@ -126,15 +128,15 @@ const handleEdit = (post) => {
       secondaryAction={(
         <>
           {
-                        // display edit and delete button for user's posts
-                        authorName === auth.username
-                        && (
-                        <>
-                          <DeleteModal postId={id} />
-                          <EditModal postId={id} content={content} />
-                        </>
-                        )
-                    }
+            // display edit and delete button for user's posts
+            isAuthor
+            && (
+              <>
+                <DeleteModal postId={id} />
+                <EditModal postId={id} content={content} isPin={isPin} isProjectOwner={isProjectOwner}/>
+              </>
+            )
+          }
 
           <IconButton
             edge="end"
@@ -143,13 +145,12 @@ const handleEdit = (post) => {
             onClick={getReplyList}
           >
             <CommentIcon />
-            {' '}
-&nbsp;
+            {' '}&nbsp;
             <MKTypography variant="subtitle2">{numReply}</MKTypography>
           </IconButton>
 
         </>
-              )}
+      )}
       sx={{
         p: 2,
         borderBottom: 'solid 0.3px gray',
@@ -163,28 +164,28 @@ const handleEdit = (post) => {
         primary={(
           <MKBox display="flex" flexDirection="row">
             {
-                            isProjectOwner
-                              ? (
-                                <MKTypography color="primary">
-                                  {authorName}
-                                  {' '}
-                                  (Project Owner)
-                                </MKTypography>
-                              )
-                              : authorName === auth.username
-                                ? `${authorName} (Me)`
-                                : authorName
-                        }
+              isProjectOwner
+                ? (
+                  <MKTypography color="primary">
+                    {authorName}
+                    {' '}
+                    (Challenge Owner)
+                  </MKTypography>
+                )
+                : isAuthor
+                  ? `${authorName} (Me)`
+                  : authorName
+            }
             <PushPinIcon color="warning" fontSize="medium" opacity={Number(isPin)} sx={{ mt: 'auto', mb: 'auto', ml: 1 }} />
           </MKBox>
-                  )}
+        )}
         secondary={(
           <>
             <MKTypography variant="caption">{new Date(postDate * 1000).toLocaleString()}</MKTypography>
             <br />
             <MKTypography variant="body">{content}</MKTypography>
           </>
-                  )}
+        )}
         sx={{
           mr: 20,
         }}
@@ -235,12 +236,12 @@ const handleEdit = (post) => {
                   hasMore={hasMore}
                 >
                   {
-                            posts.map((ele) => (
-                                <>
-                                <Reply key={ele.postId} post={ele} handleDelete={handleDelete} handleEdit={handleEdit} />
-                                </>
-                            ))
-                        }
+                    posts.map((ele) => (
+                      <>
+                        <Reply key={ele.postId} post={ele} handleDelete={handleDelete} handleEdit={handleEdit} />
+                      </>
+                    ))
+                  }
                 </EndlessScroll>
               </Container>
             </MKBox>
@@ -267,7 +268,7 @@ const handleEdit = (post) => {
             <Divider sx={{ my: 0 }} />
             <MKBox component="form" role="form" p={2} py={12}>
               <Grid container item xs={12}>
-                <MKInput  value={replyVal} onChange={e => setReplyVal(e.target.value)} type="text" label="Reply" multiline fullWidth rows={6} defaultValue="Say Something..." />
+                <MKInput value={replyVal} onChange={e => setReplyVal(e.target.value)} type="text" label="Reply" multiline fullWidth rows={6} defaultValue="Say Something..." />
               </Grid>
 
             </MKBox>

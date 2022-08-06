@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { Divider, Grid, IconButton, Modal, Slide, Switch } from '@mui/material';
+import { Collapse, Divider, Grid, IconButton, Modal, Slide, Switch, TextField } from '@mui/material';
 import MKBox from 'components/MKBox';
 import MKTypography from 'components/MKTypography';
 import CloseIcon from "@mui/icons-material/Close";
@@ -13,16 +13,19 @@ import MKInput from 'components/MKInput';
 import MKButton from 'components/MKButton';
 import useAuth from 'auth/useAuth';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import MKAlert from 'components/MKAlert';
 
 
-const EditModal = ({ postId, content }) => {
+const EditModal = ({ postId, content, isPin, isProjectOwner }) => {
     // hooks
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
 
     // states
     const [open, setOpen] = React.useState(false)
-    const [pin, setPin] = React.useState(false)
+    const [pin, setPin] = React.useState(isPin)
+    const [errorOpen, setErrorOpen] = React.useState(false)
+    const [successOpen, setSuccessOpen] = React.useState(false)
 
     // handlers
     const handleClose = () => setOpen(false)
@@ -31,6 +34,12 @@ const EditModal = ({ postId, content }) => {
     
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        if (e.target.post.value === '') {
+            setErrorOpen(true)
+            return
+        } 
+
         const params = new URLSearchParams();
         params.append('data', e.target.post.value)
         params.append('postId', postId)
@@ -41,8 +50,11 @@ const EditModal = ({ postId, content }) => {
         // append query string after url if using POST
         axiosPrivate.post('/forum/post/edit_my_post?' + params.toString())
             .then(res => {
-                setOpen(false)
-                location.reload()
+                setSuccessOpen(true)
+                setTimeout(() => {
+                    setOpen(false)
+                    location.reload()
+                }, 800);
             })
             .catch(e => console.error(e))
     }
@@ -68,29 +80,32 @@ const EditModal = ({ postId, content }) => {
                         borderRadius="xl"
                         bgColor="white"
                         shadow="xl"
-
                     >
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                             <MKTypography variant="h5">Edit Post</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={handleClose} />
                         </MKBox>
                         <Divider sx={{ my: 0 }} />
+                        <Collapse in={errorOpen} exit={!errorOpen}>
+                            <MKAlert color="error" style={{ zIndex: '100' }} >Cannot post with empty content!</MKAlert>
+                        </Collapse>
+                        <Collapse in={successOpen} exit={!successOpen}>
+                            <MKAlert color="success" style={{ zIndex: '100' }} >Success!</MKAlert>
+                        </Collapse>
                         <MKBox component="form" role="form" p={2} onSubmit={handleSubmit}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <MKInput
-                                        variant="standard"
-                                        label="Say something..."
-                                        name='post'
-                                        defaultValue={content}
-                                        multiline
-                                        fullWidth
-                                        rows={6}
-                                    />
-                                </Grid>
+                                <TextField
+                                    label="Say something..."
+                                    name='post'
+                                    defaultValue={content}
+                                    multiline
+                                    fullWidth
+                                    rows={6}
+                                    sx={{my: 3}}
+                                    onChange={() => setErrorOpen(false)}
+                                />
                                 {
                                     // only allow pin when author is company
-                                    auth.isCompany &&
+                                    isProjectOwner &&
                                     <Grid item xs={12} alignItems="center" ml={-1}>
                                         <Switch checked={pin} name='pin' onChange={handlePin} />
                                         <MKTypography
@@ -105,7 +120,6 @@ const EditModal = ({ postId, content }) => {
                                         </MKTypography>
                                     </Grid>
                                 }
-                            </Grid>
                             <Grid container item justifyContent="center" xs={12} my={2}>
                                 <MKButton type="submit" variant="gradient" color="dark" fullWidth>
                                     Post

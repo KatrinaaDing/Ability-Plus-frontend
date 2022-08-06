@@ -80,7 +80,7 @@ const ProposalRanks = () => {
 
     return (
         <BasicPageLayout 
-            title={`View Request Ranking for project "${reqName}"`} 
+            title={`View Proposal Ranking for challenge "${reqName}"`} 
             secondaryContent={
                 <ProjectDetailBtn
                     setReqName={setReqName}

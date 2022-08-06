@@ -162,7 +162,7 @@ const Posts = () => {
       <Container>
         <Grid container item xs={12} lg={7} justifyContent="flex-start">
           <MKTypography variant="h3" textTransform="uppercase" mb={1}>
-            Project Requests
+            Released Challenges
           </MKTypography>
         </Grid>
         <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>

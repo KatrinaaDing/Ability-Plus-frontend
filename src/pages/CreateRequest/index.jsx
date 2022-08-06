@@ -268,7 +268,7 @@ const CreateRequest = () => {
             handleClose={() => setAlertOpenSubmit(false)}
             handleConfirm={() => navigate('/my-project-requests')}
             title="Your challenge has been publised!"
-            content="You'll be redirect to My Project Challenges page."
+            content="You'll be redirect to My Industry Challenges page."
             disableClose={true}
         />
     
@@ -282,7 +282,7 @@ const CreateRequest = () => {
         />
 
     return (
-        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Challenge`}>
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Industry Challenge`}>
             <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />

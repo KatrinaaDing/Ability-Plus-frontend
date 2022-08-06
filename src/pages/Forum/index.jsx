@@ -69,7 +69,7 @@ const Forum = () => {
                 flexDirection='row'
                 justifyContent='space-between'
             >
-                <MKTypography variant='subtitle1'>Project: {reqName}</MKTypography>    
+                <MKTypography variant='subtitle1'>Challenge: {reqName}</MKTypography>    
                 <CreatePost reqCreator={reqCreator}/>
             </MKBox>
             <MKBox sx={{ pt: 10}}>

@@ -24,6 +24,7 @@ const PostsSection = ({ posts, reqCreator }) => {
             "postId": 0
         }]
     */
+    
     return (
         <List sx={{ width: '95%' }}>
             {
@@ -32,7 +33,7 @@ const PostsSection = ({ posts, reqCreator }) => {
                     : posts.map(p =>
                         <Post           // TODO feel free to change
                             key={p.postId}
-                            isProjectOwner={reqCreator === p.authorName}
+                            isProjectOwner={reqCreator === p.authName}
                             id={p.postId}
                             authorId={p.authId}
                             authorName={p.authName}

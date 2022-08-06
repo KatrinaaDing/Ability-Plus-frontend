@@ -114,7 +114,7 @@ const MyProjectRequests = () => {
         if (confirm("Do you really want to delete the project request?")) {
             await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
                 .then(res => {
-                    alert(`Project has been deleted`);
+                    alert(`Challenge has been deleted`);
                     setReqOpen(false)
                     location.reload();
                 })
@@ -175,20 +175,16 @@ const MyProjectRequests = () => {
             >
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                     {
-                        reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                No Project Request match your criteria
-                            </MKTypography>
-                            : reqs.map(r =>
-                                <RequestCard
-                                    key={r.id}
-                                    data={{
-                                        ...r,
-                                        topic: r.area,
-                                    }}
-                                    openDetail={() => getProjectDetail(r.id)}
-                                />
-                            )
+                        reqs.map(r =>
+                            <RequestCard
+                                key={r.id}
+                                data={{
+                                    ...r,
+                                    topic: r.area,
+                                }}
+                                openDetail={() => getProjectDetail(r.id)}
+                            />
+                        )
                     }
                 </Grid>
             </EndlessScroll>

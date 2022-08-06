@@ -368,7 +368,7 @@ const ProjectProposals = () => {
 
     return (
         <BasicPageLayout
-            title={`All Proposals for project "${projectName}"`}
+            title={`All Proposals for challenge "${projectName}"`}
             secondaryContent={
                 projectStatus === statusBank.request.approving.label &&
                 <MKButton

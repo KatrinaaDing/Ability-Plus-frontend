@@ -34,7 +34,7 @@ function Counters() {
               count={40}
               suffix="+"
               title="Companies"
-              description="See what companies are requesting"
+              description="See our companies coorperators"
             />
           </Grid>
           <Grid item xs={12} md={4} display="flex">
@@ -42,8 +42,8 @@ function Counters() {
             <DefaultCounterCard
               count={100}
               suffix="+"
-              title="Project Reqeusts"
-              description="Find the project that interests you the most"
+              title="Industry Challenges"
+              description="Find the challenges that interests you the most"
             />
             <Divider orientation="vertical" sx={{ display: { xs: "none", md: "block" }, ml: 0 }} />
           </Grid>
