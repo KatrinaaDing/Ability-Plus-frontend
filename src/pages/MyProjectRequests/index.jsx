@@ -8,7 +8,6 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import FilterBar from "glhfComponents/RequestFilter"
 import DeleteIcon from '@mui/icons-material/Delete';
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
-import { getCode } from "utils/getStatus";
 import ViewProposalsBtn from "./components/ViewProposalsBtn";
 import CreateProjectBtn from "./components/CreateProjectBtn";
 
@@ -172,7 +171,6 @@ const MyProjectRequests = () => {
                 next={() => fetchData(numPage + 1, false)}
                 hasMore={hasMore}
             >
-
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                     {
                         reqs.length === 0
@@ -192,7 +190,6 @@ const MyProjectRequests = () => {
                     }
                 </Grid>
             </EndlessScroll>
-
         </BasicPageLayout>
     );
 }

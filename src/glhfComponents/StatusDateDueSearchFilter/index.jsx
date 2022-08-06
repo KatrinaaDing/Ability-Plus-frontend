@@ -65,12 +65,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const FilterItem = ({ title, children }) =>
     <Grid item width='100%' sx={12} md={3}>
-        <MKTypography variant="subtitle2" sx={{ mb: 1 }}>{title}</MKTypography>
+        <MKTypography variant="subtitle2" sx={{ml:0.5}}>{title}</MKTypography>
         {children}
     </Grid>
 
 
 const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
+    const page = window.location.pathname.slice(1)
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
     const [status, setStatus] = useState(-1);
     const [ascending, setAscending] = useState(true);
@@ -98,17 +99,16 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
         }
     };
     return (
-        <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', my: 4 }} >
+        <Grid container spacing={2} sx={{ mt: 0.5, mb: 4, display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}} >
             <FilterItem title="Filter by">
                 <FormControl sx={{ display: 'flex', width: '100%' }}>
                     {statusType === 'proposal' ?
-
                         <Select
                             id="Proposal Status"
                             value={status}
                             autoWidth
                             onChange={handleChange}
-                            sx={{ backgroundColor: 'white', height: '40px' }}
+                            sx={{ backgroundColor: 'white', height: '40px'}}
                             style={{backgroundColor:'white'}}
                     >
                             <MenuItem value={-1}>All</MenuItem>
@@ -147,14 +147,19 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                         onChange={(e) => setWhatOrder((e.target.value))}
                         style={{backgroundColor:'white'}}
                     >
-                        <MenuItem value={'SolutionDue'}>Solution Deadline</MenuItem>
-                        <MenuItem value={'ProposalDue'}>Proposal Deadline</MenuItem>
+                        <MenuItem value={'SolutionDue'}>{page.startsWith('my-proposals') ? "Request's ": ''}Solution Deadline</MenuItem>
+                        <MenuItem value={'ProposalDue'}>{page.startsWith('my-proposals') ? "Request's " : ''}Proposal Deadline</MenuItem>
                         <MenuItem value={'LastModifiedTime'}>Last Modified Time</MenuItem>
                     </Select>
                 </FormControl>
             </FilterItem>
             <FilterItem title="Order by">
-                <MKButton sx={{ height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%' }} onClick={() => setAscending(!ascending)}>
+                <MKButton 
+                    sx={{ height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%', textAlign: 'left' }} 
+                    fullWidth
+                    style={{ justifyContent: "flex-start" }}
+                    onClick={() => setAscending(!ascending)}
+                >
                     {
                         ascending
                             ? <>

@@ -63,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const FilterItem = ({ title, children }) => 
   <Grid item width='100%' sx={12} md={4}>
-    <MKTypography variant="subtitle2" sx={{ mb: 1 }}>{title}</MKTypography>
+    <MKTypography variant="subtitle2" sx={{ ml: 0.5 }}>{title}</MKTypography>
     {children}
   </Grid>
 
@@ -79,11 +79,13 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
     <Grid 
       container 
       spacing={2}
-      sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', my: 4 }} 
+      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', mt: 0.5, mb: 10 }} 
     >
       <FilterItem title="Sort by Likes">
         <MKButton 
           onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} 
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
           sx={{height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width:'100%'}}
         >
           Sort By Like{' '}
@@ -94,6 +96,8 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
       <FilterItem title="Sort by Date">
         <MKButton 
           onClick={() => setAscending(!ascending)}
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
           sx={{height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%'}} 
         >
           Submission Date{' '}
