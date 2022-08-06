@@ -66,6 +66,7 @@ function Profile() {
   const [age, setAge] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [alertStr, setAlertStr] = useState("");
+  const [sAlertStr, setSAlertStr] = useState("");
   const [fullName, setFullName] = useState("");
   const [cEmail, setCEmail] = useState(localStorage.getItem("cEmail"));
   const [cAge, setCAge] = useState(localStorage.getItem("cAge"));
@@ -153,7 +154,7 @@ function Profile() {
           }
           localStorage.setItem("cDes", body.extraData.des)
           localStorage.setItem("cAge", body.extraData.des)
-          localStorage.setItem("cEmail", body.extraData.email)
+          localStorage.setItem("cEmail", body.extraData.account)
           localStorage.setItem("userName", userName.userName)
 
           setAuth({
@@ -161,7 +162,7 @@ function Profile() {
             isCompany: auth.isCompany,
             accessToken: auth.accessToken
           })
-          setAlertStr("Success!")
+          setSAlertStr("Success!")
         })
         .catch(err => {
           if (err !== undefined && err.response !== undefined && err.response.data !== undefined) {
@@ -323,6 +324,11 @@ function Profile() {
               <Collapse in={alertStr != ""}>
                 <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
               </Collapse>
+
+              <Collapse in={sAlertStr != ""}>
+                <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
+              </Collapse>
+
               <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                 <MKTypography variant="h5">Profile Edit</MKTypography>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={toggleModal} />

@@ -112,16 +112,17 @@ function Profile() {
                     {age === ''? 'NA':age}
                   </MKTypography>
                   </div>
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
+                      Description&nbsp;&nbsp;
+                      </MKTypography>
+                    <MKTypography variant="body1" component="span" fontWeight="light" color="text">
+                      {des === '' ? 'NA': des}
+                    </MKTypography>
+                  </div>
                 </Grid>
               </Grid>
-              <div>
-                <MKTypography component="span" variant="body2" fontWeight="bold">
-                Description&nbsp;&nbsp;
-                </MKTypography>
-              <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                {des === '' ? 'NA': des}
-              </MKTypography>
-              </div>
+
             </Grid>
           </Grid>
         </Grid>   

@@ -53,6 +53,8 @@ function Profile({ companyInfo }) {
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
 
+  const [variant, setVariant] = useState("")
+
   const params = useParams();
   const {id} = params;
   const [email, setEmail] = useState("")
@@ -92,6 +94,12 @@ function Profile({ companyInfo }) {
             }
           }
           setFollowText(follow ? 'Unfollow': 'Follow')
+          if (followText === "Unfollow") {
+            setVariant("outlined")
+          }
+          if (followText === "Follow") {
+            setVariant("gradient")
+          }
         })
         .catch(e => {
           console.error(e)
@@ -107,12 +115,14 @@ function Profile({ companyInfo }) {
       await axiosPrivate.post(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Unfollow')
+          setVariant("outlined")
         })
         .catch(e => console.error(e))
     } else {
       await axiosPrivate.delete(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Follow')
+          setVariant("gradient")
         })
         .then(e => console.error(e))
     }
@@ -132,7 +142,7 @@ function Profile({ companyInfo }) {
                   {companyName}
                 </MKTypography>
                 {!auth.isCompany && 
-                  <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
+                  <MKButton variant={variant} color="error" size="small" onClick={ handleFollow}>
                   { followText }
                 </MKButton> 
                 }
@@ -143,7 +153,7 @@ function Profile({ companyInfo }) {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {email}&nbsp;&nbsp;&nbsp;
+                  {email === '' ? 'This company has not added the contact email yet': email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
                 </Grid>
               </Grid>
@@ -152,7 +162,7 @@ function Profile({ companyInfo }) {
                     Description&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {des}&nbsp;&nbsp;&nbsp;
+                    {des === '' ? 'This company has not added the description yet': des}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
               </Grid>
             </Grid>

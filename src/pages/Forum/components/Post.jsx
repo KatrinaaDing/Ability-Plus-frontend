@@ -41,7 +41,7 @@ const Post = ({
   const [curPost, setCurPost] = useState({});//编辑的post
   const [pageNum, setPageNum] = useState(1);
   const [posts, setPosts] = React.useState([]);
-  const [replyVal, setReplyVal] = useState('Say Something...');
+  const [replyVal, setReplyVal] = useState('Say Something');
 
   const toggleModal = () => {
     setShow(!show);
@@ -224,7 +224,7 @@ const handleEdit = (post) => {
                   </MKTypography>
                   <div>
                     <MKButton variant="gradient" color="info" size="small" onClick={replyModal}>
-                      Create Reply
+                    Reply
                     </MKButton>
                   </div>
 
@@ -261,13 +261,13 @@ const handleEdit = (post) => {
             shadow="xl"
           >
             <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-              <MKTypography variant="h5">Create Reply</MKTypography>
+              <MKTypography variant="h5">Reply</MKTypography>
               <CloseIcon fontSize="medium" sx={{ cursor: 'pointer' }} onClick={replyModal} />
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox component="form" role="form" p={2} py={12}>
               <Grid container item xs={12}>
-                <MKInput  value={replyVal} onChange={e => setReplyVal(e.target.value)} type="text" label="Reply" multiline fullWidth rows={6} defaultValue="Say Something..." />
+                <MKInput  placeholder={replyVal} onChange={e => setReplyVal(e.target.value)} type="text" label="Reply" multiline fullWidth rows={6} />
               </Grid>
 
             </MKBox>
