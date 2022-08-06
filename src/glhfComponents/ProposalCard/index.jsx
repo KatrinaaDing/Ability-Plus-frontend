@@ -113,7 +113,6 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     sx={{
                         height: '100px',
                         fontWeight: '500'
-
                     }}
                 >
                     &quot; {data.description} &quot;
@@ -136,15 +135,6 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                             />
                     }
                 </List>
-
-                {/* {
-                    data.comment &&
-                    <MKTypography variant='subtitle2' pl={4}>
-                        {data.comment}
-                    </MKTypography>
-                } */}
-                
-
                 <MKBox sx={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -167,14 +157,14 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     <MKBox sx={{
                         display: 'flex',
                         flexDirection: 'row',
-                        justifyContent: 'flex-end',
+                        justifyContent: 'space-between',
                         width: '-webkit-fill-available'
                     }}>
                         {
                             (page.startsWith('popular') ||
                                 page.startsWith('student-info') ||
                                 (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
-                            <MKBox display='flex' flexDirection='row' px={3} sx={{ mt: 'auto', mb: 'auto' }}>
+                            <MKBox display='flex' flexDirection='row'  sx={{ mt: 'auto', mb: 'auto' }}>
                                 <LikeIcon number={data.likes} direction='row' />
                             </MKBox>
                         }

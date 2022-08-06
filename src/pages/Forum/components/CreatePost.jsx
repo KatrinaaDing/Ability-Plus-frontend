@@ -30,8 +30,8 @@ const CreatePost = ({ reqCreator }) => {
     const [open, setOpen] = React.useState(false)
     const [pin, setPin] = React.useState(false)
     
-    const isAuthor = auth.uesrname === reqCreator 
-    
+    const isAuthor = auth.username === reqCreator 
+
     // handlers
     const handleClose = () => setOpen(false)
 

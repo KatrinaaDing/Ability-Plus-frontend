@@ -11,7 +11,7 @@ import MKTypography from 'components/MKTypography';
 
 
 const LikeIcon = ({number, direction}) => {
-    const color = pink[500]
+    const color = pink[400]
 
     return (
         <MKBox 

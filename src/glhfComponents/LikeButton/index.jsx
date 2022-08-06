@@ -22,7 +22,7 @@ const LikeButton = ({ originLike, originNumLike, propId }) => {
     
 
     const performLike = () =>
-        axiosPrivate.post(`/user_proposal_like_record/like?proposalId=${propId}`)   // FIXME bug in backend 
+        axiosPrivate.post(`/user_proposal_like_record/like?proposalId=${propId}`)   
             .then(res => setNumLike(numLike + 1))
             .catch(e => console.error(e))
 

@@ -18,6 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AlertModal from 'glhfComponents/AlertModal';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
 import CardCounters from 'glhfComponents/CardCounter';
+import MKTypography from 'components/MKTypography';
 
 const PAGE_SIZE = 18 
 
@@ -37,7 +38,7 @@ const BrowseRequests = () => {
     const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
-    const [whatOrder, setWhatOrder] = useState('ProposalDue');
+    const [whatOrder, setWhatOrder] = useState('SolutionDue');
     const [numPage, setNumPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
 
@@ -58,13 +59,14 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-
+    
     /**
      * Fetching a list of request card
      * @param {integer} pageNo page number to fetch
      * @param {boolean} newList determine if is to fetch a new card list (like changing status)
      */
     const fetchData = (pageNo, newList) => {
+        console.log(whatOrder)
         const params = new URLSearchParams({
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
@@ -136,7 +138,9 @@ const BrowseRequests = () => {
     }
 
     return (
-        <BasicPageLayout title="Browse All Project Requests">
+        <BasicPageLayout title="Browse All Industry Challenges">
+            <MKTypography variant='body'>You can find all released industry challenges on this page.</MKTypography>
+
             <AlertModal
                 open={alertOpen}
                 handleClose={() => setAlertOpen(false)}
@@ -201,7 +205,7 @@ const BrowseRequests = () => {
                 next={() => fetchData(numPage + 1, false)}
                 hasMore={hasMore}
             >
-                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+                <Grid container spacing={2} >
                     {renderRequestCards()}
                 </Grid>
             </EndlessScroll>

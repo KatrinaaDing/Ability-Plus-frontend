@@ -69,7 +69,7 @@ const FilterItem = ({ title, children }) =>
 
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   const [ascending, setAscending] = useState(true);
-  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(true);
+  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(false);
   useEffect(() => {
     handleDate(ascending)
     handleLike(isAscendingOrderLike)

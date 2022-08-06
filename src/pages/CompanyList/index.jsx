@@ -45,7 +45,7 @@ const CompanyList = () => {
                             key={idx}
                             onClick={() => window.open(`/company-info/${c.id}`)}
                             fullWidth
-                            color='white'
+                            color='dark'
                             variant=''
                             sx={{ my: 1 }}
                         >

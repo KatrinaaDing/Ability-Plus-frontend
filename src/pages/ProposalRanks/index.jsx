@@ -123,7 +123,6 @@ const ProposalRanks = () => {
             }
             <Container>
                 <DateSearchFilter handleDate={handleDate} handleSearch={handleSearch}></DateSearchFilter>
-                <br />  
                 <Box sx={{ flexGrow: 1 }}>
                     <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
                 </Box>              

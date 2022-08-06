@@ -123,7 +123,9 @@ const MyProjectRequests = () => {
     }
 
     return (
-        <BasicPageLayout title="My Project Requests" secondaryContent={<CreateProjectBtn />}>
+        <BasicPageLayout title="My Challenges" secondaryContent={<CreateProjectBtn />}>
+            <MKTypography variant='body'>You can find all of your released industry challenges on this page.</MKTypography>
+
             {
                 reqOpen &&
                 <RequestDescriptionModal

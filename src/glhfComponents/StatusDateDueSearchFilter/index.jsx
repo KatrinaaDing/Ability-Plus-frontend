@@ -163,12 +163,12 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                     {
                         ascending
                             ? <>
-                                Descending Order
-                                <KeyboardArrowDownIcon />
+                                Ascending Order
+                                <KeyboardArrowUpIcon />
                             </>
                             : <>
-                                Ascednding Order
-                                <KeyboardArrowUpIcon />
+                                Descending Order
+                                <KeyboardArrowDownIcon />
                             </>
                     }
                 </MKButton>
