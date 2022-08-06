@@ -52,7 +52,7 @@ const Reply = (props) => {
                             </MKTypography> 
                             <div>
                                 <MKTypography variant="body">
-                                Posted at:&nbsp;&nbsp;{moment(replyTime*1000).format('YYYY/MM/DD hh:mm:ss')}
+                                Posted at:&nbsp;&nbsp;{new Date(replyTime*1000).toLocaleString()}
 
                                 </MKTypography>
                                 {

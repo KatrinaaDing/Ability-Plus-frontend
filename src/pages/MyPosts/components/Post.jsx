@@ -21,9 +21,9 @@ import Reply from "./Reply";
 
 const PAGE_SIZE = 20;
 
-const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
+const Post = ({postId, authId, authName, data, isPin, lastModifiedTime, projectId, newStatus}) => {
     const { auth } = useAuth();
-    const { projectId } = useParams();
+    // const { projectId } = useParams();
     console.log(projectId)
     const axiosPrivate = useAxiosPrivate();
     const [pageNum, setPageNum] = useState(1);
@@ -116,9 +116,9 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime}) => {
     return (
         <ListItem
             secondaryAction={
-                <MKButton variant="outlined" color="info" size="small" onClick={() => {toggleModal();getReplyList()}}>
+                newStatus?<></>:<MKButton variant="outlined" color="info" size="small" onClick={() => {toggleModal();getReplyList()}}>
                     View
-                </MKButton>                     
+                </MKButton>                   
             }
             sx={{
                 p: 2,

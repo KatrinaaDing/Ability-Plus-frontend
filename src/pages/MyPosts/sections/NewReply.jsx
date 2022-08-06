@@ -7,6 +7,7 @@ import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 import Post from "../components/Post";
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const NewReply = () => {
     const [count, setCount] = useState([])
@@ -14,9 +15,19 @@ const NewReply = () => {
     useEffect(() => {
         axiosPrivate.get('/forum/post/new_reply_post')
             .then(res => {
-                console.log('cc', res.data.data)
                 setCount(res.data.data)
-            })
+                if(res.data.data.length){
+                    const params = JSON.stringify(
+                        res.data.data
+                    )
+                    axiosPrivate.post('/forum/post/list_post_by_ids',params)
+                    .then(res => {
+                        console.log('cc', res.data.data)
+                        setCount(res.data.data)
+                    })
+                    .catch(e => console.error(e))
+                        }
+                    })
             .catch(e => console.error(e))
 
     }, [])
@@ -36,10 +47,23 @@ const NewReply = () => {
                 </Container>
                 {
                     count.map(p =>
-                        <Post
-                            key={p}
-                            postId={p}
-                        />)
+                        (<div style={{display:'flex', alignItems:'center'}}><FiberManualRecordIcon color='error'/><Post 
+                            key={p.postId}
+                            postId={p.postId}
+                            authId={p.authId}
+                            authName={p.authName}
+                            data={p.data}
+                            isPin={p.isPin}
+                            lastModifiedTime={p.lastModifiedTime}
+                            newStatus={true}
+                        />
+                        </div>
+                        )
+                        // <Post
+                        //     key={p}
+                        //     postId={p}
+                        // />
+                        )
                 }
             </MKBox>
             : <></>
