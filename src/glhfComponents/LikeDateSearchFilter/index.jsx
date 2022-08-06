@@ -62,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const FilterItem = ({ title, children }) => 
-  <Grid item width='100%' sx={4} md={4}>
+  <Grid item width='100%' sx={12} md={4}>
     <MKTypography variant="subtitle2" sx={{ mb: 1 }}>{title}</MKTypography>
     {children}
   </Grid>
