@@ -26,11 +26,16 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 [Live Demo here](http://ec2-3-26-215-49.ap-southeast-2.compute.amazonaws.com:3000/)
 
 ## Features
-Definition of different status:
-Open for proposal: the project challenge is accepting proposal submission
-Approving: after the proposal submission deadline passed, company can select outstanding proposals. After company selects outstanding proposals, the status will be changed to 'Open for Solution'
-Open for Solution: proposals that selected as outstanding by companies can submit solution
-Closed: the deadline of the solution is passed
+### Definition of different status:
+
+**Open for proposal**: the project challenge is accepting proposal submission
+
+**Approving**: after the proposal submission deadline passed, company can select outstanding proposals. After company selects outstanding proposals, the status will be changed to 'Open for Solution'
+
+**Open for Solution**: proposals that selected as outstanding by companies can submit solution
+
+**Closed**: the deadline of the solution is passed
+
 ### For Company User
 
 1. Company can contact ability.test.official@outlook.com and provide legal documents to register a company account on Ability Plus.
