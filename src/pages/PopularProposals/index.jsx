@@ -193,7 +193,6 @@ const PopularProposals = () => {
             />
             <Box sx={{ flexGrow: 1 }}>
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={handleDate} handleSearch={handleSearch}></LikeDateSearchFilter>
-                <br />
                 <EndlessScroll
                     dataLength={popularProps.length}
                     next={() => fetchData(pageNum + 1, false)}

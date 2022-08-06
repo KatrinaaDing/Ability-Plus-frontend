@@ -95,7 +95,12 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
             </Box>
             <Box>
                 <p style={{ textAlign: 'center'}}>Order by Date:</p>
-                <MKButton  sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}  onClick={() => setAscending(!ascending)}>
+                <MKButton  
+                    sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}  
+                    fullWidth
+                    style={{ justifyContent: "flex-start" }}
+                    onClick={() => setAscending(!ascending)}
+                >
                     Submission Date{' '}
                     { ascending && <KeyboardArrowDownIcon>
                     </KeyboardArrowDownIcon>}

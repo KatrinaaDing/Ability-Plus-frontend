@@ -17,6 +17,7 @@ import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter'
 import EditIcon from '@mui/icons-material/Edit';
 import AlertModal from 'glhfComponents/AlertModal';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
+import CardCounters from 'glhfComponents/CardCounter';
 
 const PAGE_SIZE = 18 
 
@@ -144,21 +145,8 @@ const BrowseRequests = () => {
                 disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
             />
-            <MKBox display='flex' flexWrap="wrap">
-                <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
-                {
-                    status === ''
-                        ? <p>all status</p>
-                        : (
-                            <>
-                                status
-                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal' />
-                            </>
-                        )
-                }
-            </MKBox>
+            <CardCounters status={status} total={total} type="request" />
             <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
-            <br />
             {
                 // mount modal only when detail is loaded
                 reqDetail &&

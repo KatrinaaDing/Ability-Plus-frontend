@@ -16,7 +16,7 @@ const LikeButton = ({ originLike, originNumLike, propId }) => {
 
     // handlers
     const cancelLike = () => 
-        axiosPrivate.post(`/user_proposal_like_record/unlike?proposalId=${propId}}`)
+        axiosPrivate.post(`/user_proposal_like_record/unlike?proposalId=${propId}`)
             .then(res => setNumLike(numLike - 1))
             .catch(e => console.error(e))
     
