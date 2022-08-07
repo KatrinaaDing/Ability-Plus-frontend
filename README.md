@@ -23,18 +23,44 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 
 ## Live Demo
 
-[Live Demo here](http://ec2-3-26-215-49.ap-southeast-2.compute.amazonaws.com:3000/)
+[Live Demo here](http://ability-plus.site/)
 
 ## Features
-### Definition of different status:
 
-**Open for proposal**: the project challenge is accepting proposal submission
+### Definition
 
-**Approving**: after the proposal submission deadline passed, company can select outstanding proposals. After company selects outstanding proposals, the status will be changed to 'Open for Solution'
+#### Users
 
-**Open for Solution**: proposals that selected as outstanding by companies can submit solution
+| Role    | Definition                                        |
+| ------- | ------------------------------------------------------------ |
+| **Company** | The organizations that can publish their industry challenges on Ability Plus and welcome student to submit proposals. |
+| **Student** | The student users that can submit project proposals to the challenges that they would like to solve. |
 
-**Closed**: the deadline of the solution is passed
+
+
+
+#### Status of Industry Challenges
+| Status            | Definition                                        |
+| ----------------- | ------------------------------------------------------------ |
+| **Draft**             | The challenge hasn't been published.                          |
+| **Open for proposal** | The industry challenge is accepting proposal submission.     |
+| **Approving**         | After the proposal submission deadline passed, company can select outstanding proposals. After company selects outstanding proposals, the status will be changed to "Open for Solution". |
+| **Open for Solution** | Some of the proposals are selected as outstanding by companies. At this stage, the proposal author can submit their complete solution. |
+| **Closed**     | The deadline of the solution is passed.                      |
+
+
+
+#### Status of Proposals
+
+| Status        | Definition                                        |
+| ------------- | ------------------------------------------------------------ |
+| **Draft**     | The proposal hasn't been submitted.                          |
+| **Submitted** | The proposal has been submitted to a opening challenge.      |
+| **Approving** | The challenge owner (the company user) is selecting the outstanding proposals. |
+| **Approved**  | The proposal is selected as outstanding by companies. The student author can submit a complete solution. |
+| **Rejected**  | The proposasl is not selected as outstanding proposal.       |
+
+
 
 ### For Company User
 
@@ -87,7 +113,9 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 
 ## Backend
 
-Click to view the [repo of the backend](https://github.com/susu1101/Ability-Plus)
+Click to view [the repo of the backend](https://github.com/susu1101/Ability-Plus)
+
+Click to view [the api document](http://ability-plus.site:8080/swagger-ui.html)
 
 
 ## File Structure
