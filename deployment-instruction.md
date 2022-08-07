@@ -104,7 +104,11 @@ Otherwise, you have to uninstall `node` before re-installing it.
 
 
 * If you are using `apt`:
-
+   
+   ```shell
+   sudo apt remove nodejs
+   sudo apt remove npm
+   ```
  
 
 #### <a name="reinstall-node">2.4 Install/Reinstall `node`</a>
@@ -131,8 +135,14 @@ Otherwise, you have to uninstall `node` before re-installing it.
 
 * If you are using `apt`:
 
+   In the terminal, execute
+   
+   ```shell
+   sudo apt install nodejs
+   sudo apt install npm
+   ```
 
-
+   You can find more from this post: https://stackoverflow.com/questions/49894620/npx-command-not-found
 
 
 #### <a name='check-all'>2.5 Check if `node` and `npm` are successfully installed</a>
