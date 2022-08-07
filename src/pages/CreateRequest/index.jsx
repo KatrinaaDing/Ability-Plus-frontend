@@ -252,14 +252,20 @@ const CreateRequest = () => {
     }
 
     // confirm modal TODO: allow stay on page when editing
+    const handleSaveDraftAction = () => {
+        if (isEditing)
+            setAlertOpenDraft(false)
+        else
+            navigate(`/my-project-requests`)
+    }
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
             handleClose={() => setAlertOpenDraft(false)}
-            handleConfirm={() => navigate('/my-project-requests')}
+            handleConfirm={handleSaveDraftAction}
             title="Successfully Saved"
             content="Your challenge has been saved to draft!"
-            disableClose={true}
+            disableClose={isEditing ? false : true}
         />
 
     const SubmitConfirm = () =>

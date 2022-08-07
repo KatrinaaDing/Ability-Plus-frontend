@@ -5,7 +5,7 @@
  */
 import axios from 'axios';
 // export const BASE_URL = 'http://localhost:8080';  
-export const BASE_URL = 'http://ec2-3-26-215-49.ap-southeast-2.compute.amazonaws.com:8080/';
+export const BASE_URL = 'http://ability-plus.site:8080/';
 
 const axiosBasic = axios.create({
     baseURL: BASE_URL,
