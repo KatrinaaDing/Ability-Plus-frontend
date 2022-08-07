@@ -12,28 +12,50 @@ import useAxiosPrivate from 'hooks/useAxiosPrivate';
 // import moment from 'moment';
 
 const Reply = (props) => {
-    const { id, isProjectOwner, authorId, authorName, post={}, handleDelete, handleEdit} = props;
-    console.log(post,'post')
-    const {data, replyTime, replierName, main} = post
+    const { id, isProjectOwner, authorId, authorName, post = {}, handleDelete, handleEdit } = props;
+    const { data, replyTime, replierName, main } = post
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
-    
     return (
         <ListItem
             alignItems="flex-start"
             sx={{
                 p: 2,
-                borderBottom: 'solid 0.3px gray'
+                borderBottom: !main && 'solid 0.3px gray'
             }}
+            secondaryAction={
+                <>
+                    <MKBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}  >
+
+                        {
+                            !main &&
+                            <MKBox>
+                                <IconButton color='info' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
+                                    <EditIcon onClick={() => handleEdit && handleEdit(post)} />
+                                </IconButton>
+                                <IconButton color='error' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
+                                    <DeleteIcon onClick={() => handleDelete && handleDelete(post.id)} />
+                                </IconButton>
+                            </MKBox>
+                        }
+
+                        <MKTypography variant="body2">
+                            Posted at:&nbsp;&nbsp;{new Date(replyTime * 1000).toLocaleString()}
+                        </MKTypography>
+
+
+                    </MKBox>
+                </>
+            }
         >
-            
+
             <ListItemAvatar>
-                <Avatar alt={authorName} src="/src/assets/images/profile-avatars/company.png" />
+                <Avatar alt={replierName} src="/src/assets/images/profile-avatars/company.png" />
             </ListItemAvatar>
             <ListItemText
                 primary={
                     <MKBox display='flex' flexDirection="row">
-{/*                         {
+                        {/*                         {
                             isProjectOwner
                                 ? <MKTypography color='primary'>{authorName} (Project Owner)</MKTypography>
                                 : authorName === auth.username
@@ -41,35 +63,19 @@ const Reply = (props) => {
                                     : authorName
 
                         } */}
-                        <MKTypography variant='body' color={replierName == auth.username && !main?'error':''}>{replierName}</MKTypography>
+                        <MKTypography variant='body'>
+                            {replierName} {replierName == auth.username ? '(ME)' : ''}
+                        </MKTypography>
                     </MKBox>
                 }
                 secondary={
-                    <>
-                        <Grid container justifyContent="space-between" alignItems="center">
-                            <MKTypography variant='body'>
-                            {data}
-                            </MKTypography> 
-                            <div>
-                                <MKTypography variant="body">
-                                Posted at:&nbsp;&nbsp;{new Date(replyTime*1000).toLocaleString()}
-
-                                </MKTypography>
-                                {
-                                    main?null:<><EditIcon onClick={() => handleEdit&&handleEdit(post)}/>
-                                    <DeleteIcon onClick={() => handleDelete&&handleDelete(post.id)}/></>
-                                }
-                                
-
-                            </div>
-                        </Grid>
-                    </>
+                    <MKTypography variant='body'>
+                        {data}
+                    </MKTypography>
                 }
-                sx={{
-                    mr: 10,
-                }}
+
             />
-           
+
         </ListItem>
     );
 };

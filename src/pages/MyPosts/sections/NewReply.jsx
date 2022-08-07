@@ -6,67 +6,84 @@ import MKAvatar from "components/MKAvatar";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 import Post from "../components/Post";
-import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { Divider, Modal, Slide } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 
-const NewReply = () => {
-    const [count, setCount] = useState([])
+
+const NewReply = ({count}) => {
+    const [open, setOpen] = useState(false)
     const axiosPrivate = useAxiosPrivate();
-    useEffect(() => {
-        axiosPrivate.get('/forum/post/new_reply_post')
-            .then(res => {
-                setCount(res.data.data)
-                if(res.data.data.length){
-                    const params = JSON.stringify(
-                        res.data.data
-                    )
-                    axiosPrivate.post('/forum/post/list_post_by_ids',params)
-                    .then(res => {
-                        console.log('cc', res.data.data)
-                        setCount(res.data.data)
-                    })
-                    .catch(e => console.error(e))
-                        }
-                    })
+
+    const handleClose = () => setOpen(false)
+    const handleOpen = () => setOpen(true)
+
+    const handleSeeAll = () => 
+        axiosPrivate.post('/forum/post/see_all')
+            .then(res => location.reload())
             .catch(e => console.error(e))
 
-    }, [])
     return (
-        count?.length > 0 ?
-            <MKBox component="section">
-                <Container>
-                    <br />
-                    <Grid container spacing={3} mb={3}>
-                        <Grid>
-                            <MKTypography component="div" variant="body1" fontWeight="bold" >
-                                You Have New Reply!&nbsp;&nbsp;
-                            </MKTypography>
-                        </Grid>
-                    </Grid>
+        <>
+            <MKButton color='primary' variant='gradient' onClick={handleOpen}>
+                You Have New Reply!
+            </MKButton>
+            <Modal open={open} onClose={handleClose} sx={{ display: 'grid', placeItems: 'center' }}>
+                <Slide direction="down" in={open} timeout={500}>
+                    <MKBox
+                        position="relative"
+                        width="60%"
+                        display="flex"
+                        flexDirection="column"
+                        borderRadius="xl"
+                        bgColor="white"
+                        shadow="xl"
+                    >
+                        <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
+                            <MKTypography variant="h5">Your following posts have new reply</MKTypography>
+                            <CloseIcon fontSize="medium" sx={{ cursor: 'pointer' }} onClick={handleClose} />
+                        </MKBox>
+                        <Divider sx={{ my: 0 }} />
+                        <MKBox component="section" >
+                            <Container>
+                                {
+                                    count.map(p =>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <FiberManualRecordIcon color='error' />
+                                            <Post
+                                                key={p.postId}
+                                                postId={p.postId}
+                                                authId={p.authId}
+                                                authName={p.authName}
+                                                data={p.data}
+                                                isPin={p.isPin}
+                                                lastModifiedTime={p.lastModifiedTime}
+                                                newStatus={true}
+                                            />
+                                        </div>
+                                    )
+                                }
 
-                </Container>
-                {
-                    count.map(p =>
-                        (<div style={{display:'flex', alignItems:'center'}}><FiberManualRecordIcon color='error'/><Post 
-                            key={p.postId}
-                            postId={p.postId}
-                            authId={p.authId}
-                            authName={p.authName}
-                            data={p.data}
-                            isPin={p.isPin}
-                            lastModifiedTime={p.lastModifiedTime}
-                            newStatus={true}
-                        />
-                        </div>
-                        )
-                        // <Post
-                        //     key={p}
-                        //     postId={p}
-                        // />
-                        )
-                }
-            </MKBox>
-            : <></>
+                            </Container>
+                        </MKBox>
+                        <Divider sx={{ my: 0 }} />
+                        <MKBox display="flex" justifyContent="space-between" p={1.5}>
+                            <MKButton variant="gradient" color="light" onClick={handleClose}>
+                                Close
+                            </MKButton>
+                            <MKButton variant="gradient" color="info" size="small" onClick={handleSeeAll}>
+                                Mark all as read
+                            </MKButton>
+                        </MKBox>
+                    </MKBox>
+                </Slide>
+            </Modal>
+
+            {
+
+            }
+        </>
     );
 };
 

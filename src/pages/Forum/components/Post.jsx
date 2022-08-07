@@ -6,7 +6,7 @@
 import React from 'react';
 import CommentIcon from '@mui/icons-material/Comment';
 import {
-  Avatar, Divider, IconButton, ListItem, ListItemAvatar, ListItemText,
+  Avatar, Collapse, Divider, IconButton, ListItem, ListItemAvatar, ListItemText, TextField,
 } from '@mui/material';
 import MKTypography from 'components/MKTypography';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,7 @@ import Reply from '../../MyPosts/components/Reply';
 import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
 import { useParams } from 'react-router-dom';
+import MKAlert from 'components/MKAlert';
 
 const PAGE_SIZE = 20;
 const Post = ({
@@ -41,7 +42,9 @@ const Post = ({
   const [curPost, setCurPost] = useState({});//编辑的post
   const [pageNum, setPageNum] = useState(1);
   const [posts, setPosts] = React.useState([]);
-  const [replyVal, setReplyVal] = useState('Say Something...');
+  const [replyVal, setReplyVal] = useState('');
+  const [errorOpen, setErrorOpen] = useState(false)
+  const [successOpen, setSuccessOpen] = useState('')
 
   const isAuthor = auth.username === authorName 
 
@@ -75,6 +78,12 @@ const Post = ({
   };
   const postReply = () => {
     console.log(curPost, 'curPost')
+    console.log(replyVal)
+    if (replyVal === '') {
+      setErrorOpen(true)
+      return
+    }
+
     let params = new URLSearchParams({
       postId: id,
       data: replyVal,
@@ -90,9 +99,12 @@ const Post = ({
     }
     axiosPrivate.post(`${url}?${params.toString()}`)
       .then((res) => {
-        alert('success')
-        replyCancel()
-        getReplyList()
+        setSuccessOpen(true)
+        setTimeout(() => {
+          setSuccessOpen(false)
+          replyCancel()
+          getReplyList()
+        }, 800);
       })
       .catch((e) => console.error(e));
   }
@@ -103,7 +115,6 @@ const Post = ({
       });
       axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
         .then((res) => {
-          alert('success')
           getReplyList()
         })
         .catch((e) => console.error(e));
@@ -111,6 +122,7 @@ const Post = ({
 
   }
   const handleEdit = (post) => {
+    setErrorOpen(false)
     setCurPost(post)
     setRShow(true)
     setReplyVal(post.data)
@@ -118,7 +130,7 @@ const Post = ({
 
   const replyCancel = () => {
     setRShow(false)
-    setReplyVal('Say Something...')
+    setReplyVal('')
     setCurPost({})
   }
 
@@ -206,9 +218,9 @@ const Post = ({
               <CloseIcon fontSize="medium" sx={{ cursor: 'pointer' }} onClick={toggleModal} />
             </MKBox>
             {/*                         <Divider sx={{ my: 0 }} />    */}
-            <MKBox component="section">
+            <MKBox component="section" p={2}>
               <Container>
-                <Grid container spacing={2} mb={3} justifyContent="space-between">
+                <Grid container  mb={3} justifyContent="space-between">
                   <MKTypography component="div" variant="body1" fontWeight="bold">
                     Main Post
                   </MKTypography>
@@ -219,13 +231,13 @@ const Post = ({
                 </Grid>
                 <br />
                 {/*                                 <Divider sx={{ my: 0 }} />    */}
-                <Grid container spacing={2} mb={3} justifyContent="space-between">
+                <Grid container  mb={3} justifyContent="space-between">
                   <MKTypography component="div" variant="body1" fontWeight="bold">
                     Replies
                   </MKTypography>
                   <div>
                     <MKButton variant="gradient" color="info" size="small" onClick={replyModal}>
-                      Create Reply
+                    Reply
                     </MKButton>
                   </div>
 
@@ -250,7 +262,6 @@ const Post = ({
       </Modal>
       {/* Create Reply Modal */}
       <Modal open={rShow} onClose={replyModal} sx={{ display: 'grid', placeItems: 'center' }}>
-
         <Slide direction="down" in={rShow} timeout={500}>
           <MKBox
             position="relative"
@@ -262,15 +273,20 @@ const Post = ({
             shadow="xl"
           >
             <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-              <MKTypography variant="h5">Create Reply</MKTypography>
+              <MKTypography variant="h5">Reply</MKTypography>
               <CloseIcon fontSize="medium" sx={{ cursor: 'pointer' }} onClick={replyModal} />
             </MKBox>
             <Divider sx={{ my: 0 }} />
-            <MKBox component="form" role="form" p={2} py={12}>
+            <Collapse in={errorOpen} exit={!errorOpen}>
+              <MKAlert color="error" style={{ zIndex: '100' }} >Cannot reply with empty content!</MKAlert>
+            </Collapse>
+            <Collapse in={successOpen} exit={!successOpen}>
+              <MKAlert color="success" style={{ zIndex: '100' }} >Success!</MKAlert>
+            </Collapse>
+            <MKBox component="form" role="form" p={2}>
               <Grid container item xs={12}>
-                <MKInput value={replyVal} onChange={e => setReplyVal(e.target.value)} type="text" label="Reply" multiline fullWidth rows={6} defaultValue="Say Something..." />
+                <TextField  placeholder="Say Something..." onChange={e => { setReplyVal(e.target.value); setErrorOpen(false)}} type="text" label="Reply" multiline fullWidth rows={6} />
               </Grid>
-
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
