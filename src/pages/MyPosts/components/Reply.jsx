@@ -23,7 +23,7 @@ const Reply = (props) => {
             <AlertModal
                 open={alertOpenDelete}
                 handleClose={() => setAlertOpenDelete(false)}
-                handleConfirm={() => {handleDelete(post.id); setAlertOpenDelete(false)}}
+                handleConfirm={() => handleDelete(post.id)}
                 title="Are you sure to delete?"
                 content=""
             />
@@ -36,15 +36,15 @@ const Reply = (props) => {
                 secondaryAction={
                     <>
                         <MKBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}  >
-                            <MKBox p={2}/>
+                            <MKBox p={2} />
                             {
-                                !main &&
+                                replierName == auth.username && !main &&
                                 <MKBox>
                                     <IconButton color='info' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
                                         <EditIcon onClick={() => handleEdit && handleEdit(post)} />
                                     </IconButton>
                                     <IconButton color='error' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
-                                        <DeleteIcon onClick={() => setAlertOpenDelete(true)} />
+                                            <DeleteIcon onClick={() => setAlertOpenDelete(true)} />
                                     </IconButton>
                                 </MKBox>
                             }
