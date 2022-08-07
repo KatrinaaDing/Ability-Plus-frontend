@@ -53,7 +53,6 @@ function Profile({ companyInfo }) {
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
 
-  const [variant, setVariant] = useState("")
 
   const params = useParams();
   const {id} = params;
@@ -94,12 +93,6 @@ function Profile({ companyInfo }) {
             }
           }
           setFollowText(follow ? 'Unfollow': 'Follow')
-          if (followText === "Unfollow") {
-            setVariant("outlined")
-          }
-          if (followText === "Follow") {
-            setVariant("gradient")
-          }
         })
         .catch(e => {
           console.error(e)
@@ -115,14 +108,12 @@ function Profile({ companyInfo }) {
       await axiosPrivate.post(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Unfollow')
-          setVariant("outlined")
         })
         .catch(e => console.error(e))
     } else {
       await axiosPrivate.delete(`/student_following/${companyId}`)
         .then(res => {
           setFollowText('Follow')
-          setVariant("gradient")
         })
         .then(e => console.error(e))
     }
@@ -142,7 +133,7 @@ function Profile({ companyInfo }) {
                   {companyName}
                 </MKTypography>
                 {!auth.isCompany && 
-                  <MKButton variant={variant} color="error" size="small" onClick={ handleFollow}>
+                  <MKButton variant={followText === 'Follow' ? 'outlined' : 'contained'} color="error" size="small" onClick={ handleFollow}>
                   { followText }
                 </MKButton> 
                 }

@@ -31,6 +31,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
     const [hasMore, setHasMore] = useState(false);
     const [replyVal, setReplyVal] = useState('');
     const [curPost, setCurPost] = useState({});//编辑的post
+    const [sAlertStr, setSAlertStr] = useState("");
 
     const [errorOpen, setErrorOpen] = useState(false)
     const [successOpen, setSuccessOpen] = useState('')
@@ -66,6 +67,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
     const [rShow, setRShow] = useState(false)
     const replyModal = () => {
         setRShow(!rShow);
+        setReplyVal('')
     }
     const postReply = () => {
         console.log(curPost, 'curPost')
@@ -101,16 +103,18 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
             .catch((e) => console.error(e));
     }
     const handleDelete = (replyId) => {
-        if (confirm("Do you really want to delete?")) {
             const params = new URLSearchParams({
                 replyId,
             });
             axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
                 .then((res) => {
+                    setSAlertStr("Success!")
+                    setTimeout(() => {
+                        setSAlertStr("")
+                    }, 1000);
                     getReplyList()
                 })
                 .catch((e) => console.error(e));
-        }
 
     }
     const handleEdit = (post) => {
@@ -163,6 +167,9 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                         bgColor="white"
                         shadow="xl"
                     >
+                        <Collapse in={sAlertStr != ""}>
+                            <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
+                        </Collapse>
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                             <MKTypography variant="h5">Post Detail</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={toggleModal} />
@@ -232,7 +239,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                         </Collapse>
                         <MKBox component="form" role="form" p={2}>
                             <Grid container item xs={12}>
-                                <TextField placeholder="Say something..." onChange={e => {setReplyVal(e.target.value); setErrorOpen(false)}} type="text" label="Reply" multiline fullWidth rows={6} />
+                                <TextField defaultValue={replyVal} placeholder="Say something..." onChange={e => {setReplyVal(e.target.value); setErrorOpen(false)}} type="text" label="Reply" multiline fullWidth rows={6} />
                             </Grid>
                         </MKBox>
                         <Divider sx={{ my: 0 }} />

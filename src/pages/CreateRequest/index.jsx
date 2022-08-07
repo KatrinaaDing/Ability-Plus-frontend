@@ -251,7 +251,6 @@ const CreateRequest = () => {
         }
     }
 
-    // confirm modal TODO: allow stay on page when editing
     const handleSaveDraftAction = () => {
         if (isEditing)
             setAlertOpenDraft(false)

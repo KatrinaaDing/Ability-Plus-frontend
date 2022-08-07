@@ -103,6 +103,9 @@ function Profile() {
           } else {
             setCEmail(JSON.parse(res.data.data.extraData).email)
           }
+          if(!auth.isCompany && res.data.data.account){
+            setCEmail(res.data.data.account)
+          }
           if (JSON.parse(res.data.data.extraData).des === null || JSON.parse(res.data.data.extraData).des == '') {
             setCDes("Please introduce yourself");
             setDes("Please introduce yourself");
@@ -132,7 +135,8 @@ function Profile() {
         "age": age.age == '' ? '' : age.age || cAge,
         "email": userEmail.userEmail == '' ? '' : userEmail.userEmail || cEmail,
       },
-      "userName": userName.userName || auth.username
+      "userName": userName.userName || auth.username,
+/*       "account": account.account */
     }
     /*     console.log(body)
         console.log(JSON.stringify(body))

@@ -223,7 +223,6 @@ const CreateProposal = () => {
         }
     }
 
-    // confirmation modals TODO: allow stay on page if is editing
     const handleSaveDraftAction = () => {
         if (isEditing)
             setAlertOpenDraft(false)
