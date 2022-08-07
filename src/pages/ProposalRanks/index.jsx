@@ -15,10 +15,7 @@ import DateSearchFilter from 'glhfComponents/DateSearchFilter';
 const ProposalRanks = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id: projectId } = useParams();
-    const { auth } = useAuth();
 
-    const [requestId, setRequestId] = useState(0);
-    const [statusCode, setStatusCode] = useState(0);
     const [proposals, setProposals] = useState([])
     
     // proposal and request state

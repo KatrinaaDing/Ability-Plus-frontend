@@ -1,7 +1,8 @@
 export const categories = [
     'Frontend Develop',
-    'Management',
     'Backend Develop',
+    'Full Stack',
+    'Management',
     'Deployment/Infrastructure',
     'Algorithm',
     'Marketing',

@@ -97,7 +97,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                             variant="caption"
                             fontWeight="regular"
                             lineHeight={1}
-                                color={!color || color === "transparent" || color === "light" ? "text" : "white"}
+                            color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                             sx={{ display: "flex", alignItems: "center" }}
                         >
                             <Icon>schedule</Icon>&nbsp;
@@ -122,17 +122,17 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
                     {
-                        data.comment && data.comment !== null &&
-                        <CardListItem 
+                        data.comment != null &&
+                        <CardListItem
                             title='My Comment' v
                             value={data.comment.length === 0
                                 ? "No comment."
                                 : data.comment.length > 45
                                     ? data.comment.split(' ').slice(0, 7).join(' ') + '...'
-                                    : data.comment} 
-                            link={null} 
-                            color={color} 
-                            />
+                                    : data.comment}
+                            link={null}
+                            color={color}
+                        />
                     }
                 </List>
                 <MKBox sx={{
@@ -140,20 +140,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     flexDirection: 'row',
                     justifyContent: 'flex-between',
                     width: '-webkit-fill-available'
-
                 }}>
-                {
-                    data.rating != null &&
-                    <Rating
-                        name="rating"
-                        defaultValue={data.rating/2}
-                        max={5}
-                        precision={0.5}
-                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                        size="medium"
-                        readOnly
-                    />
-                }
                     <MKBox sx={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -161,10 +148,23 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                         width: '-webkit-fill-available'
                     }}>
                         {
+                            data.rating != null &&
+                            <Rating
+                                name="rating"
+                                defaultValue={data.rating / 2}
+                                max={5}
+                                precision={0.5}
+                                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                size="medium"
+                                readOnly
+                            />
+                        }
+
+                        {
                             (page.startsWith('popular') ||
                                 page.startsWith('student-info') ||
                                 (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
-                            <MKBox display='flex' flexDirection='row'  sx={{ mt: 'auto', mb: 'auto' }}>
+                            <MKBox display='flex' flexDirection='row' sx={{ mt: 'auto', mb: 'auto' }}>
                                 <LikeIcon number={data.likes} direction='row' />
                             </MKBox>
                         }

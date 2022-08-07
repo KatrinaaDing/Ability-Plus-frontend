@@ -24,27 +24,25 @@ const PostsSection = ({ posts, reqCreator }) => {
             "postId": 0
         }]
     */
-    
+
     return (
         <List sx={{ width: '95%' }}>
             {
-                posts.length === 0
-                    ? <MKTypography variant='body1' textAlign='center'>No post in this forum.</MKTypography>
-                    : posts.map(p =>
-                        <Post           // TODO feel free to change
-                            key={p.postId}
-                            isProjectOwner={reqCreator === p.authName}
-                            id={p.postId}
-                            authorId={p.authId}
-                            authorName={p.authName}
-                            content={p.data}
-                            postDate={p.lastModifiedTime}
-                            numReply={p.numReply}
-                            isPin={p.isPin}
-                        />
-                    )
-            }
+                posts.map(p =>
+                    <Post           // TODO feel free to change
+                        key={p.postId}
+                        isProjectOwner={reqCreator === p.authName}
+                        id={p.postId}
+                        authorId={p.authId}
+                        authorName={p.authName}
+                        content={p.data}
+                        postDate={p.lastModifiedTime}
+                        numReply={p.numReply}
+                        isPin={p.isPin}
+                    />
+                )
 
+            }
         </List>
     );
 };

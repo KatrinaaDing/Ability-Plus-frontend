@@ -13,6 +13,7 @@ import CreateProjectBtn from "./components/CreateProjectBtn";
 
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
+import { statusBank } from "utils/getStatus";
 
 const PAGE_SIZE = 18
 
