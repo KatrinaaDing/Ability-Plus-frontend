@@ -62,9 +62,9 @@ const PreciousReply = () => {
                 {
                     posts.length === 0 
                     ? <MKTypography variant='body1'>You don't have post</MKTypography>
-                    : posts.map(p =>
+                    : posts.map((p,idx) =>
                         <Post 
-                            key={p.postId}
+                            key={idx}
                             postId={p.postId}
                             authId={p.authId}
                             authName={p.authName}

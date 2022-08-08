@@ -43,7 +43,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
                 color='info'
                 onClick={() => setOpen(true)}
             >
-                View Request Detail
+                View Challenge Detail
             </MKButton>
             {
                 reqDetail !== undefined &&

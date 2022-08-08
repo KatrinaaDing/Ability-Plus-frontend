@@ -45,7 +45,7 @@ const CompanyList = () => {
                             key={idx}
                             onClick={() => window.open(`/company-info/${c.id}`)}
                             fullWidth
-                            color='white'
+                            color='dark'
                             variant=''
                             sx={{ my: 1 }}
                         >
@@ -55,7 +55,7 @@ const CompanyList = () => {
                                 </ListItemAvatar>
                                 <ListItemText 
                                     primary={c.fullName}
-                                    secondary={`Released ${c.totalProjectNum} Projects`}
+                                    secondary={`Released ${c.totalProjectNum} Challenges`}
                                 />
                             </ListItem>
                         </MKButton>

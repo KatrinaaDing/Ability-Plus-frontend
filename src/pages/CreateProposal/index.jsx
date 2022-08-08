@@ -223,15 +223,21 @@ const CreateProposal = () => {
         }
     }
 
-    // confirmation modals TODO: allow stay on page if is editing
+    const handleSaveDraftAction = () => {
+        if (isEditing)
+            setAlertOpenDraft(false)
+        else
+            navigate(`/my-proposals`)
+    }
+    
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
             handleClose={() => setAlertOpenDraft(false)}
-            handleConfirm={() => navigate(`/my-proposals`)}
+            handleConfirm={handleSaveDraftAction}
             title="Successfully Saved"
             content="Your proposal has been saved to draft!"
-            disableClose={true}
+            disableClose={isEditing ? false : true}
         />
     
     const SubmitConfirm = () =>

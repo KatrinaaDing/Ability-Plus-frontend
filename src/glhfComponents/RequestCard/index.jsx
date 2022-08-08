@@ -63,7 +63,7 @@ const RequestCard = ({ data, openDetail, color}) => {
         </MKButton>
 
     return (
-        <Grid item xs={12} md={6} lg={6} xl={4} >
+        <Grid item xs={12} md={6} lg={6} xl={4} xxl={3} >
             <StatusBadge 
                 type='request' 
                 statusLabel={data.status} 
@@ -115,15 +115,15 @@ const RequestCard = ({ data, openDetail, color}) => {
                     color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                     sx={{
                         height: 
-                            page.indexOf('info') >= 0
-                                ? '70px'
+                            page.indexOf('info') >= 0 
+                                ? 'auto'
                                 : { xl: '170px', 'lg': '100px', 'md': '100px', 'xs': '100px' }
                         ,
                         fontWeight: '500',
                         pt: 3
                     }}
                 >
-                    &quot; {data.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 140)}... &quot;
+                    &quot; {data.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 135)}... &quot;
                 </MKTypography>
                 <List>
                     {(data.topic || data.area) && <CardListItem title='Category' value={data.topic ?? data.area} link={null} color={color} />}

@@ -15,6 +15,7 @@ import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
 import CardCounters from 'glhfComponents/CardCounter';
+import MKTypography from 'components/MKTypography';
 
 const PopularProposals = () => {
     //hooks
@@ -35,7 +36,7 @@ const PopularProposals = () => {
 
     // search bar states
     const [searchKey, setSearchKey] = useState('');
-    const [ascending, setAscending] = useState(true);
+    const [ascending, setAscending] = useState(false);
     const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(true);
 
     // pagination states
@@ -140,8 +141,7 @@ const PopularProposals = () => {
 
     return (
         <BasicPageLayout title='Popular Proposals'>
-            <CardCounters total={total} status='approved' type='proposal' />
-
+            <MKTypography variant='body'>All of the approved proposals are listed here. Feel free to browse those brilliant ideas!</MKTypography>
             {
                 // render proposal detail when it's fetched
                 detailContent &&
@@ -188,10 +188,9 @@ const PopularProposals = () => {
                 handleClose={() => setAlertOpen(false)}
                 title="Find an interesting proposal?"
                 content="Please login to view proposal detail :)"
-                disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
             />
-            <Box sx={{ flexGrow: 1 }}>
+            <Box >
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={handleDate} handleSearch={handleSearch}></LikeDateSearchFilter>
                 <EndlessScroll
                     dataLength={popularProps.length}

@@ -97,7 +97,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                             variant="caption"
                             fontWeight="regular"
                             lineHeight={1}
-                                color={!color || color === "transparent" || color === "light" ? "text" : "white"}
+                            color={!color || color === "transparent" || color === "light" ? "text" : "white"}
                             sx={{ display: "flex", alignItems: "center" }}
                         >
                             <Icon>schedule</Icon>&nbsp;
@@ -113,77 +113,62 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                     sx={{
                         height: '100px',
                         fontWeight: '500'
-
                     }}
                 >
                     &quot; {data.description} &quot;
                 </MKTypography>
                 <List>
-                    {data.projectName && <CardListItem title='Project' value={data.projectName} link={null} color={color} />}
+                    {data.projectName && <CardListItem title='Challenge' value={data.projectName} link={null} color={color} />}
                     {data.topic && <CardListItem title='Category' value={data.topic} link={null} color={color} />}
                     {data.authorName && <CardListItem title='Posted by' value={data.authorName} link={`/student-info/${data.authorId}`} color={color} />}
                     {
-                        data.comment && data.comment !== null &&
-                        <CardListItem 
+                        data.comment != null &&
+                        <CardListItem
                             title='My Comment' v
                             value={data.comment.length === 0
                                 ? "No comment."
                                 : data.comment.length > 45
                                     ? data.comment.split(' ').slice(0, 7).join(' ') + '...'
-                                    : data.comment} 
-                            link={null} 
-                            color={color} 
-                            />
+                                    : data.comment}
+                            link={null}
+                            color={color}
+                        />
                     }
                 </List>
-
-                {/* {
-                    data.comment &&
-                    <MKTypography variant='subtitle2' pl={4}>
-                        {data.comment}
-                    </MKTypography>
-                } */}
-                
-
                 <MKBox sx={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-between',
+                    flexDirection: 'row-reverse',
+                    justifyContent: 'space-between',
                     width: '-webkit-fill-available'
-
                 }}>
-                {
-                    data.rating != null &&
-                    <Rating
-                        name="rating"
-                        defaultValue={data.rating/2}
-                        max={5}
-                        precision={0.5}
-                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                        size="medium"
-                        readOnly
-                    />
-                }
-                    <MKBox sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        width: '-webkit-fill-available'
-                    }}>
-                        {
-                            (page.startsWith('popular') ||
-                                page.startsWith('student-info') ||
-                                (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
-                            <MKBox display='flex' flexDirection='row' px={3} sx={{ mt: 'auto', mb: 'auto' }}>
-                                <LikeIcon number={data.likes} direction='row' />
-                            </MKBox>
-                        }
-                        {
-                            secondary !== undefined
-                                ? secondary
-                                : <MKButton variant="outlined" color="info" size="small" onClick={openDetail}>View Details</MKButton>
-                        }
-                    </MKBox>
+                    {
+                        secondary !== undefined
+                            ? secondary
+                            : <MKButton variant="outlined" color="info" size="small" onClick={openDetail}>View Details</MKButton>
+                    }
+                    
+                    {
+                        data.rating != null &&
+                        <Rating
+                            name="rating"
+                            defaultValue={data.rating / 2}
+                            max={5}
+                            precision={0.5}
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                            size="medium"
+                            readOnly
+                        />
+                    }
+
+                    {
+                        (page.startsWith('popular') ||
+                            page.startsWith('student-info') ||
+                            (page.startsWith('my-proposals') && data.status == statusBank.proposal.approved.label)) &&
+                        <MKBox display='flex' flexDirection='row' sx={{ mt: 'auto', mb: 'auto' }}>
+                            <LikeIcon number={data.likes} direction='row' />
+                        </MKBox>
+                    }
+                        
                 </MKBox>
 
             </MKBox>

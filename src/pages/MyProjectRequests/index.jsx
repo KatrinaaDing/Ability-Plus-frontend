@@ -13,6 +13,7 @@ import CreateProjectBtn from "./components/CreateProjectBtn";
 
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
+import { statusBank } from "utils/getStatus";
 
 const PAGE_SIZE = 18
 
@@ -114,7 +115,7 @@ const MyProjectRequests = () => {
         if (confirm("Do you really want to delete the project request?")) {
             await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
                 .then(res => {
-                    alert(`Project has been deleted`);
+                    alert(`Challenge has been deleted`);
                     setReqOpen(false)
                     location.reload();
                 })
@@ -123,7 +124,9 @@ const MyProjectRequests = () => {
     }
 
     return (
-        <BasicPageLayout title="My Project Requests" secondaryContent={<CreateProjectBtn />}>
+        <BasicPageLayout title="My Challenges" secondaryContent={<CreateProjectBtn />}>
+            <MKTypography variant='body'>You can find all of your released industry challenges on this page.</MKTypography>
+
             {
                 reqOpen &&
                 <RequestDescriptionModal
@@ -173,20 +176,16 @@ const MyProjectRequests = () => {
             >
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                     {
-                        reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                No Project Request match your criteria
-                            </MKTypography>
-                            : reqs.map(r =>
-                                <RequestCard
-                                    key={r.id}
-                                    data={{
-                                        ...r,
-                                        topic: r.area,
-                                    }}
-                                    openDetail={() => getProjectDetail(r.id)}
-                                />
-                            )
+                        reqs.map(r =>
+                            <RequestCard
+                                key={r.id}
+                                data={{
+                                    ...r,
+                                    topic: r.area,
+                                }}
+                                openDetail={() => getProjectDetail(r.id)}
+                            />
+                        )
                     }
                 </Grid>
             </EndlessScroll>

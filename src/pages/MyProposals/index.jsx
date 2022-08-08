@@ -13,6 +13,7 @@ import LikeButton from "glhfComponents/LikeButton";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
+import MKTypography from "components/MKTypography";
 
 const PAGE_SIZE = 18
 
@@ -137,6 +138,8 @@ const MyProposals = () => {
 
     return (
         <BasicPageLayout title="My Proposals">
+            <MKTypography variant='body'>You can find all of your proposals on this page.</MKTypography>
+
             {
                 propDetail &&
                 <ProposalDescriptionModal

@@ -363,7 +363,7 @@ function SignUpBasic() {
                     <>
                       <MKBox sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
                         <MKTypography variant='h5' sx={{ px: 4, pb: 5, m: 'auto' }}>
-                          Want to post a project request?
+                          Want to post an industry challenge?
                         </MKTypography>
                         <MKTypography variant='body' sx={{ p: 3, m: 'auto' }}>
                           Contact us to get a new account today!

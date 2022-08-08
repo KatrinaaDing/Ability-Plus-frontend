@@ -147,8 +147,8 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                         onChange={(e) => setWhatOrder((e.target.value))}
                         style={{backgroundColor:'white'}}
                     >
-                        <MenuItem value={'SolutionDue'}>{page.startsWith('my-proposals') ? "Request's ": ''}Solution Deadline</MenuItem>
-                        <MenuItem value={'ProposalDue'}>{page.startsWith('my-proposals') ? "Request's " : ''}Proposal Deadline</MenuItem>
+                        <MenuItem value={'SolutionDue'}>{page.startsWith('my-proposals') ? "Challenge's ": ''}Solution Deadline</MenuItem>
+                        <MenuItem value={'ProposalDue'}>{page.startsWith('my-proposals') ? "Challenge's " : ''}Proposal Deadline</MenuItem>
                         <MenuItem value={'LastModifiedTime'}>Last Modified Time</MenuItem>
                     </Select>
                 </FormControl>
@@ -163,12 +163,12 @@ const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, 
                     {
                         ascending
                             ? <>
-                                Descending Order
-                                <KeyboardArrowDownIcon />
+                                Ascending Order
+                                <KeyboardArrowUpIcon />
                             </>
                             : <>
-                                Ascednding Order
-                                <KeyboardArrowUpIcon />
+                                Descending Order
+                                <KeyboardArrowDownIcon />
                             </>
                     }
                 </MKButton>

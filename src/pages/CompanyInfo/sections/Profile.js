@@ -53,6 +53,7 @@ function Profile({ companyInfo }) {
   const [followText, setFollowText] = useState('Follow');
   const [companyId, setCompanyId] = useState(0);
 
+
   const params = useParams();
   const {id} = params;
   const [email, setEmail] = useState("")
@@ -65,11 +66,12 @@ function Profile({ companyInfo }) {
     const getProfile = async() =>
       await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
         .then(res => {
-          if (res.data.data.extraData)
-            setEmail(JSON.parse(res.data.data.extraData).email)
+          // if (res.data.data.extraData)
+          //   setEmail(JSON.parse(res.data.data.extraData).email)
             setDes(JSON.parse(res.data.data.extraData).des)
           setCompanyName(res.data.data.fullName)
-          setEmail(res.data.data.account)
+          // setEmail(res.data.data.account)
+          setEmail(JSON.parse(res.data.data.extraData)?.email || res.data.data.account || '')
         })
         .catch(e => console.error(e))
 
@@ -132,7 +134,7 @@ function Profile({ companyInfo }) {
                   {companyName}
                 </MKTypography>
                 {!auth.isCompany && 
-                  <MKButton variant="outlined" color="error" size="small" onClick={ handleFollow}>
+                  <MKButton variant={followText === 'Follow' ? 'outlined' : 'contained'} color="error" size="small" onClick={ handleFollow}>
                   { followText }
                 </MKButton> 
                 }
@@ -143,7 +145,7 @@ function Profile({ companyInfo }) {
                     Contact Email&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {email}&nbsp;&nbsp;&nbsp;
+                  {email === '' ? 'This company has not added the contact email yet': email}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
                 </Grid>
               </Grid>
@@ -152,7 +154,7 @@ function Profile({ companyInfo }) {
                     Description&nbsp;&nbsp;
                   </MKTypography>
                   <MKTypography component="span" variant="body2" color="text">
-                    {des}&nbsp;&nbsp;&nbsp;
+                    {des === '' ? 'This company has not added the description yet': des}&nbsp;&nbsp;&nbsp;
                   </MKTypography>
               </Grid>
             </Grid>

@@ -81,7 +81,7 @@ const companyRoutes = (username) => [
   },
  
   {
-    name: "My Project Challenges",
+    name: "My Challenges",
     route: "/my-project-requests",
     icon: <DashboardIcon />,
     component: <MyProjectRequests />,

@@ -251,15 +251,20 @@ const CreateRequest = () => {
         }
     }
 
-    // confirm modal TODO: allow stay on page when editing
+    const handleSaveDraftAction = () => {
+        if (isEditing)
+            setAlertOpenDraft(false)
+        else
+            navigate(`/my-project-requests`)
+    }
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
             handleClose={() => setAlertOpenDraft(false)}
-            handleConfirm={() => navigate('/my-project-requests')}
+            handleConfirm={handleSaveDraftAction}
             title="Successfully Saved"
             content="Your challenge has been saved to draft!"
-            disableClose={true}
+            disableClose={isEditing ? false : true}
         />
 
     const SubmitConfirm = () =>
@@ -268,7 +273,7 @@ const CreateRequest = () => {
             handleClose={() => setAlertOpenSubmit(false)}
             handleConfirm={() => navigate('/my-project-requests')}
             title="Your challenge has been publised!"
-            content="You'll be redirect to My Project Challenges page."
+            content="You'll be redirect to My Industry Challenges page."
             disableClose={true}
         />
     
@@ -282,7 +287,7 @@ const CreateRequest = () => {
         />
 
     return (
-        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Project Challenge`}>
+        <BasicPageLayout title={`${isEditing ? 'Edit' : 'Create'} Industry Challenge`}>
             <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />
