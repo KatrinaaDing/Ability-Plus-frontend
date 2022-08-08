@@ -62,35 +62,6 @@ const Posts = () => {
     setWhatOrder(order);
   }
 
-  /*
-  Name	Description
-creatorId *
-string
-(query)	
-id of proposal creator
-isAscendingOrder *
-()	
-required order to sort
-isAscendingOrderTime *
-boolean
-(query)	
-isAscendingOrderTime
-pageNo *
-string
-(query)	
-pageNo
-pageSize *
-string
-(query)	
-pageSize
-searchKey *
-string
-(query)	
-the search key
-status *
-string
-(query)
-  */
   /**
  * Fetching a list of request card
  * @param {integer} pageNo page number to fetch

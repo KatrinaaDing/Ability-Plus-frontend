@@ -22,6 +22,9 @@ import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import LikeButton from "glhfComponents/LikeButton";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import EndlessScroll from "glhfComponents/EndlessScroll";
+import DateSearchFilter from 'glhfComponents/DateSearchFilter';
+import CardCounters from "glhfComponents/CardCounter";
+
 
 const PAGE_SIZE = 30
 
@@ -42,7 +45,17 @@ const Posts = () => {
   const [numPage, setNumPage] = React.useState(1);
   const [hasMore, setHasMore] = React.useState(false);
   const [total, setTotal] = React.useState(0);
+  //filter states
+  const [searchKey, setSearchKey] = React.useState('')
+  const [ascending, setAscending] = React.useState(false);
 
+  const handleDate = (ascending) => {
+    setAscending(ascending)
+  }
+  const handleSearch = (key) => {
+    setSearchKey(key);
+  }
+  
   /**
 * Fetching a list of request card
 * @param {integer} pageNo page number to fetch
@@ -51,14 +64,19 @@ const Posts = () => {
   const fetchData = (pageNo, newList) => {
     const params = new URLSearchParams({
       creatorId: id,
+      isAscendingOrderLastModifiedTime: ascending,
+      searchKey: searchKey,
       pageNo: 1,
       pageSize: 30
     })
-    axiosPrivate.get('/proposal/list_student_profile_proposals', {
+    axiosPrivate.get('/proposal/list_student_proposal', {
         params: params
       })
         .then(res => {
-          setProps([...props].concat(res.data.data.records))
+          if (newList)
+            setProps(res.data.data.records)
+          else
+            setProps([...props].concat(res.data.data.records))
           if (pageNo * PAGE_SIZE >= res.data.data.total)
             setHasMore(false)
           else
@@ -70,9 +88,8 @@ const Posts = () => {
   }
 
   React.useEffect(() => {
-   
     fetchData(1, true)
-  }, [])
+  }, [searchKey, ascending])
 
   const handleOpenDetail = async (id, projectName) => {
     // if no login info, navigate to login
@@ -168,12 +185,13 @@ const Posts = () => {
             Past Proposals
           </MKTypography>
         </Grid>
+        <CardCounters status='approved' total={total} type='proposal'/>
+        <DateSearchFilter handleDate={handleDate} handleSearch={handleSearch}></DateSearchFilter>
         <EndlessScroll
           dataLength={props.length}
           next={() => fetchData(numPage + 1, false)}
           hasMore={hasMore}
         >
-
         <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
           {
             props.map(p =>
@@ -197,7 +215,6 @@ const Posts = () => {
           }
         </Grid>
         </EndlessScroll>
-
       </Container>
     </MKBox>
   );

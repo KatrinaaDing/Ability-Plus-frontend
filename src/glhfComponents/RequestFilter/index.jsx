@@ -97,7 +97,7 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
       : [...Array(5).keys()]
 
   return (
-    <Grid container spacing={2} sx={{ mt: 0.5, mb: 3, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+    <Grid container spacing={2} sx={{ mt: 0.5, mb: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
       <FilterItem title="Status">
         <FormControl sx={{ width: '100%' }}>
           <Select

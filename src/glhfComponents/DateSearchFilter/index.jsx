@@ -76,7 +76,7 @@ const StatusDateDueSearchFilter = ({ handleDate, handleSearch}) => {
         handleDate(ascending);
     }, [ascending])
     return (
-        <Grid container spacing={2} sx={{ mb: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+        <Grid container spacing={2} sx={{ mb: 6, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
             <FilterItem title="Order by">
                 <MKButton sx={{ height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%'}} onClick={() => setAscending(!ascending)}>
                     Submission Date{' '}
