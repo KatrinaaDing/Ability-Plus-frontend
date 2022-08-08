@@ -28,8 +28,6 @@ import Reply from '../../MyPosts/components/Reply';
 import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
 import { useParams } from 'react-router-dom';
-import Collapse from "@mui/material/Collapse";
-import MKAlert from "components/MKAlert";
 
 const PAGE_SIZE = 20;
 const Post = ({
@@ -44,7 +42,6 @@ const Post = ({
   const [pageNum, setPageNum] = useState(1);
   const [posts, setPosts] = React.useState([]);
   const [replyVal, setReplyVal] = useState('Say Something');
-  const [sAlertStr, setSAlertStr] = useState("");
 
   const toggleModal = () => {
     setShow(!show);
@@ -91,28 +88,24 @@ const Post = ({
       }
       axiosPrivate.post(`${url}?${params.toString()}`)
         .then((res) => {
-          setSAlertStr("Success!")
-          setTimeout(() => {
-            setSAlertStr("")
-          }, 1000);
+            alert('success' )
             replyCancel()
             getReplyList()
         })
         .catch((e) => console.error(e));
  }
  const handleDelete = (replyId) => {
+    if (confirm("Do you really want to delete?")) {
         const params = new URLSearchParams({
             replyId,
           });
           axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
             .then((res) => {
+              alert('success')
               getReplyList()
-              setSAlertStr("Success!")
-              setTimeout(() => {
-                setSAlertStr("")
-              }, 1000);
             })
             .catch((e) => console.error(e));
+    }
     
 }
 const handleEdit = (post) => {
@@ -207,10 +200,6 @@ const handleEdit = (post) => {
             bgColor="white"
             shadow="xl"
           >
-            <Collapse in={sAlertStr != ""}>
-              <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
-            </Collapse>
-            
             <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
               <MKTypography variant="h5">Post Detail</MKTypography>
               <CloseIcon fontSize="medium" sx={{ cursor: 'pointer' }} onClick={toggleModal} />

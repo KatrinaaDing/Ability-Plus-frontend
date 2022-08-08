@@ -15,8 +15,6 @@ import useAuth from "auth/useAuth";
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
 import { useParams } from 'react-router-dom';
-import Collapse from "@mui/material/Collapse";
-import MKAlert from "components/MKAlert";
 
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import Reply from "./Reply";
@@ -33,8 +31,6 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime, projectI
   const [hasMore, setHasMore] = useState(false);
   const [replyVal, setReplyVal] = useState('Say Something...');
   const [curPost, setCurPost] = useState({});//编辑的post
-  const [sAlertStr, setSAlertStr] = useState("");
-
   const getReplyList = useCallback(() => {
     const params = new URLSearchParams({
       pageNo: pageNum,
@@ -85,28 +81,24 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime, projectI
         }
         axiosPrivate.post(`${url}?${params.toString()}`)
           .then((res) => {
-            setSAlertStr("Success!")
-            setTimeout(() => {
-                setSAlertStr("")
-            }, 1000);
+            alert('success ' )
               replyCancel()
               getReplyList()
           })
           .catch((e) => console.error(e));
    }
    const handleDelete = (replyId) => {
+      if (confirm("Do you really want to delete?")) {
           const params = new URLSearchParams({
               replyId,
             });
             axiosPrivate.post(`/forum/reply/delete_my_reply?${params.toString()}`)
               .then((res) => {
-                setSAlertStr("Success!")
-                setTimeout(() => {
-                    setSAlertStr("")
-                }, 1000);
+                alert('success')
                 getReplyList()
               })
               .catch((e) => console.error(e));
+      }
       
   }
   const handleEdit = (post) => {
@@ -166,9 +158,6 @@ const Post = ({postId, authId, authName, data, isPin, lastModifiedTime, projectI
                     bgColor="white"
                     shadow="xl"
                     >      
-                    <Collapse in={sAlertStr != ""}>
-                        <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
-                    </Collapse>
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                             <MKTypography variant="h5">Post Detail</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={toggleModal} />

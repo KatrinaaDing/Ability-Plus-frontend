@@ -10,11 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import moment from 'moment';
-import AlertModal from 'glhfComponents/AlertModal';
 
 const Reply = (props) => {
     const { id, isProjectOwner, authorId, authorName, post={}, handleDelete, handleEdit} = props;
-    const [alertOpenDelete, setAlertOpenDelete] = React.useState(false);
     console.log(post,'post')
     const {data, replyTime, replierName, main} = post
     const { auth } = useAuth();
@@ -48,13 +46,6 @@ const Reply = (props) => {
                 }
                 secondary={
                     <>
-                    <AlertModal
-                        open={alertOpenDelete}
-                        handleClose={() => setAlertOpenDelete(false)}
-                        handleConfirm={() => handleDelete(post.id)}
-                        title="Are you sure to cancel your delete?"
-                        content=""
-                    />
                         <Grid container justifyContent="space-between" alignItems="center">
                             <MKTypography variant='body'>
                             {data}
@@ -65,8 +56,8 @@ const Reply = (props) => {
 
                                 </MKTypography>
                                 {
-                                    replierName == auth.username && !main?<><EditIcon onClick={() => handleEdit&&handleEdit(post)}/>
-                                    <DeleteIcon onClick={() => setAlertOpenDelete(true)}/></>:null
+                                    main?null:<><EditIcon onClick={() => handleEdit&&handleEdit(post)}/>
+                                    <DeleteIcon onClick={() => handleDelete&&handleDelete(post.id)}/></>
                                 }
                                 
 
