@@ -62,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-
+// Filter bar: order by date, search by keyword
 const StatusDateDueSearchFilter = ({ handleDate, handleSearch}) => {
     const [ascending, setAscending] = useState(true);
     useEffect(() => {

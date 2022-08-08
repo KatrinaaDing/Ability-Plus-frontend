@@ -15,7 +15,7 @@ import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
 
 const PAGE_SIZE = 18
-
+// Student my proposals page: showing all proposals in different status
 const MyProposals = () => {
     // filter states
     const [status, setStatus] = useState('');

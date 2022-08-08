@@ -16,7 +16,7 @@ import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
 
 const PAGE_SIZE = 18
-
+// Showing Project Requests of the company
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
     const [reqs, setReqs] = useState([]);

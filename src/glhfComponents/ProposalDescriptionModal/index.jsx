@@ -46,6 +46,7 @@ value = {
 }
 
 */
+// Showing the proposal details in a popup modal
 const ProposalDescriptionModal = ({ open, setOpen, value, actionButton, rateItem, commentItem }) => {
     const { auth } = useAuth();
     const theme = useTheme();

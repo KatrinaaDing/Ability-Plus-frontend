@@ -1,3 +1,4 @@
+// Homepage for the Ability Plus
 /*
 =========================================================
 * Material Kit 2 React - v2.0.0

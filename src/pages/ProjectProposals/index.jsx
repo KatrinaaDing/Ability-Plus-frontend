@@ -75,7 +75,7 @@ const columns = [
     },
 ];
 
-
+//Showing all proposals under a project challenge
 const ProjectProposals = () => {
     // hooks
     const classes = useStyles();

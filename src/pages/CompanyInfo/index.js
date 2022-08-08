@@ -32,7 +32,7 @@ import { BASE_URL } from 'api/axios';
 import useAuth from "auth/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import ProfilePageLayout from "glhfComponents/ProfilePageLayout";
-
+// Viewing the company info including personal details and all of its project challenges
 const CompanyInfoPage = () => {
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();

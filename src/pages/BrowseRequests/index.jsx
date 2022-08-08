@@ -1,3 +1,4 @@
+// Contains all project challenges posted by companies
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Grid from "@mui/material/Grid";

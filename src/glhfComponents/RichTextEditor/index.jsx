@@ -6,7 +6,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+// Input Area that allows to customise the text of the project details/proposals details
 const RichTextEditor = ({ placeholder, height, value, setValue }) => {
 
     const handleChange = (html) => {

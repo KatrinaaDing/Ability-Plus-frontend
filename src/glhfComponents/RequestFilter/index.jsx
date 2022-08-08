@@ -59,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
+// Filter: order by submission date, status of the project challenge, search key
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const notPrivatepage = window.location.pathname.slice(1).indexOf('browse') >= 0
   const [status, setStatus] = useState(-1);
