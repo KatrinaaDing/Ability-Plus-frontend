@@ -94,7 +94,7 @@ const MyFollowingPage = () => {
                                     secondary={
                                         <>
                                             Followed At: {new Date(f.followTime*1000).toLocaleString()} <br/>
-                                            Opening Projects: {f.openingProjectNum}
+                                            Opening Challenges: {f.openingProjectNum}
                                         </>
                                     }
                                 />

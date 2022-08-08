@@ -40,7 +40,6 @@ const sampleContent = {
 
 const CreateProposal = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
-    console.log(isEditing)
     // hooks
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
@@ -224,14 +223,21 @@ const CreateProposal = () => {
         }
     }
 
+    const handleSaveDraftAction = () => {
+        if (isEditing)
+            setAlertOpenDraft(false)
+        else
+            navigate(`/my-proposals`)
+    }
+    
     const SaveDraftConfirm = () =>
         <AlertModal
             open={alertOpenDraft}
             handleClose={() => setAlertOpenDraft(false)}
-            handleConfirm={() => navigate(`/my-proposals`)}
+            handleConfirm={handleSaveDraftAction}
             title="Successfully Saved"
             content="Your proposal has been saved to draft!"
-            disableClose={true}
+            disableClose={isEditing ? false : true}
         />
     
     const SubmitConfirm = () =>

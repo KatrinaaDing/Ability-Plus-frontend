@@ -28,6 +28,7 @@ import { statusBank } from 'utils/getStatus';
 import ViewRankingBtn from 'glhfComponents/RequestCard/components/ViewRankingBtn';
 
 /**
+data structure for value
 value = {
     id,
     canEdit: undifined,
@@ -47,7 +48,6 @@ value = {
 }
  */
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
-    const { auth } = useAuth();
     const navigate = useNavigate();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

@@ -17,7 +17,10 @@ import StatusDateDueSearchFilter from 'glhfComponents/StatusDateDueSearchFilter'
 import EditIcon from '@mui/icons-material/Edit';
 import AlertModal from 'glhfComponents/AlertModal';
 import EndlessScroll from 'glhfComponents/EndlessScroll';
+import CardCounters from 'glhfComponents/CardCounter';
+import MKTypography from 'components/MKTypography';
 
+const PAGE_SIZE = 18 
 
 const BrowseRequests = () => {
     // hooks
@@ -35,7 +38,7 @@ const BrowseRequests = () => {
     const [ascending, setAscending] = useState(true);
     const [status, setStatus] = useState('');
     const [searchKey, setSearchKey] = useState('');
-    const [whatOrder, setWhatOrder] = useState('ProposalDue');
+    const [whatOrder, setWhatOrder] = useState('SolutionDue');
     const [numPage, setNumPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
 
@@ -56,7 +59,7 @@ const BrowseRequests = () => {
     const handleWhatOrder = (order) => {
         setWhatOrder(order);
     }
-
+    
     /**
      * Fetching a list of request card
      * @param {integer} pageNo page number to fetch
@@ -67,7 +70,7 @@ const BrowseRequests = () => {
             status: status.toLowerCase(),
             isAscendingOrder: ascending,
             pageNo: pageNo,
-            pageSize: 18,
+            pageSize: PAGE_SIZE,
             whatOrder: whatOrder,
             searchKey: searchKey
         })
@@ -80,7 +83,7 @@ const BrowseRequests = () => {
                 else
                     setCards(res.data.data.records)
 
-                if (pageNo * 18 >= res.data.data.total)
+                if (pageNo * PAGE_SIZE >= res.data.data.total)
                     setHasMore(false)
                 else
                     setHasMore(true)
@@ -134,30 +137,19 @@ const BrowseRequests = () => {
     }
 
     return (
-        <BasicPageLayout title="Browse All Project Requests">
+        <BasicPageLayout title="Browse All Industry Challenges">
+            <MKTypography variant='body'>You can find all released industry challenges on this page.</MKTypography>
+
             <AlertModal
                 open={alertOpen}
                 handleClose={() => setAlertOpen(false)}
-                title="Looking for project challenges?"
+                title="Looking for industry challenges?"
                 content="Please login to browse challenges :)"
                 disableClose={true}
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
             />
-            <MKBox display='flex' flexWrap="wrap">
-                <p>There {total <= 1 ? 'is' : 'are'} {total} request{total > 1 ? 's' : ''} with&nbsp;</p>
-                {
-                    status === ''
-                        ? <p>all status</p>
-                        : (
-                            <>
-                                status
-                                <StatusBadge statusLabel={status} type='request' size='sm' position='normal' />
-                            </>
-                        )
-                }
-            </MKBox>
+            <CardCounters status={status} total={total} type="request" />
             <StatusDateDueSearchFilter handleStatus={handleStatus} handleDate={handleDate} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch} type='request' userType='public'></StatusDateDueSearchFilter>
-            <br />
             {
                 // mount modal only when detail is loaded
                 reqDetail &&
@@ -212,7 +204,7 @@ const BrowseRequests = () => {
                 next={() => fetchData(numPage + 1, false)}
                 hasMore={hasMore}
             >
-                <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+                <Grid container spacing={2} >
                     {renderRequestCards()}
                 </Grid>
             </EndlessScroll>

@@ -3,19 +3,26 @@ import MKButton from 'components/MKButton';
 import React from 'react';
 import Post from '../components/Post';
 
-const PostsSection = ({posts, reqCreator}) => {
+const RepliesSection = ({replies, reqCreator}) => {
     return (
         <List sx={{ width: '95%' }}>
             {
-                posts.map(p => 
-                    <Post           // TODO feel free to change
-                        key={p.postId}
-                        isProjectOwner={reqCreator == p.authId}
-                        place={p.place}
-                        id={p.postId}
-                        authorId={p.authId}
-                        authorName={p.authName}
-                        content={p.data}
+                replies.map(r => 
+                    <Reply           // TODO feel free to change
+                        key={r.data.records.id}
+                        current={r.data.current}
+                        hitCount={r.data.hitCount}
+                        pages={r.data.pages}
+/*                         isProjectOwner={reqCreator == r.data.records.replierId} */
+                        time={r.data.records.replyTime}
+                        id={r.id}
+                        postId={r.data.records.postId}
+                        replierId={r.replierId}
+                        replierName={r.data.records.replierName} //Need a userName from get backend
+                        content={r.data.records.data}
+                        searchCount={r.data.searchCount}
+                        size={r.data.size}
+                        total={r.data.total}
                     />
                 )                                    
             }
@@ -24,4 +31,4 @@ const PostsSection = ({posts, reqCreator}) => {
     );
 };
 
-export default PostsSection;
+export default RepliesSection;

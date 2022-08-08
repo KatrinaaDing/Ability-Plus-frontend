@@ -13,6 +13,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
+import MKTypography from 'components/MKTypography';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -20,17 +21,16 @@ const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
-  width: '100%',
+  width: '-webkit-fill-available',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
+  zIndex: 999,
+  height: '40px',
   position: 'absolute',
   pointerEvents: 'none',
   display: 'flex',
@@ -43,6 +43,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '5px',
   fontSize: '13px',
+  width: '-webkit-fill-available',
   height: '40px',
   border: '1px solid lightgray',
   '& .MuiInputBase-input': {
@@ -50,48 +51,63 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '-webkit-fill-available',
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {
-        width: '20ch',
+        width: '-webkit-fill-available',
       },
     },
   },
 }));
 
+const FilterItem = ({ title, children }) => 
+  <Grid item width='100%' sx={12} md={4}>
+    <MKTypography variant="subtitle2" sx={{ ml: 0.5 }}>{title}</MKTypography>
+    {children}
+  </Grid>
 
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   const [ascending, setAscending] = useState(true);
-  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(true);
+  const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(false);
   useEffect(() => {
     handleDate(ascending)
     handleLike(isAscendingOrderLike)
   }, [ascending, isAscendingOrderLike])
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', border: '3px solid rgb(42,151,236)', borderRadius: '5px' }} >
-      <Box>
-        <p style={{ textAlign: 'center'}}>Sort by Likes</p>
-        <MKButton onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}>
+    <Grid 
+      container 
+      spacing={2}
+      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', mt: 0, mb: 6 }} 
+    >
+      <FilterItem title="Sort by Likes">
+        <MKButton 
+          onClick={() => setIsAscendingOrderLike(!isAscendingOrderLike)} 
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
+          sx={{height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width:'100%'}}
+        >
           Sort By Like{' '}
-          { isAscendingOrderLike && <KeyboardArrowDownIcon>
-          </KeyboardArrowDownIcon>}
-          { !isAscendingOrderLike && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
+          { isAscendingOrderLike && <KeyboardArrowDownIcon />}
+          { !isAscendingOrderLike && <KeyboardArrowUpIcon />}
         </MKButton>
-      </Box>
-      <Box>
-        <p style={{ textAlign: 'center'}}>Sort by Date</p>
-        <MKButton sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}} onClick={() => setAscending(!ascending)} >
+      </FilterItem>
+      <FilterItem title="Sort by Date">
+        <MKButton 
+          onClick={() => setAscending(!ascending)}
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
+          sx={{height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%'}} 
+        >
           Submission Date{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
         </MKButton>
-      </Box>
-      <Box>
-        <p style={{ textAlign: 'center'}}>Search:</p>
-        <Search sx={{margin: '5px', height: '50px'}}>
+      </FilterItem>
+      <FilterItem title="Search">
+        <Search sx={{height: '50px'}}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
@@ -101,8 +117,8 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
             onChange={(e) => handleSearch(e.target.value)}
           />
         </Search>
-      </Box>
-    </Box>
+      </FilterItem>
+    </Grid>
   );
 }
 export default LikeDateSearchFilter;

@@ -58,7 +58,7 @@ const MetaData = ({ data }) => {
                         primary={null}
                         secondary={
                             <>
-                                Project Name: &nbsp;
+                                Challenge Name: &nbsp;
                                 <a
                                     onClick={() => data.openProject()}
                                     style={{

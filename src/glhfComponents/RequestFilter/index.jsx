@@ -13,6 +13,8 @@ import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
 import { getLabel } from 'utils/getStatus';
 import { formatLabel } from 'utils/getStatus';
+import { Grid } from '@mui/material';
+import MKTypography from 'components/MKTypography';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -20,17 +22,16 @@ const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
-  width: '100%',
+  width: '-webkit-fill-available',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
+  zIndex: 999,
+  height: '40px',
   position: 'absolute',
   pointerEvents: 'none',
   display: 'flex',
@@ -43,6 +44,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '5px',
   fontSize: '13px',
+  width: '-webkit-fill-available',
   height: '40px',
   border: '1px solid lightgray',
   '& .MuiInputBase-input': {
@@ -50,15 +52,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '-webkit-fill-available',
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {
-        width: '20ch',
+        width: '-webkit-fill-available',
       },
     },
   },
 }));
+
+const FilterItem = ({ title, children }) =>
+  <Grid item width='100%' sx={12} md={4}>
+    <MKTypography variant="subtitle2" sx={{ ml: 0.5 }}>{title}</MKTypography>
+    {children}
+  </Grid>
+
+
 
 const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
   const notPrivatepage = window.location.pathname.slice(1).indexOf('browse') >= 0
@@ -87,10 +97,9 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
       : [...Array(5).keys()]
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around',  border: '3px solid rgb(42,151,236)', borderRadius: '5px'  }}>
-      <Box sx={{ minWidth: 120 }}>
-        <p style={{ textAlign: 'center'}}>Status:</p>
-        <FormControl sx={{ m: 1, minWidth: 80 }}>
+    <Grid container spacing={2} sx={{ mt: 0.5, mb: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+      <FilterItem title="Status">
+        <FormControl sx={{ width: '100%' }}>
           <Select
             id="Request Status"
             value={status}
@@ -105,19 +114,21 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
               }     
           </Select>
         </FormControl>
-      </Box>
-      <Box>
-        <p style={{ textAlign: 'center'}}>Sort By:</p>
-        <MKButton onClick={() => setAcending(!ascending)}sx={{margin: '8px', height: '40px', border: '1px solid lightgray', fontWeight: 'normal'}}>
-          Crate Time{' '}
+      </FilterItem>
+      <FilterItem title="Sort By">
+        <MKButton 
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
+          onClick={() => setAcending(!ascending)}sx={{height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%'}}
+        >
+          Create Time{' '}
           { ascending && <KeyboardArrowDownIcon>
           </KeyboardArrowDownIcon>}
           { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
         </MKButton>
-      </Box>
-      <Box>
-        <p style={{ textAlign: 'center'}}>Search:</p>
-        <Search sx={{ margin: '6px', height: '50px'}}>
+      </FilterItem>
+      <FilterItem title="Search">
+        <Search sx={{  height: '50px' }}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
@@ -127,8 +138,8 @@ const FilterBar = ({ handleDate, handleStatus, handleSearch }) => {
             onChange={(e) => handleSearch(e.target.value)}
           />
         </Search>
-      </Box>
-    </Box>
+      </FilterItem>
+    </Grid>
   );
 }
 export default FilterBar;

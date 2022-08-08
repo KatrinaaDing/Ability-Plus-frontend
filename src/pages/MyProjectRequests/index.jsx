@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
@@ -8,23 +7,18 @@ import BasicPageLayout from "glhfComponents/BasicPageLayout";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import FilterBar from "glhfComponents/RequestFilter"
 import DeleteIcon from '@mui/icons-material/Delete';
-
-
-import StatusBadge from "glhfComponents/StatusBadge";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
-import { getCode } from "utils/getStatus";
-import { statusBank } from "utils/getStatus";
 import ViewProposalsBtn from "./components/ViewProposalsBtn";
 import CreateProjectBtn from "./components/CreateProjectBtn";
 
-import useAuth from "auth/useAuth";
 import CardCounters from "glhfComponents/CardCounter";
 import EndlessScroll from "glhfComponents/EndlessScroll";
+import { statusBank } from "utils/getStatus";
+
+const PAGE_SIZE = 18
 
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
-    const navigate = useNavigate();
-    const { auth } = useAuth();
     const [reqs, setReqs] = useState([]);
     const [total, setTotal] = useState(0);
 
@@ -51,7 +45,7 @@ const MyProjectRequests = () => {
             status: status === 'all' ? '' : status,
             isAscendingOrder: ascending,
             pageNo: pageNo,
-            pageSize: 18,
+            pageSize: PAGE_SIZE,
             searchKey: searchKey,
         }
         axiosPrivate.get(`/project/list_my_project_request`, {
@@ -63,7 +57,7 @@ const MyProjectRequests = () => {
                 else
                     setReqs([...reqs].concat(res.data.data.records))
 
-                if (pageNo * 18 >= res.data.data.total)
+                if (pageNo * PAGE_SIZE >= res.data.data.total)
                     setHasMore(false)
                 else
                     setHasMore(true)
@@ -121,7 +115,7 @@ const MyProjectRequests = () => {
         if (confirm("Do you really want to delete the project request?")) {
             await axiosPrivate.post(`/project/delete_project?projectId=${id}`)
                 .then(res => {
-                    alert(`Project has been deleted`);
+                    alert(`Challenge has been deleted`);
                     setReqOpen(false)
                     location.reload();
                 })
@@ -130,7 +124,9 @@ const MyProjectRequests = () => {
     }
 
     return (
-        <BasicPageLayout title="My Project Requests" secondaryContent={<CreateProjectBtn />}>
+        <BasicPageLayout title="My Challenges" secondaryContent={<CreateProjectBtn />}>
+            <MKTypography variant='body'>You can find all of your released industry challenges on this page.</MKTypography>
+
             {
                 reqOpen &&
                 <RequestDescriptionModal
@@ -178,27 +174,21 @@ const MyProjectRequests = () => {
                 next={() => fetchData(numPage + 1, false)}
                 hasMore={hasMore}
             >
-
                 <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', marginTop: '30px' }}>
                     {
-                        reqs.length === 0
-                            ? <MKTypography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                No Project Request match your criteria
-                            </MKTypography>
-                            : reqs.map(r =>
-                                <RequestCard
-                                    key={r.id}
-                                    data={{
-                                        ...r,
-                                        topic: r.area,
-                                    }}
-                                    openDetail={() => getProjectDetail(r.id)}
-                                />
-                            )
+                        reqs.map(r =>
+                            <RequestCard
+                                key={r.id}
+                                data={{
+                                    ...r,
+                                    topic: r.area,
+                                }}
+                                openDetail={() => getProjectDetail(r.id)}
+                            />
+                        )
                     }
                 </Grid>
             </EndlessScroll>
-
         </BasicPageLayout>
     );
 }

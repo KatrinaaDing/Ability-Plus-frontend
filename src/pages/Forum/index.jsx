@@ -6,6 +6,7 @@
 import MKBox from 'components/MKBox';
 import MKTypography from 'components/MKTypography';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
+import EndlessScroll from 'glhfComponents/EndlessScroll';
 import ProjectDetailBtn from 'glhfComponents/ProjectDetailBtn';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import React from 'react';
@@ -13,62 +14,42 @@ import { useParams } from 'react-router-dom';
 import CreatePost from './components/CreatePost';
 import PostsSection from './sections/PostsSection';
 
-
-const samplePosts = [
-    {
-        postId: 0,
-        authId: 65,
-        authName: 'Google',
-        data: 'Anoucement: Deadline extend to Sep 2022',
-        postTime: new Date().getTime() / 1000,
-        pin: true,
-        numReply: 5
-    },
-    {
-        postId: 0,
-        authId: 37,
-        authName: 'ZIQI',
-        data: 'I am so confusing!',
-        postTime: new Date().getTime()/1000,
-        pin: false,
-        numReply: 5
-    },
-    {
-        postId: 1,
-        authId: 56,
-        authName: 'Tom Wong',
-        data: 'I am so confusing too!',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 0
-    },
-    {
-        postId: 0,
-        authId: 65,
-        authName: 'Google',
-        data: 'Project detail updated',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 5
-    },
-    {
-        postId: 2,
-        authId: 89,
-        authName: 'Jack Wong',
-        data: 'I am so confusing as well! Sed tempus nisi quis ipsum ullamcorper tincidunt. Maecenas elementum ac mi nec fermentum. Maecenas et scelerisque nunc. Fusce rutrum nunc lacus, eget tristique justo iaculis facilisis. Aenean ornare suscipit quam, in viverra lorem convallis at. Aliquam fringilla maximus sapien, non semper odio tincidunt vitae. Sed semper ante quam, in viverra erat accumsan sit amet. Sed vitae ligula nibh.',
-        postTime: new Date().getTime() / 1000,
-        pin: false,
-        numReply: 4
-    }
-]
+const PAGE_SIZE = 20
 
 const Forum = () => {
     const axiosPrivate = useAxiosPrivate();
     const { projectId: projectId } = useParams();
+
+    // project request states
     const [reqName, setReqName] = React.useState('');
-    const [reqCreator, setReqCreator] = React.useState(-1);
+    const [reqCreator, setReqCreator] = React.useState('');
     const [reqDetailOpen, setReqDetailOpen] = React.useState(false);
-    
+
+    // posts states
+    const [posts, setPosts] = React.useState([])
+    const [pageNum, setPageNum] = React.useState(1)
+    const [hasMore, setHasMore] = React.useState(false);
+
+    // get all posts on load
+    React.useEffect(() => {
+        const getPosts = () => {
+            const params = new URLSearchParams({
+                projectId: projectId,
+                pageNo: pageNum,
+                pageSize: PAGE_SIZE
+            })
+            axiosPrivate.get('/forum/post/list_all_post?' + params.toString())
+                .then(res => {
+                    setPosts([...posts].concat(res.data.data.records))
+                    if (pageNum * PAGE_SIZE >= res.data.data.total)
+                        setHasMore(false)
+                    else
+                        setHasMore(false)
+                })
+                .catch(e => console.error(e))
+        }
+        getPosts()
+    }, [pageNum])
 
     return (
         <BasicPageLayout 
@@ -88,11 +69,17 @@ const Forum = () => {
                 flexDirection='row'
                 justifyContent='space-between'
             >
-                <MKTypography variant='subtitle1'>Project: {reqName}</MKTypography>    
-                <CreatePost />
+                <MKTypography variant='subtitle1'>Challenge: {reqName}</MKTypography>    
+                <CreatePost reqCreator={reqCreator}/>
             </MKBox>
             <MKBox sx={{ pt: 10}}>
-                <PostsSection posts={samplePosts} reqCreator={reqCreator}/>
+                <EndlessScroll
+                    dataLength={posts.length}
+                    next={() => setPageNum(pageNum + 1)}
+                    hasMore={hasMore}
+                >
+                    <PostsSection posts={posts} reqCreator={reqCreator}/>
+                </EndlessScroll>
             </MKBox>        
         </BasicPageLayout>
     );

@@ -1,86 +1,75 @@
 /**
  * Author: Ziqi Ding
- * Created At: 25 Jul 2022
- * Discription: A button and modal for creating new post
+ * Created At: 31 Jul 2022
+ * Discription: A modal for editing post
  */
-import MKButton from 'components/MKButton';
 import React from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import { Collapse, Divider, Grid, Modal, Slide, Switch, TextField } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Collapse, Divider, Grid, IconButton, Modal, Slide, Switch, TextField } from '@mui/material';
 import MKBox from 'components/MKBox';
 import MKTypography from 'components/MKTypography';
 import CloseIcon from "@mui/icons-material/Close";
 import MKInput from 'components/MKInput';
-import useAxiosPrivate from 'hooks/useAxiosPrivate';
-import { useParams } from 'react-router-dom';
+import MKButton from 'components/MKButton';
 import useAuth from 'auth/useAuth';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import MKAlert from 'components/MKAlert';
 
-/**
- * 
- * @param {string} reqCreator: string of request creator's name
- */
-const CreatePost = ({ reqCreator }) => {
-    
+
+const EditModal = ({ postId, content, isPin, isProjectOwner }) => {
     // hooks
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
-    const { projectId: projectId } = useParams();
-    
+
     // states
     const [open, setOpen] = React.useState(false)
-    const [pin, setPin] = React.useState(false)
-    const [error, setError] = React.useState('');
+    const [pin, setPin] = React.useState(isPin)
     const [errorOpen, setErrorOpen] = React.useState(false)
-    const [successOpen, setSuccessOpen] = React.useState('')
-    const isAuthor = auth.username === reqCreator 
+    const [successOpen, setSuccessOpen] = React.useState(false)
 
     // handlers
     const handleClose = () => setOpen(false)
 
     const handlePin = () => setPin(!pin)
-
+    
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e.target.post.value)
-        const createNewPost = () => {     
-            const params = new URLSearchParams({
-                data: e.target.post.value, 
-                projectId: projectId
-            })
-            if (isAuthor)
-                params.append('isPin', e.target.pin.checked)
-            axiosPrivate.post('/forum/post/new_post?' + params.toString())
-                .then(res => {
-                    setSuccessOpen(true)
-                    setTimeout(() => {
-                        setOpen(false)
-                        location.reload()
-                    }, 800);
-                    
-                })
-                .catch(e => console.error(e))
-        }
 
-        if (e.target.post.value === ''){
-            setError("Cannot post with empty content!")
+        if (e.target.post.value === '') {
             setErrorOpen(true)
-        }
-        else
-            createNewPost()
+            return
+        } 
+
+        const params = new URLSearchParams();
+        params.append('data', e.target.post.value)
+        params.append('postId', postId)
+        
+        if (isProjectOwner)
+            params.append('pin', e.target.pin.checked)
+        
+        // append query string after url if using POST
+        axiosPrivate.post('/forum/post/edit_my_post?' + params.toString())
+            .then(res => {
+                setSuccessOpen(true)
+                setTimeout(() => {
+                    setOpen(false)
+                    location.reload()
+                }, 800);
+            })
+            .catch(e => console.error(e))
     }
 
     return (
         <>
-            <MKButton
-                variant="gradient"
-                color="info"
-                size="large"
-                startIcon={<AddIcon />}
+            <IconButton
+                edge="end"
+                aria-label="delete"
+                color='info'
+                sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}
                 onClick={() => setOpen(true)}
             >
-                Post
-            </MKButton>
+                <EditIcon />
+            </IconButton>
             <Modal open={open} onClose={handleClose} sx={{ display: "grid", placeItems: "center" }}>
                 <Slide direction="down" in={open} timeout={500}>
                     <MKBox
@@ -92,25 +81,31 @@ const CreatePost = ({ reqCreator }) => {
                         bgColor="white"
                         shadow="xl"
                     >
-                        
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-                            <MKTypography variant="h5">Create New Post</MKTypography>
+                            <MKTypography variant="h5">Edit Post</MKTypography>
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={handleClose} />
                         </MKBox>
                         <Divider sx={{ my: 0 }} />
                         <Collapse in={errorOpen} exit={!errorOpen}>
-                            <MKAlert color="error" style={{ zIndex: '100' }} >{error}</MKAlert>
+                            <MKAlert color="error" style={{ zIndex: '100' }} >Cannot post with empty content!</MKAlert>
                         </Collapse>
                         <Collapse in={successOpen} exit={!successOpen}>
                             <MKAlert color="success" style={{ zIndex: '100' }} >Success!</MKAlert>
                         </Collapse>
-                        <MKBox component="form" role="form" p={4} onSubmit={handleSubmit}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <TextField label="Say something..." name='post' multiline fullWidth rows={6} onChange={() => setErrorOpen(false)}/>
-                                </Grid>
+                        <MKBox component="form" role="form" p={2} onSubmit={handleSubmit}>
+                                <TextField
+                                    label="Say something..."
+                                    name='post'
+                                    defaultValue={content}
+                                    multiline
+                                    fullWidth
+                                    rows={6}
+                                    sx={{my: 3}}
+                                    onChange={() => setErrorOpen(false)}
+                                />
                                 {
-                                    isAuthor && 
+                                    // only allow pin when author is company
+                                    isProjectOwner &&
                                     <Grid item xs={12} alignItems="center" ml={-1}>
                                         <Switch checked={pin} name='pin' onChange={handlePin} />
                                         <MKTypography
@@ -124,10 +119,8 @@ const CreatePost = ({ reqCreator }) => {
                                             &nbsp;&nbsp;Pin to top
                                         </MKTypography>
                                     </Grid>
-
                                 }
-                            </Grid>
-                            <Grid container item justifyContent="center" xs={12} mt={5}>
+                            <Grid container item justifyContent="center" xs={12} my={2}>
                                 <MKButton type="submit" variant="gradient" color="dark" fullWidth>
                                     Post
                                 </MKButton>
@@ -141,4 +134,4 @@ const CreatePost = ({ reqCreator }) => {
     );
 };
 
-export default CreatePost;
+export default EditModal;

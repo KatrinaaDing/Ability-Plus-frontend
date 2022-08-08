@@ -192,7 +192,7 @@ const ProjectProposals = () => {
                 title: p.title,
                 authorName: p.authorName,
                 oneSentenceDescription: p.oneSentenceDescription,
-                rating: p.rating,
+                rating: p.rating/2,
                 statusLabel: propStatus[p.status].label,
                 status: p.status,
                 note: p.comment,
@@ -368,7 +368,7 @@ const ProjectProposals = () => {
 
     return (
         <BasicPageLayout
-            title={`All Proposals for project "${projectName}"`}
+            title={`All Proposals for challenge "${projectName}"`}
             secondaryContent={
                 projectStatus === statusBank.request.approving.label &&
                 <MKButton
@@ -388,12 +388,12 @@ const ProjectProposals = () => {
                 title="Approve all shortlisted"
                 content="This process cannot be reversed. Do you wish to continue?"
             />
+            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={handleIsPicked} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
             <MKBox
                 sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    py: 3
                 }}
             >
                 <MKTypography variant='subtitle1'>
@@ -411,6 +411,7 @@ const ProjectProposals = () => {
                         )
                 }
             </MKBox>
+
             <MKBox py={2}>
                 <ToggleButtonGroup
                     orientation="horizontal"
@@ -428,8 +429,6 @@ const ProjectProposals = () => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </MKBox>
-            <SelectProposalsFilter handleDate={handleDate} handleIsPicked={handleIsPicked} handleWhatOrder={handleWhatOrder} handleSearch={handleSearch}></SelectProposalsFilter>
-            <br />
             {
                 propDetail &&
                 <ProposalDescriptionModal

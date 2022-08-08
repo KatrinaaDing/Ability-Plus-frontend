@@ -15,10 +15,7 @@ import DateSearchFilter from 'glhfComponents/DateSearchFilter';
 const ProposalRanks = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id: projectId } = useParams();
-    const { auth } = useAuth();
 
-    const [requestId, setRequestId] = useState(0);
-    const [statusCode, setStatusCode] = useState(0);
     const [proposals, setProposals] = useState([])
     
     // proposal and request state
@@ -80,7 +77,7 @@ const ProposalRanks = () => {
 
     return (
         <BasicPageLayout 
-            title={`View Request Ranking for project "${reqName}"`} 
+            title={`View Proposal Ranking for challenge "${reqName}"`} 
             secondaryContent={
                 <ProjectDetailBtn
                     setReqName={setReqName}
@@ -123,7 +120,6 @@ const ProposalRanks = () => {
             }
             <Container>
                 <DateSearchFilter handleDate={handleDate} handleSearch={handleSearch}></DateSearchFilter>
-                <br />  
                 <Box sx={{ flexGrow: 1 }}>
                     <ProposalRank proposals={proposals} openDetail={getPropDetail}/>
                 </Box>              

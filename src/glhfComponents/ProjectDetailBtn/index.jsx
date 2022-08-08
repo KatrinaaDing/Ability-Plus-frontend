@@ -12,6 +12,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
     const axiosPrivate = useAxiosPrivate();
     const [reqDetail, setReqDetail] = React.useState();
 
+    // get the project detail info on load
     React.useEffect(() => {
         const getProjectInfo = async () =>
             await axiosPrivate.get('/project/get_project_info', {
@@ -26,7 +27,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
                     })
                     setReqName(res.data.data.name)
                     if (setReqCreator !== undefined)
-                        setReqCreator(res.data.data.creatorId)
+                        setReqCreator(res.data.data.creatorName)
 
                 })
                 .catch(e => console.error(e))
@@ -42,7 +43,7 @@ const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator 
                 color='info'
                 onClick={() => setOpen(true)}
             >
-                View Request Detail
+                View Challenge Detail
             </MKButton>
             {
                 reqDetail !== undefined &&

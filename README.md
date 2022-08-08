@@ -1,144 +1,155 @@
-# [Material Kit 2 React](http://demos.creative-tim.com/material-kit-react/#/?ref=readme-mkr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/material-kit-react&text=Check%20Material%20kit%20React%20made%20by%20@CreativeTim%20#webdesign%20#kit%20#materialdesign%20#react%20https://www.creative-tim.com/product/material-kit-react)
+# Ability Plus
 
-![version](https://img.shields.io/badge/version-2.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/material-kit-react.svg)](https://github.com/creativetimofficial/material-kit-react/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/material-kit-react.svg)](https://github.com/creativetimofficial/material-kit-react/issues?q=is%3Aissue+is%3Aclosed)
+Ability Plus is a project proposal management tool that not only provides an efficient way for companies to create project requests, gather students’ project ideas and organize their project proposals to reach potential employees but also assists students to effectively deliver their thoughts to companies, enriching their project experience.
 
-![Image](https://s3.amazonaws.com/creativetim_bucket/products/83/original/material-kit-2-react.jpg)
-
-Material Kit 2 React is our newest free MUI Design System based on React. Its amazing design is inspired by Material Design and contains all the components you need for your development. If you’re a developer looking to create good-looking websites, rich with features, and highly customisable, here is your match.
-
-_Fully Coded Elements_
-Material Kit 2 React is built with over 40 frontend individual elements, like buttons, inputs, navbars, alerts or cards, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using MUI styled() API and sx prop. You will save a lot of time going from prototyping to full-functional code because all elements are implemented.
-
-This free MUI & React template is coming with pre-built design blocks, so the development process is seamless,
-switching from our pages to the real website is very easy to be done.
-View all components here. (https://www.creative-tim.com/learning-lab/react/alerts/material-kit/)
-
-_Documentation built by Developers_
-Each element is well presented in very complex documentation.
-You can read more about the documentation here (https://www.creative-tim.com/learning-lab/react/overview/material-kit/).
-
-_Example Pages_
-If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.
-
-View example pages here. (https://demos.creative-tim.com/material-kit-react/#/pages/landing-pages/about-us)
-
-**HELPFUL LINKS**
-
-- View [Github Repository](https://github.com/creativetimofficial/material-kit-react)
-- Check [FAQ Page](https://www.creative-tim.com/faq)
-
-#### Special thanks
-
-During the development of this dashboard, we have used many existing resources from awesome developers. We want to thank them for providing their tools open source:
-
-- [MUI](https://mui.com/) - The React UI library for faster and easier web development.
-- [React Flatpickr](https://github.com/haoxins/react-flatpickr) - Useful library used to select date.
-- [React Copy to Clipboard](https://github.com/nkbt/react-copy-to-clipboard) - Useful library used for copying data to the clipboard.
-- [React Countup](https://github.com/glennreyes/react-countup) - A lightweight React component that can be used to quickly create animations that display numerical data in a more interesting way.
-- [React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter) - Syntax highlighting component for react with prismjs or highlightjs ast using inline styles.
-- [ChromaJS](https://gka.github.io/chroma.js/) - A small-ish zero-dependency JavaScript library for all kinds of color conversions and color scales.
-
-Let us know your thoughts below. And good luck with development!
 
 ## Table of Contents
 
-- [Versions](#versions)
-- [Demo](#demo)
-- [Quick Start](#quick-start)
-- [Documentation](#documentation)
+- [Author](#author)
+- [Live Demo](#live-demo)
+- [Features](#features)
+- [Local Deployment](#local-deployment)
+- [Backend](#backend)
 - [File Structure](#file-structure)
-- [Browser Support](#browser-support)
-- [Resources](#resources)
-- [Reporting Issues](#reporting-issues)
 - [Technical Support or Questions](#technical-support-or-questions)
-- [Licensing](#licensing)
-- [Useful Links](#useful-links)
 
-## Versions
+## Author
 
-[<img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/react-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/material-kit-react?ref=readme-mkr)
+The frontend of Ability Plus is developed by three of the glhf's group members:
 
-| React |
-| ----- |
+1. Ella Song (z5261532)
+2. Dingheng Li (z)  
+3. Katrina (Ziqi) Ding (z5211336)
 
-| [![Material Kit 2 React](https://s3.amazonaws.com/creativetim_bucket/products/83/thumb/material-kit-2-react.jpg)](http://demos.creative-tim.com/material-kit-react/#/?ref=readme-mkr)
+## Live Demo
 
-## Demo
+[Live Demo here](http://ec2-3-26-215-49.ap-southeast-2.compute.amazonaws.com:3000/)
 
-- [About Us](https://demos.creative-tim.com/material-kit-react/#/pages/landing-pages/about-us?ref=readme-mkr)
-- [Contact Us](https://demos.creative-tim.com/material-kit-react/#/pages/landing-pages/contact-us?ref=readme-mkr)
-- [Author](https://demos.creative-tim.com/material-kit-react/#/pages/landing-pages/author?ref=readme-mkr)
-- [Pricing page](https://demos.creative-tim.com/material-kit-react/#/pages/authentication/sign-in?ref=readme-mkr)
+## Features
+### Definition of different status:
 
-[View More](https://demos.creative-tim.com/material-kit-react/#/?ref=readme-mkr).
+**Open for proposal**: the project challenge is accepting proposal submission
 
-## Quick start
+**Approving**: after the proposal submission deadline passed, company can select outstanding proposals. After company selects outstanding proposals, the status will be changed to 'Open for Solution'
 
-Quick start options:
+**Open for Solution**: proposals that selected as outstanding by companies can submit solution
 
-- Download from [Creative Tim](https://www.creative-tim.com/product/material-kit-react?ref=readme-mkr).
+**Closed**: the deadline of the solution is passed
 
-## Terminal Commands
+### For Company User
 
-1. Download and Install NodeJs LTS version from [NodeJs Official Page](https://nodejs.org/en/download/).
-2. Navigate to the root ./ directory of the product and run `yarn install` or `npm install` to install our local dependencies.
+1. Company can contact ability.test.official@outlook.com and provide legal documents to register a company account on Ability Plus.
+2. Company can browse project challenges created by other companies, learn from them and improve own project challenge documents.
+3. Company can create project challenges and make them visible to students after filling the requirements(including title, category, proposal deadline, solution deadline, description, project requirements and rewards).
+4. Company can preview the project challenge they will publish after filling the requirements.
+5. Company can save incomplete project challenges to draft, edit them later or deleted from draft when no longer needed.
+6. Company can view other companies' profile and their project challenges.
+7. Company can view own project challenges in different status(all, draft, open for proposal, approving, open for solution, closed), sort by create time and search by keyword.
+8. Company can edit own profile including company name, contact email and description that enables students to reach to them easier.
+9. Company can change their password in the personal profile to keep their account secure at all times.
+10. Company can view students' profile if one of the proposals of the student is listed as outstanding and company can contact student by email.
+11. Company can create/edit/delete own posts in own project challenge forums.
+12. Company can reply to posts in their project challenge forums.
+13. Company can see the new replies/new posts from students on their project challenge forums.
+14. Company can view proposals in either summary view or table view if the project challenge is in approving stage, and select outstanding proposals and list on the Popular Proposals page for other students to learn from.
+15. Company can give rating, note and shortlist proposals for project challenge in approving stage.
+16. Company can sort proposals by rating, hide selected columns(any combinations from title, author, description, rating, status, my note) in table view when viewing the proposals under the project challenge in approving stage.
+17. Company can enter the selection mode to shortlist multiple proposals at a time under a project challenge in approving stage.
+18. Company can confirm the shortlisted proposals are correct by the clicking the final confirm button.
+19. Company can see students' Outstanding Proposals, sort them by the number of likes/submission date and search by keyword.
 
-## Documentation
+### For Student User
 
-The documentation for the Material Dashboard is hosted at our [website](https://www.creative-tim.com/learning-lab/react/overview/material-kit/?ref=readme-mkr).
+1. Student can fill email, username, password to register an account on Ability Plus.
+2. Student can browse project challenges created by all the companies and filter project challenges by challenge status(all, open for proposal, approving, open for solution, closed), order by submission date, order by solution deadline/proposal deadline/last modified time and search by keyword to find the ones they want to participate and submit proposals.
+3. Student can submit proposals by filling the proposal title, description, problems to solve section, vision statement, general goals and the details of the proposals to any project challenges that is in Open for proposal status.
+4. Student can save incomplete proposals to draft and edit them later or deleted from draft when needed.
+5. Student can preview the proposal that he/she wants to submit after filling the required information.
+6. Student can view their own proposals and filter them by proposal status(all, draft, submitted, approving, approved, rejected), order by submission date, sort by solution deadline/proposal deadline/last modified time and search by keyword to find they ones they are looking for in the shortest amount of time.
+7. Student can see all the companies registered on Ability Plus and find the project challenges they created.
+8. Student can follow any companies registered on Ability Plus to keep track of their future project challenges.
+9. Student can unfollow any companies he/she followed.
+10. Student view a list of the companies he/she follows.
+11. Student can view the detail of the project challenges if they are on open for proposal, approving status.
+12. Student can see the ranking of the project challenges after company selected outstanding proposals for a project challenge.
+13. Student can click on company's name to see the profile and the summary of each project the company created.
+14. Student can access the forum of the project challenge to ask company questions and reply to company under their posts.
+15. Student can delete his/her posts or replies to any posts when needed.
+16. Student can edit his/her profile including name, contact email, age and description.
+17. Student can change the password of his/her account.
+18. Student can see Outstanding Proposals selected from company' project challenges, sort them by the number of likes/submission date, search by keyword and learn from them.
+19. Student can like/unlike proposals from the proposals that selected as outstanding from project challenges.
 
-### What's included
+## Local Deployment
+
+[Please view this local deployment instruction.](deployment-instruction.md)
+
+
+## Backend
+
+Click to view the [repo of the backend](https://github.com/susu1101/Ability-Plus)
+
+
+## File Structure
 
 Within the download you'll find the following directories and files:
 
 ```
-material-kit-2-react
+comp9323-glhf-frontend
     ├── public
-    │   ├── apple-icon.png
-    │   ├── favicon.png
-    │   ├── index.html
-    │   ├── manifest.json
-    │   └── robots.txt
     ├── src
     │   ├── assets
-    │   │   ├── images
-    │   │   ├── theme
-    │   │   │   ├── base
-    │   │   │   ├── components
-    │   │   │   ├── functions
-    │   │   └── └── index.js
+    │   ├── auth
+    │   ├── context
+    │   ├── hooks
     │   ├── components
-    │   │   ├── MKAlert
-    │   │   ├── MKAvatar
-    │   │   ├── MKBadge
-    │   │   ├── MKBox
-    │   │   ├── MKButton
-    │   │   ├── MKDatePicker
-    │   │   ├── MKInput
-    │   │   ├── MKPagination
-    │   │   ├── MKrogress
-    │   │   ├── MKSocialButton
-    │   │   └── MKTypography
-    │   ├── examples
-    │   │   ├── Breadcrumbs
-    │   │   ├── Cards
-    │   │   ├── Footer
-    │   │   └── Navbars
-    │   ├── layouts
-    │   │   ├── pages
-    │   │   │    ├── authentication
-    │   │   │    ├── landing-pages
-    │   │   │    └── presentation
-    │   │   ├── sections
-    │   │   │    ├── attention-catchers
-    │   │   │    ├── components
-    │   │   │    ├── elements
-    │   │   │    ├── input-areas
-    │   │   │    ├── navigation
-    │   │   └──  └── page-sections
-    │   ├── pages
+    │   ├── utils
+    │   ├── glhfComponents
+    │   │   ├── AlertModal
+    │   │   ├── CardCounter
+    │   │   ├── DateSearchFilter
+    │   │   ├── EndlessScroll
+    │   │   ├── LikeButton
+    │   │   ├── LikeDateSearchFilter
+    │   │   ├── ProcessStatusBadge
+    │   │   ├── ProjectDetailBtn
+    │   │   ├── ProposalCard
+    │   │   ├── ProposalDescriptionModal
+    │   │   ├── ProposalRank
+    │   │   ├── ProposalsTableView
+    │   │   ├── RequestCard
+    │   │   ├── RequestCard-Backup
+    │   │   ├── RequestDescriptionModal
+    │   │   ├── RequestFilter
+    │   │   ├── RichTextEditor
+    │   │   ├── SavingLoader
+    │   │   ├── SelectProposalsFilter
+    │   │   ├── StatusBadge
+    │   │   ├── StatusDateDueSearchFilter
+    │   │   └── StatusProposalSolutionFilter
+    │   ├── pages
+    │   │   ├── BrowseRequests
+    │   │   ├── CompanyInfo
+    │   │   ├── CompanyList
+    │   │   ├── CreateProposal
+    │   │   ├── CreateRequest
+    │   │   ├── Forum
     │   │   ├── LandingPages
-    │   │   └── Presentation
+    │   │   ├── Logout
+    │   │   ├── MyPosts
+    │   │   ├── MyProjectRequests
+    │   │   ├── MyProposals
+    │   │   ├── NotFound
+    │   │   ├── PopularProposals
+    │   │   ├── Presentation
+    │   │   ├── ProjectProposals
+    │   │   ├── ProposalRanks
+    │   │   ├── StudentFollowing
+    │   │   ├── StudentInfo
+    │   │   └── Unauthorized
+    │   ├── examples
+    │   ├── layouts
+    │   ├── pages
     │   ├── App.js
     │   ├── index.js
     │   ├── footer.routes.js
@@ -152,56 +163,30 @@ material-kit-2-react
     └── README.md
 ```
 
-## Browser Support
+Most of the work of the team is located in the following directory/files
+```
+src
+├── assets
+├── auth
+├── context
+├── hooks
+├── components
+├── utils
+├── glhfComponents
+├── pages
+├── App.js
+├── footer.routes.js
+└── routes.js
+```
 
-At present, we officially aim to support the last two versions of the following browsers:
+## References
 
-<img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">
+The frontend of this project is built using free UI kit [Material Kit 2](https://github.com/creativetimofficial/material-kit-react)
 
-## Resources
+Version: 2.0.0
 
-- [Live Preview](https://demos.creative-tim.com/material-kit-react/#/?ref=readme-mkr)
-- [Buy Page](https://www.creative-tim.com/product/material-kit-react?ref=readme-mkr)
-- Documentation is [here](https://www.creative-tim.com/learning-lab/react/overview/material-kit/?ref=readme-mkr)
-- [License Agreement](https://www.creative-tim.com/license?ref=readme-mkr)
-- [Support](https://www.creative-tim.com/contact-us?ref=readme-mkr)
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/ct-material-kit-react/issues)
-
-## Reporting Issues
-
-We use GitHub Issues as the official bug tracker for the Material Kit 2 React. Here are some advices for our users that want to report an issue:
-
-1. Make sure that you are using the latest version of the Material Kit 2 React. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/product/material-kit-react?ref=readme-mkr).
-2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
-3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
+Accessed Date: 29 Jun 2022
 
 ## Technical Support or Questions
 
-If you have questions or need help integrating the product please [contact us](https://www.creative-tim.com/contact-us?ref=readme-mkr) instead of opening an issue.
-
-## Licensing
-
-- Copyright 2021 [Creative Tim](https://www.creative-tim.com?ref=readme-mkr)
-- Creative Tim [license](https://www.creative-tim.com/license?ref=readme-mkr)
-
-## Useful Links
-
-- [More products](https://www.creative-tim.com/templates?ref=readme-mkr) from Creative Tim
-
-- [Tutorials](https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w)
-
-- [Freebies](https://www.creative-tim.com/bootstrap-themes/free?ref=readme-mkr) from Creative Tim
-
-- [Affiliate Program](https://www.creative-tim.com/affiliates/new?ref=readme-mkr) (earn money)
-
-##### Social Media
-
-Twitter: <https://twitter.com/CreativeTim>
-
-Facebook: <https://www.facebook.com/CreativeTim>
-
-Dribbble: <https://dribbble.com/creativetim>
-
-Google+: <https://plus.google.com/+CreativetimPage>
-
-Instagram: <https://instagram.com/creativetimofficial>
+If you have questions or need help running the app please contact [Katrina Ding](mailto:z5211336@ad.unsw.edu.au).

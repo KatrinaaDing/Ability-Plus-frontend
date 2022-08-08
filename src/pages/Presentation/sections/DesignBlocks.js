@@ -76,10 +76,10 @@ function DesignBlocks() {
             sx={{ mb: 2 }}
           />
           <MKTypography variant="h2" fontWeight="bold">
-            Huge collection of project requests and proposals
+            Huge collection of project challenges and proposals
           </MKTypography>
           <MKTypography variant="body1" color="text">
-            We have created a integrated proposal management platform for companies to release their project requests and allow students to submit their brilliant proposals
+            We have created a integrated proposal management platform for companies to release their industry challenges and allow students to submit their brilliant proposals
           </MKTypography>
         </Grid>
       </Container>

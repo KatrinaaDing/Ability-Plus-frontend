@@ -5,28 +5,44 @@
  */
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import MKButton from 'components/MKButton';
+import MKTypography from 'components/MKTypography';
 import React from 'react';
 import Post from '../components/Post';
 
-const PostsSection = ({posts, reqCreator}) => {
+/**
+ * 
+ * @param {array} posts a list of posts
+ * @param {string} reqCreator the creator of project request of this forum
+ * @returns 
+ */
+const PostsSection = ({ posts, reqCreator }) => {
+    /*
+        posts: [{
+            "authId": 0,
+            "authName": "string",
+            "data": "string",
+            "postId": 0
+        }]
+    */
+
     return (
         <List sx={{ width: '95%' }}>
             {
-                posts.map(p => 
+                posts.map(p =>
                     <Post           // TODO feel free to change
                         key={p.postId}
-                        isProjectOwner={reqCreator == p.authId}
+                        isProjectOwner={reqCreator === p.authName}
                         id={p.postId}
                         authorId={p.authId}
                         authorName={p.authName}
                         content={p.data}
-                        postDate={p.postTime}
+                        postDate={p.lastModifiedTime}
                         numReply={p.numReply}
-                        isPin={p.pin}
+                        isPin={p.isPin}
                     />
-                )                                    
-            }
+                )
 
+            }
         </List>
     );
 };

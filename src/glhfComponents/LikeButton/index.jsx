@@ -7,7 +7,6 @@ import MKButton from 'components/MKButton';
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { axiosPrivate } from 'api/axios';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 const LikeButton = ({ originLike, originNumLike, propId }) => {
@@ -15,14 +14,15 @@ const LikeButton = ({ originLike, originNumLike, propId }) => {
     const [numLike, setNumLike] = React.useState(originNumLike);
     const axiosPrivate = useAxiosPrivate();
 
+    // handlers
     const cancelLike = () => 
-        axiosPrivate.post(`/user_proposal_like_record/unlike?proposalId=${propId}}`)
+        axiosPrivate.post(`/user_proposal_like_record/unlike?proposalId=${propId}`)
             .then(res => setNumLike(numLike - 1))
             .catch(e => console.error(e))
     
 
     const performLike = () =>
-        axiosPrivate.post(`/user_proposal_like_record/like?proposalId=${propId}`)   // FIXME bug in backend 
+        axiosPrivate.post(`/user_proposal_like_record/like?proposalId=${propId}`)   
             .then(res => setNumLike(numLike + 1))
             .catch(e => console.error(e))
 

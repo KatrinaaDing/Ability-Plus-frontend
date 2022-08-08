@@ -6,25 +6,62 @@ import { Link } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import MKBox from 'components/MKBox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
+import AlertModal from 'glhfComponents/AlertModal';
+// import moment from 'moment';
 
-const Reply = ({ id, isProjectOwner, authorId, authorName, content}) => {
+const Reply = (props) => {
+    const { id, isProjectOwner, authorId, authorName, post = {}, handleDelete, handleEdit } = props;
+    const [alertOpenDelete, setAlertOpenDelete] = React.useState(false);
+    const { data, replyTime, replierName, main } = post
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     return (
-        <ListItem
-            alignItems="flex-start"
-            sx={{
-                p: 2,
-                borderBottom: 'solid 0.3px gray'
-            }}
-        >
-            
-            <ListItemAvatar>
-                <Avatar alt={authorName} src="/src/assets/images/profile-avatars/company.png" />
-            </ListItemAvatar>
-            <ListItemText
-                primary={
-                    <MKBox display='flex' flexDirection="row">
-{/*                         {
+        <>
+            <AlertModal
+                open={alertOpenDelete}
+                handleClose={() => setAlertOpenDelete(false)}
+                handleConfirm={() => {handleDelete(post.id); setAlertOpenDelete(false)}}
+                title="Are you sure to delete?"
+                content=""
+            />
+            <ListItem
+                alignItems="flex-start"
+                sx={{
+                    p: 2,
+                    borderBottom: !main && 'solid 0.3px gray',
+                }}
+                secondaryAction={
+                    <>
+                        <MKBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}  >
+                            <MKBox p={1} />
+                            {
+                                replierName == auth.username && !main &&
+                                <MKBox>
+                                    <IconButton color='info' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
+                                        <EditIcon onClick={() => handleEdit && handleEdit(post)} />
+                                    </IconButton>
+                                    <IconButton color='error' sx={{ mr: 0.5, opacity: 0.7, fontSize: 'lg' }}>
+                                            <DeleteIcon onClick={() => setAlertOpenDelete(true)} />
+                                    </IconButton>
+                                </MKBox>
+                            }
+
+                            
+                        </MKBox>
+                    </>
+                }
+            >
+
+                <ListItemAvatar>
+                    <Avatar alt={replierName} src="/src/assets/images/profile-avatars/company.png" />
+                </ListItemAvatar>
+                <ListItemText
+                    primary={
+                        <MKBox display='flex' flexDirection="row" justifyContent='space-between'>
+                            {/*                         {
                             isProjectOwner
                                 ? <MKTypography color='primary'>{authorName} (Project Owner)</MKTypography>
                                 : authorName === auth.username
@@ -32,27 +69,28 @@ const Reply = ({ id, isProjectOwner, authorId, authorName, content}) => {
                                     : authorName
 
                         } */}
-                        <MKTypography variant='body'>name</MKTypography>
-                    </MKBox>
-                }
-                secondary={
-                    <>
-                        <Grid container justifyContent="space-between" alignItems="center">
                             <MKTypography variant='body'>
-                            xxxxxxxxxxxxxxxxxxxxxxx
-                            </MKTypography> 
-                            <MKTypography variant="body">
-                            Posted at:&nbsp;&nbsp;xxxx xxxx
+                                {replierName} {replierName == auth.username ? '(ME)' : ''}
                             </MKTypography>
-                        </Grid>
-                    </>
-                }
-                sx={{
-                    mr: 10,
-                }}
-            />
-           
-        </ListItem>
+                            <MKTypography variant="body2">
+                                Posted at:&nbsp;&nbsp;{new Date(replyTime * 1000).toLocaleString()}
+                            </MKTypography>
+                        </MKBox>
+                    }
+                    secondary={
+                        <MKBox sx={{ mr: 10 }}>
+                        <MKTypography variant='body' >
+                            {
+                                data.split("\n").map((i, key) => <div key={key}>{i}</div>)
+                            }
+                        </MKTypography>
+
+                        </MKBox>
+                    }
+                />
+            </ListItem>
+        </>
+
     );
 };
 

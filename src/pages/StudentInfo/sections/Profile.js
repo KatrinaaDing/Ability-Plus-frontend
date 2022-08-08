@@ -67,7 +67,7 @@ function Profile() {
         .then(res => {
           setDes(JSON.parse(res.data.data.extraData)?.des || '')
           setAge(JSON.parse(res.data.data.extraData)?.age || '')
-          setEmail(JSON.parse(res.data.data.extraData)?.email || '')
+          setEmail(JSON.parse(res.data.data.extraData)?.email || res.data.data.account || '')
           setStudentName(res.data.data.fullName)
           console.log(des, age, email, studentName)
         })
@@ -112,16 +112,17 @@ function Profile() {
                     {age === ''? 'NA':age}
                   </MKTypography>
                   </div>
+                  <div>
+                    <MKTypography component="span" variant="body2" fontWeight="bold">
+                      Description&nbsp;&nbsp;
+                      </MKTypography>
+                    <MKTypography variant="body1" component="span" fontWeight="light" color="text">
+                      {des === '' ? 'NA': des}
+                    </MKTypography>
+                  </div>
                 </Grid>
               </Grid>
-              <div>
-                <MKTypography component="span" variant="body2" fontWeight="bold">
-                Description&nbsp;&nbsp;
-                </MKTypography>
-              <MKTypography variant="body1" component="span" fontWeight="light" color="text">
-                {des === '' ? 'NA': des}
-              </MKTypography>
-              </div>
+
             </Grid>
           </Grid>
         </Grid>   

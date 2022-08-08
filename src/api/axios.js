@@ -1,11 +1,16 @@
 /**
  * Author: Ziqi Ding
  * Created At: 08 Jul 2022
- * Discription: axois instance creation
+ * Discription: axois instance initialization
  */
 import axios from 'axios';
+<<<<<<< HEAD
 export const BASE_URL = 'http://localhost:8080';  
 // export const BASE_URL = 'http://ec2-3-26-215-49.ap-southeast-2.compute.amazonaws.com:8080/';
+=======
+// export const BASE_URL = 'http://localhost:8080';  
+export const BASE_URL = 'http://3.106.6.123:8080/';
+>>>>>>> fixbug
 
 const axiosBasic = axios.create({
     baseURL: BASE_URL,
