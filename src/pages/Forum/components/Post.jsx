@@ -163,7 +163,7 @@ const Post = ({
           >
             <CommentIcon />
             {' '}&nbsp;
-            <MKTypography variant="subtitle2" sx={{ width: '50px', textAlign: 'start'}}>{Math.floor(Math.random() * 150)}</MKTypography>
+            <MKTypography variant="subtitle2" sx={{ width: '40px', textAlign: 'start'}}>{numReply}</MKTypography>
           </IconButton>
 
         </>
