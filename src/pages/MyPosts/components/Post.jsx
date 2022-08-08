@@ -19,6 +19,8 @@ import { useParams } from 'react-router-dom';
 import { Avatar, Collapse, IconButton, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
 import Reply from "./Reply";
 import MKAlert from "components/MKAlert";
+import DeleteModal from "pages/Forum/components/DeleteModal";
+import EditModal from "pages/Forum/components/EditModal";
 
 const PAGE_SIZE = 20;
 
@@ -111,7 +113,6 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                     setSAlertStr("Success!")
                     setTimeout(() => {
                         setSAlertStr("")
-                        replyCancel()
                     }, 1000);
                     getReplyList()
                 })
@@ -186,10 +187,15 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                                     <MKTypography variant="body1" fontWeight="bold" >
                                         Main Post
                                     </MKTypography>
-                                    <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${projectId}`}>
-                                        Go To Forum
-                                    </MKButton>
-                                    <Reply post={{ replierName: authName, data, replyTime: lastModifiedTime, main: true }} />
+                                    <MKBox sx={{display: 'flex', flexDirection: 'row'}}>
+                                        <EditModal postId={postId} content={data} isPin={isPin} isProjectOwner={false}/>
+                                        <DeleteModal postId={postId} />
+                                        <MKButton variant="gradient" color="light" size="small" onClick={() => window.location.href = `/forum/${projectId}`}>
+                                            Go To Forum
+                                        </MKButton>
+
+                                    </MKBox>
+                                        <Reply post={{ replierName: authName, data, replyTime: lastModifiedTime, main: true }} />
                                 </Grid>
                                 <br />
                                 {/*                                 <Divider sx={{ my: 0 }} />    */}
@@ -219,7 +225,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                 </Slide>
             </Modal>
             {/* Create Reply Modal */}
-            <Modal open={rShow} onClose={() => {replyModal();setCurPost({})}} sx={{ display: "grid", placeItems: "center" }}>
+            <Modal open={rShow} onClose={replyModal} sx={{ display: "grid", placeItems: "center" }}>
 
                 <Slide direction="down" in={rShow} timeout={500}>
                     <MKBox
@@ -249,7 +255,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                         </MKBox>
                         <Divider sx={{ my: 0 }} />
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                            <MKButton variant="gradient" color="light" onClick={() => {replyModal();setCurPost({})}} >
+                            <MKButton variant="gradient" color="light" onClick={replyModal}>
                                 Cancel
                             </MKButton>
                             <MKButton variant="gradient" color="info" name="changePwd" onClick={postReply}>

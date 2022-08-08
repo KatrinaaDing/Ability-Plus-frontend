@@ -31,12 +31,12 @@ const Reply = (props) => {
                 alignItems="flex-start"
                 sx={{
                     p: 2,
-                    borderBottom: !main && 'solid 0.3px gray'
+                    borderBottom: !main && 'solid 0.3px gray',
                 }}
                 secondaryAction={
                     <>
                         <MKBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}  >
-                            <MKBox p={2} />
+                            <MKBox p={1} />
                             {
                                 replierName == auth.username && !main &&
                                 <MKBox>
@@ -78,11 +78,14 @@ const Reply = (props) => {
                         </MKBox>
                     }
                     secondary={
-                        <MKTypography variant='body'>
+                        <MKBox sx={{ mr: 10 }}>
+                        <MKTypography variant='body' >
                             {
                                 data.split("\n").map((i, key) => <div key={key}>{i}</div>)
                             }
                         </MKTypography>
+
+                        </MKBox>
                     }
                 />
             </ListItem>

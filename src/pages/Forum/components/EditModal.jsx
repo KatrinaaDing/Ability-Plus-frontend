@@ -44,7 +44,7 @@ const EditModal = ({ postId, content, isPin, isProjectOwner }) => {
         params.append('data', e.target.post.value)
         params.append('postId', postId)
         
-        if (auth.isCompany)
+        if (isProjectOwner)
             params.append('pin', e.target.pin.checked)
         
         // append query string after url if using POST

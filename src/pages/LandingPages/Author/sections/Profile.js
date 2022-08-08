@@ -177,7 +177,7 @@ function Profile() {
     setTimeout(function () {
       setAlertStr("")
       window.location.reload()
-    }, 3000);
+    }, 800);
 
   }
 
@@ -215,7 +215,7 @@ function Profile() {
     }
     setTimeout(() => {
       setAlertStr("")
-    }, 3000);
+    }, 800);
   }
 
 
@@ -341,7 +341,7 @@ function Profile() {
                 </Grid>
                 <br />
                 <Grid container item xs={12}>
-                  <MKInput type="email" label="Contact Email" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
+                  <MKInput type="email" label="Contact Email (by default is your account email)" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
                 </Grid>
                 <br />
                 {!auth.isCompany && 
