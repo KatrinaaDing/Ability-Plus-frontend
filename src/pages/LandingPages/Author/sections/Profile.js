@@ -43,7 +43,7 @@ import axios, { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import { axiosPrivate } from "api/axios";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-
+import md5 from "md5";
 
 function Profile() {
 
@@ -57,6 +57,9 @@ function Profile() {
   }
   // Password change modal show or not
   const [pShow, setPShow] = useState(false);
+
+  const [emailErr, setEmailErr] = useState(false);
+
   const pwdChangeModal = () => {
     setPShow(!pShow);
   }
@@ -125,7 +128,8 @@ function Profile() {
 
   //Profile edit func
   const changeProfile = (event) => {
-
+    setAlertStr('')
+    setEmailErr(false)
     const body = {
       "extraData": {
         "des": des.des == '' ? '' : des.des || cDes,
@@ -142,6 +146,8 @@ function Profile() {
         console.log(cAge)
         console.log(cDes)
         console.log(cEmail) */
+    if (!validateInput(body.extraData.email))
+      return
     if (Object.is(event.target.name, "save")) {
       axiosPrivate.post("/user/edit_own_profile_info", body)
         .then(function (res) {
@@ -185,8 +191,8 @@ function Profile() {
   const pwdChange = (event) => {
 
     const body = {
-      oldPassword: oldPwd.oldPwd,
-      newPassword: newPwd.newPwd
+      oldPassword: md5(oldPwd.oldPwd),
+      newPassword: md5(newPwd.newPwd)
     }
     if (Object.keys(oldPwd).length === 0) {
       return setAlertStr("Old password is empty!")
@@ -215,10 +221,25 @@ function Profile() {
     }
     setTimeout(() => {
       setAlertStr("")
+      window.location.reload()
     }, 800);
   }
 
-
+  const validateInput = (userEmail) => {
+    let valid = true
+    const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    if (!userEmail) {
+      setEmailErr(true);
+      valid = false;
+      setAlertStr('Please enter email')
+    }
+    if (userEmail.length && !userEmail.match(emailReg)) {
+      setEmailErr(true);
+      valid = false;
+      setAlertStr('Please enter email in correct format!')
+    }
+    return valid
+  }
 
   //Profile edit related params onChange 
   const updateUserName = e => {
@@ -230,6 +251,8 @@ function Profile() {
   const updateUserEmail = e => {
     const userEmail = e.target.value
     setUserEmail({ userEmail })
+    setAlertStr('')
+    setEmailErr(false)
     localStorage.setItem("cEmail", userEmail)
   }
 
@@ -341,7 +364,7 @@ function Profile() {
                 </Grid>
                 <br />
                 <Grid container item xs={12}>
-                  <MKInput type="email" label="Contact Email (by default is your account email)" onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
+                  <MKInput type="email" label="Contact Email (by default is your account email)" error={emailErr} onChange={updateUserEmail} defaultValue={cEmail} fullWidth />
                 </Grid>
                 <br />
                 {!auth.isCompany && 
