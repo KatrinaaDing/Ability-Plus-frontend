@@ -1,4 +1,8 @@
-
+/**
+ * Author: Ziqi Ding
+ * Created At: 25 Jul 2022
+ * Discription: The approved of a student. Show in student user info page
+ */
 
 // @mui material components
 import Container from "@mui/material/Container";

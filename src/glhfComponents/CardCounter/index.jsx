@@ -1,3 +1,8 @@
+/**
+ * Author: Ziqi Ding
+ * Created At: 25 Jul 2022
+ * Discription: A Card counters that shows the total count of proposal/request card
+ */
 import MKBox from 'components/MKBox';
 import StatusBadge from 'glhfComponents/StatusBadge';
 import React from 'react';
