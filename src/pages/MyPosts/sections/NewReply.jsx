@@ -8,7 +8,7 @@ import MKTypography from "components/MKTypography";
 import Post from "../components/Post";
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-
+// Showing new replies in the forum
 const NewReply = () => {
     const [count, setCount] = useState([])
     const axiosPrivate = useAxiosPrivate();

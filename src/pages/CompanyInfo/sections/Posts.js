@@ -41,7 +41,7 @@ import { statusBank } from "utils/getStatus";
 import MKButton from "components/MKButton";
 import EditIcon from '@mui/icons-material/Edit';
 
-
+//Showing all project challenges in the company profile page
 const Posts = () => {
   // hooks
   const axiosPrivate = useAxiosPrivate();

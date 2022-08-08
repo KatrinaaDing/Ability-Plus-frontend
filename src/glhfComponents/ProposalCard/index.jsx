@@ -38,7 +38,7 @@ data = {
 }
 
 */
-
+// Common Project card for displaying data for different user type and various pages
 const ProposalCard = ({ data, openDetail, secondary, color }) => {
     const page = window.location.pathname.slice(1)
 

@@ -60,7 +60,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
+// Filter: sort by the like number, order by date(ascending or descending), search key
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
   const [ascending, setAscending] = useState(true);
   const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(true);

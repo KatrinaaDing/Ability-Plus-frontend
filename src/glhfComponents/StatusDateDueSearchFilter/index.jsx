@@ -62,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-
+// Filter: by status, submission date, sort by deadline, search by keyword
 const StatusDateDueSearchFilter = ({ handleStatus, handleDate, handleWhatOrder, handleSearch, type, userType }) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
     const [status, setStatus] = useState(-1);

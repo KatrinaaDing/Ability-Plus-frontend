@@ -1,7 +1,7 @@
 /**
  * Author: Ziqi Ding
  * Created At: 08 Jul 2022
- * Discription: A page for unauthorized user
+ * Description: A page for unauthorized user
  */
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import React from 'react';

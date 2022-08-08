@@ -15,7 +15,7 @@ import CreatePost from './components/CreatePost';
 import PostsSection from './sections/PostsSection';
 
 const PAGE_SIZE = 20
-
+// Forum for both companies and students: both students and companies can post and reply
 const Forum = () => {
     const axiosPrivate = useAxiosPrivate();
     const { projectId: projectId } = useParams();

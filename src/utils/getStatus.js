@@ -1,7 +1,7 @@
 /**
  * Author: Ziqi Ding
  * Created At: 12 Jul 2022
- * Discription: A convertor of status code and string
+ * Description: A convertor of status code and string for proposals and project challenges
  */
 const statusBank = {
     proposal: {

@@ -47,6 +47,7 @@ value = {
     }
 }
  */
+//Showing detailed information about a project request in a pop up modal
 const RequestDescriptionModal = ({ open, setOpen, value, actionButton }) => {
     const navigate = useNavigate();
     const theme = useTheme();

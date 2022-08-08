@@ -61,7 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-
+// Filter the proposals for a project when selecting proposals; It is used for companies select proposals
+// Filter: sort by submission date, sort by isPicked status, sort by deadline, search by keyword
 const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, handleSearch}) => {
     const [whatOrder, setWhatOrder] = useState('SolutionDue')
     const [status, setStatus] = useState(2);
