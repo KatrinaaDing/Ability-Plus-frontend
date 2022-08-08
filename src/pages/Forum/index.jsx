@@ -72,7 +72,7 @@ const Forum = () => {
                 <MKTypography variant='subtitle1'>Challenge: {reqName}</MKTypography>    
                 <CreatePost reqCreator={reqCreator}/>
             </MKBox>
-            <MKBox sx={{ pt: 10}}>
+            <MKBox sx={{ pt: 5 }}>
                 <EndlessScroll
                     dataLength={posts.length}
                     next={() => setPageNum(pageNum + 1)}
