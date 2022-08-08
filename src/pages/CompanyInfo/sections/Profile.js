@@ -66,11 +66,12 @@ function Profile({ companyInfo }) {
     const getProfile = async() =>
       await axiosPrivate.get(`/user/get_profile_info?id=${Number(id)}`)
         .then(res => {
-          if (res.data.data.extraData)
-            setEmail(JSON.parse(res.data.data.extraData).email)
+          // if (res.data.data.extraData)
+          //   setEmail(JSON.parse(res.data.data.extraData).email)
             setDes(JSON.parse(res.data.data.extraData).des)
           setCompanyName(res.data.data.fullName)
-          setEmail(res.data.data.account)
+          // setEmail(res.data.data.account)
+          setEmail(JSON.parse(res.data.data.extraData)?.email || res.data.data.account || '')
         })
         .catch(e => console.error(e))
 
