@@ -16,7 +16,7 @@ import EndlessScroll from "glhfComponents/EndlessScroll";
 import MKTypography from "components/MKTypography";
 
 const PAGE_SIZE = 18
-
+// Student my proposals page: showing all proposals in different status
 const MyProposals = () => {
     // filter states
     const [status, setStatus] = useState('');

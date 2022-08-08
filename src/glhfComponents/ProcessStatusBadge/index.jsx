@@ -30,6 +30,7 @@ export const propStatus = {
         color: 'primary'
     }
 }
+// Proposal Status for company use when select/shortlist proposals for a project challenge
 const ProcessStatusBadge = props => {
 
     return (

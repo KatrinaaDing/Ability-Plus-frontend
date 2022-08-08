@@ -39,7 +39,7 @@ import getNavbarRoutes from "utils/getNavbarRoutes";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import ProfilePageLayout from "glhfComponents/ProfilePageLayout";
-
+//Showing personal details and the (project requests of the company/proposals of the student)
 function Author() {
 
   return (

@@ -15,7 +15,7 @@ import LikeIcon from "glhfComponents/ProposalCard/components/LikeIcon";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@emotion/react';
 
-
+//Proposal Ranks page for showing the ranks of proposals under a certain project challenge
 const ProposalRank = ({ proposals, openDetail }) => {
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down('md'));

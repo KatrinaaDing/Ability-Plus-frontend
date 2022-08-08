@@ -47,7 +47,7 @@ value = {
 }
 */
 
-
+//Showing the project challenge in a summary format; users can click to see more details
 const RequestCard = ({ data, openDetail, color}) => {
     const page = window.location.pathname.slice(1);
 

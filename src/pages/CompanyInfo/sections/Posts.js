@@ -71,7 +71,7 @@ const Posts = () => {
     const params = new URLSearchParams({
       creatorId: id,
       isAscendingOrderTime: ascending,
-      isAscendingOrder: whatOrder,
+      whatOrder: whatOrder,
       status: status,
       searchKey: searchKey,
       pageNo: pageNo,
@@ -93,24 +93,7 @@ const Posts = () => {
         setTotal(res.data.data.total)
       })
       .catch(e => console.error(e))
-    // const params = new URLSearchParams({
-    //   companyId: id,
-    //   pageNo: pageNo,
-    //   pageSize: PAGE_SIZE
-    // })
-    // axiosPrivate.get('/project/list_company_profile_project_request', {
-    //     params: params
-    //   })
-    //     .then(res => {
-    //       setRequests([...requests].concat(res.data.data.records))
-    //       if (pageNo * PAGE_SIZE >= res.data.data.total)
-    //         setHasMore(false)
-    //       else
-    //         setHasMore(true)
-    //       setNumPage(pageNo)
-    //       setTotal(res.data.data.total)
-    //     })
-    //     .catch(e => console.error(e))
+
   }
 
 
