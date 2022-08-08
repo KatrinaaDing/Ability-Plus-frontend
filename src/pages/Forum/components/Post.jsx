@@ -119,6 +119,7 @@ const Post = ({
           setSAlertStr("Success!")
           setTimeout(() => {
             setSAlertStr("")
+            replyCancel()
           }, 1000);
         })
         .catch((e) => console.error(e));
@@ -271,7 +272,7 @@ const Post = ({
         </Slide>
       </Modal>
       {/* Create Reply Modal */}
-      <Modal open={rShow} onClose={replyModal} sx={{ display: 'grid', placeItems: 'center' }}>
+      <Modal open={rShow} onClose={() => {replyModal();setCurPost({})}} sx={{ display: 'grid', placeItems: 'center' }}>
         <Slide direction="down" in={rShow} timeout={500}>
           <MKBox
             position="relative"
@@ -300,7 +301,7 @@ const Post = ({
             </MKBox>
             <Divider sx={{ my: 0 }} />
             <MKBox display="flex" justifyContent="space-between" p={1.5}>
-              <MKButton variant="gradient" color="light" onClick={replyModal}>
+              <MKButton variant="gradient" color="light" onClick={() => {replyModal();setCurPost({})}}>
                 Cancel
               </MKButton>
               <MKButton variant="gradient" color="info" name="changePwd" onClick={postReply}>

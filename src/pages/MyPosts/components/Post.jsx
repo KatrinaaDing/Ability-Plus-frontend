@@ -111,6 +111,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                     setSAlertStr("Success!")
                     setTimeout(() => {
                         setSAlertStr("")
+                        replyCancel()
                     }, 1000);
                     getReplyList()
                 })
@@ -218,7 +219,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                 </Slide>
             </Modal>
             {/* Create Reply Modal */}
-            <Modal open={rShow} onClose={replyModal} sx={{ display: "grid", placeItems: "center" }}>
+            <Modal open={rShow} onClose={() => {replyModal();setCurPost({})}} sx={{ display: "grid", placeItems: "center" }}>
 
                 <Slide direction="down" in={rShow} timeout={500}>
                     <MKBox
@@ -248,7 +249,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                         </MKBox>
                         <Divider sx={{ my: 0 }} />
                         <MKBox display="flex" justifyContent="space-between" p={1.5}>
-                            <MKButton variant="gradient" color="light" onClick={replyModal}>
+                            <MKButton variant="gradient" color="light" onClick={() => {replyModal();setCurPost({})}} >
                                 Cancel
                             </MKButton>
                             <MKButton variant="gradient" color="info" name="changePwd" onClick={postReply}>

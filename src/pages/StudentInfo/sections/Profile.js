@@ -67,7 +67,7 @@ function Profile() {
         .then(res => {
           setDes(JSON.parse(res.data.data.extraData)?.des || '')
           setAge(JSON.parse(res.data.data.extraData)?.age || '')
-          setEmail(res.data.data.account || '')
+          setEmail(JSON.parse(res.data.data.extraData)?.email || res.data.data.account || '')
           setStudentName(res.data.data.fullName)
           console.log(des, age, email, studentName)
         })

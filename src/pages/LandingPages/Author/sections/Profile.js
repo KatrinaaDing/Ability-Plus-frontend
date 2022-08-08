@@ -82,8 +82,8 @@ function Profile() {
       await axiosPrivate.get("/user/view_own_profile_info")
         .then(res => {
           if (res.data.data.extraData === null) {
-            setCEmail("sample@email.com");
-            setUserEmail('sample@email.com');
+            setCEmail(res.data.data.account||"sample@email.com");
+            setUserEmail(res.data.data.account||'sample@email.com');
             setCDes("Please introduce yourself");
             setDes("?");
             setAge("?");
@@ -98,13 +98,10 @@ function Profile() {
             })
           }
           if (JSON.parse(res.data.data.extraData).email === null || JSON.parse(res.data.data.extraData).email === '') {
-            setCEmail("sample@email.com");
-            setUserEmail('sample@email.com');
+            setCEmail(res.data.data.account||"sample@email.com");
+            setUserEmail(res.data.data.account||'sample@email.com');
           } else {
             setCEmail(JSON.parse(res.data.data.extraData).email)
-          }
-          if(!auth.isCompany && res.data.data.account){
-            setCEmail(res.data.data.account)
           }
           if (JSON.parse(res.data.data.extraData).des === null || JSON.parse(res.data.data.extraData).des == '') {
             setCDes("Please introduce yourself");
