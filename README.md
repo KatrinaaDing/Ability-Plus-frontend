@@ -108,7 +108,7 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 
 ## Local Deployment
 
-[Please view this local deployment instruction.](deployment-instruction.md)
+[Please view this local deployment instruction.](ready-to-deploy/deployment-instruction.md)
 
 
 ## Backend
