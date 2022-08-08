@@ -3,6 +3,10 @@
 
 Please follow the instruction to run the project locally. This instruction is for MacOS/Ubuntu System.
 
+* You can also view [the api document](http://ability-plus.site:8080/swagger-ui.html)
+
+* You can also view [the live demo](http://ability-plus.site/)
+
 ## Table of Contents
   * [1. Environment](#1-environment)
   * [2. Install `npx`](#1install-npx)
