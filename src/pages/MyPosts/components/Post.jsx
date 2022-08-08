@@ -164,7 +164,7 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numRepl
                 </Grid>
             </MKButton>
             {/* View Post Detail Modal */}
-            <Modal open={show} onClose={toggleModal} sx={{ display: "grid", placeItems: "center" }}>
+            <Modal open={show} onClose={toggleModal} sx={{ display: "grid", placeItems: "center" }} style={{ overflowY: 'auto', maxHeight: '100%' }}>
                 <Slide direction="down" in={show} timeout={500}>
                     <MKBox
                         position="relative"

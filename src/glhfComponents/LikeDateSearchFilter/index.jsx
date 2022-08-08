@@ -68,7 +68,7 @@ const FilterItem = ({ title, children }) =>
   </Grid>
 
 const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
-  const [ascending, setAscending] = useState(true);
+  const [ascending, setAscending] = useState(false);
   const [isAscendingOrderLike, setIsAscendingOrderLike] = useState(false);
   useEffect(() => {
     handleDate(ascending)
