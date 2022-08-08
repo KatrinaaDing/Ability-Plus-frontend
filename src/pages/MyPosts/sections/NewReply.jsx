@@ -16,7 +16,10 @@ const NewReply = ({count}) => {
     const [open, setOpen] = useState(false)
     const axiosPrivate = useAxiosPrivate();
 
-    const handleClose = () => setOpen(false)
+    const handleClose = () => {
+        setOpen(false)
+        location.reload()
+    }
     const handleOpen = () => setOpen(true)
 
     const handleSeeAll = () => 

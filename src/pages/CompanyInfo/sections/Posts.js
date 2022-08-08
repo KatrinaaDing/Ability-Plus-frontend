@@ -40,7 +40,9 @@ import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
 import { statusBank } from "utils/getStatus";
 import MKButton from "components/MKButton";
 import EditIcon from '@mui/icons-material/Edit';
+import EndlessScroll from "glhfComponents/EndlessScroll";
 
+const PAGE_SIZE = 30
 
 const Posts = () => {
   // hooks
@@ -51,21 +53,40 @@ const Posts = () => {
   const [requests, setRequests] = React.useState([])
   const [reqOpen, setReqOpen] = React.useState(false);
   const [reqDetail, setReqDetail] = React.useState();
+  //pagination
+  const [numPage, setNumPage] = React.useState(1);
+  const [hasMore, setHasMore] = React.useState(false);
+  const [total, setTotal] = React.useState(0);
 
-  React.useEffect(() => {
+  /**
+ * Fetching a list of request card
+ * @param {integer} pageNo page number to fetch
+ * @param {boolean} newList determine if is to fetch a new card list (like changing status)
+ */
+  const fetchData = (pageNo, newList) => {
     const params = new URLSearchParams({
       companyId: id,
-      pageNo: 1,
-      pageSize: 30
+      pageNo: pageNo,
+      pageSize: PAGE_SIZE
     })
-    const getReqeusts = async () =>
-      await axiosPrivate.get('/project/list_company_profile_project_request', {
+    axiosPrivate.get('/project/list_company_profile_project_request', {
         params: params
       })
-        .then(res => setRequests(res.data.data.records))
+        .then(res => {
+          setRequests([...requests].concat(res.data.data.records))
+          if (pageNo * PAGE_SIZE >= res.data.data.total)
+            setHasMore(false)
+          else
+            setHasMore(true)
+          setNumPage(pageNo)
+          setTotal(res.data.data.total)
+        })
         .catch(e => console.error(e))
+  }
 
-    getReqeusts();
+
+  React.useEffect(() => {
+    fetchData(1, true)
   }, [])
 
   const getReqDetail = async (reqId) =>
@@ -165,21 +186,26 @@ const Posts = () => {
             Released Challenges
           </MKTypography>
         </Grid>
+        <EndlessScroll
+          dataLength={requests.length}
+          next={() => fetchData(numPage+1, false)}
+          hasMore={hasMore}
+        >
         <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
           {
             requests.map(r =>
               <RequestCard
-                key={r.id}
-                color='light'
-                data={{
-                  ...r,
-                  // topic: r.area,  // FIXME need area
-                }}
-                openDetail={() => getReqDetail(r.id)}
+              key={r.id}
+              color='light'
+              data={{
+                ...r,
+              }}
+              openDetail={() => getReqDetail(r.id)}
               />
-            )
-          }
+              )
+            }
         </Grid>
+            </EndlessScroll>
       </Container>
     </MKBox>
   );

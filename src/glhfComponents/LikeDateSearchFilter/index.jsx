@@ -79,7 +79,7 @@ const LikeDateSearchFilter = ({ handleLike, handleDate, handleSearch }) => {
     <Grid 
       container 
       spacing={2}
-      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', mt: 0.5, mb: 10 }} 
+      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', mt: 0, mb: 6 }} 
     >
       <FilterItem title="Sort by Likes">
         <MKButton 

@@ -66,7 +66,6 @@ const BrowseRequests = () => {
      * @param {boolean} newList determine if is to fetch a new card list (like changing status)
      */
     const fetchData = (pageNo, newList) => {
-        console.log(whatOrder)
         const params = new URLSearchParams({
             status: status.toLowerCase(),
             isAscendingOrder: ascending,

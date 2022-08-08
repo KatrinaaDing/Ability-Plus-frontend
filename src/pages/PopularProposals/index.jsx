@@ -190,7 +190,7 @@ const PopularProposals = () => {
                 content="Please login to view proposal detail :)"
                 handleConfirm={() => navigate('/authentication/sign-in', { state: { from: location }, replace: true })}
             />
-            <Box sx={{ flexGrow: 1 }}>
+            <Box >
                 <LikeDateSearchFilter handleLike={handleLike} handleDate={handleDate} handleSearch={handleSearch}></LikeDateSearchFilter>
                 <EndlessScroll
                     dataLength={popularProps.length}

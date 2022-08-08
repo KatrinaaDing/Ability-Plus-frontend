@@ -1,17 +1,4 @@
-/*
-=========================================================
-* Material Kit 2 React - v2.0.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -21,16 +8,7 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
-// Material Kit 2 React components
-import TransparentBlogCard from "examples/Cards/BlogCards/TransparentBlogCard";
-import BackgroundBlogCard from "examples/Cards/BlogCards/BackgroundBlogCard";
-import Box from '@mui/material/Box';
 
-// Images
-import post1 from "assets/images/examples/testimonial-6-2.jpg";
-import post2 from "assets/images/examples/testimonial-6-3.jpg";
-import post3 from "assets/images/examples/blog-9-4.jpg";
-import post4 from "assets/images/examples/blog2.jpg";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
 import React from "react";
@@ -39,6 +17,9 @@ import useAuth from "auth/useAuth";
 import ProposalDescriptionModal from "glhfComponents/ProposalDescriptionModal";
 import LikeButton from "glhfComponents/LikeButton";
 import RequestDescriptionModal from "glhfComponents/RequestDescriptionModal";
+import EndlessScroll from "glhfComponents/EndlessScroll";
+
+const PAGE_SIZE = 30
 
 const Posts = () => {
   // hooks
@@ -53,21 +34,40 @@ const Posts = () => {
   // request states
   const [reqDetail, setReqDetail] = React.useState()
   const [reqOpen, setReqOpen] = React.useState(false)
+  // pagination
+  const [numPage, setNumPage] = React.useState(1);
+  const [hasMore, setHasMore] = React.useState(false);
+  const [total, setTotal] = React.useState(0);
 
-  React.useEffect(() => {
+  /**
+* Fetching a list of request card
+* @param {integer} pageNo page number to fetch
+* @param {boolean} newList determine if is to fetch a new card list (like changing status)
+*/
+  const fetchData = (pageNo, newList) => {
     const params = new URLSearchParams({
       creatorId: id,
       pageNo: 1,
       pageSize: 30
     })
-    const getProposals = async () =>
-      await axiosPrivate.get('/proposal/list_student_profile_proposals', {
+    axiosPrivate.get('/proposal/list_student_profile_proposals', {
         params: params
       })
-        .then(res => setProps(res.data.data.records))
+        .then(res => {
+          setProps([...props].concat(res.data.data.records))
+          if (pageNo * PAGE_SIZE >= res.data.data.total)
+            setHasMore(false)
+          else
+            setHasMore(true)
+          setNumPage(pageNo)
+          setTotal(res.data.data.total)
+        })
         .catch(e => console.error(e))
+  }
 
-    getProposals();
+  React.useEffect(() => {
+   
+    fetchData(1, true)
   }, [])
 
   const handleOpenDetail = async (id, projectName) => {
@@ -164,6 +164,12 @@ const Posts = () => {
             Past Proposals
           </MKTypography>
         </Grid>
+        <EndlessScroll
+          dataLength={props.length}
+          next={() => fetchData(numPage + 1, false)}
+          hasMore={hasMore}
+        >
+
         <Grid container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
           {
             props.map(p =>
@@ -186,6 +192,8 @@ const Posts = () => {
             )
           }
         </Grid>
+        </EndlessScroll>
+
       </Container>
     </MKBox>
   );

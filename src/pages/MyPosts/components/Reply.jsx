@@ -23,7 +23,7 @@ const Reply = (props) => {
             <AlertModal
                 open={alertOpenDelete}
                 handleClose={() => setAlertOpenDelete(false)}
-                handleConfirm={() => handleDelete(post.id)}
+                handleConfirm={() => {handleDelete(post.id); setAlertOpenDelete(false)}}
                 title="Are you sure to delete?"
                 content=""
             />
