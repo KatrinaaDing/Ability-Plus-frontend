@@ -180,17 +180,16 @@ const Post = ({
           <MKBox display="flex" flexDirection="row">
             {
               isProjectOwner
-                ? (
-                  <MKTypography color="primary">
+                ?  <MKTypography color="primary">
                     {authorName}
                     {' '}
                     (Challenge Owner)
+                    {' '}
+                    {isAuthor && '(Me)'}
                   </MKTypography>
-                )
-                : isAuthor
-                  ? `${authorName} (Me)`
-                  : authorName
+                : authorName + (isAuthor ? ' (Me)' : '')
             }
+            
             <PushPinIcon color="warning" fontSize="medium" opacity={Number(isPin)} sx={{ mt: 'auto', mb: 'auto', ml: 1 }} />
           </MKBox>
         )}
@@ -198,7 +197,11 @@ const Post = ({
           <>
             <MKTypography variant="caption">{new Date(postDate * 1000).toLocaleString()}</MKTypography>
             <br />
-            <MKTypography variant="body">{content}</MKTypography>
+            <MKTypography variant="body">
+              {
+                content.split("\n").map((i, key) => <div key={key}>{i}</div>)
+              }
+            </MKTypography>
           </>
         )}
         sx={{

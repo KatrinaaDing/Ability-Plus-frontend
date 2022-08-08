@@ -78,15 +78,13 @@ const Reply = (props) => {
                         </MKBox>
                     }
                     secondary={
-
                         <MKTypography variant='body'>
-                            {data}
+                            {
+                                data.split("\n").map((i, key) => <div key={key}>{i}</div>)
+                            }
                         </MKTypography>
-
                     }
-
                 />
-
             </ListItem>
         </>
 

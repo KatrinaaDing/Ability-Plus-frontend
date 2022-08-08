@@ -145,7 +145,11 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                 <Grid container>
                     <Grid item xs={12} md={10.5} justifyContent='flex-start' textAlign='left'>
                         <MKTypography variant="body2">
-                            <b>{data}</b>
+                            <b>
+                            {
+                                data.split("\n").map((i, key) => <div key={key}>{i}</div>)
+                            }
+                            </b>
                         </MKTypography>
                     </Grid>
                     <Grid item xs={12} md={1.5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', textAlign: 'right' }}>

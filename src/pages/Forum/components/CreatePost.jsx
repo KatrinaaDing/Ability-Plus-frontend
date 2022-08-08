@@ -42,7 +42,7 @@ const CreatePost = ({ reqCreator }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
+        console.log(e.target.post.value)
         const createNewPost = () => {     
             const params = new URLSearchParams({
                 data: e.target.post.value, 
@@ -72,7 +72,6 @@ const CreatePost = ({ reqCreator }) => {
 
     return (
         <>
-            
             <MKButton
                 variant="gradient"
                 color="info"
