@@ -8,7 +8,7 @@ import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
-
+// Like button to rate proposal
 const LikeButton = ({ originLike, originNumLike, propId }) => {
     const [like, setLike] = React.useState(originLike);
     const [numLike, setNumLike] = React.useState(originNumLike);

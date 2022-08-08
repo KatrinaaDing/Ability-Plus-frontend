@@ -19,30 +19,17 @@ import { Link, useNavigate, useSearchParams, useParams } from "react-router-dom"
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
-import CloseIcon from "@mui/icons-material/Close";
-import Modal from "@mui/material/Modal";
-import Slide from "@mui/material/Slide";
-import Divider from "@mui/material/Divider";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKAvatar from "components/MKAvatar";
-import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-import MKInput from "components/MKInput";
-import Collapse from "@mui/material/Collapse";
-import MKAlert from "components/MKAlert";
-import AlertModal from "glhfComponents/AlertModal";
-import Box from '@mui/material/Box';
 
 //Other components
 import useAuth from "auth/useAuth";
 import profilePicture from "assets/images/profile-avatars/student.png";
-import { Axios } from "axios";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import ProposalCard from "glhfComponents/ProposalCard";
 
 function Profile() {
 

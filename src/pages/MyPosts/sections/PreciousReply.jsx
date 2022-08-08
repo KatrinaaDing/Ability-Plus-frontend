@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import EndlessScroll from "glhfComponents/EndlessScroll";
 
 const PAGE_SIZE = 20;
-
+// Shoing previous replies in the forum
 const PreciousReply = () => {
     // hooks
     const axiosPrivate = useAxiosPrivate();

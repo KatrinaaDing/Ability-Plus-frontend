@@ -7,7 +7,7 @@ import MKButton from 'components/MKButton';
 import RequestDescriptionModal from 'glhfComponents/RequestDescriptionModal';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
 import React from 'react';
-
+// View Detail button on project; click to open popup modal and see details of the project
 const ProjectDetailBtn = ({ projectId, open, setOpen, setReqName, setReqCreator }) => {
     const axiosPrivate = useAxiosPrivate();
     const [reqDetail, setReqDetail] = React.useState();

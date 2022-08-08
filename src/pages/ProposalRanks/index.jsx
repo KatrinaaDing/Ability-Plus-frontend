@@ -11,7 +11,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import LikeButton from "glhfComponents/LikeButton";
 import ProjectDetailBtn from "glhfComponents/ProjectDetailBtn";
 import DateSearchFilter from 'glhfComponents/DateSearchFilter';
-
+// Showing the ranks of the project challenge after company selects outstadning proposals in the project challenge
 const ProposalRanks = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id: projectId } = useParams();

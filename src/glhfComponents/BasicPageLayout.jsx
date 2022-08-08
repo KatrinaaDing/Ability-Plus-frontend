@@ -11,7 +11,7 @@ import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import footerRoutes from "footer.routes";
 import getNavbarRoutes from 'utils/getNavbarRoutes'
-
+// Common page layout for all pages
 const BasicPageLayout = ({ title, secondaryContent, children }) => {
     return (
         <>

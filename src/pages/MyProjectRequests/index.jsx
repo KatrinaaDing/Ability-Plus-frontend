@@ -16,7 +16,7 @@ import EndlessScroll from "glhfComponents/EndlessScroll";
 import { statusBank } from "utils/getStatus";
 
 const PAGE_SIZE = 18
-
+// Showing Project Requests of the company
 const MyProjectRequests = () => {
     const axiosPrivate = useAxiosPrivate();
     const [reqs, setReqs] = useState([]);

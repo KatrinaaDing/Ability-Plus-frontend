@@ -12,7 +12,7 @@ import getNavbarRoutes from 'utils/getNavbarRoutes';
 import Card from "@mui/material/Card";
 import bgImage from "assets/images/city-profile.jpg";
 
-
+// Profile layout for student/company profile
 const ProfilePageLayout = ({children}) => {
     return (
         <>

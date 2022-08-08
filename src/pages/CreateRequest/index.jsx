@@ -41,7 +41,8 @@ const sampleContent = {
     req: "<h2>Functional</h2><ol><li>Sed mollis euismod nulla non feugiat.</li><li>Nulla quis convallis massa.&nbsp;</li><li>Duis interdum enim nisi, vel viverra nibh dictum et.</li><li>Nullam ipsum libero, feugiat id lectus non, tempor suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</li></ol><p><br></p><h2>Non-functional</h2><ol><li>Morbi sed dictum dui. Aenean at est lectus. </li><li>Suspendisse condimentum leo ac nisl varius maximus. </li><li>Nam commodo ultricies elit, ut sagittis dolor volutpat et. </li><li>Curabitur quis lacus vitae justo efficitur gravida. </li><li>Aenean dictum orci eu elit fermentum aliquet. </li><li>Donec fermentum porttitor felis at eleifend.</li></ol><p><br></p>",
     rew: "<p>$1000</p>",
 }
-
+// Create Proposal pop up modal: Company is required to fill the title, category, proposal deadline
+// , solution deadline, description, requirement, rewards(if any)
 const CreateRequest = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
 

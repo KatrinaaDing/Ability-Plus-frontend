@@ -15,7 +15,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import useAuth from "auth/useAuth";
 import { BASE_URL } from 'api/axios';
 import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-
+// Showing the companies the student followed
 const MyFollowingPage = () => {
     const {auth} = useAuth();
     const axiosPrivate = useAxiosPrivate();

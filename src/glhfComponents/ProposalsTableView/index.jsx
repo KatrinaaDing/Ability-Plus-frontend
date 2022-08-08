@@ -39,7 +39,7 @@ const columns = [
         width: 150,
     },
 ];
-
+// Company can view proposals in a table view and select/shortlist outstanding proposals
 const ProposalsTableView = ({proposals, selectMode, selectedItem, setSelectedItem}) => {
 
     const [rows, setRows] = useState([])

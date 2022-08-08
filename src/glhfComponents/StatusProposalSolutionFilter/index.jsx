@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
+// Filter: sort by status, deadline
 const StatusProposalSolutionFilter = ({ handleStatus, handleProposalDeadline, handleSolutionDeadline }) => {
 	const [isAscendingProposalDeadline, setIsAcendingProposalDeadline] = useState(true);
 	const [isAscendingSolutionDeadline, setIsAcendingSolutionDeadline] = useState(true);

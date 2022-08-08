@@ -1,3 +1,4 @@
+// Popular Proposals page for showing outstanding proposals selected by companies
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid';
 import useAuth from 'auth/useAuth';

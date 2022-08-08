@@ -10,7 +10,7 @@ import MKTypography from 'components/MKTypography';
 import BasicPageLayout from 'glhfComponents/BasicPageLayout';
 import React from 'react';
 import './index.scss'
-
+// 404 Not Found page for users who typed wrong url
 const NotFound = () => {
     return (
         <BasicPageLayout >

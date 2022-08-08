@@ -37,7 +37,7 @@ const sampleContent = {
     vStat: "<p>s leo mollis id. Vivamus faucibus et diam in pretium. In ac erat a est efficitur congue sit amet nec dolor. Proin hendrerit vel tellus elementum mattis. Donec elementum ut elit ut tempor. Ut pulvinar, tortor vitae aliquet sodales, dui leo auctor purus, rutrum venenatis erat justo id elit. Donec a gravida nunc. Integer volutpat ipsum ut interdum elementum. Duis sit amet neque eget sem vulputate pretium. Cras posuere luctus sapien, in porta dolor interdum at.</p>",
     status: "draft"
 }
-
+// Create proposal modal: student is reuqired to fill the title, description, problems to solve, vision statement, goals, details
 const CreateProposal = () => {
     const isEditing = window.location.pathname.slice(1).startsWith('edit');
     // hooks

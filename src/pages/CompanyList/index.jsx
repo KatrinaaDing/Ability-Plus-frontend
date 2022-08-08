@@ -10,7 +10,7 @@ import { BASE_URL } from 'api/axios';
 import { useEffect, useState } from 'react';
 import useAuth from 'auth/useAuth';
 import MKButton from 'components/MKButton';
-
+// Showing all companies in Ability Plus platform
 const CompanyList = () => {
     const { auth } = useAuth();
     const [allCompanies, setAllCompanies] = useState([]);
