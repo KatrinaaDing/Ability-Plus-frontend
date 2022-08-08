@@ -73,6 +73,7 @@ const PreciousReply = () => {
                             projectId={p.projectId}
                             numReply={p.replyNum}
                             lastModifiedTime={p.lastModifiedTime}
+                            projectName={p.projectName}
                         />
                     )
                 }

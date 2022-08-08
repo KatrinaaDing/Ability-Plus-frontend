@@ -1,7 +1,7 @@
 
 # Glhf‘s Frontend Deployment Instruction
 
-Please follow the instruction to run the project locally. This instruction is for MacOS system.
+Please follow the instruction to run the project locally. This instruction is for MacOS/Ubuntu System.
 
 ## Table of Contents
   * [1. Environment](#1-environment)

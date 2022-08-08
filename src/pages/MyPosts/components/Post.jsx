@@ -24,7 +24,7 @@ import EditModal from "pages/Forum/components/EditModal";
 
 const PAGE_SIZE = 20;
 
-const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numReply, projectId, newStatus }) => {
+const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numReply, projectId, newStatus, projectName }) => {
     const { auth } = useAuth();
     // const { projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
@@ -146,12 +146,11 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numRepl
             >
                 <Grid container>
                     <Grid item xs={12} md={10.5} justifyContent='flex-start' textAlign='left'>
-                        <MKTypography variant="body2">
-                            <b>
+                        <MKTypography variant='subtitle2'><b>Challenge Name: {projectName}</b></MKTypography>
+                        <MKTypography variant="body2" >
                             {
                                 data.split("\n").map((i, key) => <div key={key}>{i}</div>)
                             }
-                            </b>
                         </MKTypography>
                     </Grid>
                     <Grid item xs={12} md={1.5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'right' }}>
@@ -180,9 +179,15 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numRepl
                             <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
                         </Collapse>
                         <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
-                            <MKTypography variant="h5">Post Detail</MKTypography>
+                            <MKBox>
+                                <MKTypography variant="h5">Post Detail</MKTypography>
+                                <MKTypography variant='subtitle2'>Challenge Name: {projectName}</MKTypography>
+
+                            </MKBox>
+
                             <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={toggleModal} />
                         </MKBox>
+
                         {/*                         <Divider sx={{ my: 0 }} />    */}
                         <MKBox component="section" p={2}>
                             <Container>
