@@ -24,7 +24,7 @@ import EditModal from "pages/Forum/components/EditModal";
 
 const PAGE_SIZE = 20;
 
-const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, projectId, newStatus }) => {
+const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, numReply, projectId, newStatus }) => {
     const { auth } = useAuth();
     // const { projectId } = useParams();
     const axiosPrivate = useAxiosPrivate();
@@ -154,7 +154,10 @@ const Post = ({ postId, authId, authName, data, isPin, lastModifiedTime, project
                             </b>
                         </MKTypography>
                     </Grid>
-                    <Grid item xs={12} md={1.5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', textAlign: 'right' }}>
+                    <Grid item xs={12} md={1.5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'right' }}>
+                        <MKTypography variant='caption2' >
+                            Replies: {numReply}
+                        </MKTypography>
                         <MKTypography variant='caption' >
                             {new Date(lastModifiedTime * 1000).toLocaleString()}
                         </MKTypography>
