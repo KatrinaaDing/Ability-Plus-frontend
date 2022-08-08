@@ -210,7 +210,7 @@ const Post = ({
           mr: 20,
         }}
       />
-      <Modal open={show} onClose={toggleModal} sx={{ display: 'grid', placeItems: 'center' }}>
+      <Modal open={show} onClose={toggleModal} sx={{ display: 'grid', placeItems: 'center' }} style={{ overflowY: 'auto', maxHeight: '100%' }}>
         <Slide direction="down" in={show} timeout={500}>
           <MKBox
             position="relative"
@@ -220,6 +220,7 @@ const Post = ({
             borderRadius="xl"
             bgColor="white"
             shadow="xl"
+            
           >
             <Collapse in={sAlertStr != ""}>
               <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>

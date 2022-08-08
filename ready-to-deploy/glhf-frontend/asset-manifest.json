@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6b15f849.css",
+    "main.js": "/static/js/main.6a759137.js",
+    "static/media/bg-project.jpeg": "/static/media/bg-project.214d04d83866660466a7.jpeg",
+    "static/media/bg-sign-in-basic.jpeg": "/static/media/bg-sign-in-basic.f327db1d0e4b00ba3c81.jpeg",
+    "static/media/city-profile.jpg": "/static/media/city-profile.4d64bba97c3d1757379e.jpg",
+    "static/media/blog-9-4.jpg": "/static/media/blog-9-4.de736e0b751f453415a5.jpg",
+    "static/media/blog2.jpg": "/static/media/blog2.aba7a3cb94805e9557d1.jpg",
+    "static/media/testimonial-6-2.jpg": "/static/media/testimonial-6-2.21f2048f0b89919090f0.jpg",
+    "static/media/testimonial-6-3.jpg": "/static/media/testimonial-6-3.d35bef0d65354442d063.jpg",
+    "static/media/bruce-mars.jpg": "/static/media/bruce-mars.8a606c4a6dab54c9ceff.jpg",
+    "static/media/student.png": "/static/media/student.b9ff4a41b77f3fad7742.png",
+    "static/media/company.png": "/static/media/company.f2015ff79ee881c3ae3a.png",
+    "index.html": "/index.html",
+    "main.6b15f849.css.map": "/static/css/main.6b15f849.css.map",
+    "main.6a759137.js.map": "/static/js/main.6a759137.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6b15f849.css",
+    "static/js/main.6a759137.js"
+  ]
+}
