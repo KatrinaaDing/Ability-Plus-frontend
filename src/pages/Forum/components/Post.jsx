@@ -29,6 +29,7 @@ import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
 import { useParams } from 'react-router-dom';
 import MKAlert from "components/MKAlert";
+import { random } from 'chroma-js';
 
 const PAGE_SIZE = 20;
 const Post = ({
@@ -157,12 +158,12 @@ const Post = ({
           <IconButton
             edge="end"
             aria-label="comments"
-            sx={{ mr: 2, opacity: 0.5, fontSize: 'lg' }}
+            sx={{ opacity: 0.5, fontSize: 'lg' }}
             onClick={getReplyList}
           >
             <CommentIcon />
             {' '}&nbsp;
-            <MKTypography variant="subtitle2">{numReply}</MKTypography>
+            <MKTypography variant="subtitle2" sx={{ width: '50px', textAlign: 'start'}}>{Math.floor(Math.random() * 150)}</MKTypography>
           </IconButton>
 
         </>
