@@ -38,7 +38,7 @@ const PopularProposals = () => {
     // search bar states
     const [searchKey, setSearchKey] = useState('');
     const [ascending, setAscending] = useState(false);
-    const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(true);
+    const [isAscendingOrderLike, setIsAcendingOrderLike] = useState(false);
 
     // pagination states
     const [pageNum, setPageNum] = useState(1)

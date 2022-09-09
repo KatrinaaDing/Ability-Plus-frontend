@@ -96,8 +96,8 @@ const SelectProposalsFilter = ({ handleDate, handleIsPicked, handleWhatOrder, ha
                             style={{backgroundColor:'white'}}
                     >   
                             <MenuItem value={2}>All</MenuItem>
-                            <MenuItem value={0}>Unpicked</MenuItem>
-                            <MenuItem value={1}>Picked</MenuItem>
+                            <MenuItem value={1}>Shortlisted</MenuItem>
+                            <MenuItem value={0}>Not Shortlisted</MenuItem>
                         </Select>
                 </FormControl>
             </FilterItem>

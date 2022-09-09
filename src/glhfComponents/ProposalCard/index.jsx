@@ -109,7 +109,7 @@ const ProposalCard = ({ data, openDetail, secondary, color }) => {
                 <MKTypography
                     variant="body2"
                     color={!color || color === "transparent" || color === "light" ? "text" : "white"}
-                    my={2}
+                    mb={2}
                     sx={{
                         height: '100px',
                         fontWeight: '500'

@@ -203,11 +203,14 @@ function Profile() {
     else if (Object.is(oldPwd.oldPwd, newPwd.newPwd)) {
       return setAlertStr("There is no change of password!")
     }
+    else if (newPwd.newPwd.length < 8) {
+      return setAlertStr("Password has to be longer than 8 characters!")
+    }
     else if (Object.is(event.target.name, "changePwd")) {
       axiosPrivate.post("/user/change_password", body)
         .then(res => {
           if (res.status == 200) {
-            return setAlertStr("Success!")
+            return setSAlertStr("Success!")
           }
         })
         .catch(err => {
@@ -408,6 +411,9 @@ function Profile() {
             >
               <Collapse in={alertStr != ""}>
                 <MKAlert color="error" style={{ zIndex: '100' }} dismissible>{alertStr}</MKAlert>
+              </Collapse>
+              <Collapse in={sAlertStr != ""}>
+                <MKAlert color="success" style={{ zIndex: '100' }}>{sAlertStr}</MKAlert>
               </Collapse>
               <MKBox display="flex" alginItems="center" justifyContent="space-between" p={3}>
                 <MKTypography variant="h5">Password Change</MKTypography>

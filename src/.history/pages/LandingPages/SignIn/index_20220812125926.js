@@ -46,7 +46,6 @@ import useAuth from "auth/useAuth";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import AlertModal from "glhfComponents/AlertModal";
 import md5 from "md5";
-import { TextField } from "@mui/material";
 
 function SignInBasic() {
   const { auth, setAuth } = useAuth();
@@ -152,15 +151,6 @@ function SignInBasic() {
     setAlertStr("");
   }
 
-  const handleAsSampleStudent = () => {
-    setEmail('ziqi@student.com')
-    setUserPwd('ziqi_123')
-  }
-
-  const handleAsSampleCompany = () => {
-    setEmail('google@company.com')
-    setUserPwd('google123')
-  }
 
   return (
     <>
@@ -223,16 +213,14 @@ function SignInBasic() {
                 </MKTypography>
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
-                <MKBox sx={{display: 'flex', justifyContent: 'space-around', mb: 2}}>
-                  <MKButton variant='outlined' color='info' size='small' fullWidth sx={{mx: 1}} onClick={handleAsSampleStudent}>As a sample student</MKButton>
-                  <MKButton variant='outlined' color='info' size='small' fullWidth sx={{mx: 1}} onClick={handleAsSampleCompany}>As a sample company</MKButton>
-                </MKBox>
+                <MKButton>Sign in as a sample student</MKButton>
+                <MKButton>>Sign in as a sample company</MKButton>
                 <MKBox component="form" role="form" onSubmit={handleSubmit}>
                   <MKBox mb={2}>
-                    <TextField type="email" error={emailErr} label="Email" onChange={updateUserEmail} value={userEmail} fullWidth />
+                    <MKInput type="email" error={emailErr} label="Email" onChange={updateUserEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <TextField type="password" error={pwdErr} label="Password" onChange={updateUserPwd} value={userPwd} fullWidth />
+                    <MKInput type="password" error={pwdErr} label="Password" onChange={updateUserPwd} fullWidth />
                   </MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" name="signIn" fullWidth type='submit' onClick={handleSubmit}>

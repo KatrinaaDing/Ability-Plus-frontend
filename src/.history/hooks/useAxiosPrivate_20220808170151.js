@@ -22,14 +22,14 @@ const useAxiosPrivate = () => {
                 if (!config.headers['token']) {                                     // check the header, if there's no access token inside,
                     config.headers['token'] = auth.accessToken;        // setting auth header for request
                 }
-                // console.log('request', config) // uncomment this to debug
+                console.log('request', config) // uncomment this to debug
                 return config;
             }, (error) => Promise.reject(error)
         );
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => {
-                // console.log('response', response)           // uncomment it to debug
+                console.log('response', response)           // uncomment it to debug
                 if (response.data.status >= 400)
                     return Promise.reject(response)
                 return response

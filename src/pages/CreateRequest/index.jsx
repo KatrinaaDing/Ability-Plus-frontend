@@ -186,7 +186,7 @@ const CreateRequest = () => {
 
     const handleSaveDraft = async () => {
         if (isAllEmpty()) {
-            setError("Cannot save empty proposal!")
+            setError("Cannot save empty challenge!")
             return
         }
 
@@ -292,7 +292,7 @@ const CreateRequest = () => {
             <CancelConfirm />
             <SaveDraftConfirm />
             <SubmitConfirm />
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;

@@ -63,6 +63,8 @@ const NewReply = ({count}) => {
                                                 isPin={p.isPin}
                                                 lastModifiedTime={p.lastModifiedTime}
                                                 newStatus={true}
+                                                projectName={p.projectName}
+                                                numReply={p.replyNum}
                                             />
                                         </div>
                                     )

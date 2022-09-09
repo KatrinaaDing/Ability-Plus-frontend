@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MKButton from "components/MKButton";
 import Select from '@mui/material/Select';
 import MenuIcon from '@mui/icons-material/Menu';
-import {getLabel} from "../../utils/getStatus";
+import { getLabel } from "../../utils/getStatus";
 import MKTypography from 'components/MKTypography';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -70,23 +70,26 @@ const FilterItem = ({ title, children }) =>
     </Grid>
 
 
-const StatusDateDueSearchFilter = ({ handleDate, handleSearch}) => {
+const StatusDateDueSearchFilter = ({ handleDate, handleSearch }) => {
     const [ascending, setAscending] = useState(true);
     useEffect(() => {
         handleDate(ascending);
     }, [ascending])
     return (
-        <Grid container spacing={2} sx={{ mb: 6, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <FilterItem title="Order by">
-                <MKButton sx={{ height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%'}} onClick={() => setAscending(!ascending)}>
-                    Submission Date{' '}
-                    { ascending && <KeyboardArrowDownIcon>
-                    </KeyboardArrowDownIcon>}
-                    { !ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
-                </MKButton>
-            </FilterItem>
+        <Grid container spacing={2} sx={{ mb: 6, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} >
+            {
+                location.pathname.indexOf('view-request-ranks') < 0 &&
+                <FilterItem title="Order by">
+                    <MKButton sx={{ height: '40px', border: '1px solid lightgray', fontWeight: 'normal', width: '100%' }} onClick={() => setAscending(!ascending)}>
+                        Submission Date{' '}
+                        {ascending && <KeyboardArrowDownIcon>
+                        </KeyboardArrowDownIcon>}
+                        {!ascending && <KeyboardArrowUpIcon></KeyboardArrowUpIcon>}
+                    </MKButton>
+                </FilterItem>
+            }
             <FilterItem title="Search">
-                <Search sx={{ height: '50px'}}>
+                <Search sx={{ height: '50px' }}>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>

@@ -154,7 +154,7 @@ function SignInBasic() {
 
   const handleAsSampleStudent = () => {
     setEmail('ziqi@student.com')
-    setUserPwd('ziqi_123')
+    setUserPwd('ziqi123')
   }
 
   const handleAsSampleCompany = () => {

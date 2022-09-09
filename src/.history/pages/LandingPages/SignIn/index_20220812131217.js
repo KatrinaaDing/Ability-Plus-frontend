@@ -46,7 +46,7 @@ import useAuth from "auth/useAuth";
 import useAxiosBasic from "hooks/useAxiosBasic";
 import AlertModal from "glhfComponents/AlertModal";
 import md5 from "md5";
-import { TextField } from "@mui/material";
+import { Input } from "@mui/material";
 
 function SignInBasic() {
   const { auth, setAuth } = useAuth();
@@ -154,7 +154,7 @@ function SignInBasic() {
 
   const handleAsSampleStudent = () => {
     setEmail('ziqi@student.com')
-    setUserPwd('ziqi_123')
+    setUserPwd('ziqi123')
   }
 
   const handleAsSampleCompany = () => {
@@ -229,10 +229,10 @@ function SignInBasic() {
                 </MKBox>
                 <MKBox component="form" role="form" onSubmit={handleSubmit}>
                   <MKBox mb={2}>
-                    <TextField type="email" error={emailErr} label="Email" onChange={updateUserEmail} value={userEmail} fullWidth />
+                    <Input type="email" error={emailErr} label="Email" onChange={updateUserEmail} value={userEmail} fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <TextField type="password" error={pwdErr} label="Password" onChange={updateUserPwd} value={userPwd} fullWidth />
+                    <Input type="password" error={pwdErr} label="Password" onChange={updateUserPwd} value={userPwd} fullWidth />
                   </MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" name="signIn" fullWidth type='submit' onClick={handleSubmit}>

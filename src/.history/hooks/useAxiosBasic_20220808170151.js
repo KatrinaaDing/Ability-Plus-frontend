@@ -22,7 +22,7 @@ const useAxiosBasic = () => {
                 response.statusText = response.data.message
                 const resData = response.data.data;
                 response.data = resData;
-                // console.log(response)           // uncomment it to debug
+                console.log(response)           // uncomment it to debug
                 if (response.status >= 400) 
                     return Promise.reject(response)
                 return response

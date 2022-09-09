@@ -265,7 +265,7 @@ const CreateProposal = () => {
             <SaveDraftConfirm />
             <SubmitConfirm />
             <MKTypography variant='subtitle1'>This proposal is submitted for: {topic}</MKTypography>
-            <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton>
+            {/* <MKButton variant='outlined' color='info' onClick={() => setSample()}>Fill with Sample Content</MKButton> */}
             <Collapse in={error != ''}>
                 <MKAlert color="error" >
                     <WarningAmberIcon fontSize='medium' sx={{ mr: 2 }} /> &nbsp;

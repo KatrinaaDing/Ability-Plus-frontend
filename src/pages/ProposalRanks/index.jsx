@@ -39,9 +39,9 @@ const ProposalRanks = () => {
         const listApprovedProposals = async() =>
             await axiosPrivate.get(`/proposal/list_approved_project_proposals`, {
                 params: new URLSearchParams({
-                    isAscendingOrder: true,
+                    isAscendingOrder: false,
                     pageNo: 1,
-                    pageSize: 20,
+                    pageSize: 50,
                     projectId: projectId,
                     searchKey: searchKey
                 })
