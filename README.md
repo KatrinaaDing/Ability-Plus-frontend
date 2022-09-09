@@ -8,10 +8,12 @@ Ability Plus is a project proposal management tool that not only provides an eff
 - [Author](#author)
 - [Live Demo](#live-demo)
 - [Features](#features)
+- [System Architecture](#system-architecture]
 - [Local Deployment](#local-deployment)
 - [Backend](#backend)
 - [File Structure](#file-structure)
 - [Technical Support or Questions](#technical-support-or-questions)
+
 
 ## Author
 
@@ -35,6 +37,7 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 | ------- | ------------------------------------------------------------ |
 | **Company** | The organizations that can publish their industry challenges on Ability Plus and welcome student to submit proposals. |
 | **Student** | The student users that can submit project proposals to the challenges that they would like to solve. |
+
 
 
 
@@ -105,6 +108,12 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 17. Student can change the password of his/her account.
 18. Student can see Outstanding Proposals selected from company' project challenges, sort them by the number of likes/submission date, search by keyword and learn from them.
 19. Student can like/unlike proposals from the proposals that selected as outstanding from project challenges.
+
+
+## System Architecture
+
+<img width="1457" alt="image" src="https://user-images.githubusercontent.com/31226246/189354861-d4b0ee44-fd8d-4791-8308-25e64ccdc323.png">
+
 
 ## Local Deployment
 
