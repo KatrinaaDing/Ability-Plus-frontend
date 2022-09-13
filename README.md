@@ -1,6 +1,6 @@
 # Ability Plus
 
-Ability Plus is a project proposal management tool that not only provides an efficient way for companies to create project requests, gather students’ project ideas and organize their project proposals to reach potential employees but also assists students to effectively deliver their thoughts to companies, enriching their project experience.
+Ability Plus is a project proposal management tool that not only provides an efficient way for companies to release industry challenges, gather students’ project ideas and organize their project proposals to reach potential employees but also assists students to effectively deliver their thoughts to companies, enriching their project experience.
 
 
 ## Table of Contents
