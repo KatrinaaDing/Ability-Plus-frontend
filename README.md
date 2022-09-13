@@ -226,4 +226,4 @@ Accessed Date: 29 Jun 2022
 
 ## Technical Support or Questions
 
-If you have questions or need help running the app please contact [Katrina Ding](mailto:z5211336@ad.unsw.edu.au).
+If you have questions or need help running the app please contact [Katrina Ding](mailto:katrina.ziqi.ding@gmail.com).
