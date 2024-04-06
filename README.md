@@ -6,7 +6,6 @@ Ability Plus is a project proposal management tool that not only provides an eff
 ## Table of Contents
 
 - [Author](#author)
-- [Live Demo](#live-demo)
 - [Features](#features)
 - [System Architecture](#system-architecture)
 - [Local Deployment](#local-deployment)
@@ -22,10 +21,6 @@ The frontend of Ability Plus is developed by three of the glhf's group members:
 1. Ella Song (z5261532)
 2. Dingheng Li (z5291137)  
 3. Katrina (Ziqi) Ding (z5211336)
-
-## Live Demo
-
-[Live Demo here](http://ability-plus.site/)
 
 ## Features
 
