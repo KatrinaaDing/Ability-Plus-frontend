@@ -6,7 +6,7 @@ Ability Plus is a project proposal management tool that not only provides an eff
 ## Table of Contents
 
 - [Author](#author)
-- [Video Demo] (#video-demo)
+- [Video Demo](#video-demo)
 - [Features](#features)
 - [System Architecture](#system-architecture)
 - [Local Deployment](#local-deployment)
